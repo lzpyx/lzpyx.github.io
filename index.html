@@ -160,6 +160,135 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/ICCV2021%20DINO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/14/ICCV2021%20DINO/" class="post-title-link" itemprop="url">ICCV2021 DINO</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-14 00:00:00 / Modified: 20:55:34" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><h1 id="ICCV2021-DINO"><a href="#ICCV2021-DINO" class="headerlink" title="ICCV2021 DINO"></a>ICCV2021 DINO</h1><p>Emerging Properties in Self-Supervised Vision Transformers</p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>自监督学习带来的影响：自监督vit特征包含了图像语义分割的明确信息，这在监督学习的vit和CNN中都没有这么清晰</p>
+<p>文章将DINO解释为一种没有标签的自蒸馏形式</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>在本文中，作者怀疑Transformers 在视觉方面的成功可能是因为<strong>预训练中的监督</strong>。这样怀疑的动机是Transformers 在 NLP  中取得成功的主要因素之一是就是使用了自监督的预训练，其形式是 BERT 或 GPT 中的语言建模。这些自监督的预训练目标使用句子中的单词来创建pretext task，<strong>这些任务提供比预测每个句子单个标签的监督目标更丰富的学习信号</strong>。类似地，在图像中，<strong>图像级监督通常将图像中包含的丰富视觉信息减少为从预定义的数千个对象类别中选择的单个概念</strong>。</p>
+<p>本文研究了自监督预训练对vit特征的影响，发现：</p>
+<ol>
+<li>自监督的vit特征明确的包含了场景，特别是对象边界</li>
+<li>自监督vit特征在没有任何微调、线性分类器、数据增强的情况下，k-NN分类器效果非常好，在ImageNet实现78.3% top-1 acc</li>
+<li>vit中使用更小patches带来更好的结果</li>
+</ol>
+<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><ul>
+<li>自监督学习 Self-supervised learning</li>
+<li>自训练、知识蒸馏 Self-training and knowledge distillation</li>
+</ul>
+<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><h3 id="DINO的无标签自蒸馏结构"><a href="#DINO的无标签自蒸馏结构" class="headerlink" title="DINO的无标签自蒸馏结构"></a>DINO的无标签自蒸馏结构</h3><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414185646639.png" alt="image-20220414185646639" style="zoom:50%;" />
+
+<p>DINO结构中分学生网络和教师网络，两侧网络都使用temperature softmax生成了K维概率分布，student侧为$P_s$（公式1，其中$g_{\theta_s}$代表学生模型输出的logits），teacher侧为$P_t$,然后最小化交叉熵损失来优化student网络的参数$θ_s$(公式2)</p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414191710292.png" alt="image-20220414191710292" style="zoom:67%;" />
+
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414192609677.png" alt="image-20220414192609677" style="zoom:67%;" />
+
+<p>其中$H(a,b)&#x3D;-alogb$.即结构图中的loss。</p>
+<h3 id="DINO中的local-to-global学习"><a href="#DINO中的local-to-global学习" class="headerlink" title="DINO中的local-to-global学习"></a>DINO中的local-to-global学习</h3><p>DINO其实在进行交叉熵损失计算时更加复杂，因为使用了多裁剪策略，学生模型的输入是local views（$96^2$），教师模型的输入是2张global views（$224^2$），所以最终要最小化的损失函数表达式为：</p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414193414286.png" alt="image-20220414193414286" style="zoom:67%;" />
+
+<h3 id="模型参数更新"><a href="#模型参数更新" class="headerlink" title="模型参数更新"></a>模型参数更新</h3><ul>
+<li>学生模型使用上述的交叉损失进行梯度回传更新参数。</li>
+<li>教师模型是从学生网络历史iteration中通过EMA（exponential moving average）得到，更新的公式为$θ_{t+1}&#x3D;\lambda\theta_t+(1-\lambda)\theta_s$,其中在训练阶段$\lambda$遵循从0.996到1余弦变化</li>
+</ul>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ul>
+<li>backbone：使用ViT或ResNet</li>
+<li>projection head：3层MLP（隐藏层为2048维+$l_2$ normalization+K维的全连接层），在ViT中没有使用BN</li>
+</ul>
+<h3 id="避免崩溃"><a href="#避免崩溃" class="headerlink" title="避免崩溃"></a>避免崩溃</h3><p>自监督方法避免崩溃的操作有：</p>
+<ul>
+<li>对比损失</li>
+<li>聚类约束 clustering constraints</li>
+<li>predictor</li>
+<li>batch normalization</li>
+</ul>
+<p>DINO中采用multiple normalizations，具体来说就是使用centering和sharpening操作使通过动量更新的教师模型避免崩溃，减少其对batch的依赖。在实验中发现，centering操作（公式4，$B$代表batch size，m则可以理解为学习率）避免了一个维度主导，但会鼓励塌陷为均匀分布，sharpening（通过teacher模型的softmax函数温度系数$\tau_t$实现）则是相反影响。centering操作和sharpening操作的伪代码可以看出，其实就是中心偏移加温度调节。</p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414200804425.png" alt="image-20220414200804425" style="zoom:67%;" />
+
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414201239871.png" alt="image-20220414201239871" style="zoom: 80%;" />
+
+<h2 id="Implementation-and-evaluation-protocols"><a href="#Implementation-and-evaluation-protocols" class="headerlink" title="Implementation and evaluation protocols"></a>Implementation and evaluation protocols</h2><ul>
+<li><p>Vision Transformer 使用DeiT中的实现。</p>
+</li>
+<li><p>在ImageNet上进行无标签预训练</p>
+</li>
+<li><p>用k-NN评估特征的质量 (Unsupervised Feature Learning via Non-Parametric Instance Discrimination)</p>
+<blockquote>
+<p>冻结预训练模型，计算并储存下游任务训练数据的特征，然后最近邻分类器将图像特征与k近邻存储的特征匹配，并指定一个label，实验中发现20 NN效果最好，这一评估方式不需要超参数调整也不需要数据增强，只需要通过下游数据集即可运行，简化了特征评估。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Main-Results"><a href="#Main-Results" class="headerlink" title="Main Results"></a>Main Results</h2><blockquote>
+<p>重点关注图像检索和语义分割部分</p>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/13/%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8Foverview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -465,20 +594,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
