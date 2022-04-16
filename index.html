@@ -160,6 +160,120 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">Transformer基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-16 00:00:00 / Modified: 16:31:47" itemprop="dateCreated datePublished" datetime="2022-04-16T00:00:00+08:00">2022-04-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="核心组件-self-attention"><a href="#核心组件-self-attention" class="headerlink" title="核心组件 self-attention"></a>核心组件 self-attention</h2><h3 id="注意力机制实现的两个步骤"><a href="#注意力机制实现的两个步骤" class="headerlink" title="注意力机制实现的两个步骤"></a>注意力机制实现的两个步骤</h3><ul>
+<li>计算注意力分布α<ul>
+<li>使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度</li>
+<li>然后使用softmax计算得到注意力分布α</li>
+</ul>
+</li>
+<li>利用注意力分布对输入向量($X&#x3D;(x_1,x_2,···,x_n)$)进行加权求和求平均</li>
+</ul>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416104827133.png" alt="image-20220416104827133" style="zoom: 50%;" />
+
+<p><strong>self-attention则是注意力机制中的一种，其特点是查询向量q是内部的，比如下图是NLP中的一个例子，单词the作为查询向量q，the是输入的句子中的一个词</strong></p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105308281.png" alt="image-20220416105308281" style="zoom:50%;" />
+
+<p>上述的self-attention例子是不带可学习参数的，模型容量小，常用的是其变体——<strong>QKV模型</strong></p>
+<h3 id="QKV模型"><a href="#QKV模型" class="headerlink" title="QKV模型"></a>QKV模型</h3><p><strong>QKV的含义</strong></p>
+<blockquote>
+<p>Query-Key-Value</p>
+</blockquote>
+<p>设输入为$X&#x3D;(x_1,x_2,···,x_N)$,每个分量x<del>i</del>都是D<del>x</del>维的向量，下图中的W<del>q</del>、W<del>k</del>、W<del>v</del>是三个可学习的参数矩阵，其作用是将输入分别映射到另一个空间，在这个空间计算依赖关系，经过映射后得到QKV三个矩阵，分别是查询向量矩阵，关键字矩阵和值矩阵。</p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105933394.png" alt="image-20220416105933394" style="zoom:50%;" />
+
+<p>具体计算步骤如下：</p>
+<ul>
+<li><p>输入$X$经过三个参数矩阵映射到了三个空间，其在三个空间中的矩阵表示分别是Q、K、V</p>
+</li>
+<li><p>计算$softmax(\frac{QK^T}{\sqrt{D_k}})$,其作用是计算N个分量之间的相似度，得到的NxN的矩阵表示了各分量之间的相关程度，也就是注意力分布。</p>
+<blockquote>
+<p>$QK^T$表示QK两个矩阵求内积（数量积、点积，对于向量是对应元素相乘再相加，矩阵则是QK^T^这样的形式，两个向量垂直时内积为0，夹角越小越相似，内积越大），除以$\sqrt{D_k}$是为了使梯度更稳定，因为向量维度越大，内积中累加操作得到的值就越大，这并不是我们所希望的，所以除以维度，对内积结果进行约束，然后最后使用softmax得到归一化的注意力分布。</p>
+<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416112942401.png" alt="image-20220416112942401" style="zoom: 67%;" />
+</blockquote>
+</li>
+<li><p>将上一步中得到的注意力分布$softmax(\frac{QK^T}{\sqrt{D_k}})$作为权值加权到输入X经过映射得到的V矩阵，得到输入的上下文表示</p>
+</li>
+</ul>
+<h3 id="multi-headed机制"><a href="#multi-headed机制" class="headerlink" title="multi-headed机制"></a>multi-headed机制</h3><p>类似CNN中使用多个卷积核提取特征</p>
+<ul>
+<li>通过不同的head得到不同的特征表达</li>
+<li>将得到的特征拼接并使用全连接来降维</li>
+</ul>
+<h2 id="transformer整体架构"><a href="#transformer整体架构" class="headerlink" title="transformer整体架构"></a>transformer整体架构</h2><p>Transformer核心是self-attention，但相比于self-attention加入了</p>
+<ul>
+<li>位置信息，具体处理方式为将绝对位置用向量表示，与词嵌入直接相加</li>
+<li>层规范化，使得神经网络训练更加稳定</li>
+<li>残差连接</li>
+<li>逐位的FFN（前馈神经网络），在得到每个词的上下文表示后，需要使用一个两层的MLP（多层感知机）进行特征变换，在所有位置上是共享的，可以看做一个窗口唯一的卷积</li>
+</ul>
+<h3 id="encoder-decoder"><a href="#encoder-decoder" class="headerlink" title="encoder-decoder"></a>encoder-decoder</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/337886108/answer/770243956">decoder理解</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/ICCV2021%20DINO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -594,7 +708,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -607,7 +721,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
