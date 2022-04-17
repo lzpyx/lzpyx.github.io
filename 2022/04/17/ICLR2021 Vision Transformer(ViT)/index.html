@@ -20,27 +20,23 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Transformer核心组件 self-attention注意力机制实现的两个步骤 计算注意力分布α 使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度 然后使用softmax计算得到注意力分布α   利用注意力分布对输入向量($X&#x3D;(x_1,x_2,···,x_n)$)进行加权求和求平均    self-attention则是注意力机制中的一种，其特点是查询向">
+  <meta name="description" content="ICLR2021 Vision Transformer(ViT)AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE 整体架构  Method 首先将图像分割成$N&#x3D;HW&#x2F;P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$  使用线性映射将patch">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Transformer基础">
-<meta property="og:url" content="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:title" content="ICLR2021 Vision Transformer(ViT)">
+<meta property="og:url" content="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/index.html">
 <meta property="og:site_name" content="yixuanPan Blog">
-<meta property="og:description" content="Transformer核心组件 self-attention注意力机制实现的两个步骤 计算注意力分布α 使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度 然后使用softmax计算得到注意力分布α   利用注意力分布对输入向量($X&#x3D;(x_1,x_2,···,x_n)$)进行加权求和求平均    self-attention则是注意力机制中的一种，其特点是查询向">
+<meta property="og:description" content="ICLR2021 Vision Transformer(ViT)AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE 整体架构  Method 首先将图像分割成$N&#x3D;HW&#x2F;P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$  使用线性映射将patch">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416104827133.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105308281.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105933394.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416112942401.png">
-<meta property="article:published_time" content="2022-04-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-16T08:31:47.019Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png">
+<meta property="article:published_time" content="2022-04-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-17T12:07:02.143Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Transformers">
-<meta property="article:tag" content="self-attention">
-<meta property="article:tag" content="注意力机制">
+<meta property="article:tag" content="classification">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416104827133.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
+<link rel="canonical" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
 
 
 <script id="page-configurations">
@@ -53,7 +49,7 @@
   };
 </script>
 
-  <title>Transformer基础 | yixuanPan Blog</title>
+  <title>ICLR2021 Vision Transformer(ViT) | yixuanPan Blog</title>
   
 
 
@@ -173,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -186,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Transformer基础
+          ICLR2021 Vision Transformer(ViT)
         </h1>
 
         <div class="post-meta">
@@ -197,7 +193,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-04-16 00:00:00 / Modified: 16:31:47" itemprop="dateCreated datePublished" datetime="2022-04-16T00:00:00+08:00">2022-04-16</time>
+              <time title="Created: 2022-04-17 00:00:00 / Modified: 20:07:02" itemprop="dateCreated datePublished" datetime="2022-04-17T00:00:00+08:00">2022-04-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,53 +216,47 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="核心组件-self-attention"><a href="#核心组件-self-attention" class="headerlink" title="核心组件 self-attention"></a>核心组件 self-attention</h2><h3 id="注意力机制实现的两个步骤"><a href="#注意力机制实现的两个步骤" class="headerlink" title="注意力机制实现的两个步骤"></a>注意力机制实现的两个步骤</h3><ul>
-<li>计算注意力分布α<ul>
-<li>使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度</li>
-<li>然后使用softmax计算得到注意力分布α</li>
-</ul>
+        <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" />
+
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><ul>
+<li><p>首先将图像分割成$N&#x3D;HW&#x2F;P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$</p>
 </li>
-<li>利用注意力分布对输入向量($X&#x3D;(x_1,x_2,···,x_n)$)进行加权求和求平均</li>
-</ul>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416104827133.png" alt="image-20220416104827133" style="zoom: 50%;" />
-
-<p><strong>self-attention则是注意力机制中的一种，其特点是查询向量q是内部的，比如下图是NLP中的一个例子，单词the作为查询向量q，the是输入的句子中的一个词</strong></p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105308281.png" alt="image-20220416105308281" style="zoom:50%;" />
-
-<p>上述的self-attention例子是不带可学习参数的，模型容量小，常用的是其变体——<strong>QKV模型</strong></p>
-<h3 id="QKV模型"><a href="#QKV模型" class="headerlink" title="QKV模型"></a>QKV模型</h3><p><strong>QKV的含义</strong></p>
+<li><p>使用线性映射将patch展平得到D维的patch embedding,并加上cls_token(全0初始化)</p>
 <blockquote>
-<p>Query-Key-Value</p>
-</blockquote>
-<p>设输入为$X&#x3D;(x_1,x_2,···,x_N)$,每个分量x<del>i</del>都是D<del>x</del>维的向量，下图中的W<del>q</del>、W<del>k</del>、W<del>v</del>是三个可学习的参数矩阵，其作用是将输入分别映射到另一个空间，在这个空间计算依赖关系，经过映射后得到QKV三个矩阵，分别是查询向量矩阵，关键字矩阵和值矩阵。</p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105933394.png" alt="image-20220416105933394" style="zoom:50%;" />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">self.patch_embeddings = Conv2d(in_channels=in_channels,</span><br><span class="line">                                       out_channels=config.hidden_size,</span><br><span class="line">                                       kernel_size=patch_size,</span><br><span class="line">                                       stride=patch_size)</span><br><span class="line"><span class="comment"># 比如要对16x16的patch做embedding为D=768维的向量，则使用Conv2d(3,768，16，16)</span></span><br><span class="line"><span class="comment"># 卷积后的结果shape为(bs,768,H/16,W/16)</span></span><br><span class="line"><span class="comment"># 然后进行flatten操作，并调整维度为(bs,N,768)</span></span><br><span class="line"><span class="comment"># 最后把cls_token与图像的patch embedding拼接维度变为(bs,N+1,768)</span></span><br><span class="line"><span class="comment"># 其中cls_token的初始化为</span></span><br><span class="line">self.cls_token = nn.Parameter(torch.zeros(bs, <span class="number">1</span>, config.hidden_size))</span><br></pre></td></tr></table></figure>
 
-<p>具体计算步骤如下：</p>
-<ul>
-<li><p>输入$X$经过三个参数矩阵映射到了三个空间，其在三个空间中的矩阵表示分别是Q、K、V</p>
-</li>
-<li><p>计算$softmax(\frac{QK^T}{\sqrt{D_k}})$,其作用是计算N个分量之间的相似度，得到的NxN的矩阵表示了各分量之间的相关程度，也就是注意力分布。</p>
-<blockquote>
-<p>$QK^T$表示QK两个矩阵求内积（数量积、点积，对于向量是对应元素相乘再相加，矩阵则是QK^T^这样的形式，两个向量垂直时内积为0，夹角越小越相似，内积越大），除以$\sqrt{D_k}$是为了使梯度更稳定，因为向量维度越大，内积中累加操作得到的值就越大，这并不是我们所希望的，所以除以维度，对内积结果进行约束，然后最后使用softmax得到归一化的注意力分布。</p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416112942401.png" alt="image-20220416112942401" style="zoom: 67%;" />
+
 </blockquote>
 </li>
-<li><p>将上一步中得到的注意力分布$softmax(\frac{QK^T}{\sqrt{D_k}})$作为权值加权到输入X经过映射得到的V矩阵，得到输入的上下文表示</p>
+<li><p>对patch embeddings进行1D的position embedding（位置编码）得到tokens</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.position_embeddings = nn.Parameter(torch.zeros(<span class="number">1</span>, N+<span class="number">1</span>, config.hidden_size))</span><br><span class="line">embeddings = x + self.position_embeddings <span class="comment"># x是(bs,N+1,768),position_embedding是(1,N+1,768)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>送入transformer encoder</p>
+<blockquote>
+<p>transformer encoder由multiheaded self-attention block(MSA）和 MLP blocks交替组成，在输入每个block前都会先进行Layernorm (LN)，在每个block之后都会进行残差连接</p>
+</blockquote>
+<ul>
+<li>MSA的构建</li>
+</ul>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.attention_head_size = <span class="built_in">int</span>(config.hidden_size / self.num_attention_heads) <span class="comment"># 64=768/12</span></span><br><span class="line">self.all_head_size = self.num_attention_heads * self.attention_head_size <span class="comment">#768 = 12*64</span></span><br><span class="line"><span class="comment"># 使用全连接层构建QKV，一次性把所有头的QKV构建</span></span><br><span class="line">self.query = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.key = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.value = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line"><span class="comment">#通过reshape和permute得到多头结果，然后做self-attention，用softmax得到的概率分布乘上输入，完成特征的重构</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>MLP的构建</li>
+</ul>
+<blockquote>
+<p>2个Linear和GELU</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">    x = self.fc1(x) <span class="comment"># Linear(config.hidden_size, config.transformer[&quot;mlp_dim&quot;])</span></span><br><span class="line">    x = self.act_fn(x) <span class="comment"># GELU</span></span><br><span class="line">    x = self.dropout(x) </span><br><span class="line">    x = self.fc2(x) <span class="comment"># Linear(config.transformer[&quot;mlp_dim&quot;], config.hidden_size)</span></span><br><span class="line">    x = self.dropout(x)</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>利用cls_token进行分类</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.head = Linear(config.hidden_size, num_classes)</span><br><span class="line">logits = self.head(x[:, <span class="number">0</span>]) <span class="comment"># x的shape[bs, N+1, 768],取每张图片的第0个token，也就是cls_token,送进全连接进行分类</span></span><br></pre></td></tr></table></figure></blockquote>
 </li>
 </ul>
-<h3 id="multi-headed机制"><a href="#multi-headed机制" class="headerlink" title="multi-headed机制"></a>multi-headed机制</h3><p>类似CNN中使用多个卷积核提取特征</p>
-<ul>
-<li>通过不同的head得到不同的特征表达</li>
-<li>将得到的特征拼接并使用全连接来降维</li>
-</ul>
-<h2 id="transformer整体架构"><a href="#transformer整体架构" class="headerlink" title="transformer整体架构"></a>transformer整体架构</h2><p>Transformer核心是self-attention，但相比于self-attention加入了</p>
-<ul>
-<li>位置信息，具体处理方式为将绝对位置用向量表示，与词嵌入直接相加</li>
-<li>层规范化，使得神经网络训练更加稳定</li>
-<li>残差连接</li>
-<li>逐位的FFN（前馈神经网络），在得到每个词的上下文表示后，需要使用一个两层的MLP（多层感知机）进行特征变换，在所有位置上是共享的，可以看做一个窗口唯一的卷积</li>
-</ul>
-<h3 id="encoder-decoder"><a href="#encoder-decoder" class="headerlink" title="encoder-decoder"></a>encoder-decoder</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/337886108/answer/770243956">decoder理解</a></p>
 
     </div>
 
@@ -277,8 +267,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Transformers/" rel="tag"># Transformers</a>
-              <a href="/tags/self-attention/" rel="tag"># self-attention</a>
-              <a href="/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/" rel="tag"># 注意力机制</a>
+              <a href="/tags/classification/" rel="tag"># classification</a>
           </div>
 
         
@@ -287,13 +276,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/14/ICCV2021%20DINO/" rel="prev" title="ICCV2021 DINO">
-      <i class="fa fa-chevron-left"></i> ICCV2021 DINO
+    <a href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/" rel="prev" title="Transformer基础">
+      <i class="fa fa-chevron-left"></i> Transformer基础
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/" rel="next" title="ICLR2021 Vision Transformer(ViT)">
-      ICLR2021 Vision Transformer(ViT) <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -352,7 +338,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Transformer"><span class="nav-number">1.</span> <span class="nav-text">Transformer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6-self-attention"><span class="nav-number">1.1.</span> <span class="nav-text">核心组件 self-attention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%B8%A4%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.1.</span> <span class="nav-text">注意力机制实现的两个步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QKV%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">QKV模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-headed%E6%9C%BA%E5%88%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">multi-headed机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#transformer%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">transformer整体架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#encoder-decoder"><span class="nav-number">1.2.1.</span> <span class="nav-text">encoder-decoder</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICLR2021-Vision-Transformer-ViT"><span class="nav-number">1.</span> <span class="nav-text">ICLR2021 Vision Transformer(ViT)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">1.2.</span> <span class="nav-text">Method</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -160,6 +160,114 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/" class="post-title-link" itemprop="url">ICLR2021 Vision Transformer(ViT)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-17 00:00:00 / Modified: 20:07:02" itemprop="dateCreated datePublished" datetime="2022-04-17T00:00:00+08:00">2022-04-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" />
+
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><ul>
+<li><p>首先将图像分割成$N&#x3D;HW&#x2F;P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$</p>
+</li>
+<li><p>使用线性映射将patch展平得到D维的patch embedding,并加上cls_token(全0初始化)</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">self.patch_embeddings = Conv2d(in_channels=in_channels,</span><br><span class="line">                                       out_channels=config.hidden_size,</span><br><span class="line">                                       kernel_size=patch_size,</span><br><span class="line">                                       stride=patch_size)</span><br><span class="line"><span class="comment"># 比如要对16x16的patch做embedding为D=768维的向量，则使用Conv2d(3,768，16，16)</span></span><br><span class="line"><span class="comment"># 卷积后的结果shape为(bs,768,H/16,W/16)</span></span><br><span class="line"><span class="comment"># 然后进行flatten操作，并调整维度为(bs,N,768)</span></span><br><span class="line"><span class="comment"># 最后把cls_token与图像的patch embedding拼接维度变为(bs,N+1,768)</span></span><br><span class="line"><span class="comment"># 其中cls_token的初始化为</span></span><br><span class="line">self.cls_token = nn.Parameter(torch.zeros(bs, <span class="number">1</span>, config.hidden_size))</span><br></pre></td></tr></table></figure>
+
+
+</blockquote>
+</li>
+<li><p>对patch embeddings进行1D的position embedding（位置编码）得到tokens</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.position_embeddings = nn.Parameter(torch.zeros(<span class="number">1</span>, N+<span class="number">1</span>, config.hidden_size))</span><br><span class="line">embeddings = x + self.position_embeddings <span class="comment"># x是(bs,N+1,768),position_embedding是(1,N+1,768)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>送入transformer encoder</p>
+<blockquote>
+<p>transformer encoder由multiheaded self-attention block(MSA）和 MLP blocks交替组成，在输入每个block前都会先进行Layernorm (LN)，在每个block之后都会进行残差连接</p>
+</blockquote>
+<ul>
+<li>MSA的构建</li>
+</ul>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.attention_head_size = <span class="built_in">int</span>(config.hidden_size / self.num_attention_heads) <span class="comment"># 64=768/12</span></span><br><span class="line">self.all_head_size = self.num_attention_heads * self.attention_head_size <span class="comment">#768 = 12*64</span></span><br><span class="line"><span class="comment"># 使用全连接层构建QKV，一次性把所有头的QKV构建</span></span><br><span class="line">self.query = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.key = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.value = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line"><span class="comment">#通过reshape和permute得到多头结果，然后做self-attention，用softmax得到的概率分布乘上输入，完成特征的重构</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>MLP的构建</li>
+</ul>
+<blockquote>
+<p>2个Linear和GELU</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">    x = self.fc1(x) <span class="comment"># Linear(config.hidden_size, config.transformer[&quot;mlp_dim&quot;])</span></span><br><span class="line">    x = self.act_fn(x) <span class="comment"># GELU</span></span><br><span class="line">    x = self.dropout(x) </span><br><span class="line">    x = self.fc2(x) <span class="comment"># Linear(config.transformer[&quot;mlp_dim&quot;], config.hidden_size)</span></span><br><span class="line">    x = self.dropout(x)</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>利用cls_token进行分类</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.head = Linear(config.hidden_size, num_classes)</span><br><span class="line">logits = self.head(x[:, <span class="number">0</span>]) <span class="comment"># x的shape[bs, N+1, 768],取每张图片的第0个token，也就是cls_token,送进全连接进行分类</span></span><br></pre></td></tr></table></figure></blockquote>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -708,7 +816,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -721,7 +829,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
