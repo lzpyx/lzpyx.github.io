@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="知识蒸馏overview获得高效的深度学习模型的5种方法：  手工设计轻量级网络 剪枝 量化 基于神经架构搜索NAS的网络自动化设计 知识蒸馏  知识蒸馏的应用：模型压缩，模型增强  模型压缩：教师网络在相同的带标签的数据集上指导学生网络的训练来获得简单高效的网络模型 模型增强：利用其他资源（如无标签或跨模态数据）或知识蒸馏的优化策略（如相互学习和自学习）来提高一个复杂学生模型的性能  小网络利用">
+  <meta name="description" content="知识蒸馏overview获得高效的深度学习模型的5种方法：  手工设计轻量级网络 剪枝 量化 基于神经架构搜索NAS的网络自动化设计 知识蒸馏  知识蒸馏的应用：模型压缩，模型增强  模型压缩：教师网络在相同的带标签的数据集上指导学生网络的训练来获得简单高效的网络模型 模型增强：利用其他资源（如无标签或跨模态数据）或知识蒸馏的优化策略（如相互学习和自学习）来提高一个复杂学生模型的性能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="知识蒸馏overview">
 <meta property="og:url" content="http://lzpyx.github.io/2022/04/13/%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8Foverview/index.html">
 <meta property="og:site_name" content="yixuanPan Blog">
-<meta property="og:description" content="知识蒸馏overview获得高效的深度学习模型的5种方法：  手工设计轻量级网络 剪枝 量化 基于神经架构搜索NAS的网络自动化设计 知识蒸馏  知识蒸馏的应用：模型压缩，模型增强  模型压缩：教师网络在相同的带标签的数据集上指导学生网络的训练来获得简单高效的网络模型 模型增强：利用其他资源（如无标签或跨模态数据）或知识蒸馏的优化策略（如相互学习和自学习）来提高一个复杂学生模型的性能  小网络利用">
+<meta property="og:description" content="知识蒸馏overview获得高效的深度学习模型的5种方法：  手工设计轻量级网络 剪枝 量化 基于神经架构搜索NAS的网络自动化设计 知识蒸馏  知识蒸馏的应用：模型压缩，模型增强  模型压缩：教师网络在相同的带标签的数据集上指导学生网络的训练来获得简单高效的网络模型 模型增强：利用其他资源（如无标签或跨模态数据）或知识蒸馏的优化策略（如相互学习和自学习）来提高一个复杂学生模型的性能">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220413153251465.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220413153852955.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220413162541237.png">
 <meta property="article:published_time" content="2022-04-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-21T08:03:45.970Z">
+<meta property="article:modified_time" content="2022-04-21T08:35:42.900Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="知识蒸馏">
 <meta name="twitter:card" content="summary">
@@ -204,7 +204,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:03:45" itemprop="dateModified" datetime="2022-04-21T16:03:45+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:35:42" itemprop="dateModified" datetime="2022-04-21T16:35:42+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,6 +240,7 @@
 <li>模型压缩：教师网络在相同的带标签的数据集上指导学生网络的训练来获得简单高效的网络模型</li>
 <li>模型增强：利用其他资源（如无标签或跨模态数据）或知识蒸馏的优化策略（如相互学习和自学习）来提高一个复杂学生模型的性能</li>
 </ul>
+<span id="more"></span>
 <h2 id="小网络利用大网络的输出知识"><a href="#小网络利用大网络的输出知识" class="headerlink" title="小网络利用大网络的输出知识"></a>小网络利用大网络的输出知识</h2><h3 id="softmax的温度系数T（temperature-parameter）"><a href="#softmax的温度系数T（temperature-parameter）" class="headerlink" title="softmax的温度系数T（temperature parameter）"></a>softmax的温度系数T（temperature parameter）</h3><p>②logits通过普通softmax（T=1）得到的是①T=1的类概率，通过T=10的softmax得到③，T的作用是控制输出概率的软化程度，T=1时代表softmax类概率，T为正无穷则表示输出logits。T越小logits经过softmax得到的软目标的差异越大，T越大，差异越小。</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220413153251465.png" alt="image-20220413153251465"></p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220413153852955.png" alt="image-20220413153852955"></p>
