@@ -246,20 +246,16 @@
 <li>自监督学习 Self-supervised learning</li>
 <li>自训练、知识蒸馏 Self-training and knowledge distillation</li>
 </ul>
-<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><h3 id="DINO的无标签自蒸馏结构"><a href="#DINO的无标签自蒸馏结构" class="headerlink" title="DINO的无标签自蒸馏结构"></a>DINO的无标签自蒸馏结构</h3><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414185646639.png" alt="image-20220414185646639" style="zoom:50%;" />
-
+<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><h3 id="DINO的无标签自蒸馏结构"><a href="#DINO的无标签自蒸馏结构" class="headerlink" title="DINO的无标签自蒸馏结构"></a>DINO的无标签自蒸馏结构</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414185646639.png" alt="image-20220414185646639" style="zoom:50%;" /></p>
 <p>DINO结构中分学生网络和教师网络，两侧网络都使用temperature softmax生成了K维概率分布，student侧为$P_s$（公式1，其中$g_{\theta_s}$代表学生模型输出的logits），teacher侧为$P_t$,然后最小化交叉熵损失来优化student网络的参数$θ_s$(公式2)</p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414191710292.png" alt="image-20220414191710292" style="zoom:67%;" />
-
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414192609677.png" alt="image-20220414192609677" style="zoom:67%;" />
-
-<p>其中$H(a,b)&#x3D;-alogb$.即结构图中的loss。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414191710292.png" alt="image-20220414191710292" style="zoom:67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414192609677.png" alt="image-20220414192609677" style="zoom:67%;" /></p>
+<p>其中$H(a,b)=-alogb$.即结构图中的loss。</p>
 <h3 id="DINO中的local-to-global学习"><a href="#DINO中的local-to-global学习" class="headerlink" title="DINO中的local-to-global学习"></a>DINO中的local-to-global学习</h3><p>DINO其实在进行交叉熵损失计算时更加复杂，因为使用了多裁剪策略，学生模型的输入是local views（$96^2$），教师模型的输入是2张global views（$224^2$），所以最终要最小化的损失函数表达式为：</p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414193414286.png" alt="image-20220414193414286" style="zoom:67%;" />
-
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414193414286.png" alt="image-20220414193414286" style="zoom:67%;" /></p>
 <h3 id="模型参数更新"><a href="#模型参数更新" class="headerlink" title="模型参数更新"></a>模型参数更新</h3><ul>
 <li>学生模型使用上述的交叉损失进行梯度回传更新参数。</li>
-<li>教师模型是从学生网络历史iteration中通过EMA（exponential moving average）得到，更新的公式为$θ_{t+1}&#x3D;\lambda\theta_t+(1-\lambda)\theta_s$,其中在训练阶段$\lambda$遵循从0.996到1余弦变化</li>
+<li>教师模型是从学生网络历史iteration中通过EMA（exponential moving average）得到，更新的公式为$θ_{t+1}=\lambda\theta_t+(1-\lambda)\theta_s$,其中在训练阶段$\lambda$遵循从0.996到1余弦变化</li>
 </ul>
 <h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ul>
 <li>backbone：使用ViT或ResNet</li>
@@ -273,10 +269,8 @@
 <li>batch normalization</li>
 </ul>
 <p>DINO中采用multiple normalizations，具体来说就是使用centering和sharpening操作使通过动量更新的教师模型避免崩溃，减少其对batch的依赖。在实验中发现，centering操作（公式4，$B$代表batch size，m则可以理解为学习率）避免了一个维度主导，但会鼓励塌陷为均匀分布，sharpening（通过teacher模型的softmax函数温度系数$\tau_t$实现）则是相反影响。centering操作和sharpening操作的伪代码可以看出，其实就是中心偏移加温度调节。</p>
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414200804425.png" alt="image-20220414200804425" style="zoom:67%;" />
-
-<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414201239871.png" alt="image-20220414201239871" style="zoom: 80%;" />
-
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414200804425.png" alt="image-20220414200804425" style="zoom:67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414201239871.png" alt="image-20220414201239871" style="zoom: 80%;" /></p>
 <h2 id="Implementation-and-evaluation-protocols"><a href="#Implementation-and-evaluation-protocols" class="headerlink" title="Implementation and evaluation protocols"></a>Implementation and evaluation protocols</h2><ul>
 <li><p>Vision Transformer 使用DeiT中的实现。</p>
 </li>

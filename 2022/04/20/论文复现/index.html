@@ -225,7 +225,6 @@
 
       
         <h1 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h1><h1 id="TS-CAM"><a href="#TS-CAM" class="headerlink" title="TS-CAM"></a>TS-CAM</h1><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><h3 id="os-path-join造成的linux和window路径的区别"><a href="#os-path-join造成的linux和window路径的区别" class="headerlink" title="os.path.join造成的linux和window路径的区别"></a>os.path.join造成的linux和window路径的区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># original:路径的分隔符不正确，导致路径不对</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>) </span><br><span class="line"><span class="comment"># 应修改为</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
 <h3 id="KeyError-‘-getstate-’"><a href="#KeyError-‘-getstate-’" class="headerlink" title="KeyError: ‘_ _ getstate _ _’"></a>KeyError: ‘_ _ getstate _ _’</h3><blockquote>
 <p>由num_workers引起, 多线程执行时出现错误，具体原因不清楚，这次的解决方法是将多线程语句(torch.nn.DataParallel)删去,并将num_workers改为0.查看自己电脑线程数的方法：<br>1.WIN+R<br>2.输入wmic回车<br>3.输入cpu get numberOfLogicalProcessors回车</p>
 </blockquote>
@@ -234,17 +233,14 @@
 </blockquote>
 <h3 id="Bash脚本"><a href="#Bash脚本" class="headerlink" title="Bash脚本"></a>Bash脚本</h3><p>在linux中使用，数字表示变量的顺序，命令行输入时只需要空格分隔跟在后面</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash train_val_cub.sh &#123;GPU_ID&#125; <span class="variable">$&#123;NET&#125;</span> <span class="variable">$&#123;NET_SCALE&#125;</span> <span class="variable">$&#123;SIZE&#125;</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GPU_ID=<span class="variable">$1</span></span><br><span class="line">NET=<span class="variable">$&#123;2&#125;</span></span><br><span class="line">NET_SCALE=<span class="variable">$&#123;3&#125;</span></span><br><span class="line">SIZE=<span class="variable">$&#123;4&#125;</span></span><br><span class="line"><span class="built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="variable">$&#123;GPU_ID&#125;</span></span><br><span class="line"></span><br><span class="line">python ./tools_cam/train_cam.py --config_file ./configs/CUB/<span class="variable">$&#123;NET&#125;</span>_tscam_<span class="variable">$&#123;NET_SCALE&#125;</span>_patch16_<span class="variable">$&#123;SIZE&#125;</span>.yaml --lr 5e-5 MODEL.CAM_THR 0.1</span><br></pre></td></tr></table></figure>
-
 <h3 id="jupyter-notebook-使用"><a href="#jupyter-notebook-使用" class="headerlink" title="jupyter notebook 使用"></a>jupyter notebook 使用</h3><p>命令行cd到目标文件夹</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook ./</span><br></pre></td></tr></table></figure>
-
 <p>在jupyter notebook中添加虚拟环境</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/409063952">参考</a></p>
 <h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><h3 id="train-cam"><a href="#train-cam" class="headerlink" title="train_cam"></a>train_cam</h3><p><strong>parameters&amp;work_dir:</strong></p>
 <blockquote>
-<p>–config_file .&#x2F;configs&#x2F;CUB&#x2F;deit_tscam_tiny_patch16_224.yaml –lr 5e-5 MODEL.CAM_THR 0.1</p>
+<p>—config_file ./configs/CUB/deit_tscam_tiny_patch16_224.yaml —lr 5e-5 MODEL.CAM_THR 0.1</p>
 <p>运行位置应该在主目录，因为没有直接使用bash运行shell文件</p>
 </blockquote>
 <h3 id="利用python的注册器创建模型-deit-py-amp-registry-py"><a href="#利用python的注册器创建模型-deit-py-amp-registry-py" class="headerlink" title="利用python的注册器创建模型(deit.py&amp;registry.py)"></a>利用python的注册器创建模型(deit.py&amp;registry.py)</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350787676">参考</a></p>
