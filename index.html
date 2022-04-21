@@ -164,78 +164,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/21/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/21/test/" class="post-title-link" itemprop="url">test</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-21 00:00:00 / Modified: 16:03:13" itemprop="dateCreated datePublished" datetime="2022-04-21T00:00:00+08:00">2022-04-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MathJax-Plugin-for-Github-Chrome-extesion"><a href="#MathJax-Plugin-for-Github-Chrome-extesion" class="headerlink" title="MathJax Plugin for Github (Chrome extesion)"></a>MathJax Plugin for Github (Chrome extesion)</h1><p>This extension adds support for displaying LaTeX equations in GitHub repositories, rendering them with the open source <a target="_blank" rel="noopener" href="http://mathjax.org/">MathJax</a> library. For example, if you had it install you would see the following lovely equation: $e^{i \pi} + 1 = 0$</p>
-<p>Right-Click on an equation to show MathJax’s context menu with additional options, e.g. “Scale All Math…” to instantly scale all equations on a page, “TeX commands” to see the source TeX equation etc.</p>
-<p>The extension is published under <a target="_blank" rel="noopener" href="https://github.com/orsharir/github-mathjax/blob/master/LICENSE.md">New BSD License</a> with the source code available <a target="_blank" rel="noopener" href="https://github.com/orsharir/github-mathjax">here</a>. This extension is based on the <strong>wonderful</strong> <a target="_blank" rel="noopener" href="https://github.com/bgromov/wiki-mathjax">wiki_mathjax</a> extension by <a target="_blank" rel="noopener" href="https://github.com/bgromov">Boris Gromov</a>, and its license is included as part of LICENSE.md in this repository.</p>
-<p>For bug reports and feature requests, please use <a target="_blank" rel="noopener" href="https://github.com/orsharir/github-mathjax/issues">Issue tracker</a>.</p>
-<h3 id="INSTALLATION"><a href="#INSTALLATION" class="headerlink" title="INSTALLATION:"></a>INSTALLATION:</h3><p>Official release available at <a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/mathjax-plugin-for-github/ioemnmodlmafdkllaclgeombjnmnbima">Chrome Web Store</a>.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -267,7 +195,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:03:40" itemprop="dateModified" datetime="2022-04-21T16:03:40+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:34:01" itemprop="dateModified" datetime="2022-04-21T16:34:01+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,27 +218,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h1><h1 id="TS-CAM"><a href="#TS-CAM" class="headerlink" title="TS-CAM"></a>TS-CAM</h1><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><h3 id="os-path-join造成的linux和window路径的区别"><a href="#os-path-join造成的linux和window路径的区别" class="headerlink" title="os.path.join造成的linux和window路径的区别"></a>os.path.join造成的linux和window路径的区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># original:路径的分隔符不正确，导致路径不对</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>) </span><br><span class="line"><span class="comment"># 应修改为</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="KeyError-‘-getstate-’"><a href="#KeyError-‘-getstate-’" class="headerlink" title="KeyError: ‘_ _ getstate _ _’"></a>KeyError: ‘_ _ getstate _ _’</h3><blockquote>
-<p>由num_workers引起, 多线程执行时出现错误，具体原因不清楚，这次的解决方法是将多线程语句(torch.nn.DataParallel)删去,并将num_workers改为0.查看自己电脑线程数的方法：<br>1.WIN+R<br>2.输入wmic回车<br>3.输入cpu get numberOfLogicalProcessors回车</p>
-</blockquote>
-<h3 id="RuntimeError-CUDA-out-of-memory"><a href="#RuntimeError-CUDA-out-of-memory" class="headerlink" title="RuntimeError: CUDA out of memory."></a>RuntimeError: CUDA out of memory.</h3><blockquote>
-<p>减小batch_size或图像大小，一开始在default文件中更改，没有效果，依然报错，后来发现default文件中是在config的yaml文件之前设置的，还需要更改config文件中的设置</p>
-</blockquote>
-<h3 id="Bash脚本"><a href="#Bash脚本" class="headerlink" title="Bash脚本"></a>Bash脚本</h3><p>在linux中使用，数字表示变量的顺序，命令行输入时只需要空格分隔跟在后面</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash train_val_cub.sh &#123;GPU_ID&#125; <span class="variable">$&#123;NET&#125;</span> <span class="variable">$&#123;NET_SCALE&#125;</span> <span class="variable">$&#123;SIZE&#125;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GPU_ID=<span class="variable">$1</span></span><br><span class="line">NET=<span class="variable">$&#123;2&#125;</span></span><br><span class="line">NET_SCALE=<span class="variable">$&#123;3&#125;</span></span><br><span class="line">SIZE=<span class="variable">$&#123;4&#125;</span></span><br><span class="line"><span class="built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="variable">$&#123;GPU_ID&#125;</span></span><br><span class="line"></span><br><span class="line">python ./tools_cam/train_cam.py --config_file ./configs/CUB/<span class="variable">$&#123;NET&#125;</span>_tscam_<span class="variable">$&#123;NET_SCALE&#125;</span>_patch16_<span class="variable">$&#123;SIZE&#125;</span>.yaml --lr 5e-5 MODEL.CAM_THR 0.1</span><br></pre></td></tr></table></figure>
-<h3 id="jupyter-notebook-使用"><a href="#jupyter-notebook-使用" class="headerlink" title="jupyter notebook 使用"></a>jupyter notebook 使用</h3><p>命令行cd到目标文件夹</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jupyter notebook ./</span><br></pre></td></tr></table></figure>
-<p>在jupyter notebook中添加虚拟环境</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/409063952">参考</a></p>
-<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><h3 id="train-cam"><a href="#train-cam" class="headerlink" title="train_cam"></a>train_cam</h3><p><strong>parameters&amp;work_dir:</strong></p>
-<blockquote>
-<p>—config_file ./configs/CUB/deit_tscam_tiny_patch16_224.yaml —lr 5e-5 MODEL.CAM_THR 0.1</p>
-<p>运行位置应该在主目录，因为没有直接使用bash运行shell文件</p>
-</blockquote>
-<h3 id="利用python的注册器创建模型-deit-py-amp-registry-py"><a href="#利用python的注册器创建模型-deit-py-amp-registry-py" class="headerlink" title="利用python的注册器创建模型(deit.py&amp;registry.py)"></a>利用python的注册器创建模型(deit.py&amp;registry.py)</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350787676">参考</a></p>
-
+          <p>论文复现，代码分析，debug调试记录</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -360,7 +276,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 15:48:34" itemprop="dateModified" datetime="2022-04-21T15:48:34+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:31:58" itemprop="dateModified" datetime="2022-04-21T16:31:58+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -386,31 +302,14 @@
           <h1 id="ICCV2021-TS-CAM"><a href="#ICCV2021-TS-CAM" class="headerlink" title="ICCV2021 TS-CAM"></a>ICCV2021 TS-CAM</h1><p>TS-CAM: Token Semantic Coupled Attention Map for Weakly Supervised Object Localization</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/vasgaowei/TS-CAM">github</a></p>
 <h2 id="Motivation-amp-background"><a href="#Motivation-amp-background" class="headerlink" title="Motivation&amp;background"></a>Motivation&amp;background</h2><p>作者认为部分激活是由 CNN 的内在特性引起的，其中卷积操作会产生局部感受野，并且难以捕捉像素之间的远程特征依赖关系。所以提出利用self-attention机制的长程建模能力来避免局部激活问题。TS-CAM首先将一张图像分割成一系列用于spatial embedding的patch token，它们将产生long-range的视觉关联性的attention map去避免局部激活现象。然后TS-CAM为每个patch tokens重新分配与种类有关的语义种类，使它们能够了解对象类别，TS-CAM最终将patch token与语义不可知的attention map耦合，以实现语义感知定位。</p>
-<p>vision transformer应用于WSOL还存在的问题：</p>
-<ul>
-<li>patch embeddings实际上破坏了输入图像的空间拓扑结构，这阻碍了目标定位激活图的生成</li>
-<li>vision transformer的注意力图与语义无关（无法区分对象类）并且不适合语义感知定位semantic-aware localization</li>
-</ul>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p><strong>WSOL</strong></p>
-<p>作者提到大多数方法都难以通过将复杂的空间正则化技术引入 CAM 来扩展激活区域。然而，他们难以解决图像分类和目标定位两个任务之间的矛盾。</p>
-<p><strong>WSOD&amp;WSSS</strong></p>
-<p><strong>Long-Range Feature Dependency</strong></p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>TS-CAM引入了一种具有两个网络分支的语义耦合结构，如下图所示。一个使用patch tokens执行语义重新分配，另一个在 class tokens上生成语义不可知的attention-map。语义的重新分配，通过class-patch语义的激活，使 patch tokens能够感知对象类别。语义不可知的attention map旨在利用transformer中级联的self-attention modules的优势，捕获patch tokens之间的长程特征依赖。TS-CAM最终将语义感知图与语义不可知注意图耦合，用于目标定位。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220419194610623.png" alt="image-20220419194610623"></p>
-<p>与vit中一致，先将输入图像分割成N个PxP的patch，代码中P=16，输入图像尺寸为224，也就是切割成N=14x14=196个尺寸为16x16的patch，然后被展平输入卷积进行线性投影得到N=196个patch token，每个token用一个192维的向量表示。输入x的shape为[bs,3,224,224]，经过patch embbeding后变为[16,196,192]。然后经过与cls_token的拼接和position encoding得到图中的Token Embeddings( $t_{1}^{L}$ 到 $t_{N}^{L}$ )以及cls_token $t_{*}^{L}$ 。经过L层transformer block得到最终的tokens。</p>
-<p>以上的操作都与vit一致，但是在vision transformer中，只有cls_token是和语义有关的，其他token都是语义无关的，TS-CAM中使用两个分支分别解决语义感知的问题和定位问题。</p>
-<p><strong>Semantic Re-allocation</strong></p>
-<p>Visual Transformer使用class token预测图像类别（语义），同时使用语义不可知的patch tokens嵌入对象空间位置并反映特征空间依赖性。为了生成语义可知的patch token，作者将语义从cls_token重新分配到其他patch token。看一下代码实现细节。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># deit文件中的forward，bs=16</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, return_cam=<span class="literal">False</span></span>):</span><br><span class="line">    <span class="comment"># forward_feature就是执行与vit中一致的部分，然后将cls_token和其他token分开返回</span></span><br><span class="line">    x_cls, x_patch, attn_weights = self.forward_features(x)</span><br><span class="line">    <span class="built_in">print</span>(x_cls.shape, x_patch.shape) <span class="comment"># torch.Size([16, 192]) torch.Size([16, 196, 192])</span></span><br><span class="line">    n, p, c = x_patch.shape</span><br><span class="line">    <span class="comment"># 将展平的token重新排列成原本的空间顺序，也就是从196-&gt;14x14</span></span><br><span class="line">    x_patch = torch.reshape(x_patch, [n, <span class="built_in">int</span>(p**<span class="number">0.5</span>), <span class="built_in">int</span>(p**<span class="number">0.5</span>), c])</span><br><span class="line">    <span class="built_in">print</span>(x_cls.shape, x_patch.shape) <span class="comment"># torch.Size([16, 192]) torch.Size([16, 14, 14, 192])</span></span><br><span class="line">    <span class="comment"># 调整维度，表示每个token的向量长度的维度调到C维</span></span><br><span class="line">    x_patch = x_patch.permute([<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>])</span><br><span class="line">    <span class="built_in">print</span>(x_cls.shape, x_patch.shape) <span class="comment"># torch.Size([16, 192]) torch.Size([16, 192, 14, 14])</span></span><br><span class="line">    x_patch = x_patch.contiguous()</span><br><span class="line">    <span class="comment"># 利用卷积将输出维度调整为200（CUB）</span></span><br><span class="line">	<span class="comment"># self.head = nn.Conv2d(self.embed_dim, self.num_classes, kernel_size=3, stride=1, padding=1)</span></span><br><span class="line">    x_patch = self.head(x_patch)</span><br><span class="line">    <span class="built_in">print</span>(x_cls.shape, x_patch.shape) <span class="comment"># torch.Size([16, 192]) torch.Size([16, 200, 14, 14])</span></span><br><span class="line">    <span class="comment"># GAP</span></span><br><span class="line">    <span class="comment"># 实现细节self.avgpool = nn.AdaptiveAvgPool2d(1) 1代表outputsize是1x1</span></span><br><span class="line">   	<span class="comment"># self.avgpool(x_patch)的结果是[16,200,1,1]</span></span><br><span class="line">    x_logits = self.avgpool(x_patch).squeeze(<span class="number">3</span>).squeeze(<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(x_logits.shape) <span class="comment"># [16,200]</span></span><br></pre></td></tr></table></figure>
-<p>总结起来，就是将原本的token还原成原本的空间排列也就是文中指的token feature map即 $t^L\in R^{D\times w\times h}$ ,在上述的代码分析中就是192x14x14.semantic aware map $S_c$ 是通过对token feature map进行卷积得到，也就是代码中的x_patch = self.head(x_patch)，文中的公式<img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220419205845940.png" alt="image-20220419205845940" style="zoom: 67%;" />中的c就是指self.num_classes，d指self.embed_dim，也就是对token feature map(192,14,14)进行卷积得到了semantic aware map $S_c$(200,14,14),每个类都有一张14x14的得分图，代表对应位置patch是这个类的可能性得分。</p>
-<p>在得到了semantic aware map后，计算loss function</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220419210452179.png" alt="image-20220419210452179" style="zoom:80%;" /></p>
-<p>其实就是对semantic aware map进行GAP操作，然后softmax计算概率分布，然后crossentropy计算损失。</p>
-<p>到这里，可以发现，cls_token都还没有被使用过，原本的vit中cls_token会被用来计算最后的loss</p>
-<p><strong>Semantic-agnostic Attention Map &amp; Semantic-Attention Coupling</strong></p>
-<p>代码中的均值操作就是文中所指的 $A_{<em>}^{l}$ 被更新为来自k=3个head的attention vector的均值,  $A_{</em>}^{l}$ 过矩阵乘法运算记录 class token对所有 tokens 的依赖关系。只不过是在最后才取出cls_token的attention vector。需要注意的是这个attention map是语义无关的，所以最后和前面的得到的semantic aware map相乘，得到最后的类激活图。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># attn_weights是一个长度为12的list,12是transformer block的个数 ，每个元素是每层的注意力分布矩阵[16,3,197,197]</span></span><br><span class="line"><span class="comment"># H = 3指MSA中的num_head = 3</span></span><br><span class="line">attn_weights = torch.stack(attn_weights)        <span class="comment"># 12 * B * H * N * N</span></span><br><span class="line"><span class="comment"># 经过stack变为[12,16,3,197,197]的tensor</span></span><br><span class="line"><span class="comment"># 对多头的attention求平均，变为[12,16,197,197]</span></span><br><span class="line">attn_weights = torch.mean(attn_weights, dim=<span class="number">2</span>)  <span class="comment"># 12 * B * N * N</span></span><br><span class="line"><span class="comment"># feature_map [16,200,14,14]</span></span><br><span class="line">feature_map = x_patch.detach().clone()    <span class="comment"># B * C=200 * 14 * 14</span></span><br><span class="line">n, c, h, w = feature_map.shape</span><br><span class="line"><span class="comment"># attn_weights [12,16,197,197]</span></span><br><span class="line"><span class="comment"># attn_weights.sum(0) [16,197,197]</span></span><br><span class="line"><span class="comment"># 取出cls_token和其他的token的attention vector</span></span><br><span class="line"><span class="comment"># attn_weights.sum(0)[:, 0, 1:]  [16,196] </span></span><br><span class="line"><span class="comment"># attn_weights.sum(0)[:, 0, 1:].reshape([n, h, w]) [16,14,14]</span></span><br><span class="line"><span class="comment"># attn_weights.sum(0)[:, 0, 1:].reshape([n, h, w]).unsqueeze(1) [16,1,14,14]</span></span><br><span class="line">cams = attn_weights.<span class="built_in">sum</span>(<span class="number">0</span>)[:, <span class="number">0</span>, <span class="number">1</span>:].reshape([n, h, w]).unsqueeze(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># Semantic-Attention Coupling</span></span><br><span class="line">cams = cams * feature_map  <span class="comment"># B * 1 * 14 * 14 x B * C=200 * 14 * 14</span></span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/19/ICCV2021%20TS-CAM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -460,7 +359,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:02:21" itemprop="dateModified" datetime="2022-04-21T16:02:21+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:32:16" itemprop="dateModified" datetime="2022-04-21T16:32:16+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -485,44 +384,14 @@
       
           <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
 <h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" /></p>
-<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><ul>
-<li><p>首先将图像分割成$N=HW/P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$</p>
-</li>
-<li><p>使用线性映射将patch展平得到D维的patch embedding,并加上cls_token(全0初始化)</p>
-<blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">self.patch_embeddings = Conv2d(in_channels=in_channels,</span><br><span class="line">                                       out_channels=config.hidden_size,</span><br><span class="line">                                       kernel_size=patch_size,</span><br><span class="line">                                       stride=patch_size)</span><br><span class="line"><span class="comment"># 比如要对16x16的patch做embedding为D=768维的向量，则使用Conv2d(3,768，16，16)</span></span><br><span class="line"><span class="comment"># 卷积后的结果shape为(bs,768,H/16,W/16)</span></span><br><span class="line"><span class="comment"># 然后进行flatten操作，并调整维度为(bs,N,768)</span></span><br><span class="line"><span class="comment"># 最后把cls_token与图像的patch embedding拼接维度变为(bs,N+1,768)</span></span><br><span class="line"><span class="comment"># 其中cls_token的初始化为</span></span><br><span class="line">self.cls_token = nn.Parameter(torch.zeros(bs, <span class="number">1</span>, config.hidden_size))</span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
-<li><p>对patch embeddings进行1D的position embedding（位置编码）得到tokens</p>
-<blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.position_embeddings = nn.Parameter(torch.zeros(<span class="number">1</span>, N+<span class="number">1</span>, config.hidden_size))</span><br><span class="line">embeddings = x + self.position_embeddings <span class="comment"># x是(bs,N+1,768),position_embedding是(1,N+1,768)</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
-<li><p>送入transformer encoder</p>
-<blockquote>
-<p>transformer encoder由multiheaded self-attention block(MSA）和 MLP blocks交替组成，在输入每个block前都会先进行Layernorm (LN)，在每个block之后都会进行残差连接</p>
-</blockquote>
-<ul>
-<li>MSA的构建</li>
-</ul>
-<blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.attention_head_size = <span class="built_in">int</span>(config.hidden_size / self.num_attention_heads) <span class="comment"># 64=768/12</span></span><br><span class="line">self.all_head_size = self.num_attention_heads * self.attention_head_size <span class="comment">#768 = 12*64</span></span><br><span class="line"><span class="comment"># 使用全连接层构建QKV，一次性把所有头的QKV构建</span></span><br><span class="line">self.query = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.key = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.value = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line"><span class="comment">#通过reshape和permute得到多头结果，然后做self-attention，用softmax得到的概率分布乘上输入，完成特征的重构</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-<ul>
-<li>MLP的构建</li>
-</ul>
-<blockquote>
-<p>2个Linear和GELU</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">    x = self.fc1(x) <span class="comment"># Linear(config.hidden_size, config.transformer[&quot;mlp_dim&quot;])</span></span><br><span class="line">    x = self.act_fn(x) <span class="comment"># GELU</span></span><br><span class="line">    x = self.dropout(x) </span><br><span class="line">    x = self.fc2(x) <span class="comment"># Linear(config.transformer[&quot;mlp_dim&quot;], config.hidden_size)</span></span><br><span class="line">    x = self.dropout(x)</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
-<li><p>利用cls_token进行分类</p>
-<blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.head = Linear(config.hidden_size, num_classes)</span><br><span class="line">logits = self.head(x[:, <span class="number">0</span>]) <span class="comment"># x的shape[bs, N+1, 768],取每张图片的第0个token，也就是cls_token,送进全连接进行分类</span></span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -572,7 +441,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:03:31" itemprop="dateModified" datetime="2022-04-21T16:03:31+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:32:42" itemprop="dateModified" datetime="2022-04-21T16:32:42+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -596,50 +465,21 @@
 
       
           <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="核心组件-self-attention"><a href="#核心组件-self-attention" class="headerlink" title="核心组件 self-attention"></a>核心组件 self-attention</h2><h3 id="注意力机制实现的两个步骤"><a href="#注意力机制实现的两个步骤" class="headerlink" title="注意力机制实现的两个步骤"></a>注意力机制实现的两个步骤</h3><ul>
-<li>计算注意力分布α<ul>
+<li><p>计算注意力分布α</p>
+<ul>
 <li>使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度</li>
 <li>然后使用softmax计算得到注意力分布α</li>
 </ul>
 </li>
-<li>利用注意力分布对输入向量($X=(x_1,x_2,···,x_n)$)进行加权求和求平均</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416104827133.png" alt="image-20220416104827133" style="zoom: 50%;" /></p>
-<p><strong>self-attention则是注意力机制中的一种，其特点是查询向量q是内部的，比如下图是NLP中的一个例子，单词the作为查询向量q，the是输入的句子中的一个词</strong></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105308281.png" alt="image-20220416105308281" style="zoom:50%;" /></p>
-<p>上述的self-attention例子是不带可学习参数的，模型容量小，常用的是其变体——<strong>QKV模型</strong></p>
-<h3 id="QKV模型"><a href="#QKV模型" class="headerlink" title="QKV模型"></a>QKV模型</h3><p><strong>QKV的含义</strong></p>
-<blockquote>
-<p>Query-Key-Value</p>
-</blockquote>
-<p>设输入为$X=(x_1,x_2,···,x_N)$,每个分量x~i~都是D~x~维的向量，下图中的W~q~、W~k~、W~v~是三个可学习的参数矩阵，其作用是将输入分别映射到另一个空间，在这个空间计算依赖关系，经过映射后得到QKV三个矩阵，分别是查询向量矩阵，关键字矩阵和值矩阵。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416105933394.png" alt="image-20220416105933394" style="zoom:50%;" /></p>
-<p>具体计算步骤如下：</p>
-<ul>
-<li><p>输入$X$经过三个参数矩阵映射到了三个空间，其在三个空间中的矩阵表示分别是Q、K、V</p>
-</li>
-<li><p>计算$softmax(\frac{QK^T}{\sqrt{D_k}})$,其作用是计算N个分量之间的相似度，得到的NxN的矩阵表示了各分量之间的相关程度，也就是注意力分布。</p>
-<blockquote>
-<p>$QK^T$表示QK两个矩阵求内积（数量积、点积，对于向量是对应元素相乘再相加，矩阵则是QK^T^这样的形式，两个向量垂直时内积为0，夹角越小越相似，内积越大），除以$\sqrt{D_k}$是为了使梯度更稳定，因为向量维度越大，内积中累加操作得到的值就越大，这并不是我们所希望的，所以除以维度，对内积结果进行约束，然后最后使用softmax得到归一化的注意力分布。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416112942401.png" alt="image-20220416112942401" style="zoom: 67%;" /></p>
-</blockquote>
-</li>
-<li><p>将上一步中得到的注意力分布$softmax(\frac{QK^T}{\sqrt{D_k}})$作为权值加权到输入X经过映射得到的V矩阵，得到输入的上下文表示</p>
-</li>
-</ul>
-<h3 id="multi-headed机制"><a href="#multi-headed机制" class="headerlink" title="multi-headed机制"></a>multi-headed机制</h3><p>类似CNN中使用多个卷积核提取特征</p>
-<ul>
-<li>通过不同的head得到不同的特征表达</li>
-<li>将得到的特征拼接并使用全连接来降维</li>
-</ul>
-<h2 id="transformer整体架构"><a href="#transformer整体架构" class="headerlink" title="transformer整体架构"></a>transformer整体架构</h2><p>Transformer核心是self-attention，但相比于self-attention加入了</p>
-<ul>
-<li>位置信息，具体处理方式为将绝对位置用向量表示，与词嵌入直接相加</li>
-<li>层规范化，使得神经网络训练更加稳定</li>
-<li>残差连接</li>
-<li>逐位的FFN（前馈神经网络），在得到每个词的上下文表示后，需要使用一个两层的MLP（多层感知机）进行特征变换，在所有位置上是共享的，可以看做一个窗口唯一的卷积</li>
-</ul>
-<h3 id="encoder-decoder"><a href="#encoder-decoder" class="headerlink" title="encoder-decoder"></a>encoder-decoder</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/337886108/answer/770243956">decoder理解</a></p>
-
+<li><p>利用注意力分布对输入向量($X=(x_1,x_2,···,x_n)$)进行加权求和求平均</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -689,7 +529,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:02:06" itemprop="dateModified" datetime="2022-04-21T16:02:06+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:31:49" itemprop="dateModified" datetime="2022-04-21T16:31:49+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -715,57 +555,14 @@
           <h1 id="ICCV2021-DINO"><a href="#ICCV2021-DINO" class="headerlink" title="ICCV2021 DINO"></a>ICCV2021 DINO</h1><p>Emerging Properties in Self-Supervised Vision Transformers</p>
 <h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>自监督学习带来的影响：自监督vit特征包含了图像语义分割的明确信息，这在监督学习的vit和CNN中都没有这么清晰</p>
 <p>文章将DINO解释为一种没有标签的自蒸馏形式</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>在本文中，作者怀疑Transformers 在视觉方面的成功可能是因为<strong>预训练中的监督</strong>。这样怀疑的动机是Transformers 在 NLP  中取得成功的主要因素之一是就是使用了自监督的预训练，其形式是 BERT 或 GPT 中的语言建模。这些自监督的预训练目标使用句子中的单词来创建pretext task，<strong>这些任务提供比预测每个句子单个标签的监督目标更丰富的学习信号</strong>。类似地，在图像中，<strong>图像级监督通常将图像中包含的丰富视觉信息减少为从预定义的数千个对象类别中选择的单个概念</strong>。</p>
-<p>本文研究了自监督预训练对vit特征的影响，发现：</p>
-<ol>
-<li>自监督的vit特征明确的包含了场景，特别是对象边界</li>
-<li>自监督vit特征在没有任何微调、线性分类器、数据增强的情况下，k-NN分类器效果非常好，在ImageNet实现78.3% top-1 acc</li>
-<li>vit中使用更小patches带来更好的结果</li>
-</ol>
-<h2 id="Related-work"><a href="#Related-work" class="headerlink" title="Related work"></a>Related work</h2><ul>
-<li>自监督学习 Self-supervised learning</li>
-<li>自训练、知识蒸馏 Self-training and knowledge distillation</li>
-</ul>
-<h2 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h2><h3 id="DINO的无标签自蒸馏结构"><a href="#DINO的无标签自蒸馏结构" class="headerlink" title="DINO的无标签自蒸馏结构"></a>DINO的无标签自蒸馏结构</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414185646639.png" alt="image-20220414185646639" style="zoom:50%;" /></p>
-<p>DINO结构中分学生网络和教师网络，两侧网络都使用temperature softmax生成了K维概率分布，student侧为$P_s$（公式1，其中$g_{\theta_s}$代表学生模型输出的logits），teacher侧为$P_t$,然后最小化交叉熵损失来优化student网络的参数$θ_s$(公式2)</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414191710292.png" alt="image-20220414191710292" style="zoom:67%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414192609677.png" alt="image-20220414192609677" style="zoom:67%;" /></p>
-<p>其中$H(a,b)=-alogb$.即结构图中的loss。</p>
-<h3 id="DINO中的local-to-global学习"><a href="#DINO中的local-to-global学习" class="headerlink" title="DINO中的local-to-global学习"></a>DINO中的local-to-global学习</h3><p>DINO其实在进行交叉熵损失计算时更加复杂，因为使用了多裁剪策略，学生模型的输入是local views（$96^2$），教师模型的输入是2张global views（$224^2$），所以最终要最小化的损失函数表达式为：</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414193414286.png" alt="image-20220414193414286" style="zoom:67%;" /></p>
-<h3 id="模型参数更新"><a href="#模型参数更新" class="headerlink" title="模型参数更新"></a>模型参数更新</h3><ul>
-<li>学生模型使用上述的交叉损失进行梯度回传更新参数。</li>
-<li>教师模型是从学生网络历史iteration中通过EMA（exponential moving average）得到，更新的公式为$θ_{t+1}=\lambda\theta_t+(1-\lambda)\theta_s$,其中在训练阶段$\lambda$遵循从0.996到1余弦变化</li>
-</ul>
-<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ul>
-<li>backbone：使用ViT或ResNet</li>
-<li>projection head：3层MLP（隐藏层为2048维+$l_2$ normalization+K维的全连接层），在ViT中没有使用BN</li>
-</ul>
-<h3 id="避免崩溃"><a href="#避免崩溃" class="headerlink" title="避免崩溃"></a>避免崩溃</h3><p>自监督方法避免崩溃的操作有：</p>
-<ul>
-<li>对比损失</li>
-<li>聚类约束 clustering constraints</li>
-<li>predictor</li>
-<li>batch normalization</li>
-</ul>
-<p>DINO中采用multiple normalizations，具体来说就是使用centering和sharpening操作使通过动量更新的教师模型避免崩溃，减少其对batch的依赖。在实验中发现，centering操作（公式4，$B$代表batch size，m则可以理解为学习率）避免了一个维度主导，但会鼓励塌陷为均匀分布，sharpening（通过teacher模型的softmax函数温度系数$\tau_t$实现）则是相反影响。centering操作和sharpening操作的伪代码可以看出，其实就是中心偏移加温度调节。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414200804425.png" alt="image-20220414200804425" style="zoom:67%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220414201239871.png" alt="image-20220414201239871" style="zoom: 80%;" /></p>
-<h2 id="Implementation-and-evaluation-protocols"><a href="#Implementation-and-evaluation-protocols" class="headerlink" title="Implementation and evaluation protocols"></a>Implementation and evaluation protocols</h2><ul>
-<li><p>Vision Transformer 使用DeiT中的实现。</p>
-</li>
-<li><p>在ImageNet上进行无标签预训练</p>
-</li>
-<li><p>用k-NN评估特征的质量 (Unsupervised Feature Learning via Non-Parametric Instance Discrimination)</p>
-<blockquote>
-<p>冻结预训练模型，计算并储存下游任务训练数据的特征，然后最近邻分类器将图像特征与k近邻存储的特征匹配，并指定一个label，实验中发现20 NN效果最好，这一评估方式不需要超参数调整也不需要数据增强，只需要通过下游数据集即可运行，简化了特征评估。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="Main-Results"><a href="#Main-Results" class="headerlink" title="Main Results"></a>Main Results</h2><blockquote>
-<p>重点关注图像检索和语义分割部分</p>
-</blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/14/ICCV2021%20DINO/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -943,7 +740,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:03:36" itemprop="dateModified" datetime="2022-04-21T16:03:36+08:00">2022-04-21</time>
+                <time title="Modified: 2022-04-21 16:30:46" itemprop="dateModified" datetime="2022-04-21T16:30:46+08:00">2022-04-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -972,42 +769,14 @@
 </blockquote>
 <p>下载release版本，12.17.0</p>
 <p>node -v检查是否安装成功</p>
-<h2 id="github创建github-pages"><a href="#github创建github-pages" class="headerlink" title="github创建github pages"></a>github创建github pages</h2><p>新建一个repository，名字为username.github.io (example:lzpyx.github.io)</p>
-<p>选择public属性</p>
-<h2 id="gitforwin安装"><a href="#gitforwin安装" class="headerlink" title="gitforwin安装"></a>gitforwin安装</h2><p>cmd输入git验证安装是否成功</p>
-<p>git config —global user.email”1161682912@qq.com”</p>
-<p>git config —global user.name”lzpyx”</p>
-<h2 id="github-ssh配置"><a href="#github-ssh配置" class="headerlink" title="github ssh配置"></a>github ssh配置</h2><p>打开Git安装目录下的git-bash.exe</p>
-<p>输入 (example: ssh-keygen -t rsa -C “1161682912@qq.com”)</p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;Github注册邮箱&quot;</span><br></pre></td></tr></table></figure>
-<p>注意返回的括号中的/c/Users/lzpyx/.ssh/id_rsa，后面会用到这个文件夹中的id_rsa.pub文件中的内容</p>
-<p>连续回车，相当于不设置密码</p>
-<p>打开github，在setting中选择SSH，新建，把id_rsa.pub文件中的内容复制到key，title就直接username（lzpyx）即可</p>
-<h2 id="hexo配置"><a href="#hexo配置" class="headerlink" title="hexo配置"></a>hexo配置</h2><p>在D盘新建blog文件夹</p>
-<p>cmd切换到blog文件夹，然后开始安装</p>
-<p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">hexo官网</a></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220412191445214.png" alt="image-20220412191445214" style="zoom: 50%;" /></p>
-<p>直接复制指令到cmd进行安装</p>
-<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hexo init lzpyxBlog</span><br><span class="line"><span class="built_in">cd</span> lzpyxBlog</span><br><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo s -p <span class="number">5555</span></span><br></pre></td></tr></table></figure>
-<h2 id="选择中意的主题-模板"><a href="#选择中意的主题-模板" class="headerlink" title="选择中意的主题/模板"></a>选择中意的主题/模板</h2><p><a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">next</a></p>
-<p>下载zip，然后解压，把文件夹改名为next，放入theme，修改_config.yml中的theme为next</p>
-<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<p>安装部署工具（方便以后更新）<br><code>npm install hexo-deployer-git -sav</code></p>
-<h4 id="hexo指令"><a href="#hexo指令" class="headerlink" title="hexo指令"></a>hexo指令</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hexo s -p <span class="number">5555</span>  <span class="comment">//本地查看</span></span><br><span class="line">hexo g <span class="comment">//生成文件</span></span><br><span class="line">hexo d <span class="comment">//上传文件</span></span><br><span class="line">hexo clean &amp;&amp; hexo generate <span class="comment">// generate the static file</span></span><br><span class="line">hexo server <span class="comment">// run hexo in local environment</span></span><br><span class="line">hexo deploy <span class="comment">// hexo will push the static files automatically into the specific branch(gh-pages) of your repo!</span></span><br></pre></td></tr></table></figure>
-<h2 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h2><p>使用sublime或vscode等软件打开模板文件夹中的_config.yml文件</p>
-<p><strong>添加代码</strong></p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:lzpyx/lzpyx.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
-<p><strong>修改url</strong></p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">url:</span> <span class="string">http://lzpyx.github.io</span></span><br></pre></td></tr></table></figure>
-<p><strong>发布</strong></p>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-<p>百度统计id</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">var</span> _hmt = _hmt || [];</span></span><br><span class="line"><span class="language-javascript">(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> hm = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;script&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">  hm.<span class="property">src</span> = <span class="string">&quot;https://hm.baidu.com/hm.js?1491c36937472ca818cdd77f734bfdef&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> s = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&quot;script&quot;</span>)[<span class="number">0</span>]; </span></span><br><span class="line"><span class="language-javascript">  s.<span class="property">parentNode</span>.<span class="title function_">insertBefore</span>(hm, s);</span></span><br><span class="line"><span class="language-javascript">&#125;)();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="写博客并发布"><a href="#写博客并发布" class="headerlink" title="写博客并发布"></a>写博客并发布</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;name&quot;</span>       <span class="comment"># 新建文章</span></span><br><span class="line">hexo new page <span class="string">&quot;name&quot;</span>  <span class="comment"># 新建页面</span></span><br><span class="line">hexo g                <span class="comment"># 生成页面</span></span><br><span class="line">hexo d                <span class="comment"># 部署</span></span><br><span class="line">hexo g -d             <span class="comment"># 生成页面并部署</span></span><br><span class="line">hexo s                <span class="comment"># 本地预览</span></span><br><span class="line">hexo clean            <span class="comment"># 清除缓存和已生成的静态文件</span></span><br><span class="line">hexo <span class="built_in">help</span>             <span class="comment"># 帮助</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建标签"><a href="#创建标签" class="headerlink" title="创建标签"></a>创建标签</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16W411t7mq?p=4">参考</a></p>
-<p>cd到lzpyxBlog</p>
-<p>hexo n page tags</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/12/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1088,7 +857,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
