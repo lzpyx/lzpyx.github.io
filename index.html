@@ -160,7 +160,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E6%B5%81%E7%95%85%E7%9A%84python/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/20/%E6%B5%81%E7%95%85%E7%9A%84python/" class="post-title-link" itemprop="url">Untitled</a>
+            <a href="/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">论文复现</a>
         </h2>
 
         <div class="post-meta">
@@ -184,7 +184,23 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-04-20 22:27:39" itemprop="dateCreated datePublished" datetime="2022-04-20T22:27:39+08:00">2022-04-20</time>
+              <time title="Created: 2022-04-20 22:29:05" itemprop="dateCreated datePublished" datetime="2022-04-20T22:29:05+08:00">2022-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-21 14:45:22" itemprop="dateModified" datetime="2022-04-21T14:45:22+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+                </span>
             </span>
 
           
@@ -198,7 +214,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1>
+          <h1 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h1><h1 id="TS-CAM"><a href="#TS-CAM" class="headerlink" title="TS-CAM"></a>TS-CAM</h1><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><h3 id="os-path-join造成的linux和window路径的区别"><a href="#os-path-join造成的linux和window路径的区别" class="headerlink" title="os.path.join造成的linux和window路径的区别"></a>os.path.join造成的linux和window路径的区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># original:路径的分隔符不正确，导致路径不对</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>) </span><br><span class="line"><span class="comment"># 应修改为</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="KeyError-‘-getstate-’"><a href="#KeyError-‘-getstate-’" class="headerlink" title="KeyError: ‘_ _ getstate _ _’"></a>KeyError: ‘_ _ getstate _ _’</h3><blockquote>
+<p>由num_workers引起, 多线程执行时出现错误，具体原因不清楚，这次的解决方法是将多线程语句(torch.nn.DataParallel)删去,并将num_workers改为0.查看自己电脑线程数的方法：<br>1.WIN+R<br>2.输入wmic回车<br>3.输入cpu get numberOfLogicalProcessors回车</p>
+</blockquote>
+<h3 id="RuntimeError-CUDA-out-of-memory"><a href="#RuntimeError-CUDA-out-of-memory" class="headerlink" title="RuntimeError: CUDA out of memory."></a>RuntimeError: CUDA out of memory.</h3><blockquote>
+<p>减小batch_size或图像大小，一开始在default文件中更改，没有效果，依然报错，后来发现default文件中是在config的yaml文件之前设置的，还需要更改config文件中的设置</p>
+</blockquote>
+<h3 id="Bash脚本"><a href="#Bash脚本" class="headerlink" title="Bash脚本"></a>Bash脚本</h3><p>在linux中使用，数字表示变量的顺序，命令行输入时只需要空格分隔跟在后面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash train_val_cub.sh &#123;GPU_ID&#125; <span class="variable">$&#123;NET&#125;</span> <span class="variable">$&#123;NET_SCALE&#125;</span> <span class="variable">$&#123;SIZE&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GPU_ID=<span class="variable">$1</span></span><br><span class="line">NET=<span class="variable">$&#123;2&#125;</span></span><br><span class="line">NET_SCALE=<span class="variable">$&#123;3&#125;</span></span><br><span class="line">SIZE=<span class="variable">$&#123;4&#125;</span></span><br><span class="line"><span class="built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="variable">$&#123;GPU_ID&#125;</span></span><br><span class="line"></span><br><span class="line">python ./tools_cam/train_cam.py --config_file ./configs/CUB/<span class="variable">$&#123;NET&#125;</span>_tscam_<span class="variable">$&#123;NET_SCALE&#125;</span>_patch16_<span class="variable">$&#123;SIZE&#125;</span>.yaml --lr 5e-5 MODEL.CAM_THR 0.1</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><h3 id="train-cam"><a href="#train-cam" class="headerlink" title="train_cam"></a>train_cam</h3><p><strong>parameters&amp;work_dir:</strong></p>
+<blockquote>
+<p>–config_file .&#x2F;configs&#x2F;CUB&#x2F;deit_tscam_tiny_patch16_224.yaml –lr 5e-5 MODEL.CAM_THR 0.1</p>
+<p>运行位置应该在主目录，因为没有直接使用bash运行shell文件</p>
+</blockquote>
+<h3 id="利用python的注册器创建模型-deit-py-amp-registry-py"><a href="#利用python的注册器创建模型-deit-py-amp-registry-py" class="headerlink" title="利用python的注册器创建模型(deit.py&amp;registry.py)"></a>利用python的注册器创建模型(deit.py&amp;registry.py)</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350787676">参考</a></p>
+
       
     </div>
 
@@ -668,100 +705,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/14/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">论文复现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-20 22:31:03" itemprop="dateModified" datetime="2022-04-20T22:31:03+08:00">2022-04-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="论文复现"><a href="#论文复现" class="headerlink" title="论文复现"></a>论文复现</h1><h1 id="TS-CAM"><a href="#TS-CAM" class="headerlink" title="TS-CAM"></a>TS-CAM</h1><h2 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h2><h3 id="os-path-join造成的linux和window路径的区别"><a href="#os-path-join造成的linux和window路径的区别" class="headerlink" title="os.path.join造成的linux和window路径的区别"></a>os.path.join造成的linux和window路径的区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># original:路径的分隔符不正确，导致路径不对</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>) </span><br><span class="line"><span class="comment"># 应修改为</span></span><br><span class="line">os.path.join(root, <span class="string">&#x27;images.txt&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;/&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="KeyError-‘-getstate-’"><a href="#KeyError-‘-getstate-’" class="headerlink" title="KeyError: ‘_ _ getstate _ _’"></a>KeyError: ‘_ _ getstate _ _’</h3><blockquote>
-<p>由num_workers引起, 多线程执行时出现错误，具体原因不清楚，这次的解决方法是将多线程语句(torch.nn.DataParallel)删去,并将num_workers改为0.查看自己电脑线程数的方法：<br>1.WIN+R<br>2.输入wmic回车<br>3.输入cpu get numberOfLogicalProcessors回车</p>
-</blockquote>
-<h3 id="RuntimeError-CUDA-out-of-memory"><a href="#RuntimeError-CUDA-out-of-memory" class="headerlink" title="RuntimeError: CUDA out of memory."></a>RuntimeError: CUDA out of memory.</h3><blockquote>
-<p>减小batch_size或图像大小，一开始在default文件中更改，没有效果，依然报错，后来发现default文件中是在config的yaml文件之前设置的，还需要更改config文件中的设置</p>
-</blockquote>
-<h3 id="Bash脚本"><a href="#Bash脚本" class="headerlink" title="Bash脚本"></a>Bash脚本</h3><p>在linux中使用，数字表示变量的顺序，命令行输入时只需要空格分隔跟在后面</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash train_val_cub.sh &#123;GPU_ID&#125; <span class="variable">$&#123;NET&#125;</span> <span class="variable">$&#123;NET_SCALE&#125;</span> <span class="variable">$&#123;SIZE&#125;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GPU_ID=<span class="variable">$1</span></span><br><span class="line">NET=<span class="variable">$&#123;2&#125;</span></span><br><span class="line">NET_SCALE=<span class="variable">$&#123;3&#125;</span></span><br><span class="line">SIZE=<span class="variable">$&#123;4&#125;</span></span><br><span class="line"><span class="built_in">export</span> CUDA_VISIBLE_DEVICES=<span class="variable">$&#123;GPU_ID&#125;</span></span><br><span class="line"></span><br><span class="line">python ./tools_cam/train_cam.py --config_file ./configs/CUB/<span class="variable">$&#123;NET&#125;</span>_tscam_<span class="variable">$&#123;NET_SCALE&#125;</span>_patch16_<span class="variable">$&#123;SIZE&#125;</span>.yaml --lr 5e-5 MODEL.CAM_THR 0.1</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><h3 id="train-cam"><a href="#train-cam" class="headerlink" title="train_cam"></a>train_cam</h3><p><strong>parameters&amp;work_dir:</strong></p>
-<blockquote>
-<p>–config_file .&#x2F;configs&#x2F;CUB&#x2F;deit_tscam_tiny_patch16_224.yaml –lr 5e-5 MODEL.CAM_THR 0.1</p>
-<p>运行位置应该在主目录，因为没有直接使用bash运行shell文件</p>
-</blockquote>
-<h3 id="利用python的注册器创建模型-deit-py-amp-registry-py"><a href="#利用python的注册器创建模型-deit-py-amp-registry-py" class="headerlink" title="利用python的注册器创建模型(deit.py&amp;registry.py)"></a>利用python的注册器创建模型(deit.py&amp;registry.py)</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/350787676">参考</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/13/%E7%9F%A5%E8%AF%86%E8%92%B8%E9%A6%8Foverview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1067,7 +1010,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
