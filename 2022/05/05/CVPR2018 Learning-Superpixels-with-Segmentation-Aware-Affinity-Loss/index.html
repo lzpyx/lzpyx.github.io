@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss利用亲和力学习超像素 PAN SEAL Abstract超像素分割算法主要基于手工设计的特征，通常无法保留较弱的对象边界，本文利用深度神经网络从图像中提取超像素，提出了用于超像素分割的分割感知亲和学习方法。具体来说，提出了一种新的loss，将分割误差考虑在内进行亲和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss">
+<meta property="og:url" content="http://lzpyx.github.io/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss利用亲和力学习超像素 PAN SEAL Abstract超像素分割算法主要基于手工设计的特征，通常无法保留较弱的对象边界，本文利用深度神经网络从图像中提取超像素，提出了用于超像素分割的分割感知亲和学习方法。具体来说，提出了一种新的loss，将分割误差考虑在内进行亲和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505105546794.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111126974.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111136411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111200514.png">
+<meta property="article:published_time" content="2022-05-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-05T03:34:55.424Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Affinity">
+<meta property="article:tag" content="Superpixel">
+<meta property="article:tag" content="Weighted BEC loss">
+<meta property="article:tag" content="Edge detection">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505105546794.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-05 00:00:00 / Modified: 11:34:55" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CVPR2018-Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss"><a href="#CVPR2018-Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss" class="headerlink" title="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss"></a>CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss</h1><p>利用亲和力学习超像素 PAN SEAL</p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>超像素分割算法主要基于手工设计的特征，通常无法保留较弱的对象边界，本文利用深度神经网络从图像中提取超像素，提出了用于超像素分割的分割感知亲和学习方法。具体来说，提出了一种新的loss，将分割误差考虑在内进行亲和力学习。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505105546794.png" alt="image-20220505105546794"></p>
+<span id="more"></span>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>现有的超像素分割算法主要依赖手工设计的特征，在目标和背景没有强边界的时候常常会分割失败。</p>
+<p>使用深度学习网络学习超像素有几个挑战：</p>
+<ul>
+<li>没有超像素的groundtruth</li>
+<li>不同超像素的索引是可以互换的</li>
+<li>现有超像素算法不可微</li>
+</ul>
+<p>本文提出学习像素的亲和力(Pixel affinities)，像素亲和力衡量了两个相邻像素属于同一对象的可能性，通过考虑对象边界的更好的像素亲和力，基于图的算法可以提取语义上更有意义的超像素。实验表明，简单地用预先训练的深度特征替换手工制作的特征来计算像素亲和力并不能产生良好的超像素分割。作者观察到从预训练的深度特征或深度边缘获取的亲和力对分割错误不敏感。</p>
+<p>本文贡献：</p>
+<ul>
+<li>基于深度学习的超像素分割方法</li>
+<li>分割感知损失SEAL</li>
+<li>更好的对象边界</li>
+</ul>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>Graph-based algorithms</li>
+<li>Clustering-based algorithms</li>
+</ul>
+<h2 id="超像素和深度学习结合"><a href="#超像素和深度学习结合" class="headerlink" title="超像素和深度学习结合"></a>超像素和深度学习结合</h2><p>使用深度神经网络学习超像素并不简单。首先，没有超像素分割的groundtruth。由于超像素是图像的过度分割，因此<strong>只要超像素在对象内，超像素边界就可以是任意的</strong>。其次，超像素索引是可互换的。我们可以在保持超像素表示完整的同时对索引进行重排。第三，大多数超像素算法是不可微的，因为它们通常涉及聚类或子集选择的离散操作。</p>
+<p>边缘检测和图像分割密切相关，作者考虑利用边缘信息指导超像素分割，让高边缘概率的像素具有低亲和力，低边缘概率的像素具有高亲和力。</p>
+<h2 id="Learning-Segmentation-Aware-Affinities（方法部分）"><a href="#Learning-Segmentation-Aware-Affinities（方法部分）" class="headerlink" title="Learning Segmentation-Aware Affinities（方法部分）"></a>Learning Segmentation-Aware Affinities（方法部分）</h2><h3 id="SEAL"><a href="#SEAL" class="headerlink" title="SEAL"></a>SEAL</h3><p>使用BSDS500这样的分割数据集作为监督信号，边界像素为0，其他像素为1</p>
+<p>SEAL的本质实际上是加权的BCE loss，权值是根据当前超像素的分割误差给出的</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111126974.png" alt="image-20220505111126974"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111136411.png" alt="image-20220505111136411"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505111200514.png" alt="image-20220505111200514"></p>
+<h3 id="Pixel-Affinity-Net"><a href="#Pixel-Affinity-Net" class="headerlink" title="Pixel Affinity Net"></a>Pixel Affinity Net</h3><p>PAN的输入是彩色图像，输出是两通道亲和力图，两个通道分别代表水平亲和力和垂直亲和力，网络预测每个像素其对右侧和底部的像素的亲和力。PAN中使用了Canny边缘，因为有助于定位边界。PAN 模型将图像作为输入，并预测每个像素的水平和垂直相似性。然后将亲和力传递到基于图形的超像素算法中以计算超像素。 SEAL 函数将亲和度、计算的超像素和  groundtruth 分割图作为输入，并计算用于反向传播的梯度。虚线表示梯度的流动</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Affinity/" rel="tag"># Affinity</a>
+              <a href="/tags/Superpixel/" rel="tag"># Superpixel</a>
+              <a href="/tags/Weighted-BEC-loss/" rel="tag"># Weighted BEC loss</a>
+              <a href="/tags/Edge-detection/" rel="tag"># Edge detection</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/05/OpenCV/" rel="prev" title="OpenCV">
+      <i class="fa fa-chevron-left"></i> OpenCV
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/05/CVPR2018%20AffinityNet/" rel="next" title="CVPR2018 AffinityNet">
+      CVPR2018 AffinityNet <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2018-Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss"><span class="nav-number">1.</span> <span class="nav-text">CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.3.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E5%83%8F%E7%B4%A0%E5%92%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%BB%93%E5%90%88"><span class="nav-number">1.4.</span> <span class="nav-text">超像素和深度学习结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Learning-Segmentation-Aware-Affinities%EF%BC%88%E6%96%B9%E6%B3%95%E9%83%A8%E5%88%86%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">Learning Segmentation-Aware Affinities（方法部分）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SEAL"><span class="nav-number">1.5.1.</span> <span class="nav-text">SEAL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pixel-Affinity-Net"><span class="nav-number">1.5.2.</span> <span class="nav-text">Pixel Affinity Net</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

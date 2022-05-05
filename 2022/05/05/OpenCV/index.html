@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="OpenCV常用操作 OpenCVcv的输入数据类型不能是tensor，需要转换为ndarray cv2.resize()参考 1234567891011# 变为14*14*1的ndarray, 因为cv.resize不能处理tensorcam_map_ &#x3D; cam_map_.detach().cpu().numpy().transpose(1, 2, 0)  # Resize and Norma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV">
+<meta property="og:url" content="http://lzpyx.github.io/2022/05/05/OpenCV/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="OpenCV常用操作 OpenCVcv的输入数据类型不能是tensor，需要转换为ndarray cv2.resize()参考 1234567891011# 变为14*14*1的ndarray, 因为cv.resize不能处理tensorcam_map_ &#x3D; cam_map_.detach().cpu().numpy().transpose(1, 2, 0)  # Resize and Norma">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501112021064.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501112145574.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501114020248.png">
+<meta property="article:published_time" content="2022-05-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-05T03:39:21.052Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="随时更新">
+<meta property="article:tag" content="tools">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501112021064.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/05/05/OpenCV/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>OpenCV | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/05/OpenCV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenCV
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-05 00:00:00 / Modified: 11:39:21" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>OpenCV常用操作</p>
+<h1 id="OpenCV"><a href="#OpenCV" class="headerlink" title="OpenCV"></a>OpenCV</h1><p>cv的输入数据类型不能是tensor，需要转换为ndarray</p>
+<h2 id="cv2-resize"><a href="#cv2-resize" class="headerlink" title="cv2.resize()"></a>cv2.resize()</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jningwei/article/details/78822026">参考</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 变为14*14*1的ndarray, 因为cv.resize不能处理tensor</span></span><br><span class="line">cam_map_ = cam_map_.detach().cpu().numpy().transpose(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>)  </span><br><span class="line"><span class="comment"># Resize and Normalize CAM</span></span><br><span class="line">cam_map_ = resize_cam(cam_map_, size=(crop_size, crop_size))</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">resize_cam</span>(<span class="params">cam, size=(<span class="params"><span class="number">224</span>, <span class="number">224</span></span>)</span>):</span><br><span class="line">    <span class="comment"># resize，使用默认的双线性插值</span></span><br><span class="line">    cam = cv2.resize(cam, (size[<span class="number">0</span>], size[<span class="number">1</span>]))</span><br><span class="line">    <span class="comment"># Normalize</span></span><br><span class="line">    cam_min, cam_max = cam.<span class="built_in">min</span>(), cam.<span class="built_in">max</span>()</span><br><span class="line">    cam = (cam - cam_min) / (cam_max - cam_min)</span><br><span class="line">    <span class="keyword">return</span> cam</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="cv2-imshow"><a href="#cv2-imshow" class="headerlink" title="cv2.imshow()"></a>cv2.imshow()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cv2.imshow(<span class="string">&quot;Image-New&quot;</span>, thr_gray_heatmap)</span><br><span class="line">cv2.waitKey(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="横向纵向排列图片"><a href="#横向纵向排列图片" class="headerlink" title="横向纵向排列图片"></a>横向纵向排列图片</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">htitch= np.hstack((img1, img3,img4)) <span class="comment"># 横向排列</span></span><br><span class="line">vtitch = np.vstack((img1, img3)) <span class="comment"># 纵向排列</span></span><br></pre></td></tr></table></figure>
+<h2 id="图像与运算"><a href="#图像与运算" class="headerlink" title="图像与运算"></a>图像与运算</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">final_out = cv2.bitwise_and(close_out, reliable_back_label)</span><br></pre></td></tr></table></figure>
+<h2 id="开运算和闭运算"><a href="#开运算和闭运算" class="headerlink" title="开运算和闭运算"></a>开运算和闭运算</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43466323/article/details/114891871">参考</a></p>
+<h2 id="保存cam图像（原本是0-1值的）"><a href="#保存cam图像（原本是0-1值的）" class="headerlink" title="保存cam图像（原本是0-1值的）"></a>保存cam图像（原本是0-1值的）</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">save_dir = <span class="string">&#x27;test_visualize&#x27;</span></span><br><span class="line">save_path_img = <span class="string">&#x27;test_visualize/ori-img.jpg&#x27;</span></span><br><span class="line">save_path_cam = <span class="string">&#x27;test_visualize/cam.jpg&#x27;</span></span><br><span class="line">mkdir(save_dir)</span><br><span class="line"><span class="comment"># 先变为0-255再保存，如果不乘，图像看起来是全黑的如下图第一行，读取后就会产生问题</span></span><br><span class="line">cam_b = (cam_b * <span class="number">255.</span>).astype(np.uint8)</span><br><span class="line">cv2.imwrite(save_path_img, image[b])</span><br><span class="line">cv2.imwrite(save_path_cam, cam_b)</span><br><span class="line">save_path_img = <span class="string">&#x27;ori-img.jpg&#x27;</span></span><br><span class="line">save_path_cam = <span class="string">&#x27;cam.jpg&#x27;</span></span><br><span class="line"><span class="comment"># 读取 第二个参数1代表彩色，0代表灰度图，在保存时单通道的cam会被复制成3通道，每个通道值相同，所以这里读取时使用0或1影响不大，为了对齐还是使用灰度图</span></span><br><span class="line">rgb_img = cv2.imread(save_path_img, <span class="number">1</span>)</span><br><span class="line">cam = cv2.imread(save_path_cam, <span class="number">0</span>) </span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501112021064.png" alt="image-20220501112021064"><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501112145574.png" alt="image-20220501112145574"></p>
+<h2 id="利用cv2-threshold-获取高低置信度区域"><a href="#利用cv2-threshold-获取高低置信度区域" class="headerlink" title="利用cv2.threshold()获取高低置信度区域"></a>利用cv2.threshold()获取高低置信度区域</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将cam的高置信度区域和低置信度区域像素位置分别取出</span></span><br><span class="line"><span class="comment"># cam = (cam * 255.).astype(np.uint8)</span></span><br><span class="line">cv2.imshow(<span class="string">&quot;cam&quot;</span>, cam)</span><br><span class="line"></span><br><span class="line">back_thr = cam_thr_back * np.<span class="built_in">max</span>(cam)</span><br><span class="line">_, background_label = cv2.threshold(cam, <span class="built_in">int</span>(back_thr), <span class="number">255</span>, cv2.THRESH_BINARY_INV)</span><br><span class="line">cv2.imshow(<span class="string">&quot;background_label&quot;</span>, background_label)</span><br><span class="line"></span><br><span class="line">obj_thr = cam_thr_obj * np.<span class="built_in">max</span>(cam)</span><br><span class="line">_, obj_label = cv2.threshold(cam, <span class="built_in">int</span>(obj_thr), <span class="number">255</span>, cv2.THRESH_BINARY)</span><br><span class="line">cv2.imshow(<span class="string">&quot;obj_label&quot;</span>, obj_label)</span><br></pre></td></tr></table></figure>
+<h2 id="利用cv2-applyColorMap-彩色可视化二维灰度图像"><a href="#利用cv2-applyColorMap-彩色可视化二维灰度图像" class="headerlink" title="利用cv2.applyColorMap()彩色可视化二维灰度图像"></a>利用cv2.applyColorMap()彩色可视化二维灰度图像</h2><p>需要注意2维ndarray元素数据类型必须转换成np.uint8类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只关注框内</span></span><br><span class="line">I = np.zeros_like(cam)</span><br><span class="line">x1, y1, x2, y2 = es_box</span><br><span class="line">I[y1:y2, x1:x2] = <span class="number">1</span></span><br><span class="line">cam = cam * I</span><br><span class="line"><span class="comment"># 彩色可视化</span></span><br><span class="line">cam = cam.astype(np.uint8)</span><br><span class="line">heatmap = cv2.applyColorMap(cam, cv2.COLORMAP_JET)</span><br><span class="line">cv2.imshow(<span class="string">&quot;heatmap&quot;</span>, heatmap)</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220501114020248.png" alt="image-20220501114020248"></p>
+<h2 id="cv2-threshold-cv2-findContours-获取外接矩形"><a href="#cv2-threshold-cv2-findContours-获取外接矩形" class="headerlink" title="cv2.threshold() + cv2.findContours()获取外接矩形"></a>cv2.threshold() + cv2.findContours()获取外接矩形</h2><p>cv2.threshold()和findContours()都不会修改输入图像</p>
+<p>画图的函数,一般最后两个参数分别是color和线粗，且是在输入图像上原地操作，所以可以使用img.copy()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cv2.drawContours(thr_gray_heatmap, contours, -<span class="number">1</span>, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">3</span>)</span><br><span class="line">cv2.rectangle(thr_gray_heatmap, (x, y), (x+w, y+h), (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>img.copy()</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/a19990412/article/details/81172426">参考</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunny2038/article/details/12889059?spm=1001.2101.3001.6650.6&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_paycolumn_v3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-6.pc_relevant_paycolumn_v3&amp;utm_relevant_index=13">参考,轮廓检测</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_bboxes</span>(<span class="params">cam, cam_thr=<span class="number">0.2</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    cam: single image with shape (h, w, 1)</span></span><br><span class="line"><span class="string">    thr_val: float value (0~1)</span></span><br><span class="line"><span class="string">    return estimated bounding box</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cam = (cam * <span class="number">255.</span>).astype(np.uint8)</span><br><span class="line">    map_thr = cam_thr * np.<span class="built_in">max</span>(cam)</span><br><span class="line">    cv2.imshow(<span class="string">&quot;Image-Old&quot;</span>, cam)</span><br><span class="line">	<span class="comment"># cv2.threshold(src, thresh, maxval, type[, dst]) → retval, dst</span></span><br><span class="line">    <span class="comment"># ret:True或False，代表有没有读到图片</span></span><br><span class="line">    <span class="comment"># dst:目标图像</span></span><br><span class="line">    <span class="comment"># 这里将threshold设置为cam图像最大值的20%，使用cv2.THRESH_TOZERO代表小于阈值部分被置为0，大于部分保持不变</span></span><br><span class="line">    <span class="comment"># cam不会被修改，cv2.THRESH_BINARY是产生二值图像</span></span><br><span class="line">    _, thr_gray_heatmap = cv2.threshold(cam,</span><br><span class="line">                                        <span class="built_in">int</span>(map_thr), <span class="number">255</span>,</span><br><span class="line">                                        cv2.THRESH_TOZERO)</span><br><span class="line">    <span class="comment">#thr_gray_heatmap = (thr_gray_heatmap*255.).astype(np.uint8)</span></span><br><span class="line">	cv2.imshow(<span class="string">&quot;Image-New&quot;</span>, thr_gray_heatmap)</span><br><span class="line">    <span class="comment"># input:寻找轮廓的的图像,轮廓检索模式，轮廓近似方法</span></span><br><span class="line">    <span class="comment"># output:轮廓的点集(contours),各层轮廓的索引(hierarchy) in OpenCV2\4</span></span><br><span class="line">    contours, _ = cv2.findContours(thr_gray_heatmap,</span><br><span class="line">                                       cv2.RETR_TREE,</span><br><span class="line">                                       cv2.CHAIN_APPROX_SIMPLE)</span><br><span class="line">    cv2.drawContours(thr_gray_heatmap, contours, -<span class="number">1</span>, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">3</span>)</span><br><span class="line">    cv2.imshow(<span class="string">&quot;drawContours&quot;</span>, thr_gray_heatmap)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(contours) != <span class="number">0</span>:</span><br><span class="line">        c = <span class="built_in">max</span>(contours, key=cv2.contourArea)</span><br><span class="line">        x, y, w, h = cv2.boundingRect(c)</span><br><span class="line">        estimated_bbox = [x, y, x + w, y + h]</span><br><span class="line">        <span class="comment"># 画外界矩形</span></span><br><span class="line">		cv2.rectangle(thr_gray_heatmap, (x, y), (x+w, y+h), (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line">        cv2.imshow(<span class="string">&quot;rectangle&quot;</span>, thr_gray_heatmap)</span><br><span class="line">        cv2.waitKey(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        estimated_bbox = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> estimated_bbox  <span class="comment">#, thr_gray_heatmap, len(contours)</span></span><br></pre></td></tr></table></figure>
+<h3 id="存疑"><a href="#存疑" class="headerlink" title="存疑"></a>存疑</h3><ul>
+<li><p>findContours的输入要求是二值图像，但这里传入灰度图也正常运行了</p>
+</li>
+<li><p>cv2.drawContours(thr_gray_heatmap, contours, -1, (255, 0, 0), 3)用imshow查看结果，在原本的灰度图上画了白色的线，没有画出红色的线</p>
+</li>
+<li><p>cv2.drawContours(cam, contours, -1, (255, 0, 0), 3)运行不会产生线</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%97%B6%E6%9B%B4%E6%96%B0/" rel="tag"># 随时更新</a>
+              <a href="/tags/tools/" rel="tag"># tools</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/05/%E7%99%BE%E9%9D%A2%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="prev" title="机器学习基础知识">
+      <i class="fa fa-chevron-left"></i> 机器学习基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/" rel="next" title="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss">
+      CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCV"><span class="nav-number">1.</span> <span class="nav-text">OpenCV</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cv2-resize"><span class="nav-number">1.1.</span> <span class="nav-text">cv2.resize()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cv2-imshow"><span class="nav-number">1.2.</span> <span class="nav-text">cv2.imshow()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%AA%E5%90%91%E7%BA%B5%E5%90%91%E6%8E%92%E5%88%97%E5%9B%BE%E7%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">横向纵向排列图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E4%B8%8E%E8%BF%90%E7%AE%97"><span class="nav-number">1.4.</span> <span class="nav-text">图像与运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E8%BF%90%E7%AE%97%E5%92%8C%E9%97%AD%E8%BF%90%E7%AE%97"><span class="nav-number">1.5.</span> <span class="nav-text">开运算和闭运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98cam%E5%9B%BE%E5%83%8F%EF%BC%88%E5%8E%9F%E6%9C%AC%E6%98%AF0-1%E5%80%BC%E7%9A%84%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">保存cam图像（原本是0-1值的）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8cv2-threshold-%E8%8E%B7%E5%8F%96%E9%AB%98%E4%BD%8E%E7%BD%AE%E4%BF%A1%E5%BA%A6%E5%8C%BA%E5%9F%9F"><span class="nav-number">1.7.</span> <span class="nav-text">利用cv2.threshold()获取高低置信度区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8cv2-applyColorMap-%E5%BD%A9%E8%89%B2%E5%8F%AF%E8%A7%86%E5%8C%96%E4%BA%8C%E7%BB%B4%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F"><span class="nav-number">1.8.</span> <span class="nav-text">利用cv2.applyColorMap()彩色可视化二维灰度图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cv2-threshold-cv2-findContours-%E8%8E%B7%E5%8F%96%E5%A4%96%E6%8E%A5%E7%9F%A9%E5%BD%A2"><span class="nav-number">1.9.</span> <span class="nav-text">cv2.threshold() + cv2.findContours()获取外接矩形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E7%96%91"><span class="nav-number">1.9.1.</span> <span class="nav-text">存疑</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
