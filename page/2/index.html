@@ -164,6 +164,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20DAP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2021%20DAP/" class="post-title-link" itemprop="url">CVPR2021 DAP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:38:06" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision"><a href="#CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision" class="headerlink" title="CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision"></a>CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision</h1><p>DAP:Detection-Aware Pre-training with Weak Supervision</p>
+<p><strong>使用WSOL方法来预训练目标检测网络</strong></p>
+<h2 id="传统的分类预训练加微调方式存在的问题"><a href="#传统的分类预训练加微调方式存在的问题" class="headerlink" title="传统的分类预训练加微调方式存在的问题"></a>传统的分类预训练加微调方式存在的问题</h2><p>传统的分类预训练加微调只包含DAP工作流程中的1和4</p>
+<p>分类预训练带来的目标检测经验增益随着预训练数据集的不断增大而递减，且当数据集足够大时，随机初始化也能得到和分类预训练加微调类似的较好结果。</p>
+<p>本文认为预训练和微调任务的不匹配造成了分类预训练的增益递减。不匹配体现在：</p>
+<ol>
+<li>现有的分类预训练通常不知道下游的检测任务。预训练采用单一的全图像分类损失，鼓励平移和尺度不变特征，而检测微调涉及几种不同的分类和回归损失，对目标位置和尺度敏感。</li>
+<li>数据分布不一致。在分类预训练中，检测所需要的定位信息并没有明确提供。</li>
+<li>架构不一致。用于预训练的网络是一个裸骨干网，如ResNet模型，然后是平均池化和线性分类层。相比之下，目标检测器中的网络包含各种附加的架构组件，如区域建议网络(RPN)、特征金字塔网络(FPN)、ROI分类头和边界框回归头等。检测器中这些独特的架构组件没有经过预先训练，而是在检测微调中随机初始化，这可能是次优的。</li>
+</ol>
+<h2 id="DAP工作流程"><a href="#DAP工作流程" class="headerlink" title="DAP工作流程"></a>DAP工作流程</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427193339685.png" alt="image-20220427193339685" style="zoom:67%;" /></p>
+<ol>
+<li>弱监督数据集上进行分类器预训练</li>
+<li>使用WSOL方法生成为标签标注框 </li>
+<li>使用为标签进行检测器预训练</li>
+<li>检测数据集微调训练</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2021%20DAP/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/ECCV2018%20SPG/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -653,7 +744,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-26 20:20:43" itemprop="dateModified" datetime="2022-04-26T20:20:43+08:00">2022-04-26</time>
+                <time title="Modified: 2022-05-06 20:14:32" itemprop="dateModified" datetime="2022-05-06T20:14:32+08:00">2022-05-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -957,89 +1048,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/ICCV2021%20DINO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/14/ICCV2021%20DINO/" class="post-title-link" itemprop="url">ICCV2021 DINO</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-21 16:31:49" itemprop="dateModified" datetime="2022-04-21T16:31:49+08:00">2022-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICCV2021-DINO"><a href="#ICCV2021-DINO" class="headerlink" title="ICCV2021 DINO"></a>ICCV2021 DINO</h1><p>Emerging Properties in Self-Supervised Vision Transformers</p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>自监督学习带来的影响：自监督vit特征包含了图像语义分割的明确信息，这在监督学习的vit和CNN中都没有这么清晰</p>
-<p>文章将DINO解释为一种没有标签的自蒸馏形式</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/ICCV2021%20DINO/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1109,7 +1117,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1122,7 +1130,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
