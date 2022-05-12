@@ -164,6 +164,162 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/Pytorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/12/Pytorch/" class="post-title-link" itemprop="url">Pytorch</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-12 00:00:00 / Modified: 13:18:10" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h1><h2 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter()"></a>nn.Parameter()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.v = torch.nn.Parameter(torch.FloatTensor(hidden_size))</span><br></pre></td></tr></table></figure>
+<p>将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型的一部分，成为了模型中根据训练可以学习改动的参数了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/" class="post-title-link" itemprop="url">流畅的python</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-12 00:00:00 / Modified: 13:13:37" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <span id="more"></span>
+<h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
+<p>python中所有集合类型都可以使用len()函数查看集合长度，<strong>使用len(obj)而不是obj.len(),也不是obj.<strong> len </strong> ()</strong>,如果是自定义类的对象，python会自己调用类中实现的<strong> len </strong>方法</p>
+<p>魔法方法/特殊方法/双下方法，使用len()的形式调用</p>
+<h3 id="字符串表示形式"><a href="#字符串表示形式" class="headerlink" title="字符串表示形式"></a>字符串表示形式</h3><p><strong> repr </strong>方法得到一个对象的字符串表示形式</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42482896/article/details/107920036">字符串格式化语法</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>) <span class="comment"># 不设置指定位置，按默认顺序</span></span><br><span class="line"><span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;0&#125; &#123;1&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>) <span class="comment"># 设置指定位置</span></span><br><span class="line"><span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;1&#125; &#123;0&#125; &#123;1&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>) <span class="comment"># 设置指定位置</span></span><br><span class="line"><span class="string">&#x27;world hello world&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;name&#125;, 职业：&#123;pos&#125;&quot;</span>.<span class="built_in">format</span>(name = <span class="string">&#x27;阿离&#x27;</span>, pos = <span class="string">&#x27;adc&#x27;</span>))</span><br><span class="line"><span class="comment"># 通过字典设置参数</span></span><br><span class="line">info_dict = &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;吕布&quot;</span>, <span class="string">&quot;pos&quot;</span>: <span class="string">&quot;top&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;name&#125;, 职业：&#123;pos&#125;&quot;</span>.<span class="built_in">format</span>(**info_dict))</span><br><span class="line"><span class="comment"># 通过列表索引设置参数, &#x27;0&#x27;是必须的</span></span><br><span class="line">info_list = [<span class="string">&quot;甄姬&quot;</span>, <span class="string">&quot;mid&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;0[0]&#125;, 职业：&#123;0[1]&#125;&quot;</span>.<span class="built_in">format</span>(info_list))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">姓名：阿离, 职业：adc</span></span><br><span class="line"><span class="string">姓名：吕布, 职业：top</span></span><br><span class="line"><span class="string">姓名：甄姬, 职业：mid</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="第2章-序列构成的数组"><a href="#第2章-序列构成的数组" class="headerlink" title="第2章 序列构成的数组"></a>第2章 序列构成的数组</h1><h2 id="列表推导和生成器表达式"><a href="#列表推导和生成器表达式" class="headerlink" title="列表推导和生成器表达式"></a>列表推导和生成器表达式</h2><h3 id="列表推导"><a href="#列表推导" class="headerlink" title="列表推导"></a>列表推导</h3><p>python3中列表推导不会再有变量泄露问题，列表推导和生成器表达式都有局部作用域，表达式内部的变量和赋值只起局部作用，不影响表达式上下文中的同名变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="string">&#x27;ABC&#x27;</span></span><br><span class="line">dummy = [<span class="built_in">ord</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> x]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x <span class="comment"># &#x27;ABC&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dummy <span class="comment"># [65,66,67]</span></span><br></pre></td></tr></table></figure>
+<h4 id="笛卡儿积"><a href="#笛卡儿积" class="headerlink" title="笛卡儿积"></a>笛卡儿积</h4><p>python会忽略代码里[],{},()中的换行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tshirts = [(color,size) <span class="keyword">for</span> color <span class="keyword">in</span> colors </span><br><span class="line">           				<span class="keyword">for</span> size <span class="keyword">in</span> sizes]</span><br><span class="line"><span class="comment"># 先以颜色排列，再以尺码排列</span></span><br><span class="line"><span class="comment"># 输出与for循环嵌套的结果一致（嵌套顺序一致时）</span></span><br></pre></td></tr></table></figure>
+<h3 id="生成器表达式"><a href="#生成器表达式" class="headerlink" title="生成器表达式"></a>生成器表达式</h3><p>初始化元组、数组或者其他序列类型，使用生成器表达式</p>
+<p>语法与列表推导相似，<strong>把方括号换成圆括号</strong></p>
+<p>列表推导也可以用来初始化元组、数组或其他序列类型（先构造列表，然后把列表传递到构造函数中），但使用生成器表达式更好，<strong>因为生成器表达式遵守了迭代器协议，可以逐个产出元素，而不是先建立一个完整的列表，再将列表传递到构造函数中，这样可以节省内存</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> tshirt <span class="keyword">in</span> (<span class="string">&#x27;%s %s&#x27;</span> % (c, s) <span class="keyword">for</span> c <span class="keyword">in</span> colors <span class="keyword">for</span> s <span class="keyword">in</span> sizes):</span><br><span class="line">    <span class="built_in">print</span>(tshirt)</span><br><span class="line"><span class="comment"># 生成器表达式逐个产出元素，而不是一次性产出多个元素组成的列表，可以节省掉for循环的内存开销</span></span><br></pre></td></tr></table></figure>
+<h2 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h2><ul>
+<li>不可变的列表</li>
+<li>对数据的记录</li>
+</ul>
+<h3 id="对数据的记录"><a href="#对数据的记录" class="headerlink" title="对数据的记录"></a>对数据的记录</h3><h4 id="元组拆包"><a href="#元组拆包" class="headerlink" title="元组拆包"></a>元组拆包</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 应用1</span></span><br><span class="line">city, year, pop, chg, area = (<span class="string">&#x27;Tokyo&#x27;</span>, <span class="number">2003</span>, <span class="number">32450</span>, <span class="number">0.66</span>, <span class="number">8014</span>)</span><br><span class="line"><span class="comment"># 应用2</span></span><br><span class="line">traveler_ids = [(<span class="string">&#x27;USA&#x27;</span>, )]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2018%20AffinityNet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -448,10 +604,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-05 00:00:00 / Modified: 11:39:21" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
+              <time title="Created: 2022-05-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-12 10:19:04" itemprop="dateModified" datetime="2022-05-12T10:19:04+08:00">2022-05-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -836,175 +998,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">CVPR2020 PSOL 伪监督对象定位</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:31:22" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-PSOL-伪监督对象定位"><a href="#CVPR2020-PSOL-伪监督对象定位" class="headerlink" title="CVPR2020 PSOL 伪监督对象定位"></a>CVPR2020 PSOL 伪监督对象定位</h1><p>Rethinking the Route Towards Weakly Supervised Object Localization</p>
-<p>pseudo supervised object localization (PSOL)伪监督对象定位</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/tzzcl/PSOL">github</a></p>
-<h2 id="WSOL的特点"><a href="#WSOL的特点" class="headerlink" title="WSOL的特点"></a>WSOL的特点</h2><p>WSOL has the assumption that there is only one object of<br>the specific category in the whole image</p>
-<p>WSOL假设图像中属于特定类别的物体只存在一个（<strong>一类一物one object in one class</strong>）</p>
-<p>相关文章提到了CAM,Grad-CAM,HaS,ACoL,SPG,ADL</p>
-<p><strong>关于WSOD：</strong>WSOD 没有one object in one class的限制。然而，WSOD 经常需要诸如selective search和edge boxes 等生成区域建议的方法，这将花费大量的计算资源和时间。此外，当前的 WSOD 检测器使用高分辨率输入来输出边界框，导致计算负担沉重。因此，大多数 WSOD  方法难以应用于大规模数据集。</p>
-<p><strong>WSOL的缺点：</strong></p>
-<ol>
-<li>Localization tries to localize the whole object while classification tries to classify the object. The classification model often tries to localize only the most discriminative part of the object in an image.定位试图定位整个对象，而分类则试图对对象进行分类。分类模型通常试图仅定位图像中对象最具辨别力的部分。</li>
-<li>CAM类的方法需要确定阈值</li>
-</ol>
-<h2 id="PSOL方法概述"><a href="#PSOL方法概述" class="headerlink" title="PSOL方法概述"></a>PSOL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427192915831.png" alt="image-20220427192915831" style="zoom:67%;" /></p>
-<p>使用DDT-VGG16生成伪标注框(Class-agnostic generated pseudo bounding boxes与类别无关的伪边界框)</p>
-<p>使用伪边界框训练localization网络，进行single-class regression (SCR) </p>
-<p>另一分支单独训练分类网络</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/" class="post-title-link" itemprop="url">CVPR2020  正确评估WSOL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:24:47" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-正确评估WSOL"><a href="#CVPR2020-正确评估WSOL" class="headerlink" title="CVPR2020  正确评估WSOL"></a>CVPR2020  正确评估WSOL</h1><p>Evaluating Weakly Supervised Object Localization Methods Right</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/clovaai/wsolevaluation">源代码和数据集Github</a></p>
-<h2 id="WSOL与WSOD-WSSS的特点"><a href="#WSOL与WSOD-WSSS的特点" class="headerlink" title="WSOL与WSOD,WSSS的特点"></a>WSOL与WSOD,WSSS的特点</h2><p>从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL<strong>对象定位假设图像包含单个类别的对象，并在来自感兴趣类别的对象周围生成二进制掩码或边界框。</strong></p>
-<h2 id="本文对WSOL的理解"><a href="#本文对WSOL的理解" class="headerlink" title="本文对WSOL的理解"></a>本文对WSOL的理解</h2><p>自 WSOL 开创性的类激活映射 (CAM)  工作以来，该领域一直专注于如何扩展注意力区域以更广泛地覆盖对象并更好地定位它们。然而，这些策略依赖于完全本地化监督来验证超参数和模型选择，这在 WSOL  设置中原则上是被禁止的。</p>
-<p><strong>作者认为CAM后的各种方法对WSOL任务的提升依赖于超参和模型的选择，这样的人工选择其实引入了监督信息</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1074,7 +1067,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
