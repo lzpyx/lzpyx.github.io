@@ -164,6 +164,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/15/AAAI2020%20RRM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/15/AAAI2020%20RRM/" class="post-title-link" itemprop="url">AAAI2020 RRM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-15 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-15T00:00:00+08:00">2022-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-16 15:38:17" itemprop="dateModified" datetime="2022-05-16T15:38:17+08:00">2022-05-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
+<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
+<ul>
+<li>分类分支：生成可靠的语义分割掩码</li>
+<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
+<h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
+<p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png" alt="image-20220513113536432"></p>
+<p>在得到CAM原始区域后，进行dense CRF，生成reliable CAM label，其中255代表类标签尚未确定，然后最终的reliable label是CRF label和reliable CAM label的交集。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png" alt="image-20220513142936184"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png" alt="image-20220513114226967"></p>
+<h3 id="分割分支"><a href="#分割分支" class="headerlink" title="分割分支"></a>分割分支</h3><p>分割分支与分类分支共享相同的backbone，使用联合损失进行优化：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png" alt="image-20220513115511054"></p>
+<p>其中cross entropy loss，针对所有标记了的像素（可靠区域）：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png" alt="image-20220513115849562"></p>
+<p>注意$i \in \Phi$代表ce loss只在值不等于255的可靠区域内进行计算， $ P^{c}_{net}(i)$是网络在i像素处的预测概率，上式就是一个标准的交叉熵损失</p>
+<p>为了对那些未标记的区域进行预测，引入dense energy loss，同时考虑RGB和空间位置</p>
+<p>Efficient relaxations for dense crfs with sparse higher-order potentials.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png" alt="image-20220514135042254"></p>
+<p>其中$E(i,j)$是CRF loss，对于两个像素i，j，如果位置相近，颜色相近，预测出不同类别，就要进行惩罚： </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png" alt="image-20220514135110482"></p>
+<p>对CRF loss进行加权，reliable region会有更小的权值，也就是主要针对非reliable region。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png" alt="image-20220514141301283"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/Pytorch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -352,106 +452,6 @@
 <li>reverse：默认为False,升序,True,降序</li>
 <li>key：一个只有一个参数的函数，会被用在序列里的每个元素上，产生的结果将是排序算法依赖的对比关键字。如key = str.lower忽略大小写,key=len基于长度排序</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/07/AAAI2020%20RRM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/07/AAAI2020%20RRM/" class="post-title-link" itemprop="url">AAAI2020 RRM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-07T00:00:00+08:00">2022-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-14 14:30:04" itemprop="dateModified" datetime="2022-05-14T14:30:04+08:00">2022-05-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
-<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
-<ul>
-<li>分类分支：生成可靠的语义分割掩码</li>
-<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
-<h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
-<p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png" alt="image-20220513113536432"></p>
-<p>在得到CAM原始区域后，进行dense CRF，生成reliable CAM label，其中255代表类标签尚未确定，然后最终的reliable label是CRF label和reliable CAM label的交集。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png" alt="image-20220513142936184"></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png" alt="image-20220513114226967"></p>
-<h3 id="分割分支"><a href="#分割分支" class="headerlink" title="分割分支"></a>分割分支</h3><p>分割分支与分类分支共享相同的backbone，使用联合损失进行优化：</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png" alt="image-20220513115511054"></p>
-<p>其中cross entropy loss，针对所有标记了的像素（可靠区域）：</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png" alt="image-20220513115849562"></p>
-<p>注意$i \in \Phi$代表ce loss只在值不等于255的可靠区域内进行计算， $ P^{c}_{net}(i)$是网络在i像素处的预测概率，上式就是一个标准的交叉熵损失</p>
-<p>为了对那些未标记的区域进行预测，引入dense energy loss，同时考虑RGB和空间位置</p>
-<p>Efficient relaxations for dense crfs with sparse higher-order potentials.</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png" alt="image-20220514135042254"></p>
-<p>其中$E(i,j)$是CRF loss，对于两个像素i，j，如果位置相近，颜色相近，预测出不同类别，就要进行惩罚： </p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png" alt="image-20220514135110482"></p>
-<p>对CRF loss进行加权，reliable region会有更小的权值，也就是主要针对非reliable region。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png" alt="image-20220514141301283"></p>
 
       
     </div>
