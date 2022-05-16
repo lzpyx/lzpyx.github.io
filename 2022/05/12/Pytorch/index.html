@@ -27,12 +27,15 @@
 <meta property="og:site_name" content="yixuanPan Blog">
 <meta property="og:description" content="Pytorchnn.Parameter()1self.v &#x3D; torch.nn.Parameter(torch.FloatTensor(hidden_size)) 将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513144113575.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513145608080.png">
 <meta property="article:published_time" content="2022-05-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-12T05:18:10.180Z">
+<meta property="article:modified_time" content="2022-05-16T06:40:47.875Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="随时更新">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513144113575.png">
 
 <link rel="canonical" href="http://lzpyx.github.io/2022/05/12/Pytorch/">
 
@@ -193,10 +196,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-12 00:00:00 / Modified: 13:18:10" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-16 14:40:47" itemprop="dateModified" datetime="2022-05-16T14:40:47+08:00">2022-05-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -220,6 +229,24 @@
       
         <h1 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h1><h2 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter()"></a>nn.Parameter()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.v = torch.nn.Parameter(torch.FloatTensor(hidden_size))</span><br></pre></td></tr></table></figure>
 <p>将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型的一部分，成为了模型中根据训练可以学习改动的参数了。</p>
+<h2 id="Cross-entropy"><a href="#Cross-entropy" class="headerlink" title="Cross entropy"></a>Cross entropy</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/149186719">参考</a></p>
+<p>熵：描述了一个分布</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513144113575.png" alt="image-20220513144113575"></p>
+<p>交叉熵：$H(p,q)=-\sum p(x)logq(x)$</p>
+<p>又可以写成: $H(p,q)=H(p)+D_{KL}(p|q)$</p>
+<p>其中$D_{KL}$指KL Divergence，描述两个分布的重合程度，当p和q两个分布相似时，散度接近于0</p>
+<p>在使用Cross entropy作为损失函数时，可以将q认为是训练的模型得到分布，p是实际模型的分布（也就是ground truth）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513145608080.png" alt="image-20220513145608080"></p>
+<p>cross_entropy=softmax+log+nll_loss </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criteon = nn.CrossEntropyLoss()</span><br><span class="line">loss = criteon(logits, target)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是Pytorch中的F.cross_entropy或nn.CrossEntropyLoss()必须传入的是logits(未经softmax处理的)，因为这里的F.cross_entropy已经包含了softmax,也就是说F.cross_entropy=softmax+log+nll_loss</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22210253/article/details/85229988">参考</a></p>
+<ul>
+<li>使用softmax对logits进行计算，得到每张图片的概率分布，值为0-1，概率之和为1</li>
+<li>对softmax的结果取自然对数，因为softmax后的数值为0-1，所以取了ln后值域为负无穷到0</li>
+<li>然后进行NLL Loss计算，NLL Loss的结果就是将上一步骤的值去掉负号求均值</li>
+</ul>
+<p>CrossEntropyLoss就是把上述三个步骤softmax+log+nll_loss合并为一步</p>
 
     </div>
 
@@ -301,7 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pytorch"><span class="nav-number">1.</span> <span class="nav-text">Pytorch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-Parameter"><span class="nav-number">1.1.</span> <span class="nav-text">nn.Parameter()</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pytorch"><span class="nav-number">1.</span> <span class="nav-text">Pytorch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#nn-Parameter"><span class="nav-number">1.1.</span> <span class="nav-text">nn.Parameter()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cross-entropy"><span class="nav-number">1.2.</span> <span class="nav-text">Cross entropy</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -315,7 +342,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -328,7 +355,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

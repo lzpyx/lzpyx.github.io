@@ -187,10 +187,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-12 00:00:00 / Modified: 13:18:10" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-16 14:40:47" itemprop="dateModified" datetime="2022-05-16T14:40:47+08:00">2022-05-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -214,6 +220,24 @@
       
           <h1 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h1><h2 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter()"></a>nn.Parameter()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.v = torch.nn.Parameter(torch.FloatTensor(hidden_size))</span><br></pre></td></tr></table></figure>
 <p>将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型的一部分，成为了模型中根据训练可以学习改动的参数了。</p>
+<h2 id="Cross-entropy"><a href="#Cross-entropy" class="headerlink" title="Cross entropy"></a>Cross entropy</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/149186719">参考</a></p>
+<p>熵：描述了一个分布</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513144113575.png" alt="image-20220513144113575"></p>
+<p>交叉熵：$H(p,q)=-\sum p(x)logq(x)$</p>
+<p>又可以写成: $H(p,q)=H(p)+D_{KL}(p|q)$</p>
+<p>其中$D_{KL}$指KL Divergence，描述两个分布的重合程度，当p和q两个分布相似时，散度接近于0</p>
+<p>在使用Cross entropy作为损失函数时，可以将q认为是训练的模型得到分布，p是实际模型的分布（也就是ground truth）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513145608080.png" alt="image-20220513145608080"></p>
+<p>cross_entropy=softmax+log+nll_loss </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criteon = nn.CrossEntropyLoss()</span><br><span class="line">loss = criteon(logits, target)</span><br></pre></td></tr></table></figure>
+<p>需要注意的是Pytorch中的F.cross_entropy或nn.CrossEntropyLoss()必须传入的是logits(未经softmax处理的)，因为这里的F.cross_entropy已经包含了softmax,也就是说F.cross_entropy=softmax+log+nll_loss</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22210253/article/details/85229988">参考</a></p>
+<ul>
+<li>使用softmax对logits进行计算，得到每张图片的概率分布，值为0-1，概率之和为1</li>
+<li>对softmax的结果取自然对数，因为softmax后的数值为0-1，所以取了ln后值域为负无穷到0</li>
+<li>然后进行NLL Loss计算，NLL Loss的结果就是将上一步骤的值去掉负号求均值</li>
+</ul>
+<p>CrossEntropyLoss就是把上述三个步骤softmax+log+nll_loss合并为一步</p>
 
       
     </div>
@@ -256,10 +280,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-12 00:00:00 / Modified: 13:13:37" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-16 14:36:10" itemprop="dateModified" datetime="2022-05-16T14:36:10+08:00">2022-05-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -300,7 +330,128 @@
 <li>不可变的列表</li>
 <li>对数据的记录</li>
 </ul>
-<h3 id="对数据的记录"><a href="#对数据的记录" class="headerlink" title="对数据的记录"></a>对数据的记录</h3><h4 id="元组拆包"><a href="#元组拆包" class="headerlink" title="元组拆包"></a>元组拆包</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 应用1</span></span><br><span class="line">city, year, pop, chg, area = (<span class="string">&#x27;Tokyo&#x27;</span>, <span class="number">2003</span>, <span class="number">32450</span>, <span class="number">0.66</span>, <span class="number">8014</span>)</span><br><span class="line"><span class="comment"># 应用2</span></span><br><span class="line">traveler_ids = [(<span class="string">&#x27;USA&#x27;</span>, )]</span><br></pre></td></tr></table></figure>
+<h3 id="对数据的记录"><a href="#对数据的记录" class="headerlink" title="对数据的记录"></a>对数据的记录</h3><h4 id="元组拆包"><a href="#元组拆包" class="headerlink" title="元组拆包"></a>元组拆包</h4><p>元组拆包可以应用在任何可迭代对象上，唯一硬性要求是元素数量要对应，除非使用*来忽略多余元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 应用1</span></span><br><span class="line">city, year, pop, chg, area = (<span class="string">&#x27;Tokyo&#x27;</span>, <span class="number">2003</span>, <span class="number">32450</span>, <span class="number">0.66</span>, <span class="number">8014</span>)</span><br><span class="line"><span class="comment"># 应用2</span></span><br><span class="line">traveler_ids = [(<span class="string">&#x27;USA&#x27;</span>, <span class="string">&#x27;31195855&#x27;</span>), (<span class="string">&#x27;BRA&#x27;</span>, <span class="string">&#x27;CE342567&#x27;</span>)]</span><br><span class="line"><span class="keyword">for</span> passport <span class="keyword">in</span> <span class="built_in">sorted</span>(traveler_ids):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;%s/%s&#x27;</span> % passport)</span><br><span class="line"><span class="comment"># 应用3</span></span><br><span class="line">a = (<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">b, c = a</span><br><span class="line"><span class="comment"># 应用4 交换两个变量的值</span></span><br><span class="line">b, a = a, b</span><br><span class="line"><span class="comment"># 应用5 用*运算符把一个可迭代对象拆开作为函数参数</span></span><br><span class="line">t = (<span class="number">20</span>, <span class="number">8</span>)</span><br><span class="line"><span class="built_in">divmod</span>(*t)</span><br></pre></td></tr></table></figure>
+<p><strong>使用*处理剩余元素</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a, *rest, c, d = <span class="built_in">range</span>(<span class="number">5</span>)</span><br><span class="line"><span class="number">0</span>, [<span class="number">1</span>,<span class="number">2</span>], <span class="number">3</span> ,<span class="number">4</span></span><br></pre></td></tr></table></figure>
+<h4 id="嵌套元组拆包"><a href="#嵌套元组拆包" class="headerlink" title="嵌套元组拆包"></a>嵌套元组拆包</h4><p>如(a, b, (c, d))的形式</p>
+<h4 id="具名元组"><a href="#具名元组" class="headerlink" title="具名元组"></a>具名元组</h4><p>使用collections.namedtuple构建一个带字段名的元组和一个有名字的类，<strong>目的是方便调试</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collection <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="comment"># 创建一个具名元组需要两个参数，1.类名：City, 2.类的各个字段的名字：(空格分割的字符串或多个字符串组成的可迭代对象)</span></span><br><span class="line">City = namedtuple(<span class="string">&#x27;City&#x27;</span>, <span class="string">&#x27;name country population coordinates&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建一个对象</span></span><br><span class="line">tokyo = City(<span class="string">&#x27;Tokyo&#x27;</span>, <span class="string">&#x27;JP&#x27;</span>, <span class="number">36</span>, (<span class="number">35.689</span>, <span class="number">139.691</span>))</span><br><span class="line"><span class="built_in">print</span>(tokyo)</span><br><span class="line"><span class="comment"># City(name=&#x27;Tokyo&#x27;,country=&#x27;JP&#x27;, population=36, coordinates=(35.689, 139.691))</span></span><br><span class="line"><span class="comment"># 还可以通过字段名或者位置来访问一个字段的信息，如tokyo[1],tokyo.population</span></span><br></pre></td></tr></table></figure>
+<h3 id="作为不可变的列表"><a href="#作为不可变的列表" class="headerlink" title="作为不可变的列表"></a>作为不可变的列表</h3><p>列表和元组的常见属性和方法p27</p>
+<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>使用切片对象slice增加代码可读性</p>
+<h3 id="多维切片和省略（…）"><a href="#多维切片和省略（…）" class="headerlink" title="多维切片和省略（…）"></a>多维切片和省略（…）</h3><h3 id="给切片赋值"><a href="#给切片赋值" class="headerlink" title="给切片赋值"></a>给切片赋值</h3><h2 id="对序列使用-和-（拼接）"><a href="#对序列使用-和-（拼接）" class="headerlink" title="对序列使用+和*（拼接）"></a>对序列使用+和*（拼接）</h2><p>不修改原有的操作对象，而是构建一个全新的序列</p>
+<h2 id="序列的增量赋值（-，-）"><a href="#序列的增量赋值（-，-）" class="headerlink" title="序列的增量赋值（+=，*=）"></a>序列的增量赋值（+=，*=）</h2><p>a+=b</p>
+<p>+=实际上调用了特殊方法<strong> iadd</strong>，用于就地加法，与a.extend(b)效果一样，但如果类没有实现 _ _iadd _ _则调用 _ _add _ _，此时a+=b就和a=a+b一样，a+b产生一个新的对象，然后再把a指向a+b的地址.</p>
+<p>可变序列如list都实现了_ _iadd _ _方法，也就是会就地改动，不可变序列不支持。</p>
+<p>*=和+=类似</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可变序列的重复拼接</span></span><br><span class="line">l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(l)) <span class="comment">#4311953800</span></span><br><span class="line">l*=<span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(l) <span class="comment">#[1,2,3,1,2,3]</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(l)) <span class="comment">#4311953800</span></span><br><span class="line"><span class="comment"># 不可变序列的重复拼接</span></span><br><span class="line">t = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t)) <span class="comment">#4312681568</span></span><br><span class="line">t*=<span class="number">2</span></span><br><span class="line"><span class="comment"># 执行完增量运算，创建了新的元组，对不可变序列进行重复拼接效率很低</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t)) <span class="comment">#4301348296</span></span><br></pre></td></tr></table></figure>
+<h2 id="list-sort方法和内置函数sorted"><a href="#list-sort方法和内置函数sorted" class="headerlink" title="list.sort方法和内置函数sorted"></a>list.sort方法和内置函数sorted</h2><p>list.sort就地排序，返回None，是为提醒本方法不会新建一个列表（<strong>会修改原数据</strong>）</p>
+<p>sorted会新建一个列表作为返回值，可以接受任何形式的可迭代对象作为参数，包括不可变序列和生成器（<strong>不会修改原数据</strong>）</p>
+<p>list.sort和sorted都有两个可选的关键字参数</p>
+<ul>
+<li>reverse：默认为False,升序,True,降序</li>
+<li>key：一个只有一个参数的函数，会被用在序列里的每个元素上，产生的结果将是排序算法依赖的对比关键字。如key = str.lower忽略大小写,key=len基于长度排序</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/07/AAAI2020%20RRM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/07/AAAI2020%20RRM/" class="post-title-link" itemprop="url">AAAI2020 RRM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-07T00:00:00+08:00">2022-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-14 14:30:04" itemprop="dateModified" datetime="2022-05-14T14:30:04+08:00">2022-05-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
+<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
+<ul>
+<li>分类分支：生成可靠的语义分割掩码</li>
+<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
+<h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
+<p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png" alt="image-20220513113536432"></p>
+<p>在得到CAM原始区域后，进行dense CRF，生成reliable CAM label，其中255代表类标签尚未确定，然后最终的reliable label是CRF label和reliable CAM label的交集。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png" alt="image-20220513142936184"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png" alt="image-20220513114226967"></p>
+<h3 id="分割分支"><a href="#分割分支" class="headerlink" title="分割分支"></a>分割分支</h3><p>分割分支与分类分支共享相同的backbone，使用联合损失进行优化：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png" alt="image-20220513115511054"></p>
+<p>其中cross entropy loss，针对所有标记了的像素（可靠区域）：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png" alt="image-20220513115849562"></p>
+<p>注意$i \in \Phi$代表ce loss只在值不等于255的可靠区域内进行计算， $ P^{c}_{net}(i)$是网络在i像素处的预测概率，上式就是一个标准的交叉熵损失</p>
+<p>为了对那些未标记的区域进行预测，引入dense energy loss，同时考虑RGB和空间位置</p>
+<p>Efficient relaxations for dense crfs with sparse higher-order potentials.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png" alt="image-20220514135042254"></p>
+<p>其中$E(i,j)$是CRF loss，对于两个像素i，j，如果位置相近，颜色相近，预测出不同类别，就要进行惩罚： </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png" alt="image-20220514135110482"></p>
+<p>对CRF loss进行加权，reliable region会有更小的权值，也就是主要针对非reliable region。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png" alt="image-20220514141301283"></p>
 
       
     </div>
@@ -612,7 +763,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-12 10:19:04" itemprop="dateModified" datetime="2022-05-12T10:19:04+08:00">2022-05-12</time>
+                <time title="Modified: 2022-05-15 10:31:33" itemprop="dateModified" datetime="2022-05-15T10:31:33+08:00">2022-05-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -906,98 +1057,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">CVPR2020 EIL 对抗擦除集成学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:52" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-EIL-对抗擦除集成学习"><a href="#CVPR2020-EIL-对抗擦除集成学习" class="headerlink" title="CVPR2020 EIL 对抗擦除集成学习"></a>CVPR2020 EIL 对抗擦除集成学习</h1><p>Erasing Integrated Learning : A Simple yet Effective Approach for Weakly Supervised Object Localization</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于分类网络的WSOL方法通常会突出显示最具辨别力的部分，而不是对象的整个范围。然而，试图探索对象的整体范围反而会降低图像分类的性能。</p>
-<p><strong>CAM</strong>定位得到的往往是对应类别最具判别性的部分，对抗擦除技术用于缓解这一问题</p>
-<p><strong>ADL</strong>随机擦除前向传播中最具辨别力的区域，节省了相当多的计算和参数开销。但ADL 仍然受到信息区域随机丢失引起的分类退化的限制。当 ADL 插入网络时，它随机选择擦除最具辨别力的区域或突出显示特征图中的信息区域。但是随机擦除会以某种方式丢弃重要信息，从而导致分类性能下降。</p>
-<p><strong>ACoL</strong> 在顶部应用两个并行分类器来训练网络，一个直接从共享骨干网输入未擦除的特征图并生成擦除掩码，而另一个通过此掩码输入擦除的特征图。</p>
-<p><strong>SeeNet</strong> 针对对象和背景线索引入了两种自擦除策略，可以防止注意力转移到背景区域，从而更准确地挖掘对象。</p>
-<p><strong>HaS</strong>随机隐藏给定图像的补丁，以迫使网络寻找对象的更多相关部分，这也可以被认为是一种数据增强方式。</p>
-<p><strong>DANet</strong> 借助对对象类别层次结构的更强监督，利用跨类别语义差异和空间差异来学习互补和有区别的视觉模式。</p>
-<p><strong>soft proposal network</strong></p>
-<p><strong>SPG</strong></p>
-<h2 id="EIL方法概述"><a href="#EIL方法概述" class="headerlink" title="EIL方法概述"></a>EIL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191709783.png" alt="image-20220427191709783" style="zoom: 67%;" /></p>
-<p>首先按照ADL中的掩码生成方法，利用channel wise avgpooling得到自注意力图，经过阈值筛选后得到Drop mask。然后使用Drop mask对原特征图进行擦除，将擦除后的和未擦除的特征图一起送入下一个卷积块，可以视作创建了擦除和未擦除两个数据流，网络参数权重共享，对擦除数据和未擦除数据分别产生两个分类损失，通过未擦除的损失，网络可以学习通过最具辨别力的类特定区域对对象进行分类。擦除的损失促使网络将注意力集中在判别力较低的部分以探索互补对象区域。在测试阶段EIL模块是不起作用的，直接使用普通模型得到注意力图。</p>
-<p>消融实验证明了两个流产生的梯度不会冲突或相互抵消</p>
-<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><ul>
-<li>CUB-200-2011</li>
-<li>ILSVRC 2016</li>
-</ul>
-<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
-<li><p>Top-1 classification accuracy</p>
-</li>
-<li><p>Top-1 localization accuracy</p>
-</li>
-<li><p>localization accuracy with known ground-truth class (GT Loc)</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1067,7 +1126,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1080,7 +1139,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

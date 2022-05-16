@@ -164,6 +164,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">CVPR2020 EIL 对抗擦除集成学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:52" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2020-EIL-对抗擦除集成学习"><a href="#CVPR2020-EIL-对抗擦除集成学习" class="headerlink" title="CVPR2020 EIL 对抗擦除集成学习"></a>CVPR2020 EIL 对抗擦除集成学习</h1><p>Erasing Integrated Learning : A Simple yet Effective Approach for Weakly Supervised Object Localization</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于分类网络的WSOL方法通常会突出显示最具辨别力的部分，而不是对象的整个范围。然而，试图探索对象的整体范围反而会降低图像分类的性能。</p>
+<p><strong>CAM</strong>定位得到的往往是对应类别最具判别性的部分，对抗擦除技术用于缓解这一问题</p>
+<p><strong>ADL</strong>随机擦除前向传播中最具辨别力的区域，节省了相当多的计算和参数开销。但ADL 仍然受到信息区域随机丢失引起的分类退化的限制。当 ADL 插入网络时，它随机选择擦除最具辨别力的区域或突出显示特征图中的信息区域。但是随机擦除会以某种方式丢弃重要信息，从而导致分类性能下降。</p>
+<p><strong>ACoL</strong> 在顶部应用两个并行分类器来训练网络，一个直接从共享骨干网输入未擦除的特征图并生成擦除掩码，而另一个通过此掩码输入擦除的特征图。</p>
+<p><strong>SeeNet</strong> 针对对象和背景线索引入了两种自擦除策略，可以防止注意力转移到背景区域，从而更准确地挖掘对象。</p>
+<p><strong>HaS</strong>随机隐藏给定图像的补丁，以迫使网络寻找对象的更多相关部分，这也可以被认为是一种数据增强方式。</p>
+<p><strong>DANet</strong> 借助对对象类别层次结构的更强监督，利用跨类别语义差异和空间差异来学习互补和有区别的视觉模式。</p>
+<p><strong>soft proposal network</strong></p>
+<p><strong>SPG</strong></p>
+<h2 id="EIL方法概述"><a href="#EIL方法概述" class="headerlink" title="EIL方法概述"></a>EIL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191709783.png" alt="image-20220427191709783" style="zoom: 67%;" /></p>
+<p>首先按照ADL中的掩码生成方法，利用channel wise avgpooling得到自注意力图，经过阈值筛选后得到Drop mask。然后使用Drop mask对原特征图进行擦除，将擦除后的和未擦除的特征图一起送入下一个卷积块，可以视作创建了擦除和未擦除两个数据流，网络参数权重共享，对擦除数据和未擦除数据分别产生两个分类损失，通过未擦除的损失，网络可以学习通过最具辨别力的类特定区域对对象进行分类。擦除的损失促使网络将注意力集中在判别力较低的部分以探索互补对象区域。在测试阶段EIL模块是不起作用的，直接使用普通模型得到注意力图。</p>
+<p>消融实验证明了两个流产生的梯度不会冲突或相互抵消</p>
+<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><ul>
+<li>CUB-200-2011</li>
+<li>ILSVRC 2016</li>
+</ul>
+<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
+<li><p>Top-1 classification accuracy</p>
+</li>
+<li><p>Top-1 localization accuracy</p>
+</li>
+<li><p>localization accuracy with known ground-truth class (GT Loc)</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -959,94 +1051,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/19/ICCV2021%20TS-CAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/19/ICCV2021%20TS-CAM/" class="post-title-link" itemprop="url">ICCV2021 TS-CAM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-19T00:00:00+08:00">2022-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-23 11:24:47" itemprop="dateModified" datetime="2022-04-23T11:24:47+08:00">2022-04-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICCV2021-TS-CAM"><a href="#ICCV2021-TS-CAM" class="headerlink" title="ICCV2021 TS-CAM"></a>ICCV2021 TS-CAM</h1><p>TS-CAM: Token Semantic Coupled Attention Map for Weakly Supervised Object Localization</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/vasgaowei/TS-CAM">github</a></p>
-<h2 id="Motivation-amp-background"><a href="#Motivation-amp-background" class="headerlink" title="Motivation&amp;background"></a>Motivation&amp;background</h2><p>作者认为部分激活是由 CNN 的内在特性引起的，其中卷积操作会产生局部感受野，并且难以捕捉像素之间的远程特征依赖关系。所以提出利用self-attention机制的长程建模能力来避免局部激活问题。TS-CAM首先将一张图像分割成一系列用于spatial embedding的patch token，它们将产生long-range的视觉关联性的attention map去避免局部激活现象。然后TS-CAM为每个patch tokens重新分配与种类有关的语义种类，使它们能够了解对象类别，TS-CAM最终将patch token与语义不可知的attention map耦合，以实现语义感知定位。</p>
-<p>vision transformer应用于WSOL还存在的问题：</p>
-<ul>
-<li>patch embeddings实际上破坏了输入图像的空间拓扑结构，这阻碍了目标定位激活图的生成</li>
-<li>vision transformer的注意力图与语义无关（无法区分对象类）并且不适合语义感知定位semantic-aware localization</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/19/ICCV2021%20TS-CAM/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1116,7 +1120,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1129,7 +1133,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

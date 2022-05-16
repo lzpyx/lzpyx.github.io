@@ -20,21 +20,32 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CVPR2020  正确评估WSOLEvaluating Weakly Supervised Object Localization Methods Right 源代码和数据集Github WSOL与WSOD,WSSS的特点从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL对象">
+  <meta name="description" content="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation ApproachIntroduction单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。 本文提出端到端方">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CVPR2020  正确评估WSOL">
-<meta property="og:url" content="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/index.html">
+<meta property="og:title" content="AAAI2020 RRM">
+<meta property="og:url" content="http://lzpyx.github.io/2022/05/07/AAAI2020%20RRM/index.html">
 <meta property="og:site_name" content="yixuanPan Blog">
-<meta property="og:description" content="CVPR2020  正确评估WSOLEvaluating Weakly Supervised Object Localization Methods Right 源代码和数据集Github WSOL与WSOD,WSSS的特点从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL对象">
+<meta property="og:description" content="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation ApproachIntroduction单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。 本文提出端到端方">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-27T11:24:47.260Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png">
+<meta property="article:published_time" content="2022-05-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-14T06:30:04.413Z">
 <meta property="article:author" content="lzpyx">
-<meta property="article:tag" content="WSOL">
-<meta property="article:tag" content="CNN">
+<meta property="article:tag" content="Transformers">
+<meta property="article:tag" content="Segmentation">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/">
+<link rel="canonical" href="http://lzpyx.github.io/2022/05/07/AAAI2020%20RRM/">
 
 
 <script id="page-configurations">
@@ -47,7 +58,7 @@
   };
 </script>
 
-  <title>CVPR2020  正确评估WSOL | yixuanPan Blog</title>
+  <title>AAAI2020 RRM | yixuanPan Blog</title>
   
 
 
@@ -171,7 +182,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/07/AAAI2020%20RRM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CVPR2020  正确评估WSOL
+          AAAI2020 RRM
         </h1>
 
         <div class="post-meta">
@@ -193,10 +204,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:24:47" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+              <time title="Created: 2022-05-07 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-07T00:00:00+08:00">2022-05-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-14 14:30:04" itemprop="dateModified" datetime="2022-05-14T14:30:04+08:00">2022-05-14</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -218,25 +235,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CVPR2020-正确评估WSOL"><a href="#CVPR2020-正确评估WSOL" class="headerlink" title="CVPR2020  正确评估WSOL"></a>CVPR2020  正确评估WSOL</h1><p>Evaluating Weakly Supervised Object Localization Methods Right</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/clovaai/wsolevaluation">源代码和数据集Github</a></p>
-<h2 id="WSOL与WSOD-WSSS的特点"><a href="#WSOL与WSOD-WSSS的特点" class="headerlink" title="WSOL与WSOD,WSSS的特点"></a>WSOL与WSOD,WSSS的特点</h2><p>从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL<strong>对象定位假设图像包含单个类别的对象，并在来自感兴趣类别的对象周围生成二进制掩码或边界框。</strong></p>
-<h2 id="本文对WSOL的理解"><a href="#本文对WSOL的理解" class="headerlink" title="本文对WSOL的理解"></a>本文对WSOL的理解</h2><p>自 WSOL 开创性的类激活映射 (CAM)  工作以来，该领域一直专注于如何扩展注意力区域以更广泛地覆盖对象并更好地定位它们。然而，这些策略依赖于完全本地化监督来验证超参数和模型选择，这在 WSOL  设置中原则上是被禁止的。</p>
-<p><strong>作者认为CAM后的各种方法对WSOL任务的提升依赖于超参和模型的选择，这样的人工选择其实引入了监督信息</strong></p>
-<span id="more"></span>
-<h2 id="WSOL-is-ill-posed"><a href="#WSOL-is-ill-posed" class="headerlink" title="WSOL is ill-posed"></a>WSOL is ill-posed</h2><h3 id="什么时候出现ill-posed"><a href="#什么时候出现ill-posed" class="headerlink" title="什么时候出现ill-posed?"></a>什么时候出现ill-posed?</h3><p>如果背景线索与目标标签的相关性比某些前景线索更强，则定位任务无法解决，即使我们知道图像级标签 Y 的确切后验 p(Y |X).和鸭⼦经常同时出现的背景，⽐如⽔，可能⽐鸭⼦的脚得分更⾼</p>
-<h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>针对适定 WSOL 的以数据为中心的解决方案：我们可以增加 (1) <strong>正样本 (Y = 1) 与更多较少代表的前景线索</strong>（例如，有脚的鸭子图像）和 (2) <strong>负样本  (Y = 0）具有更多与目标相关的背景线索</strong>（例如，具有水背景的非鸭子图像）。这种以数据为中心的方法是 WSOL 未来的发展方向。</p>
-<h2 id="本文提出的评估指标Metrics"><a href="#本文提出的评估指标Metrics" class="headerlink" title="本文提出的评估指标Metrics"></a>本文提出的评估指标Metrics</h2><h3 id="PxAP（需要像素级标注）"><a href="#PxAP（需要像素级标注）" class="headerlink" title="PxAP（需要像素级标注）"></a>PxAP（需要像素级标注）</h3><p>由像素级的precision和recall计算得到<strong>pixel average precision</strong></p>
-<h3 id="MaxBoxAcc"><a href="#MaxBoxAcc" class="headerlink" title="MaxBoxAcc"></a>MaxBoxAcc</h3><p>IOU阈值取0.5时即GT-known localization accuracy，定位框通过最大连通量确定</p>
-<h3 id="MaxBoxAccV2"><a href="#MaxBoxAccV2" class="headerlink" title="MaxBoxAccV2"></a>MaxBoxAccV2</h3><p>在IOU阈值取0.3，0.5，0.7时的性能均值</p>
-<p>定位框考虑所有估计框集和所有真实框集之间的最佳匹配</p>
-<h2 id="数据集与超参确定"><a href="#数据集与超参确定" class="headerlink" title="数据集与超参确定"></a>数据集与超参确定</h2><ol>
-<li>ImageNetV2</li>
-<li>CUB(<strong>从Flickr收集了1000张图片用于train-fullsup</strong>)</li>
-<li>OpenImages instance segmentation subset</li>
-</ol>
-<h3 id="随机搜索超参优化"><a href="#随机搜索超参优化" class="headerlink" title="随机搜索超参优化"></a>随机搜索超参优化</h3><p>对超参的可行空间进行随机搜索，避免人为选定参数引入的先验</p>
-<h2 id="semi-weakly-supervised-object-localization"><a href="#semi-weakly-supervised-object-localization" class="headerlink" title="semi-weakly-supervised object localization"></a>semi-weakly-supervised object localization</h2><p>将弱监督和全监督结合起来，考虑Few shot learning的方法</p>
+        <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
+<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
+<ul>
+<li>分类分支：生成可靠的语义分割掩码</li>
+<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
+<h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
+<p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png" alt="image-20220513113536432"></p>
+<p>在得到CAM原始区域后，进行dense CRF，生成reliable CAM label，其中255代表类标签尚未确定，然后最终的reliable label是CRF label和reliable CAM label的交集。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png" alt="image-20220513142936184"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png" alt="image-20220513114226967"></p>
+<h3 id="分割分支"><a href="#分割分支" class="headerlink" title="分割分支"></a>分割分支</h3><p>分割分支与分类分支共享相同的backbone，使用联合损失进行优化：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png" alt="image-20220513115511054"></p>
+<p>其中cross entropy loss，针对所有标记了的像素（可靠区域）：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png" alt="image-20220513115849562"></p>
+<p>注意$i \in \Phi$代表ce loss只在值不等于255的可靠区域内进行计算， $ P^{c}_{net}(i)$是网络在i像素处的预测概率，上式就是一个标准的交叉熵损失</p>
+<p>为了对那些未标记的区域进行预测，引入dense energy loss，同时考虑RGB和空间位置</p>
+<p>Efficient relaxations for dense crfs with sparse higher-order potentials.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png" alt="image-20220514135042254"></p>
+<p>其中$E(i,j)$是CRF loss，对于两个像素i，j，如果位置相近，颜色相近，预测出不同类别，就要进行惩罚： </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png" alt="image-20220514135110482"></p>
+<p>对CRF loss进行加权，reliable region会有更小的权值，也就是主要针对非reliable region。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png" alt="image-20220514141301283"></p>
 
     </div>
 
@@ -246,8 +271,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/WSOL/" rel="tag"># WSOL</a>
-              <a href="/tags/CNN/" rel="tag"># CNN</a>
+              <a href="/tags/Transformers/" rel="tag"># Transformers</a>
+              <a href="/tags/Segmentation/" rel="tag"># Segmentation</a>
           </div>
 
         
@@ -256,12 +281,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/27/CVPR2021%20DAP/" rel="prev" title="CVPR2021 DAP">
-      <i class="fa fa-chevron-left"></i> CVPR2021 DAP
+    <a href="/2022/05/06/CVPR2018%20AffinityNet/" rel="prev" title="CVPR2018 AffinityNet">
+      <i class="fa fa-chevron-left"></i> CVPR2018 AffinityNet
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/" rel="next" title="CVPR2020 PSOL 伪监督对象定位">
-      CVPR2020 PSOL 伪监督对象定位 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/" rel="next" title="流畅的python">
+      流畅的python <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -321,7 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2020-%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL"><span class="nav-number">1.</span> <span class="nav-text">CVPR2020  正确评估WSOL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WSOL%E4%B8%8EWSOD-WSSS%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">WSOL与WSOD,WSSS的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E5%AF%B9WSOL%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">1.2.</span> <span class="nav-text">本文对WSOL的理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WSOL-is-ill-posed"><span class="nav-number">1.3.</span> <span class="nav-text">WSOL is ill-posed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%87%BA%E7%8E%B0ill-posed"><span class="nav-number">1.3.1.</span> <span class="nav-text">什么时候出现ill-posed?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E6%96%87%E6%8F%90%E5%87%BA%E7%9A%84%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87Metrics"><span class="nav-number">1.4.</span> <span class="nav-text">本文提出的评估指标Metrics</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PxAP%EF%BC%88%E9%9C%80%E8%A6%81%E5%83%8F%E7%B4%A0%E7%BA%A7%E6%A0%87%E6%B3%A8%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">PxAP（需要像素级标注）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MaxBoxAcc"><span class="nav-number">1.4.2.</span> <span class="nav-text">MaxBoxAcc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MaxBoxAccV2"><span class="nav-number">1.4.3.</span> <span class="nav-text">MaxBoxAccV2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8E%E8%B6%85%E5%8F%82%E7%A1%AE%E5%AE%9A"><span class="nav-number">1.5.</span> <span class="nav-text">数据集与超参确定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%90%9C%E7%B4%A2%E8%B6%85%E5%8F%82%E4%BC%98%E5%8C%96"><span class="nav-number">1.5.1.</span> <span class="nav-text">随机搜索超参优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#semi-weakly-supervised-object-localization"><span class="nav-number">1.6.</span> <span class="nav-text">semi-weakly-supervised object localization</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><span class="nav-number">1.</span> <span class="nav-text">AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E5%88%86%E6%94%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">分类分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%89%B2%E5%88%86%E6%94%AF"><span class="nav-number">1.2.2.</span> <span class="nav-text">分割分支</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
