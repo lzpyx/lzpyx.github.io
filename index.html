@@ -195,7 +195,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-16 15:38:17" itemprop="dateModified" datetime="2022-05-16T15:38:17+08:00">2022-05-16</time>
+                <time title="Modified: 2022-05-18 10:08:01" itemprop="dateModified" datetime="2022-05-18T10:08:01+08:00">2022-05-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,26 +226,14 @@
 <li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
-<h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
-<p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113536432.png" alt="image-20220513113536432"></p>
-<p>在得到CAM原始区域后，进行dense CRF，生成reliable CAM label，其中255代表类标签尚未确定，然后最终的reliable label是CRF label和reliable CAM label的交集。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513142936184.png" alt="image-20220513142936184"></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513114226967.png" alt="image-20220513114226967"></p>
-<h3 id="分割分支"><a href="#分割分支" class="headerlink" title="分割分支"></a>分割分支</h3><p>分割分支与分类分支共享相同的backbone，使用联合损失进行优化：</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115511054.png" alt="image-20220513115511054"></p>
-<p>其中cross entropy loss，针对所有标记了的像素（可靠区域）：</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513115849562.png" alt="image-20220513115849562"></p>
-<p>注意$i \in \Phi$代表ce loss只在值不等于255的可靠区域内进行计算， $ P^{c}_{net}(i)$是网络在i像素处的预测概率，上式就是一个标准的交叉熵损失</p>
-<p>为了对那些未标记的区域进行预测，引入dense energy loss，同时考虑RGB和空间位置</p>
-<p>Efficient relaxations for dense crfs with sparse higher-order potentials.</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412699.png" alt="image-20220514135042254"></p>
-<p>其中$E(i,j)$是CRF loss，对于两个像素i，j，如果位置相近，颜色相近，预测出不同类别，就要进行惩罚： </p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png" alt="image-20220514135110482"></p>
-<p>对CRF loss进行加权，reliable region会有更小的权值，也就是主要针对非reliable region。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png" alt="image-20220514141301283"></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/15/AAAI2020%20RRM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -295,7 +283,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-16 14:40:47" itemprop="dateModified" datetime="2022-05-16T14:40:47+08:00">2022-05-16</time>
+                <time title="Modified: 2022-05-18 10:09:15" itemprop="dateModified" datetime="2022-05-18T10:09:15+08:00">2022-05-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,25 +308,14 @@
       
           <h1 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h1><h2 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter()"></a>nn.Parameter()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.v = torch.nn.Parameter(torch.FloatTensor(hidden_size))</span><br></pre></td></tr></table></figure>
 <p>将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型的一部分，成为了模型中根据训练可以学习改动的参数了。</p>
-<h2 id="Cross-entropy"><a href="#Cross-entropy" class="headerlink" title="Cross entropy"></a>Cross entropy</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/149186719">参考</a></p>
-<p>熵：描述了一个分布</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513144113575.png" alt="image-20220513144113575"></p>
-<p>交叉熵：$H(p,q)=-\sum p(x)logq(x)$</p>
-<p>又可以写成: $H(p,q)=H(p)+D_{KL}(p|q)$</p>
-<p>其中$D_{KL}$指KL Divergence，描述两个分布的重合程度，当p和q两个分布相似时，散度接近于0</p>
-<p>在使用Cross entropy作为损失函数时，可以将q认为是训练的模型得到分布，p是实际模型的分布（也就是ground truth）</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513145608080.png" alt="image-20220513145608080"></p>
-<p>cross_entropy=softmax+log+nll_loss </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">criteon = nn.CrossEntropyLoss()</span><br><span class="line">loss = criteon(logits, target)</span><br></pre></td></tr></table></figure>
-<p>需要注意的是Pytorch中的F.cross_entropy或nn.CrossEntropyLoss()必须传入的是logits(未经softmax处理的)，因为这里的F.cross_entropy已经包含了softmax,也就是说F.cross_entropy=softmax+log+nll_loss</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_22210253/article/details/85229988">参考</a></p>
-<ul>
-<li>使用softmax对logits进行计算，得到每张图片的概率分布，值为0-1，概率之和为1</li>
-<li>对softmax的结果取自然对数，因为softmax后的数值为0-1，所以取了ln后值域为负无穷到0</li>
-<li>然后进行NLL Loss计算，NLL Loss的结果就是将上一步骤的值去掉负号求均值</li>
-</ul>
-<p>CrossEntropyLoss就是把上述三个步骤softmax+log+nll_loss合并为一步</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/12/Pytorch/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

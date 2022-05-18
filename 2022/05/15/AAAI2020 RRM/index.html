@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141412099.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202205141413373.png">
 <meta property="article:published_time" content="2022-05-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-16T07:38:17.984Z">
+<meta property="article:modified_time" content="2022-05-18T02:08:01.364Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Transformers">
 <meta property="article:tag" content="Segmentation">
@@ -212,7 +212,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-16 15:38:17" itemprop="dateModified" datetime="2022-05-16T15:38:17+08:00">2022-05-16</time>
+                <time title="Modified: 2022-05-18 10:08:01" itemprop="dateModified" datetime="2022-05-18T10:08:01+08:00">2022-05-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,6 +243,7 @@
 <li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
+<span id="more"></span>
 <h3 id="分类分支"><a href="#分类分支" class="headerlink" title="分类分支"></a>分类分支</h3><p>首先计算CAM，对最后一个卷积层进行GAP，然后使用全连接层进行分类，然后使用全连接权重加权最后一个卷积层来重新获得每个类的heat map，最后三层卷积使用了空洞卷积（dilated convolution）。使用多尺度的原始图像，生成更稳定的CAM。</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513113417862.png" alt="image-20220513113417862"></p>
 <p>背景类使用AffinityNet中提到的背景类CAM生成方法</p>
