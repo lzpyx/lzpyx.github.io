@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="CVPR2021 SLT-NetStrengthen Learning Tolerance for Weakly Supervised Object Localization增强学习容忍度 gt known loc acc 87.6% github_STL-Net WSOL存在的问题  关注最具判别性的区域  由于 Common Raven 类别和 White-necked Raven  类别除了">
+  <meta name="description" content="MM2018 GraphnetGraphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation 通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CVPR2021 SLT-Net 增强学习容忍度">
-<meta property="og:url" content="http://lzpyx.github.io/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/index.html">
+<meta property="og:title" content="MM2018 Graphnet">
+<meta property="og:url" content="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/index.html">
 <meta property="og:site_name" content="yixuanPan Blog">
-<meta property="og:description" content="CVPR2021 SLT-NetStrengthen Learning Tolerance for Weakly Supervised Object Localization增强学习容忍度 gt known loc acc 87.6% github_STL-Net WSOL存在的问题  关注最具判别性的区域  由于 Common Raven 类别和 White-necked Raven  类别除了">
+<meta property="og:description" content="MM2018 GraphnetGraphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation 通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194123087.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194345253.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194432964.png">
-<meta property="article:published_time" content="2022-04-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-27T11:48:20.187Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518175638595.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518180119694.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518182534557.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518192435533.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518200018701.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194118191.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194245107.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194218621.png">
+<meta property="article:published_time" content="2022-05-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-18T12:00:49.959Z">
 <meta property="article:author" content="lzpyx">
-<meta property="article:tag" content="CNN">
-<meta property="article:tag" content="WSOL">
-<meta property="article:tag" content="定位分类解耦框架">
-<meta property="article:tag" content="Contrastive learning">
-<meta property="article:tag" content="Classification">
+<meta property="article:tag" content="Segmentation">
+<meta property="article:tag" content="WSSS">
+<meta property="article:tag" content="GCN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194123087.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/">
+<link rel="canonical" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
 
 
 <script id="page-configurations">
@@ -54,7 +58,7 @@
   };
 </script>
 
-  <title>CVPR2021 SLT-Net 增强学习容忍度 | yixuanPan Blog</title>
+  <title>MM2018 Graphnet | yixuanPan Blog</title>
   
 
 
@@ -178,7 +182,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -191,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CVPR2021 SLT-Net 增强学习容忍度
+          MM2018 Graphnet
         </h1>
 
         <div class="post-meta">
@@ -202,7 +206,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:48:20" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+              <time title="Created: 2022-05-18 00:00:00 / Modified: 20:00:49" itemprop="dateCreated datePublished" datetime="2022-05-18T00:00:00+08:00">2022-05-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,46 +229,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CVPR2021-SLT-Net"><a href="#CVPR2021-SLT-Net" class="headerlink" title="CVPR2021 SLT-Net"></a>CVPR2021 SLT-Net</h1><p>Strengthen Learning Tolerance for Weakly Supervised Object Localization增强学习容忍度</p>
-<p>gt known loc acc 87.6%</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/gyguo/SLT-Net">github_STL-Net</a></p>
-<h2 id="WSOL存在的问题"><a href="#WSOL存在的问题" class="headerlink" title="WSOL存在的问题"></a>WSOL存在的问题</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194123087.png" alt="image-20220427194123087" style="zoom: 50%;" /></p>
-<ul>
-<li><p>关注最具判别性的区域</p>
-<blockquote>
-<p>由于 Common Raven 类别和 White-necked Raven  类别除了颈部区域的颜色外几乎没有区别，因此从这些图像中提取的类激活图只会关注鸟的颈部，这将导致对物体位置的错误预测。我们认为，造成这种现象的原因是对语义错误缺乏容忍度</p>
-</blockquote>
-<p><strong>解决方法</strong>(Tolerance to Semantic Mistakes)</p>
-<blockquote>
-<p>减少相似类别之间错误分类的惩罚,缓解这一问题</p>
-</blockquote>
-</li>
-<li><p>视觉敏感性：不同实例的定位精度表现出不同的收敛趋势。（可以理解为鲁棒性不强）</p>
-<blockquote>
-<p>虽然只有图像级监督可用，但该模型在学习过程中几乎无法提取等变模式。这使得模型对输入视觉刺激的变化敏感，例如不同的色调、对比度、纹理、空间位置等。因此，不同实例的定位精度的收敛趋势变得非常不同。这种现象使得很难获得可以对任意输入图像实现准确性能的 WSOL 模型。</p>
-</blockquote>
-<p><strong>解决方法</strong>(Tolerance to Visual Stimulus)</p>
-<blockquote>
-<p>变换图像的视觉响应图与原始图像的视觉响应图相匹配来增强对图像多样性的容忍度。</p>
-</blockquote>
-</li>
+        <h1 id="MM2018-Graphnet"><a href="#MM2018-Graphnet" class="headerlink" title="MM2018 Graphnet"></a>MM2018 Graphnet</h1><p>Graphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation</p>
+<p>通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标记像素传播到未标记像素。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>WSSS</li>
+<li>GCN</li>
 </ul>
-<h2 id="WSOL的两类方法"><a href="#WSOL的两类方法" class="headerlink" title="WSOL的两类方法"></a>WSOL的两类方法</h2><p>定位、分类<strong>统一</strong>框架：</p>
-<blockquote>
-<p>Grad-cam, HaS, ACoL, SPG, ADL, Danet, EIL, CutMix</p>
-</blockquote>
-<p>定位、分类<strong>分离</strong>框架：</p>
-<blockquote>
-<p>PSOL, GC-net以及本文提出的SLT-Net</p>
-</blockquote>
-<h2 id="SLT-Net"><a href="#SLT-Net" class="headerlink" title="SLT-Net"></a>SLT-Net</h2><h3 id="总体框架"><a href="#总体框架" class="headerlink" title="总体框架"></a>总体框架</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194345253.png" alt="image-20220427194345253"></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png" alt="image-20220518171553332"></p>
 <span id="more"></span>
-<h3 id="语义错误容忍模块-SMT"><a href="#语义错误容忍模块-SMT" class="headerlink" title="语义错误容忍模块(SMT)"></a>语义错误容忍模块(SMT)</h3><p>semantic mistakes tolerance module (SMT)</p>
-<p>当预测结果中top-k包含gt时,减少其损失值(采用交叉熵,添加衰减系数)</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194432964.png" alt="image-20220427194432964" style="zoom:67%;" /></p>
-<h3 id="视觉刺激容忍模块-VST"><a href="#视觉刺激容忍模块-VST" class="headerlink" title="视觉刺激容忍模块(VST)"></a>视觉刺激容忍模块(VST)</h3><p>visual stimulus tolerance module(VST)</p>
-<p>对原图像进行图像变换,包括颜色抖动（包括亮度、对比度、饱和度和色调）、水平翻转、缩放。</p>
-<p>将原图像和变换后图像输入定位器得到两个类激活图,将变换后图像对应的类激活图做空间变换的逆变换,转换为与原图像一致的空间。原图像类激活图和逆变换后的变换图像类激活图应相似,使用均方差作为损失函数。</p>
+<h3 id="图的构建"><a href="#图的构建" class="headerlink" title="图的构建"></a>图的构建</h3><p>把学习一个伪标签看作是标签传播问题(label propagation)，传统的DCNN对具有规则网格结构的图像进行操作，很难解决标签传播问题，所以考虑将图像转换为图结构进行标签传播，图表示是通过考虑单个图像的低级线索（例如轮廓、形状）以及空间位置和语义内容的双重约束来构建的。</p>
+<p>将超像素作为图结构的节点，超像素提供了一个更大的、局部均匀且连贯的区域，保留了准确分割所需要的大部分结构。本文中使用SLIC进行超像素过分割，产生N个超像素。</p>
+<p><strong>提取超像素的特征 Feature Extraction on superpixels</strong></p>
+<p>CNN中浅层倾向于学习低级特征（如边缘），深层捕获更多的语义信息，语义分割要求要为每一个像素分配一个语义标签，因此语义特征从一个较深较粗糙的层中提取，本文采用了VGG-16从整张图像提取语义特征，从RELU-5取出特征，并通过双线性插值调整为与原图像相同的大小，最后沿通道维进行超像素池化，得到描述超像素$sp_i$的512维的特征向量 $ x_i$</p>
+<p><strong>双重约束 The dual constraints</strong></p>
+<p>具有相似特征的两个空间相邻节点通常倾向于属于同一类别。然而，仅依靠空间约束可能会忽略上下文语义交互。作者同时考虑空间信息和语义内容的双重约束来为每个图像构建一个图。</p>
+<p>定义图为$G=(V,\Epsilon,A)$</p>
+<ul>
+<li>$V$中的每个节点 $ v_i$对应一个超像素</li>
+<li>$E$中的每条边$\varepsilon_{ij}$代表连接两个空间相邻的超像素节点</li>
+<li>$A$是图邻接矩阵</li>
+</ul>
+<p>初始化空间权重矩阵，相邻为1，其他为0，用于描述超像素节点间的空间关系$W_l=[w_{l}^{ij}]_{n\times n}$</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518175638595.png" alt="image-20220518175638595"></p>
+<p>使用语义权重矩阵描述所有空间相邻的超像素节点之间的语义相似度，语义权重矩阵定义为,其中</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518180119694.png" alt="image-20220518180119694"></p>
+<p>$x_i$指描述超像素的特征向量，h=512，只有相邻的节点才有非0边连接</p>
+<p>根据语义权重矩阵从边集$E$中去除相似度较低的边，计算出最终的邻接矩阵 $ A$.为了避免产生孤立节点，利用以下策略取出语义相似度低的边，同时确保图的连通性：</p>
+<p>使用阈值$\gamma=u(W_s)-\sigma(W_s)$滤除低语义相似度的边， $ u$代表求均值, $ \sigma$代表求标准差，也就是分别对语义权重矩阵求均值和标准差。如果两节点的语义相似度低于阈值且低于节点的最大语义相似度，就删除这条边，得到最后的邻接矩阵，注意最后使用的邻接矩阵只有0、1两种值：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518182534557.png" alt="image-20220518182534557"></p>
+<h3 id="GraphNet"><a href="#GraphNet" class="headerlink" title="GraphNet"></a>GraphNet</h3><p>通过图卷积网络，将少量节点的标签传播到图中未标记的节点，为了能在构建的图上直接进行卷积，引入图拉普拉斯算子：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518192435533.png" alt="image-20220518192435533"></p>
+<p>将邻接矩阵和节点特征作为输入，进行前向传播</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518200018701.png" alt="image-20220518200018701"></p>
+<p><strong>使用CE loss在有标签的节点上进行训练</strong></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194118191.png" alt="image-20220518194118191"></p>
+<p>从线标中获取labeled nodes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194245107.png" alt="image-20220518194245107" style="zoom:80%;" /></p>
+<p>从框中获取labeled nodes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194218621.png" alt="image-20220518194218621" style="zoom: 67%;" /></p>
 
     </div>
 
@@ -274,11 +276,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/CNN/" rel="tag"># CNN</a>
-              <a href="/tags/WSOL/" rel="tag"># WSOL</a>
-              <a href="/tags/%E5%AE%9A%E4%BD%8D%E5%88%86%E7%B1%BB%E8%A7%A3%E8%80%A6%E6%A1%86%E6%9E%B6/" rel="tag"># 定位分类解耦框架</a>
-              <a href="/tags/Contrastive-learning/" rel="tag"># Contrastive learning</a>
-              <a href="/tags/Classification/" rel="tag"># Classification</a>
+              <a href="/tags/Segmentation/" rel="tag"># Segmentation</a>
+              <a href="/tags/WSSS/" rel="tag"># WSSS</a>
+              <a href="/tags/GCN/" rel="tag"># GCN</a>
           </div>
 
         
@@ -287,12 +287,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/27/ECCV2018%20SPG/" rel="prev" title="ECCV2018 SPG">
-      <i class="fa fa-chevron-left"></i> ECCV2018 SPG
+    <a href="/2022/05/15/AAAI2020%20RRM/" rel="prev" title="AAAI2020 RRM">
+      <i class="fa fa-chevron-left"></i> AAAI2020 RRM
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/27/CVPR2021%20DAP/" rel="next" title="CVPR2021 DAP">
-      CVPR2021 DAP <i class="fa fa-chevron-right"></i>
+    <a href="/2022/05/19/TPAMI2021%20A2GNN/" rel="next" title="TPAMI2021 A2GNN">
+      TPAMI2021 A2GNN <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -352,7 +352,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2021-SLT-Net"><span class="nav-number">1.</span> <span class="nav-text">CVPR2021 SLT-Net</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WSOL%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">WSOL存在的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WSOL%E7%9A%84%E4%B8%A4%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">WSOL的两类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SLT-Net"><span class="nav-number">1.3.</span> <span class="nav-text">SLT-Net</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">总体框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E9%94%99%E8%AF%AF%E5%AE%B9%E5%BF%8D%E6%A8%A1%E5%9D%97-SMT"><span class="nav-number">1.3.2.</span> <span class="nav-text">语义错误容忍模块(SMT)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E8%A7%89%E5%88%BA%E6%BF%80%E5%AE%B9%E5%BF%8D%E6%A8%A1%E5%9D%97-VST"><span class="nav-number">1.3.3.</span> <span class="nav-text">视觉刺激容忍模块(VST)</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MM2018-Graphnet"><span class="nav-number">1.</span> <span class="nav-text">MM2018 Graphnet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">图的构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphNet"><span class="nav-number">1.2.2.</span> <span class="nav-text">GraphNet</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

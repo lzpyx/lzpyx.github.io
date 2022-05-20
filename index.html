@@ -164,6 +164,184 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/19/TPAMI2021%20A2GNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/19/TPAMI2021%20A2GNN/" class="post-title-link" itemprop="url">TPAMI2021 A2GNN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-19T00:00:00+08:00">2022-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-20 21:00:21" itemprop="dateModified" datetime="2022-05-20T21:00:21+08:00">2022-05-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TPAMI2021-Affinity-Attention-Graph-Neural-Network"><a href="#TPAMI2021-Affinity-Attention-Graph-Neural-Network" class="headerlink" title="TPAMI2021 Affinity Attention Graph Neural Network"></a>TPAMI2021 Affinity Attention Graph Neural Network</h1><p>Affinity Attention Graph Neural Network for Weakly Supervised Semantic  Segmentation 亲和力与图卷积神经网络的结合</p>
+<p>将弱监督转换为semi-supervised（部分点是有标注的）</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>图神经网络GNN可以可以直接在不同节点之间建立长距离关系（边），聚合多个连接节点的信息，从而抑制标签噪声的负面影响，在标签有限的半监督任务中GNN也表现良好。</p>
+<p>GraphNet的缺点：</p>
+<ul>
+<li>GraphNet通过阈值构建了一个未加权的邻接图（邻接矩阵A）作为输入，会丢失一些信息，这样的图不能准确地提供足够的信息，因为它平等地对待所有边，边权重为 0 或  1，尽管实际上并非所有连接的节点都期望相同的亲和力。(邻接图中所有的边都是0或1，并不能很好的体现亲和力)</li>
+<li>GraphNet仅使用初始的标签节点进行训练，这使得当输入的初始节点特征不准确时，会导致不正确的特征聚合，只使用交叉熵损失，不能减轻不正确的节点、边和标签的影响。</li>
+</ul>
+<p>作者设计了一个 Affinity Attention Graph Neural Network (A2GNN) 来解决上述问题。具体来说，作者提出了一种新的亲和力CNN来将图像转换为加权图，而不是使用传统方法来构建未加权图。加权图比未加权图更合适，因为它可以为不同的节点对提供不同的亲和力。之前的方法如GraphNet只考虑局部连接的节点，构建了一个基于超像素的未加权图，而本文同时考虑了局部和长距离边，构建的加权图将一个像素视为一个节点。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518201510961.png" alt="image-20220518201510961"></p>
+<p>特点：</p>
+<ul>
+<li>soft edge</li>
+<li>pixel as node</li>
+<li>local and long distance</li>
+</ul>
+<p>为了产生准确的伪标签，作者设计了一个新的 GNN 层，其中应用了注意力机制和边缘权重，以确保准确的传播。因此，具有弱/无边缘连接或低注意力的成对节点之间的特征聚合可以显着下降，从而相应地消除不正确的传播。随着训练的进行，节点注意力会动态变化。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/19/TPAMI2021%20A2GNN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/18/MM2018%20Graphnet/" class="post-title-link" itemprop="url">MM2018 Graphnet</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-18 00:00:00 / Modified: 20:00:49" itemprop="dateCreated datePublished" datetime="2022-05-18T00:00:00+08:00">2022-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MM2018-Graphnet"><a href="#MM2018-Graphnet" class="headerlink" title="MM2018 Graphnet"></a>MM2018 Graphnet</h1><p>Graphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation</p>
+<p>通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标记像素传播到未标记像素。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>WSSS</li>
+<li>GCN</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png" alt="image-20220518171553332"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/18/MM2018%20Graphnet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/15/AAAI2020%20RRM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -365,7 +543,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-16 14:36:10" itemprop="dateModified" datetime="2022-05-16T14:36:10+08:00">2022-05-16</time>
+                <time title="Modified: 2022-05-18 11:24:27" itemprop="dateModified" datetime="2022-05-18T11:24:27+08:00">2022-05-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -388,48 +566,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-<h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
+          <h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
 <p>python中所有集合类型都可以使用len()函数查看集合长度，<strong>使用len(obj)而不是obj.len(),也不是obj.<strong> len </strong> ()</strong>,如果是自定义类的对象，python会自己调用类中实现的<strong> len </strong>方法</p>
 <p>魔法方法/特殊方法/双下方法，使用len()的形式调用</p>
-<h3 id="字符串表示形式"><a href="#字符串表示形式" class="headerlink" title="字符串表示形式"></a>字符串表示形式</h3><p><strong> repr </strong>方法得到一个对象的字符串表示形式</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42482896/article/details/107920036">字符串格式化语法</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;&#125; &#123;&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>) <span class="comment"># 不设置指定位置，按默认顺序</span></span><br><span class="line"><span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;0&#125; &#123;1&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>) <span class="comment"># 设置指定位置</span></span><br><span class="line"><span class="string">&#x27;hello world&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;&#123;1&#125; &#123;0&#125; &#123;1&#125;&quot;</span>.<span class="built_in">format</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="string">&#x27;world&#x27;</span>) <span class="comment"># 设置指定位置</span></span><br><span class="line"><span class="string">&#x27;world hello world&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;name&#125;, 职业：&#123;pos&#125;&quot;</span>.<span class="built_in">format</span>(name = <span class="string">&#x27;阿离&#x27;</span>, pos = <span class="string">&#x27;adc&#x27;</span>))</span><br><span class="line"><span class="comment"># 通过字典设置参数</span></span><br><span class="line">info_dict = &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;吕布&quot;</span>, <span class="string">&quot;pos&quot;</span>: <span class="string">&quot;top&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;name&#125;, 职业：&#123;pos&#125;&quot;</span>.<span class="built_in">format</span>(**info_dict))</span><br><span class="line"><span class="comment"># 通过列表索引设置参数, &#x27;0&#x27;是必须的</span></span><br><span class="line">info_list = [<span class="string">&quot;甄姬&quot;</span>, <span class="string">&quot;mid&quot;</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;姓名：&#123;0[0]&#125;, 职业：&#123;0[1]&#125;&quot;</span>.<span class="built_in">format</span>(info_list))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">姓名：阿离, 职业：adc</span></span><br><span class="line"><span class="string">姓名：吕布, 职业：top</span></span><br><span class="line"><span class="string">姓名：甄姬, 职业：mid</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<h1 id="第2章-序列构成的数组"><a href="#第2章-序列构成的数组" class="headerlink" title="第2章 序列构成的数组"></a>第2章 序列构成的数组</h1><h2 id="列表推导和生成器表达式"><a href="#列表推导和生成器表达式" class="headerlink" title="列表推导和生成器表达式"></a>列表推导和生成器表达式</h2><h3 id="列表推导"><a href="#列表推导" class="headerlink" title="列表推导"></a>列表推导</h3><p>python3中列表推导不会再有变量泄露问题，列表推导和生成器表达式都有局部作用域，表达式内部的变量和赋值只起局部作用，不影响表达式上下文中的同名变量。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="string">&#x27;ABC&#x27;</span></span><br><span class="line">dummy = [<span class="built_in">ord</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> x]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x <span class="comment"># &#x27;ABC&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dummy <span class="comment"># [65,66,67]</span></span><br></pre></td></tr></table></figure>
-<h4 id="笛卡儿积"><a href="#笛卡儿积" class="headerlink" title="笛卡儿积"></a>笛卡儿积</h4><p>python会忽略代码里[],{},()中的换行</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tshirts = [(color,size) <span class="keyword">for</span> color <span class="keyword">in</span> colors </span><br><span class="line">           				<span class="keyword">for</span> size <span class="keyword">in</span> sizes]</span><br><span class="line"><span class="comment"># 先以颜色排列，再以尺码排列</span></span><br><span class="line"><span class="comment"># 输出与for循环嵌套的结果一致（嵌套顺序一致时）</span></span><br></pre></td></tr></table></figure>
-<h3 id="生成器表达式"><a href="#生成器表达式" class="headerlink" title="生成器表达式"></a>生成器表达式</h3><p>初始化元组、数组或者其他序列类型，使用生成器表达式</p>
-<p>语法与列表推导相似，<strong>把方括号换成圆括号</strong></p>
-<p>列表推导也可以用来初始化元组、数组或其他序列类型（先构造列表，然后把列表传递到构造函数中），但使用生成器表达式更好，<strong>因为生成器表达式遵守了迭代器协议，可以逐个产出元素，而不是先建立一个完整的列表，再将列表传递到构造函数中，这样可以节省内存</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> tshirt <span class="keyword">in</span> (<span class="string">&#x27;%s %s&#x27;</span> % (c, s) <span class="keyword">for</span> c <span class="keyword">in</span> colors <span class="keyword">for</span> s <span class="keyword">in</span> sizes):</span><br><span class="line">    <span class="built_in">print</span>(tshirt)</span><br><span class="line"><span class="comment"># 生成器表达式逐个产出元素，而不是一次性产出多个元素组成的列表，可以节省掉for循环的内存开销</span></span><br></pre></td></tr></table></figure>
-<h2 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h2><ul>
-<li>不可变的列表</li>
-<li>对数据的记录</li>
-</ul>
-<h3 id="对数据的记录"><a href="#对数据的记录" class="headerlink" title="对数据的记录"></a>对数据的记录</h3><h4 id="元组拆包"><a href="#元组拆包" class="headerlink" title="元组拆包"></a>元组拆包</h4><p>元组拆包可以应用在任何可迭代对象上，唯一硬性要求是元素数量要对应，除非使用*来忽略多余元素</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 应用1</span></span><br><span class="line">city, year, pop, chg, area = (<span class="string">&#x27;Tokyo&#x27;</span>, <span class="number">2003</span>, <span class="number">32450</span>, <span class="number">0.66</span>, <span class="number">8014</span>)</span><br><span class="line"><span class="comment"># 应用2</span></span><br><span class="line">traveler_ids = [(<span class="string">&#x27;USA&#x27;</span>, <span class="string">&#x27;31195855&#x27;</span>), (<span class="string">&#x27;BRA&#x27;</span>, <span class="string">&#x27;CE342567&#x27;</span>)]</span><br><span class="line"><span class="keyword">for</span> passport <span class="keyword">in</span> <span class="built_in">sorted</span>(traveler_ids):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;%s/%s&#x27;</span> % passport)</span><br><span class="line"><span class="comment"># 应用3</span></span><br><span class="line">a = (<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">b, c = a</span><br><span class="line"><span class="comment"># 应用4 交换两个变量的值</span></span><br><span class="line">b, a = a, b</span><br><span class="line"><span class="comment"># 应用5 用*运算符把一个可迭代对象拆开作为函数参数</span></span><br><span class="line">t = (<span class="number">20</span>, <span class="number">8</span>)</span><br><span class="line"><span class="built_in">divmod</span>(*t)</span><br></pre></td></tr></table></figure>
-<p><strong>使用*处理剩余元素</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a, *rest, c, d = <span class="built_in">range</span>(<span class="number">5</span>)</span><br><span class="line"><span class="number">0</span>, [<span class="number">1</span>,<span class="number">2</span>], <span class="number">3</span> ,<span class="number">4</span></span><br></pre></td></tr></table></figure>
-<h4 id="嵌套元组拆包"><a href="#嵌套元组拆包" class="headerlink" title="嵌套元组拆包"></a>嵌套元组拆包</h4><p>如(a, b, (c, d))的形式</p>
-<h4 id="具名元组"><a href="#具名元组" class="headerlink" title="具名元组"></a>具名元组</h4><p>使用collections.namedtuple构建一个带字段名的元组和一个有名字的类，<strong>目的是方便调试</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collection <span class="keyword">import</span> namedtuple</span><br><span class="line"><span class="comment"># 创建一个具名元组需要两个参数，1.类名：City, 2.类的各个字段的名字：(空格分割的字符串或多个字符串组成的可迭代对象)</span></span><br><span class="line">City = namedtuple(<span class="string">&#x27;City&#x27;</span>, <span class="string">&#x27;name country population coordinates&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建一个对象</span></span><br><span class="line">tokyo = City(<span class="string">&#x27;Tokyo&#x27;</span>, <span class="string">&#x27;JP&#x27;</span>, <span class="number">36</span>, (<span class="number">35.689</span>, <span class="number">139.691</span>))</span><br><span class="line"><span class="built_in">print</span>(tokyo)</span><br><span class="line"><span class="comment"># City(name=&#x27;Tokyo&#x27;,country=&#x27;JP&#x27;, population=36, coordinates=(35.689, 139.691))</span></span><br><span class="line"><span class="comment"># 还可以通过字段名或者位置来访问一个字段的信息，如tokyo[1],tokyo.population</span></span><br></pre></td></tr></table></figure>
-<h3 id="作为不可变的列表"><a href="#作为不可变的列表" class="headerlink" title="作为不可变的列表"></a>作为不可变的列表</h3><p>列表和元组的常见属性和方法p27</p>
-<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>使用切片对象slice增加代码可读性</p>
-<h3 id="多维切片和省略（…）"><a href="#多维切片和省略（…）" class="headerlink" title="多维切片和省略（…）"></a>多维切片和省略（…）</h3><h3 id="给切片赋值"><a href="#给切片赋值" class="headerlink" title="给切片赋值"></a>给切片赋值</h3><h2 id="对序列使用-和-（拼接）"><a href="#对序列使用-和-（拼接）" class="headerlink" title="对序列使用+和*（拼接）"></a>对序列使用+和*（拼接）</h2><p>不修改原有的操作对象，而是构建一个全新的序列</p>
-<h2 id="序列的增量赋值（-，-）"><a href="#序列的增量赋值（-，-）" class="headerlink" title="序列的增量赋值（+=，*=）"></a>序列的增量赋值（+=，*=）</h2><p>a+=b</p>
-<p>+=实际上调用了特殊方法<strong> iadd</strong>，用于就地加法，与a.extend(b)效果一样，但如果类没有实现 _ _iadd _ _则调用 _ _add _ _，此时a+=b就和a=a+b一样，a+b产生一个新的对象，然后再把a指向a+b的地址.</p>
-<p>可变序列如list都实现了_ _iadd _ _方法，也就是会就地改动，不可变序列不支持。</p>
-<p>*=和+=类似</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可变序列的重复拼接</span></span><br><span class="line">l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(l)) <span class="comment">#4311953800</span></span><br><span class="line">l*=<span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(l) <span class="comment">#[1,2,3,1,2,3]</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(l)) <span class="comment">#4311953800</span></span><br><span class="line"><span class="comment"># 不可变序列的重复拼接</span></span><br><span class="line">t = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t)) <span class="comment">#4312681568</span></span><br><span class="line">t*=<span class="number">2</span></span><br><span class="line"><span class="comment"># 执行完增量运算，创建了新的元组，对不可变序列进行重复拼接效率很低</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t)) <span class="comment">#4301348296</span></span><br></pre></td></tr></table></figure>
-<h2 id="list-sort方法和内置函数sorted"><a href="#list-sort方法和内置函数sorted" class="headerlink" title="list.sort方法和内置函数sorted"></a>list.sort方法和内置函数sorted</h2><p>list.sort就地排序，返回None，是为提醒本方法不会新建一个列表（<strong>会修改原数据</strong>）</p>
-<p>sorted会新建一个列表作为返回值，可以接受任何形式的可迭代对象作为参数，包括不可变序列和生成器（<strong>不会修改原数据</strong>）</p>
-<p>list.sort和sorted都有两个可选的关键字参数</p>
-<ul>
-<li>reverse：默认为False,升序,True,降序</li>
-<li>key：一个只有一个参数的函数，会被用在序列里的每个元素上，产生的结果将是排序算法依赖的对比关键字。如key = str.lower忽略大小写,key=len基于长度排序</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -732,10 +879,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-05-05 00:00:00 / Modified: 11:42:34" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
+              <time title="Created: 2022-05-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-18 12:03:31" itemprop="dateModified" datetime="2022-05-18T12:03:31+08:00">2022-05-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -757,7 +910,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="百面机器学习"><a href="#百面机器学习" class="headerlink" title="百面机器学习"></a>百面机器学习</h1><h1 id="第一章-特征工程"><a href="#第一章-特征工程" class="headerlink" title="第一章 特征工程"></a>第一章 特征工程</h1><h2 id="01-特征归一化-Normalization"><a href="#01-特征归一化-Normalization" class="headerlink" title="01 特征归一化 Normalization"></a>01 特征归一化 Normalization</h2><p>目的是消除量纲影响，使不同指标之间具有可比性。</p>
+          <h1 id="百面机器学习"><a href="#百面机器学习" class="headerlink" title="百面机器学习"></a>百面机器学习</h1><h1 id="第1章-特征工程"><a href="#第1章-特征工程" class="headerlink" title="第1章 特征工程"></a>第1章 特征工程</h1><h2 id="01-特征归一化-Normalization"><a href="#01-特征归一化-Normalization" class="headerlink" title="01 特征归一化 Normalization"></a>01 特征归一化 Normalization</h2><p>目的是消除量纲影响，使不同指标之间具有可比性。</p>
 <p>常用方法：</p>
 <ul>
 <li>线性函数归一化Min-Max Scaling,将数据映射到0-1之间: $X_{norm} = \frac{X-X_{min}}{X_{max}-X_{min}}$</li>
@@ -869,177 +1022,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2018%20ACoL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2018%20ACoL/" class="post-title-link" itemprop="url">CVPR2018 ACoL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:41" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2018-ACoL"><a href="#CVPR2018-ACoL" class="headerlink" title="CVPR2018 ACoL"></a>CVPR2018 ACoL</h1><p>Adversarial Complementary Learning for Weakly Supervised Object Localization</p>
-<p>对抗性互补学习弱监督目标定位</p>
-<h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2><p>使用两个分类器</p>
-<p>分类器 A 利用判别性区域（马的头部和后腿）进行识别。通过擦除特征图中的此类判别区域，作为分类器 B的输入，分类器B被引导使用新的和互补对象区域（马的前腿）的特征进行分类。最后，通过融合来自两个分支的目标定位图获得最终的目标区域。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427190631533.png" alt="image-20220427190631533" style="zoom: 50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2018%20ACoL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">CVPR2020 EIL 对抗擦除集成学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:52" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-EIL-对抗擦除集成学习"><a href="#CVPR2020-EIL-对抗擦除集成学习" class="headerlink" title="CVPR2020 EIL 对抗擦除集成学习"></a>CVPR2020 EIL 对抗擦除集成学习</h1><p>Erasing Integrated Learning : A Simple yet Effective Approach for Weakly Supervised Object Localization</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于分类网络的WSOL方法通常会突出显示最具辨别力的部分，而不是对象的整个范围。然而，试图探索对象的整体范围反而会降低图像分类的性能。</p>
-<p><strong>CAM</strong>定位得到的往往是对应类别最具判别性的部分，对抗擦除技术用于缓解这一问题</p>
-<p><strong>ADL</strong>随机擦除前向传播中最具辨别力的区域，节省了相当多的计算和参数开销。但ADL 仍然受到信息区域随机丢失引起的分类退化的限制。当 ADL 插入网络时，它随机选择擦除最具辨别力的区域或突出显示特征图中的信息区域。但是随机擦除会以某种方式丢弃重要信息，从而导致分类性能下降。</p>
-<p><strong>ACoL</strong> 在顶部应用两个并行分类器来训练网络，一个直接从共享骨干网输入未擦除的特征图并生成擦除掩码，而另一个通过此掩码输入擦除的特征图。</p>
-<p><strong>SeeNet</strong> 针对对象和背景线索引入了两种自擦除策略，可以防止注意力转移到背景区域，从而更准确地挖掘对象。</p>
-<p><strong>HaS</strong>随机隐藏给定图像的补丁，以迫使网络寻找对象的更多相关部分，这也可以被认为是一种数据增强方式。</p>
-<p><strong>DANet</strong> 借助对对象类别层次结构的更强监督，利用跨类别语义差异和空间差异来学习互补和有区别的视觉模式。</p>
-<p><strong>soft proposal network</strong></p>
-<p><strong>SPG</strong></p>
-<h2 id="EIL方法概述"><a href="#EIL方法概述" class="headerlink" title="EIL方法概述"></a>EIL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191709783.png" alt="image-20220427191709783" style="zoom: 67%;" /></p>
-<p>首先按照ADL中的掩码生成方法，利用channel wise avgpooling得到自注意力图，经过阈值筛选后得到Drop mask。然后使用Drop mask对原特征图进行擦除，将擦除后的和未擦除的特征图一起送入下一个卷积块，可以视作创建了擦除和未擦除两个数据流，网络参数权重共享，对擦除数据和未擦除数据分别产生两个分类损失，通过未擦除的损失，网络可以学习通过最具辨别力的类特定区域对对象进行分类。擦除的损失促使网络将注意力集中在判别力较低的部分以探索互补对象区域。在测试阶段EIL模块是不起作用的，直接使用普通模型得到注意力图。</p>
-<p>消融实验证明了两个流产生的梯度不会冲突或相互抵消</p>
-<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><ul>
-<li>CUB-200-2011</li>
-<li>ILSVRC 2016</li>
-</ul>
-<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
-<li><p>Top-1 classification accuracy</p>
-</li>
-<li><p>Top-1 localization accuracy</p>
-</li>
-<li><p>localization accuracy with known ground-truth class (GT Loc)</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1109,7 +1091,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1122,7 +1104,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
