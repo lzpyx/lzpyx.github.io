@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-05-21 00:00:00 / Modified: 21:35:58" itemprop="dateCreated datePublished" datetime="2022-05-21T00:00:00+08:00">2022-05-21</time>
+              <time title="Created: 2022-05-21 00:00:00 / Modified: 22:08:52" itemprop="dateCreated datePublished" datetime="2022-05-21T00:00:00+08:00">2022-05-21</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,43 +224,14 @@
 <li>利用它来训练与类无关和类感知的无监督对象检测器，能够准确地定位每个图像的多个对象，并且在类感知的情况下，将它们分组到语义一致的类中</li>
 <li>在无监督对象发现方面以显着优势超越了最先进的技术</li>
 </ul>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>Object detection with limited supervision</li>
-<li>Object discovery</li>
-<li>Transformers</li>
-<li>Self-supervised learning (SSL)</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>将感兴趣的图像分成大小相等的块并将其提供给 DINO 模型。本文使用了最后一个注意力层的key component来计算不同patch之间的相似性，而不是cls token。这样做的目的是使得可以通过选择较少的相似patches来定位目标的一部分，称为seed。seed选取的标准是基于经验观察(empirical observation)：前景目标内的patches彼此之间的相关性高于与背景patches之间的相关性。接着向初始的seed添加与之高度相关的其他patches，称为seed expansion。最后通过计算每个image patch和所选的seed patches的相似性来构造一个二值分割掩码，并将对象的边界框推断为紧密包围该掩码中包含initial seed的最大连通分量的框。</p>
-<p>使用定位框作为训练标签来训练一个与类别无关的对象检测器，能够得到一个更准确的对象定位模型，能够检测图像中的多个对象。作者将此任务称为无监督的与类别无关的对象检测unsupervised class-agnostic object detection （尽管被称为无监督，但它可能会求助于自监督）。</p>
-<p>通过使用聚类技术将局部对象分组到视觉一致的类别中，能够在没有任何人工监督的情况下，使用预测的对象位置及其集群 ID 作为真实标注训练具有类别意识的对象检测器。我们将此任务称为无监督（类别感知）对象检测unsupervised (class-aware) object detection。</p>
-<h3 id="LOST"><a href="#LOST" class="headerlink" title="LOST"></a>LOST</h3><p>作者假设图像中至少有一个对象，并且 LOST 尝试在给定输入特征的情况下定位其中一个对象。为此，它依赖于选择可能属于某个对象的patches。我们称这些patches为“seeds”。</p>
-<h4 id="Initial-seed-selection"><a href="#Initial-seed-selection" class="headerlink" title="Initial seed selection"></a>Initial seed selection</h4><p>种子的选择策略基于以下假设：</p>
-<ul>
-<li>前景目标内的patches彼此之间的相关性高于与背景patches之间的相关性<ul>
-<li>经验观察到，把transformer feature作为patch的representation满足这一假设，对象中的patches彼此正相关，但与背景中的patches负相关</li>
-</ul>
-</li>
-<li>一个单独对象覆盖的区域少于背景，因此图像中相关性很小的patch属于对象的概率更高<ul>
-<li>基于这一假设，作者通过选择与其他patches正相关数量最少的patch作为种子seed $p^*$</li>
-</ul>
-</li>
-</ul>
-<p>对于一张图像，首先建立一个描述patch间的相似度的graph，用二元对称邻接矩阵表示</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521140158367.png" alt="image-20220521140158367"></p>
-<p>也就是说，两个节点$p,q$的特征 $ f_p,f_q$正相关，则通过无向边连接。然后将度(degree)最小的patch作为初始seed  $p^*$</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521151828884.png" alt="image-20220521151828884"></p>
-<p>图中第二行的红色点就是在图像中选取的初始seed  $p^<em>$，灰色代表和  $ p^</em>$相似的patches，也就是$f_p^Tf_q\geq即a_{p<em>q}=1$。最后一行表示的是每个patch的反度图(inverse degrees)$ 1/d_p$，从黄色到蓝色代表从degree从低到高，种子点就是degree最低的点。可以发现degree最低的patch最有可能落入物体中，与 $ p^</em>$正相关的少数块也可能属于同一个对象。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521154701237.png" alt="image-20220521154701237"></p>
-<h4 id="Seed-expansion"><a href="#Seed-expansion" class="headerlink" title="Seed expansion"></a>Seed expansion</h4><p>作者依靠经验观察来实现这一步骤，即对象内的像素往往呈正相关并且在graph中具有较小的度数。选取与种子点正相关且度数最低的k个patches，k的典型值是100</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521162619457.png" alt="image-20220521162619457"></p>
-<h4 id="Box-extraction"><a href="#Box-extraction" class="headerlink" title="Box extraction"></a>Box extraction</h4><p>将图像所有patch和种子区域S的特征比较，计算掩码</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521163156037.png" alt="image-20220521163156037"></p>
-<p>也就是说平均而言，如果token  q 的特征 fq 与 S 中的token的特征正相关，则token  q 被视为对象的一部分。为了去除最后一个虚假的相关补丁，我们最终选择 m 中的连通分量包含初始种子，并使用该组件的边界框作为检测到的对象。图 3 提供了种子扩展前后检测到的框的图示。</p>
-<h2 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h2><ul>
-<li>重叠实例无法分离</li>
-<li>当目标占据图像的大部分时违背了第二个假设</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/21/BMVC2021%20LOST/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -545,88 +516,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/Pytorch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="yixuanPan Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/12/Pytorch/" class="post-title-link" itemprop="url">Pytorch</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-18 10:09:15" itemprop="dateModified" datetime="2022-05-18T10:09:15+08:00">2022-05-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Pytorch"><a href="#Pytorch" class="headerlink" title="Pytorch"></a>Pytorch</h1><h2 id="nn-Parameter"><a href="#nn-Parameter" class="headerlink" title="nn.Parameter()"></a>nn.Parameter()</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.v = torch.nn.Parameter(torch.FloatTensor(hidden_size))</span><br></pre></td></tr></table></figure>
-<p>将一个固定不可训练的tensor转换成可以训练的类型parameter，并将这个parameter绑定到这个module里面(net.parameter()中就有这个绑定的parameter)，所以经过类型转换这个self.v变成了模型的一部分，成为了模型中根据训练可以学习改动的参数了。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/12/Pytorch/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -687,6 +576,88 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">深度学习常用操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-26 21:19:50" itemprop="dateModified" datetime="2022-05-26T21:19:50+08:00">2022-05-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="深度学习常用操作"><a href="#深度学习常用操作" class="headerlink" title="深度学习常用操作"></a>深度学习常用操作</h1><h1 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h1><h2 id="计时"><a href="#计时" class="headerlink" title="计时"></a>计时</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41204464/article/details/89257205">python 实现计时器（不同实现方式）</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">time_start = time.time() <span class="comment">#开始计时</span></span><br><span class="line"><span class="comment">#要执行的代码，或函数</span></span><br><span class="line">time_end = time.time()    <span class="comment">#结束计时</span></span><br><span class="line">time_c= time_end - time_start   <span class="comment">#运行所花时间</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;time cost&#x27;</span>, time_c, <span class="string">&#x27;s&#x27;</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1002,7 +973,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-18 12:03:31" itemprop="dateModified" datetime="2022-05-18T12:03:31+08:00">2022-05-18</time>
+                <time title="Modified: 2022-05-23 22:42:53" itemprop="dateModified" datetime="2022-05-23T22:42:53+08:00">2022-05-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
