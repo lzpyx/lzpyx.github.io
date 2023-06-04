@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CLIPLearning Transferable Visual Models From Natural Language Supervision 基于对比学习在超大规模的图像文本对数据集上进行训练，具有很强的zero-shot推理能力  LSegLanguage-driven semantic segmentation 使用文本信号来做zero-shot的分割，训练过程中是有监督的（在7个分割数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP Based Semantic Segmentation">
+<meta property="og:url" content="http://lzpyx.github.io/2023/01/13/CLIP%20Based%20Semantic%20Segmentation/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="CLIPLearning Transferable Visual Models From Natural Language Supervision 基于对比学习在超大规模的图像文本对数据集上进行训练，具有很强的zero-shot推理能力  LSegLanguage-driven semantic segmentation 使用文本信号来做zero-shot的分割，训练过程中是有监督的（在7个分割数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109123936814.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230110123813975.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230110130409500.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113202606115.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113171840430.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113204549509.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113204910946.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210301525009.png">
+<meta property="article:published_time" content="2023-01-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-29T01:19:43.881Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Open-Vocabulary Semantic Segmentation">
+<meta property="article:tag" content="CLIP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109123936814.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/01/13/CLIP%20Based%20Semantic%20Segmentation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CLIP Based Semantic Segmentation | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/13/CLIP%20Based%20Semantic%20Segmentation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CLIP Based Semantic Segmentation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-01-13T00:00:00+08:00">2023-01-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-29 09:19:43" itemprop="dateModified" datetime="2023-01-29T09:19:43+08:00">2023-01-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h1><p>Learning Transferable Visual Models From Natural Language Supervision</p>
+<p>基于对比学习在超大规模的图像文本对数据集上进行训练，具有很强的zero-shot推理能力</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109123936814.png" alt="image-20230109123936814"></p>
+<h1 id="LSeg"><a href="#LSeg" class="headerlink" title="LSeg"></a>LSeg</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2201.03546">Language-driven semantic segmentation</a></p>
+<p>使用文本信号来做zero-shot的分割，训练过程中是有监督的（在7个分割数据集上训练），文本编码器部分直接使用了CLIP的文本编码器，训练阶段也是冻结的。</p>
+<p>language-guided分割，可以应用于图像PS等</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230110123813975.png" alt="image-20230110123813975"></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230110130409500.png" alt="image-20230110130409500"></p>
+<ul>
+<li>视觉分支：本方法和有监督的语义分割方法一样，输入图像，提取特征（bottleneck feature），然后upscaling至与原图一样大小，模型输出与ground truth mask做cross entropy loss。图中的$\tilde{H}，\tilde{W}$代表降维后的bottleneck feature的高宽。注意训练时是有监督的（7个分割数据集）。</li>
+<li>文本分支：输入N个labels（N是随时可以变化的），经过文本编码器得到N个C维的文本特征。为了保证文本编码器的效果，本文直接采用了CLIP的文本编码器，在训练时也是冻结的。</li>
+<li>交互：$\tilde{H}\times \tilde{W}\times C$的图像密集特征与$N\times C$的文本特征在$C$这一维度相乘，输出为$\tilde{H}\times \tilde{W}\times N$的特征图，N就是类别数量，经upscaling和可学习的模块调整后与ground truth mask做cross entropy loss。</li>
+</ul>
+<span id="more"></span>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><p>在few-shot segmentation benchmark上进行评估</p>
+<h2 id="Contribution-amp-Limitation"><a href="#Contribution-amp-Limitation" class="headerlink" title="Contribution &amp; Limitation"></a>Contribution &amp; Limitation</h2><p><strong>Contribution:</strong></p>
+<ul>
+<li>把文本分支引入传统的有监督分割模型中，学习到language-aware的视觉特征，因此在推理时可以使用文本prompt做zero-shot segmentation</li>
+</ul>
+<p><strong>Limitation:</strong></p>
+<ul>
+<li>虽然使用了CLIP的预训练模型，但并不是将文本作为监督信号，目标函数仍旧是有监督中的cross entropy，依赖于手工标注的segmentation mask</li>
+</ul>
+<h1 id="CVPR2022-GroupViT"><a href="#CVPR2022-GroupViT" class="headerlink" title="CVPR2022 GroupViT"></a>CVPR2022 GroupViT</h1><p>GroupViT: Semantic Segmentation Emerges from Text Supervision</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NVlabs/GroupViT">github</a></p>
+<p>利用文本信号作为监督，摆脱了对segmentation mask的依赖,从而实现无监督的训练</p>
+<h2 id="Metodology"><a href="#Metodology" class="headerlink" title="Metodology"></a>Metodology</h2><p>在已有的ViT框架中加入grouping block和可学习的group tokens</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113202606115.png" alt="image-20230113202606115" style="zoom: 50%;" /></p>
+<h3 id="Framework："><a href="#Framework：" class="headerlink" title="Framework："></a>Framework：</h3><ul>
+<li>图像编码器的输入包括两个部分：1）原始图像的Patch Embedding，即图中$\{s_i^1\}$，2）<strong>Group Token</strong>,即图中$\{g_i^1\}$（每一个代表一块区域）</li>
+</ul>
+<blockquote>
+<p>如果图像尺寸为$224\times 224$,patch size为$16\times 16$, 得到$14\times14=196$长度的序列，经过Linear Projection得到Patch Embedding，如使用ViT-small则Patch Embedding特征维度为384，所以来自图像的输入变为$196\times 384$</p>
+<p>作者假设了group tokens的初始数量为64，即来自这一部分的输入为$64\times384$, 设置为64是为了在一开始有尽量多的聚类中心，group tokens与ViT中的cls token类似，cls token是想用一个token来代表整个图像，而64个group tokens是想代表一张图像的64个类/块，将语义接近的相似像素归结到64个clusters中</p>
+</blockquote>
+<ul>
+<li>将Group Token和Image Token组成的输入经6层Transformer Layers后送到到Grouping Block，将每个patch分配到对应的group中去，得到64个Group 的特征，也就是图中的$\{s_i^2\}$（Segment Token），维度为$64\times384$，至此将一个输入为$(196+64)\times 384$的输入降维至$64\times384$， 完成了第一次分配。</li>
+<li>为了进一步合并group，作者在第一层Grouping Block之后又加入了8个可学习的Group Token$\{g_i^2\}$,然后经过3层Transformer Layers后再次送入Grouping Block进行第二次分配，得到8个group的特征</li>
+<li>由于最后的目标函数是图像文本配对的对比损失函数，因此需要得到一个表示图像整体的特征，作者这里简单的将8个group的特征进行平均，得到一个$1\times 384$的特征，与文本编码器获得的特征进行对比学习loss的计算。</li>
+</ul>
+<h3 id="Grouping-Block"><a href="#Grouping-Block" class="headerlink" title="Grouping Block"></a>Grouping Block</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113171840430.png" alt="image-20230113171840430" style="zoom:50%;" /></p>
+<p>在Grouping Block内部：</p>
+<ul>
+<li><p>首先使用了类似于自注意力机制的方式，将Group Token作为q，Segment(Image) Token作为k，计算出相似度矩阵，维度为$64\times 196$，每一列代表当前Image Token和64个Group Token的相似度</p>
+</li>
+<li><p>然后对group tokens维求argmax，也就是在一列上求argmax，实际用gumbel_softmax 来替代argmax（图中得到的矩阵维度仍然是$64\times 196$，但变为了196个one-hot列向量），也就是计算每个Segment(Image) Token应该被分配给哪个Group Token。</p>
+</li>
+<li><p>经gumbel_softmax 得到的分配矩阵与Segment(Image) Token特征矩阵相乘，得到更新的Group Token特征$64\times 384$</p>
+<ul>
+<li><p>假设现在有2个Group Token，则相似度矩阵经过gumbel_softmax（对Group Token维）后，每列近似为一个one-hot向量，如$\begin{bmatrix}<br>  0&amp;  1&amp; 0\\<br>  1&amp;  0&amp; 1<br>\end{bmatrix}$，作用是将Segment(Image) Token分配给Group Token，这里先暂时称为分配矩阵。</p>
+</li>
+<li><p>若存在3个Segment(Image) Token，且特征维度为4，设为$\begin{bmatrix}<br>  a&amp;  b&amp;  c&amp; d\\<br>  e&amp;  f&amp;  g&amp; h\\<br>  i&amp;  j&amp;  k&amp; l<br>\end{bmatrix}$，与分配矩阵相乘,得到一个$2\times4$的矩阵，也就是更新得到了2个Group Token的特征，不难看出，每个Group Token的特征就是属于这一Group Token的所有Segment(Image) Token的特征之和（在每一维相加），<strong>并未进行平均的操作</strong>（做了是否会更好？）</p>
+<p>$\begin{bmatrix}<br>  0&amp;  1&amp; 0\\<br>  1&amp;  0&amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>  a&amp;  b&amp;  c&amp; d\\<br>  e&amp;  f&amp;  g&amp; h\\<br>  i&amp;  j&amp;  k&amp; l<br>\end{bmatrix}=\begin{bmatrix}<br>  e&amp;  f&amp;  g&amp; h\\<br>  a+i&amp;  b+j&amp;  c+k&amp; d+l<br>\end{bmatrix}$</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/495806343">gumbel_softmax</a> trick替代argmax解决了argmax操作不可导的问题, gumbel-softmax里面的 $\tau$值越接近无穷获得的向量越接近一个均匀分布的向量；$\tau$值越接近0获得的向量越接近一个one-hard vector；$\tau$值越接近1则gumbel-softmax就和softmax越类似</p>
+</blockquote>
+<h3 id="Multi-label-Image-Text-Contrastive-Loss"><a href="#Multi-label-Image-Text-Contrastive-Loss" class="headerlink" title="Multi-label Image-Text Contrastive Loss"></a>Multi-label Image-Text Contrastive Loss</h3><p>给定一个输入图像-文本对，通过提取其名词并使用多个句子模板提示它们来从原始文本生成新文本。训练GroupViT和文本编码器使正图像-文本对之间的特征相似度最大化，负图像-文本对之间的特征相似度最小化。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113204549509.png" alt="image-20230113204549509" style="zoom: 67%;" /></p>
+<h3 id="Zero-Shot-Inference"><a href="#Zero-Shot-Inference" class="headerlink" title="Zero-Shot Inference"></a>Zero-Shot Inference</h3><p>图片送入GroupViT后，得到8个segments的特征，然后将label送入文本编码器，得到label对应的文本特征，然后计算segment embedding和文本特征的相似度，选择最大相似度的label作为输出。背景类是使用阈值0.9来得到。</p>
+<p>存在局限性：由于固定了8个group，因此最多分出8个类</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230113204910946.png" alt="image-20230113204910946" style="zoom:67%;" /></p>
+<h2 id="Limitation-amp-Future-Work"><a href="#Limitation-amp-Future-Work" class="headerlink" title="Limitation &amp; Future Work"></a>Limitation &amp; Future Work</h2><ul>
+<li>并未使用一个更适合分割的backbone</li>
+<li>背景类干扰问题显著，分割分的不错，但是由于分类错误使得最后的mIoU较低，如果分类都正确则分割性能就逼近有监督性能了。这一问题主要是由于CLIP的训练方式，背景类是个模糊的概念，没有明确的物体语义信息。<ul>
+<li>可学习的背景阈值</li>
+<li>训练时加入约束，引入背景概念</li>
+<li>修改zero-shot推理的方式</li>
+</ul>
+</li>
+</ul>
+<h1 id="CVPR2022-CLIMS"><a href="#CVPR2022-CLIMS" class="headerlink" title="CVPR2022 CLIMS"></a>CVPR2022 CLIMS</h1><p>Cross Language Image Matching for Weakly Supervised Semantic Segmentation</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CVI-SZU/CLIMS">github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>CAM通常仅激活判别性对象区域，并且错误地包含许多与对象相关的背景。WSSS模型仅可用一组固定的image-level对象标签进行训练，因此很难抑制由开放集对象（open set objects）组成的不同的背景区域。</p>
+<p>WSSS往往由3个阶段：</p>
+<ul>
+<li>训练并产生CAM</li>
+<li>细化CAM，生成伪标签</li>
+<li>使用伪标签训练一个分割网络</li>
+</ul>
+<p>由于在close-world setting中，和目标密切相关的背景有助于目标对象的分类，比如背景铁轨和目标对象火车，这会导致CAM不必要的激活背景，此外，CAM还会struggles in the underestimation of object contents。这限制了初始CAM的质量。</p>
+<p>CLIM框架的核心思想是引入自然语言监督来激活更完整的对象区域并抑制密切相关的开放背景区域</p>
+<h2 id="Methodology-1"><a href="#Methodology-1" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210301525009.png" alt="image-20221030152534660"></p>
+<h3 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h3><p><strong>Backbone Network</strong></p>
+<p>CLIM在CAM的基础上，去掉了GAP，并使用sigmoid进行了归一化，得到k个类别的激活图(CAMs) $\mathbf{P}$： </p>
+<p>$\mathbf{P}_{k}(h, w)=\sigma\left(\mathbf{W}_{k}^{\top} \mathbf{Z}(h, w)\right)$</p>
+<p>W指全连接层，Z是最后一层卷积输出的特征图。</p>
+<p><strong>Text-driven Evaluator</strong></p>
+<p>Text-driven Evaluator使用了CLIP model，包含图像编码器$f_{i}(\cdot)$和文本编码器$f_{t}(\cdot)$。</p>
+<p>首先利用$\mathbf{P}$和$1-\mathbf{P}$来屏蔽背景和前景，并送入图像编码器，获得每个类别的图像特征表示，o代表object，b代表background：</p>
+<p>$\mathbf{v}_{k}^{i o}=f_{i}\left(\mathbf{X} \cdot \mathbf{P}_{k}\right), \quad \mathbf{v}_{k}^{i b}=f_{i}\left(\mathbf{X} \cdot\left(1-\mathbf{P}_{k}\right)\right)$</p>
+<p>与CLIP一样，CLIMs也使用了text prompt(文本提示) “a photo of {}”, 在分类的标签基础上，CLIMs还另外预先定义了k个类别密切相关（常常同时出现）的背景类别co-occurring background closely related with the object，并将text prompt后的句子送入文本编码器，获得每个类别的文本特征表示：</p>
+<p>$\mathbf{v}_{k}^{t o}=f_{t}\left(\mathbf{t}_{k}^{o}\right), \quad \mathbf{v}_{k, l}^{t b}=f_{t}\left(\mathbf{t}_{k, l}^{b}\right)$</p>
+<p>$\mathbf{t}_{k}^{o}$和$\mathbf{t}_{k, l}^{b}$分别表示对象的文本标签和特定类k的第l类相关共出现背景。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">background_dict = &#123;</span><br><span class="line">    <span class="string">&#x27;voc&#x27;</span>: [<span class="string">&#x27;a photo of tree.&#x27;</span>, <span class="string">&#x27;a photo of river.&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;a photo of sea.&#x27;</span>, <span class="string">&#x27;a photo of lake.&#x27;</span>, <span class="string">&#x27;a photo of water.&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;a photo of railway.&#x27;</span>, <span class="string">&#x27;a photo of railroad.&#x27;</span>, <span class="string">&#x27;a photo of track.&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;a photo of stone.&#x27;</span>, <span class="string">&#x27;a photo of rocks.&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;coco&#x27;</span>: [<span class="string">&#x27;a photo of tree.&#x27;</span>, <span class="string">&#x27;a photo of river.&#x27;</span>,</span><br><span class="line">             <span class="string">&#x27;a photo of sea.&#x27;</span>, <span class="string">&#x27;a photo of lake.&#x27;</span>, <span class="string">&#x27;a photo of water.&#x27;</span>,</span><br><span class="line">             <span class="string">&#x27;a photo of railway.&#x27;</span>, <span class="string">&#x27;a photo of railroad.&#x27;</span>, <span class="string">&#x27;a photo of track.&#x27;</span>,</span><br><span class="line">             <span class="string">&#x27;a photo of stone.&#x27;</span>, <span class="string">&#x27;a photo of rocks.&#x27;</span>, <span class="string">&#x27;a photo of playground.&#x27;</span>, <span class="string">&#x27;a photo of spray.&#x27;</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Object-region-and-Text-label-Matching"><a href="#Object-region-and-Text-label-Matching" class="headerlink" title="Object region and Text label Matching"></a>Object region and Text label Matching</h3><p>对于前景对象，使图像特征表示和文本特征表示相似度最大化</p>
+<p>$\mathcal{L}_{O T M}=-\sum_{k=1}^{K} y_{k} \cdot \log \left(s_{k}^{O O}\right)$</p>
+<p>$s_{k}^{o o}=\operatorname{sim}\left(\mathbf{v}_{k}^{i o}, \mathbf{v}_{k}^{t o}\right)$</p>
+<h3 id="Background-region-and-Text-label-Matching"><a href="#Background-region-and-Text-label-Matching" class="headerlink" title="Background region and Text label Matching"></a>Background region and Text label Matching</h3><p>为了提升前景对象激活的完整性，提出了the background region and text label matching loss来寻找更完整的object contents, 使背景的图像特征表示和前景的文本特征表示相似度最小化：</p>
+<p>$\mathcal{L}_{B T M}=-\sum_{k=1}^{K} y_{k} \cdot \log \left(1-s_{k}^{b o}\right)$</p>
+<p>$s_{k}^{b o}=\operatorname{sim}\left(\mathbf{v}_{k}^{i b}, \mathbf{v}_{k}^{t o}\right)$</p>
+<p>当这一损失变小时，意味着在$\mathbf{X} \cdot\left(1-\mathbf{P}_{k}\right)$中保留了更少的目标对象像素，在$\left(\mathbf{X} \cdot \mathbf{P}_{k}\right)$中恢复了更多的目标对象内容。</p>
+<h3 id="Co-occurring-Background-Suppression"><a href="#Co-occurring-Background-Suppression" class="headerlink" title="Co-occurring Background Suppression"></a>Co-occurring Background Suppression</h3><p>上述两个损失函数仅确保P完全覆盖目标对象，而没有考虑共同发生的类相关背景的错误激活。</p>
+<p>因此，CBS则是使前景对象的图像特征表示和背景的文本特征表示的相似度最小化。</p>
+<p>$\mathcal{L}_{C B S}=-\sum_{k=1}^{K} \sum_{l=1}^{L} y_{k} \cdot \log \left(1-s_{k, l}^{o b}\right)$</p>
+<p>$s_{k, l}^{o b}=\operatorname{sim}\left(\mathbf{v}_{k}^{i o}, \mathbf{v}_{k, l}^{t b}\right)$</p>
+<h3 id="Area-Regularization"><a href="#Area-Regularization" class="headerlink" title="Area Regularization"></a>Area Regularization</h3><p>在只有$\mathcal{L}_{O T M}, \mathcal{L}_{B T M} $，和$ \mathcal{L}_{C B S}$时，如果激活映射中同时包含了不相关的背景和目标对象，CLIP仍然可以正确预测目标对象。因此，作者还提出了一个像素级区域正则化项来约束激活图的大小，以确保在激活图中排除不相关的背景:</p>
+<p>$\mathcal{L}_{R E G}=\frac{1}{K} \sum_{k=1}^{K} S_{k}, \quad \text { where } \quad S_{k}=\frac{1}{H W} \sum_{h=1}^{H} \sum_{w=1}^{W} \mathbf{P}_{k}(h, w)$</p>
+<h3 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h3><p>$\mathcal{L}=\alpha \mathcal{L}_{O T M}+\beta \mathcal{L}_{B T M}+\gamma \mathcal{L}_{C B S}+\delta \mathcal{L}_{R E G}$</p>
+<p>用4个超参来调整各loss的权重</p>
+<h2 id="Contributions"><a href="#Contributions" class="headerlink" title="Contributions"></a>Contributions</h2><ul>
+<li>通过直接使用CLIP来引入文本监督</li>
+<li>利用CLIP来对open-world setting下WSSS方法中错误激活的背景进行抑制</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Open-Vocabulary-Semantic-Segmentation/" rel="tag"># Open-Vocabulary Semantic Segmentation</a>
+              <a href="/tags/CLIP/" rel="tag"># CLIP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/09/ICML2021%20ViLT/" rel="prev" title="ICML2021 ViLT">
+      <i class="fa fa-chevron-left"></i> ICML2021 ViLT
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/29/ECCV2022%20OpenSeg/" rel="next" title="ECCV2022 OpenSeg">
+      ECCV2022 OpenSeg <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CLIP"><span class="nav-number">1.</span> <span class="nav-text">CLIP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LSeg"><span class="nav-number">2.</span> <span class="nav-text">LSeg</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">2.1.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">2.2.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets"><span class="nav-number">2.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Limitation"><span class="nav-number">2.3.</span> <span class="nav-text">Contribution &amp; Limitation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2022-GroupViT"><span class="nav-number">3.</span> <span class="nav-text">CVPR2022 GroupViT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Metodology"><span class="nav-number">3.1.</span> <span class="nav-text">Metodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Framework%EF%BC%9A"><span class="nav-number">3.1.1.</span> <span class="nav-text">Framework：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Grouping-Block"><span class="nav-number">3.1.2.</span> <span class="nav-text">Grouping Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-label-Image-Text-Contrastive-Loss"><span class="nav-number">3.1.3.</span> <span class="nav-text">Multi-label Image-Text Contrastive Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zero-Shot-Inference"><span class="nav-number">3.1.4.</span> <span class="nav-text">Zero-Shot Inference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitation-amp-Future-Work"><span class="nav-number">3.2.</span> <span class="nav-text">Limitation &amp; Future Work</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2022-CLIMS"><span class="nav-number">4.</span> <span class="nav-text">CVPR2022 CLIMS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">4.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-1"><span class="nav-number">4.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Framework"><span class="nav-number">4.2.1.</span> <span class="nav-text">Framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-region-and-Text-label-Matching"><span class="nav-number">4.2.2.</span> <span class="nav-text">Object region and Text label Matching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Background-region-and-Text-label-Matching"><span class="nav-number">4.2.3.</span> <span class="nav-text">Background region and Text label Matching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Co-occurring-Background-Suppression"><span class="nav-number">4.2.4.</span> <span class="nav-text">Co-occurring Background Suppression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Area-Regularization"><span class="nav-number">4.2.5.</span> <span class="nav-text">Area Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overall"><span class="nav-number">4.2.6.</span> <span class="nav-text">Overall</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributions"><span class="nav-number">4.3.</span> <span class="nav-text">Contributions</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ICLR2021 Vision Transformer(ViT)AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE 整体架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICLR2021 Vision Transformer(ViT)">
+<meta property="og:url" content="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="ICLR2021 Vision Transformer(ViT)AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE 整体架构">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png">
+<meta property="article:published_time" content="2022-04-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T04:47:05.637Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Transformers">
+<meta property="article:tag" content="classification">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ICLR2021 Vision Transformer(ViT) | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ICLR2021 Vision Transformer(ViT)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-17T00:00:00+08:00">2022-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-05 12:47:05" itemprop="dateModified" datetime="2022-07-05T12:47:05+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" /></p>
+<span id="more"></span>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><ul>
+<li><p>首先将图像分割成$N=HW/P^2$个2D的patch（图像块），每个patch的分辨率是$P\times P$</p>
+</li>
+<li><p>使用线性映射将patch展平得到D维的patch embedding,并加上cls_token(全0初始化)</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">self.patch_embeddings = Conv2d(in_channels=in_channels,</span><br><span class="line">                                       out_channels=config.hidden_size,</span><br><span class="line">                                       kernel_size=patch_size,</span><br><span class="line">                                       stride=patch_size)</span><br><span class="line"><span class="comment"># 比如要对16x16的patch做embedding为D=768维的向量，则使用Conv2d(3,768，16，16)</span></span><br><span class="line"><span class="comment"># 卷积后的结果shape为(bs,768,H/16,W/16)</span></span><br><span class="line"><span class="comment"># 然后进行flatten操作，并调整维度为(bs,N,768)</span></span><br><span class="line"><span class="comment"># 最后把cls_token与图像的patch embedding拼接维度变为(bs,N+1,768)</span></span><br><span class="line"><span class="comment"># 其中cls_token的初始化为</span></span><br><span class="line">self.cls_token = nn.Parameter(torch.zeros(bs, <span class="number">1</span>, config.hidden_size))</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>对patch embeddings进行1D的position embedding（位置编码）得到tokens</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.position_embeddings = nn.Parameter(torch.zeros(<span class="number">1</span>, N+<span class="number">1</span>, config.hidden_size))</span><br><span class="line">embeddings = x + self.position_embeddings <span class="comment"># x是(bs,N+1,768),position_embedding是(1,N+1,768)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>送入transformer encoder</p>
+<blockquote>
+<p>transformer encoder由multiheaded self-attention block(MSA）和 MLP blocks交替组成，在输入每个block前都会先进行Layernorm (LN)，在每个block之后都会进行残差连接</p>
+</blockquote>
+<ul>
+<li>MSA的构建</li>
+</ul>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.attention_head_size = <span class="built_in">int</span>(config.hidden_size / self.num_attention_heads) <span class="comment"># 64=768/12</span></span><br><span class="line">self.all_head_size = self.num_attention_heads * self.attention_head_size <span class="comment">#768 = 12*64</span></span><br><span class="line"><span class="comment"># 使用全连接层构建QKV，一次性把所有头的QKV构建</span></span><br><span class="line">self.query = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.key = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line">self.value = Linear(config.hidden_size, self.all_head_size)</span><br><span class="line"><span class="comment">#通过reshape和permute得到多头结果，然后做self-attention，用softmax得到的概率分布乘上输入，完成特征的重构</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>MLP的构建</li>
+</ul>
+<blockquote>
+<p>2个Linear和GELU</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">    x = self.fc1(x) <span class="comment"># Linear(config.hidden_size, config.transformer[&quot;mlp_dim&quot;])</span></span><br><span class="line">    x = self.act_fn(x) <span class="comment"># GELU</span></span><br><span class="line">    x = self.dropout(x) </span><br><span class="line">    x = self.fc2(x) <span class="comment"># Linear(config.transformer[&quot;mlp_dim&quot;], config.hidden_size)</span></span><br><span class="line">    x = self.dropout(x)</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>利用cls_token进行分类</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.head = Linear(config.hidden_size, num_classes)</span><br><span class="line">logits = self.head(x[:, <span class="number">0</span>]) <span class="comment"># x的shape[bs, N+1, 768],取每张图片的第0个token，也就是cls_token,送进全连接进行分类</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>Attention(以dino_deitsmall16_pretrain.pth为例)</p>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Attention</span>(nn.Module):</span><br><span class="line"> <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, num_heads=<span class="number">8</span>, qkv_bias=<span class="literal">False</span>, qk_scale=<span class="literal">None</span>, attn_drop=<span class="number">0.</span>, proj_drop=<span class="number">0.</span></span>):</span><br><span class="line">     <span class="built_in">super</span>().__init__()</span><br><span class="line">     <span class="comment"># dim = 384, num_heads = 6</span></span><br><span class="line">     self.num_heads = num_heads</span><br><span class="line">     <span class="comment"># head_dim = 384/6 = 64</span></span><br><span class="line">     head_dim = dim // num_heads</span><br><span class="line">     <span class="comment"># 64**-0.5=0.125</span></span><br><span class="line">     self.scale = qk_scale <span class="keyword">or</span> head_dim ** -<span class="number">0.5</span></span><br><span class="line">		<span class="comment"># Linear(in_features=384, out_features=1152, bias=True) </span></span><br><span class="line">     self.qkv = nn.Linear(dim, dim * <span class="number">3</span>, bias=qkv_bias)</span><br><span class="line">     <span class="comment"># attn_drop = 0,未使用dropout</span></span><br><span class="line">     self.attn_drop = nn.Dropout(attn_drop)</span><br><span class="line">     <span class="comment"># Linear(in_features=384, out_features=384, bias=True) </span></span><br><span class="line">     self.proj = nn.Linear(dim, dim)</span><br><span class="line">     self.proj_drop = nn.Dropout(proj_drop)</span><br><span class="line"></span><br><span class="line"> <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">     <span class="comment"># [1,197,384]</span></span><br><span class="line">     B, N, C = x.shape</span><br><span class="line">     <span class="comment"># self.qkv(x) [1,197,1152]</span></span><br><span class="line">     <span class="comment"># 1152分为q,k,v三个部分每个部分384，每个384又是由多头组成，这里头数量为6，所以每个头的特征维度为64</span></span><br><span class="line">     <span class="comment"># reshape [1, 197, 3, 6, 64]</span></span><br><span class="line">     <span class="comment"># permute [3, 1, 6, 197, 64],含义是qkv三个输出，6个头，每个头对197个token的特征用64维的向量表示</span></span><br><span class="line">     qkv = self.qkv(x).reshape(B, N, <span class="number">3</span>, self.num_heads, C // self.num_heads).permute(<span class="number">2</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>)</span><br><span class="line">     <span class="comment"># qkv均为[1, 6, 197, 64]</span></span><br><span class="line">     q, k, v = qkv[<span class="number">0</span>], qkv[<span class="number">1</span>], qkv[<span class="number">2</span>]</span><br><span class="line">     <span class="comment"># attn [1,6,197,197]</span></span><br><span class="line">     attn = (q @ k.transpose(-<span class="number">2</span>, -<span class="number">1</span>)) * self.scale</span><br><span class="line">     <span class="comment"># 按行做softmax，行归一化</span></span><br><span class="line">     attn = attn.softmax(dim=-<span class="number">1</span>)</span><br><span class="line">     <span class="comment"># 对attn进行dropout，按概率将参数置零</span></span><br><span class="line">     attn = self.attn_drop(attn)</span><br><span class="line">     <span class="comment"># attn @ v [1, 6, 197, 64]</span></span><br><span class="line">     <span class="comment"># 重构出x [1,197,384]</span></span><br><span class="line">     x = (attn @ v).transpose(<span class="number">1</span>, <span class="number">2</span>).reshape(B, N, C)</span><br><span class="line">     x = self.proj(x)</span><br><span class="line">     x = self.proj_drop(x)</span><br><span class="line">     <span class="comment"># attn [1,6,197,197]</span></span><br><span class="line">     <span class="keyword">return</span> x, attn</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Transformers/" rel="tag"># Transformers</a>
+              <a href="/tags/classification/" rel="tag"># classification</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/" rel="prev" title="Transformer基础">
+      <i class="fa fa-chevron-left"></i> Transformer基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/19/ICCV2021%20TS-CAM/" rel="next" title="ICCV2021 TS-CAM">
+      ICCV2021 TS-CAM <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICLR2021-Vision-Transformer-ViT"><span class="nav-number">1.</span> <span class="nav-text">ICLR2021 Vision Transformer(ViT)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">1.2.</span> <span class="nav-text">Method</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

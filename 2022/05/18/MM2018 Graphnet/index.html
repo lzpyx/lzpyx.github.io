@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="MM2018 GraphnetGraphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation 通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MM2018 Graphnet">
+<meta property="og:url" content="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="MM2018 GraphnetGraphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation 通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518175638595.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518180119694.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518182534557.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518192435533.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518200018701.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194118191.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194245107.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194218621.png">
+<meta property="article:published_time" content="2022-05-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-18T12:00:49.959Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Segmentation">
+<meta property="article:tag" content="WSSS">
+<meta property="article:tag" content="GCN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MM2018 Graphnet | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MM2018 Graphnet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-18 00:00:00 / Modified: 20:00:49" itemprop="dateCreated datePublished" datetime="2022-05-18T00:00:00+08:00">2022-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MM2018-Graphnet"><a href="#MM2018-Graphnet" class="headerlink" title="MM2018 Graphnet"></a>MM2018 Graphnet</h1><p>Graphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation</p>
+<p>通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标记像素传播到未标记像素。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>WSSS</li>
+<li>GCN</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png" alt="image-20220518171553332"></p>
+<span id="more"></span>
+<h3 id="图的构建"><a href="#图的构建" class="headerlink" title="图的构建"></a>图的构建</h3><p>把学习一个伪标签看作是标签传播问题(label propagation)，传统的DCNN对具有规则网格结构的图像进行操作，很难解决标签传播问题，所以考虑将图像转换为图结构进行标签传播，图表示是通过考虑单个图像的低级线索（例如轮廓、形状）以及空间位置和语义内容的双重约束来构建的。</p>
+<p>将超像素作为图结构的节点，超像素提供了一个更大的、局部均匀且连贯的区域，保留了准确分割所需要的大部分结构。本文中使用SLIC进行超像素过分割，产生N个超像素。</p>
+<p><strong>提取超像素的特征 Feature Extraction on superpixels</strong></p>
+<p>CNN中浅层倾向于学习低级特征（如边缘），深层捕获更多的语义信息，语义分割要求要为每一个像素分配一个语义标签，因此语义特征从一个较深较粗糙的层中提取，本文采用了VGG-16从整张图像提取语义特征，从RELU-5取出特征，并通过双线性插值调整为与原图像相同的大小，最后沿通道维进行超像素池化，得到描述超像素$sp_i$的512维的特征向量 $ x_i$</p>
+<p><strong>双重约束 The dual constraints</strong></p>
+<p>具有相似特征的两个空间相邻节点通常倾向于属于同一类别。然而，仅依靠空间约束可能会忽略上下文语义交互。作者同时考虑空间信息和语义内容的双重约束来为每个图像构建一个图。</p>
+<p>定义图为$G=(V,\Epsilon,A)$</p>
+<ul>
+<li>$V$中的每个节点 $ v_i$对应一个超像素</li>
+<li>$E$中的每条边$\varepsilon_{ij}$代表连接两个空间相邻的超像素节点</li>
+<li>$A$是图邻接矩阵</li>
+</ul>
+<p>初始化空间权重矩阵，相邻为1，其他为0，用于描述超像素节点间的空间关系$W_l=[w_{l}^{ij}]_{n\times n}$</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518175638595.png" alt="image-20220518175638595"></p>
+<p>使用语义权重矩阵描述所有空间相邻的超像素节点之间的语义相似度，语义权重矩阵定义为,其中</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518180119694.png" alt="image-20220518180119694"></p>
+<p>$x_i$指描述超像素的特征向量，h=512，只有相邻的节点才有非0边连接</p>
+<p>根据语义权重矩阵从边集$E$中去除相似度较低的边，计算出最终的邻接矩阵 $ A$.为了避免产生孤立节点，利用以下策略取出语义相似度低的边，同时确保图的连通性：</p>
+<p>使用阈值$\gamma=u(W_s)-\sigma(W_s)$滤除低语义相似度的边， $ u$代表求均值, $ \sigma$代表求标准差，也就是分别对语义权重矩阵求均值和标准差。如果两节点的语义相似度低于阈值且低于节点的最大语义相似度，就删除这条边，得到最后的邻接矩阵，注意最后使用的邻接矩阵只有0、1两种值：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518182534557.png" alt="image-20220518182534557"></p>
+<h3 id="GraphNet"><a href="#GraphNet" class="headerlink" title="GraphNet"></a>GraphNet</h3><p>通过图卷积网络，将少量节点的标签传播到图中未标记的节点，为了能在构建的图上直接进行卷积，引入图拉普拉斯算子：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518192435533.png" alt="image-20220518192435533"></p>
+<p>将邻接矩阵和节点特征作为输入，进行前向传播</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518200018701.png" alt="image-20220518200018701"></p>
+<p><strong>使用CE loss在有标签的节点上进行训练</strong></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194118191.png" alt="image-20220518194118191"></p>
+<p>从线标中获取labeled nodes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194245107.png" alt="image-20220518194245107" style="zoom:80%;" /></p>
+<p>从框中获取labeled nodes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518194218621.png" alt="image-20220518194218621" style="zoom: 67%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Segmentation/" rel="tag"># Segmentation</a>
+              <a href="/tags/WSSS/" rel="tag"># WSSS</a>
+              <a href="/tags/GCN/" rel="tag"># GCN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/15/AAAI2020%20RRM/" rel="prev" title="AAAI2020 RRM">
+      <i class="fa fa-chevron-left"></i> AAAI2020 RRM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/19/TPAMI2021%20A2GNN/" rel="next" title="TPAMI2021 A2GNN">
+      TPAMI2021 A2GNN <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MM2018-Graphnet"><span class="nav-number">1.</span> <span class="nav-text">MM2018 Graphnet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E6%9E%84%E5%BB%BA"><span class="nav-number">1.2.1.</span> <span class="nav-text">图的构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphNet"><span class="nav-number">1.2.2.</span> <span class="nav-text">GraphNet</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

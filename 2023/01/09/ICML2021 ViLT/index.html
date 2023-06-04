@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ICML2021 ViLTViLT: Vision-and-Language Transformer Without Convolution or Region Supervision 参考 Background &amp; Motivation作者将Vision-and-Language Pretraining(VLP)模型分为了4种类型，如下图所示。每个矩形的高表示相对计算量大小，VE、TE和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ICML2021 ViLT">
+<meta property="og:url" content="http://lzpyx.github.io/2023/01/09/ICML2021%20ViLT/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="ICML2021 ViLTViLT: Vision-and-Language Transformer Without Convolution or Region Supervision 参考 Background &amp; Motivation作者将Vision-and-Language Pretraining(VLP)模型分为了4种类型，如下图所示。每个矩形的高表示相对计算量大小，VE、TE和">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109130250190.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109130222832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109133748192.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109194237753.png">
+<meta property="article:published_time" content="2023-01-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-10T03:20:29.568Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-and-Language Pretraining">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109130250190.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/01/09/ICML2021%20ViLT/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>ICML2021 ViLT | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/09/ICML2021%20ViLT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ICML2021 ViLT
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-09 00:00:00" itemprop="dateCreated datePublished" datetime="2023-01-09T00:00:00+08:00">2023-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-10 11:20:29" itemprop="dateModified" datetime="2023-01-10T11:20:29+08:00">2023-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ICML2021-ViLT"><a href="#ICML2021-ViLT" class="headerlink" title="ICML2021 ViLT"></a>ICML2021 ViLT</h1><p>ViLT: Vision-and-Language Transformer Without Convolution or Region Supervision</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369733979">参考</a></p>
+<h2 id="Background-amp-Motivation"><a href="#Background-amp-Motivation" class="headerlink" title="Background &amp; Motivation"></a>Background &amp; Motivation</h2><p>作者将Vision-and-Language Pretraining(VLP)模型分为了4种类型，如下图所示。每个矩形的高表示相对计算量大小，VE、TE和MI分别是visual embedding、text embedding和modality interaction的简写。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109130250190.png" alt="image-20230109130250190"></p>
+<p>作者这样分类的依据为：</p>
+<ul>
+<li>embedding阶段视觉部分和文本部分的参数量，计算量是否平衡</li>
+<li>交互阶段是否有深层的transformer进行交互（如a，b类的交互一般为简单的点积或者浅层的attention层来计算相似性，c,d类交互阶段的计算量更大，本文就属于d）</li>
+</ul>
+<p>作者认为以往的VLP模型至少存在两个问题：</p>
+<ul>
+<li>效率低，特征抽取阶段占据了比特征交互大得多的计算量</li>
+<li>表达能力受限，因为使用预训练的视觉模型来抽取特征，视觉预训练模型本身只是由固定的数据集训练得到，而且这一过程不能实现端到端</li>
+</ul>
+<p>以往的VLP算法耗时主要都集中在Visual embedding的部分，ViLT是首个将VE设计的如TE一样轻量的方法，该方法的主要计算量都集中在模态交互上。</p>
+<span id="more"></span>
+<h3 id="Visual-Embedding-Schema"><a href="#Visual-Embedding-Schema" class="headerlink" title="Visual Embedding Schema"></a><strong>Visual Embedding Schema</strong></h3><p>现有的VLP模型的text embedding基本上都使用类BERT结构，但是visual embedding存在着差异。在大多数情况下，visual embedding是现有VLP模型的瓶颈。visual embedding的方法总共有三大类，其中<strong>region feature</strong>方法通常采用Faster R-CNN二阶段检测器提取region的特征，<strong>grid feature</strong>方法直接使用CNN提取grid的特征，<strong>patch projection</strong>方法将输入图片切片投影提取特征。ViLT是首个使用patch projection来做visual embedding的方法。</p>
+<p>将目标检测系统嵌入到多模态学习中，大致分为3步：</p>
+<ul>
+<li>Backbone，抽取特征</li>
+<li>NMS：利用一个RPN网络抽取RoI，然后对RoI做NMS，把RoI降到固定的数量，也就是视觉的特征序列长度</li>
+<li>RoI head：把上一步得到的bounding box通过一个RoI head来抽取出一维的特征向量，也就是region feature</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109130222832.png" alt="image-20230109130222832" style="zoom: 67%;" /></p>
+<h3 id="Modality-Interaction-Schema"><a href="#Modality-Interaction-Schema" class="headerlink" title="Modality Interaction Schema"></a><strong>Modality Interaction Schema</strong></h3><p>模态交互部分可以分成两种方式：一种是<strong>single-stream</strong>(如BERT和UNITER)，另一种是<strong>dual-stream</strong>(如ViLBERT和LXMERT)。其中single-stream是对图像和文本concate然后进行交互操作，而dual-stream是不对图像和文本concate，分别送进视觉的transformer和NLP的模型，然后在某个时间点进行交互操作。ViLT延用single-stream的交互方式，因为dual-stream会引入额外的计算量。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109133748192.png" alt="image-20230109133748192"></p>
+<p>输入：</p>
+<ul>
+<li>输入的句子经过bert tokenizer编码得到$L\times H$的Word Embedding，其中$L$是文本序列长度, $H$为token embedding的维度（base：768）</li>
+<li>输入的图像经过编码得到$N$个patch tokens，维度与文本的token embedding维度一样为$H$</li>
+<li>将文本的L个token embedding、指示模态类型的modal-type embedding和位置编码<strong>相加</strong>（注意图中贴在一起，但不是拼接，是直接相加），然后将相加后的L个tokens embedding进行concat</li>
+<li>图像的的N个patch tokens embedding也做一样的操作，并在wrod embedding和visual embedding分别都嵌入了一个额外的可学习[class] embedding，方便和下游任务对接，最终得到transformer的输入，输入序列为$(N+L+2)\times H$，</li>
+</ul>
+<p>训练优化目标<strong>Pretraining Objectives</strong>：</p>
+<p>ViLT预训练的优化目标有两个：一个是image text matching(ITM)，另一个是masked language modeling(MLM)。</p>
+<p><strong>ImageText Matching</strong>：随机以0.5的概率将文本对应的图片替换成不同的图片，然后使用一个线性的ITM head（图中的Pooler和FC，Pooler是一个$H \times H$的矩阵）将输出的cls token feature（$1\times H$）映射成一个二值logits（也就是$1\times H$乘上$H\times H$的Pooler，得到$1\times H$的输出,送到FC,最终得到logits），做二分类，判断图像文本是否匹配。另外ViLT还设计了一个word patch alignment (WPA)来计算textual subset和visual subset的对齐分数, 利用了optimal transport最优运输理论，可以直观理解为，将文本部分输出和图像部分输出视作是两个分布，WPA则是计算两个分布之间的距离，优化的目标就是让这个距离越小越好。</p>
+<p><strong>Masked Language Modeling</strong>：MLM的目标是通过文本的上下文信息去预测masked的文本tokens。随机以0.15的概率mask掉tokens，然后文本输出接两层MLP来预测mask掉的tokens。</p>
+<p><strong>Whole Word Masking</strong>：另外ViLT还使用了whole word masking技巧。whole word masking是将连续的子词tokens进行mask的技巧，避免了只通过单词上下文进行预测。比如将“giraffe”词tokenized成3个部分[“gi”, “##raf”, “##fe”]，可以mask成[“gi”, “[MASK]”, “##fe”]，模型会通过mask的上下文信息[“gi”，“##fe”]来预测mask的“##raf”，就会导致不利用图像信息。</p>
+<p><strong>Image Augmentation</strong>： 以往的工作如基于目标检测的多模态学习方法没办法使用数据增强方法，因为这些方法在训练时是提前抽取好特征，存储在硬盘上，并非端到端的，如果需要做数据增强，就需要重新抽取特征，训练会变得非常麻烦。ViLT是端到端的，引入了RandAugment数据增强方法，但是去掉了color jitter和cutout。</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><p>预训练是在4 million setting下进行的：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230109194237753.png" alt="image-20230109194237753" style="zoom:67%;" /></p>
+<h2 id="Contributions-amp-Weakness"><a href="#Contributions-amp-Weakness" class="headerlink" title="Contributions &amp; Weakness"></a>Contributions &amp; Weakness</h2><p>Contributions：</p>
+<ul>
+<li>简单性：ViLT是首个将VE设计的如TE一样轻量的方法，去掉了CNN抽取特征和目标检测的步骤，推理速度更快。</li>
+<li>探索了更多的数据增强方式应用于多模态学习，提升精度</li>
+</ul>
+<p>Weakness：</p>
+<ul>
+<li>精度一般</li>
+<li>训练成本昂贵</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-and-Language-Pretraining/" rel="tag"># Vision-and-Language Pretraining</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/12/ECCV2020%20DETR/" rel="prev" title="ECCV2020 DETR">
+      <i class="fa fa-chevron-left"></i> ECCV2020 DETR
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/01/13/CLIP%20Based%20Semantic%20Segmentation/" rel="next" title="CLIP Based Semantic Segmentation">
+      CLIP Based Semantic Segmentation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICML2021-ViLT"><span class="nav-number">1.</span> <span class="nav-text">ICML2021 ViLT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Background-amp-Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Background &amp; Motivation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visual-Embedding-Schema"><span class="nav-number">1.1.1.</span> <span class="nav-text">Visual Embedding Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modality-Interaction-Schema"><span class="nav-number">1.1.2.</span> <span class="nav-text">Modality Interaction Schema</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets"><span class="nav-number">1.3.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributions-amp-Weakness"><span class="nav-number">1.4.</span> <span class="nav-text">Contributions &amp; Weakness</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

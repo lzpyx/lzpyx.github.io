@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Review of 3D Object Detection for Autonomous Driving任务目标：三维目标检测可细分为分类和定位两个子任务，通过紧密的三维边界框定位目标，以确定目标的类别、位置、大小、方向等信息 3D数据的不同表示类型  3D点云是由激光雷达对物体表面进行扫描得到的一组无序点的集合，具有不规则性和高度稀疏性，点云是三维空间(xyz坐标)点的集合。  激光雷达（Lig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Review of 3D Object Detection for Autonomous Driving ">
+<meta property="og:url" content="http://lzpyx.github.io/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="Review of 3D Object Detection for Autonomous Driving任务目标：三维目标检测可细分为分类和定位两个子任务，通过紧密的三维边界框定位目标，以确定目标的类别、位置、大小、方向等信息 3D数据的不同表示类型  3D点云是由激光雷达对物体表面进行扫描得到的一组无序点的集合，具有不规则性和高度稀疏性，点云是三维空间(xyz坐标)点的集合。  激光雷达（Lig">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420104604662.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420203250694.png">
+<meta property="article:published_time" content="2023-04-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-20T13:17:21.704Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="3D Detection and Segmentation">
+<meta property="article:tag" content="Autonomous Driving">
+<meta property="article:tag" content="LiDAR">
+<meta property="article:tag" content="Point cloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420104604662.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Review of 3D Object Detection for Autonomous Driving  | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Review of 3D Object Detection for Autonomous Driving 
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-19T00:00:00+08:00">2023-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-04-20 21:17:21" itemprop="dateModified" datetime="2023-04-20T21:17:21+08:00">2023-04-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Review-of-3D-Object-Detection-for-Autonomous-Driving"><a href="#Review-of-3D-Object-Detection-for-Autonomous-Driving" class="headerlink" title="Review of 3D Object Detection for Autonomous Driving"></a>Review of 3D Object Detection for Autonomous Driving</h1><p>任务目标：三维目标检测可细分为分类和定位两个子任务，通过紧密的三维边界框定位目标，以确定目标的类别、位置、大小、方向等信息</p>
+<p>3D数据的不同表示类型</p>
+<ul>
+<li><p>3D点云是由激光雷达对物体表面进行扫描得到的一组无序点的集合，具有不规则性和高度稀疏性，点云是三维空间(xyz坐标)点的集合。</p>
+<blockquote>
+<p>激光雷达（Light  Detection  And  Ranging,  LiDAR）来获取三维点云，除了激光雷达，雷达（Radio  Detection  and Ranging,  Radar）也可以用来获取点云</p>
+</blockquote>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348563616">体素Voxel</a>：体素是3D空间的像素。量化的，大小固定的点云。每个单元都是固定大小和离散坐标，可以理解为固定分辨率的三维栅格地图。</p>
+</li>
+</ul>
+<h2 id="基于图像的三维目标检测"><a href="#基于图像的三维目标检测" class="headerlink" title="基于图像的三维目标检测"></a>基于图像的三维目标检测</h2><ul>
+<li>Pseudo-LiDAR:从RGB图像生成伪激光雷达，这类方法通常由深度估计和目标检测两个网络组成，首先对RGB图像进行深度估计，然后利用深度将其投影为一个伪激光雷达，最后再像处理点云一样使用三维方法进检测</li>
+</ul>
+<h2 id="基于-LiDAR-的三维目标检测"><a href="#基于-LiDAR-的三维目标检测" class="headerlink" title="基于 LiDAR 的三维目标检测"></a>基于 LiDAR 的三维目标检测</h2><p>点云数据特点：</p>
+<ul>
+<li>提供了三维空间信息，包含了精确的深度和位置信息</li>
+<li>点云具有稀疏性、无序性和分布不均性</li>
+</ul>
+<p>按照对点云数据的处理方式，可以将基于LiDAR的三维目标检测方法分为：</p>
+<ul>
+<li>基于视图的View-based方法<ul>
+<li>将点云投影为二维视图（如鸟瞰图BEV），然后利用2D目标检测算法进行检测</li>
+</ul>
+</li>
+<li>基于体素的Voxel-based方法<ul>
+<li>将三维空间划分为均匀的网格，每个网格称为一个体素，将体素内部的点特征编码为体素特征，从而获得规则的网络输入。</li>
+</ul>
+</li>
+<li>基于原始点的Point-based方法<ul>
+<li>直接对原始点云进行处理</li>
+</ul>
+</li>
+<li>基于点和体素的Point-Voxel-based方法</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420104604662.png" alt="image-20230420104604662"></p>
+<h3 id="View-based"><a href="#View-based" class="headerlink" title="View-based"></a>View-based</h3><p>将三维点云投影到二维平面，如鸟瞰图（Bird Eye View, BEV），前视图（Front View, FV），然后再处理映射后的点云，降低计算复杂度。</p>
+<p>相比于直接处理稀疏的点云，在更为密集的二维平面如BEV视角下进行目标检测的优势：</p>
+<ul>
+<li>BEV保留了物体在三维空间中的原始物理尺寸</li>
+<li>由于对象在三维空间中是自然分离的，因此 <strong>BEV 上的所有对象之间均无遮挡</strong></li>
+<li>实际的交通场景中，所有物体均是位于地面的，垂直方向上的方差较小</li>
+<li>二维运算相比于三维运算计算量和复杂度更低</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/357626425">PointPillars</a>使用柱形体素(Pillars)来生成二维伪图像</p>
+<h3 id="Voxel-based"><a href="#Voxel-based" class="headerlink" title="Voxel-based"></a>Voxel-based</h3><p>点云是不规则数据，将点云表示为体素网格的形式，进而将点云的特征量化为体素的特征，方便后续处理</p>
+<p>将点云表示为体素的形式，使其规则化，便于运用神经网络进行高效处理，为了实现实时检测，大多数算法均采用基于体素的主体框架，主要改进方向包括：</p>
+<ul>
+<li>扩大体素的接受域<ul>
+<li>Voxel R-CNN</li>
+<li>VoTr</li>
+</ul>
+</li>
+<li>对体素空间进行结构感知</li>
+<li>与其他结构的结合，比如引入蒸馏</li>
+</ul>
+<p>存在问题：体素化会引入量化误差</p>
+<h3 id="Point-based"><a href="#Point-based" class="headerlink" title="Point-based"></a>Point-based</h3><p>点云的特性：</p>
+<ul>
+<li><p>排列不变性：点云是一组点的坐标的集合，集合内部的所有点之间具有排列不变性，即无论数组中点的顺序如何排列，都不会改变点云本身所表示的物体</p>
+</li>
+<li><p>旋转不变性：当数组发生旋转时，点云的形状不会发生变化，也就是说对一个点云集进行旋转操作，集合内所有点的坐标都变了，但表示的还是同一个物体。</p>
+</li>
+</ul>
+<p>这些特性使得研究者难以像处理图像、文字等其他规则序列一样直接处理点云。</p>
+<p>PointNet开创了使用原始点云进行特征提取的先河，使用最大池化和 T-Net 解决了点云数据的无序性和旋转不变性问题</p>
+<p>针对PointNet 中局部信息缺失的问题，PointNet++通过集抽象（Set Abstraction,SA）操作学习不同尺度的局部特征。</p>
+<p>主要是基于PointNet系列进行特征提取，检测精度较高，但计算成本高，难以实现实时检测</p>
+<h3 id="Point-Voxel-based"><a href="#Point-Voxel-based" class="headerlink" title="Point-Voxel-based"></a>Point-Voxel-based</h3><p>结合点云和体素</p>
+<h2 id="基于多传感器的三维目标检测"><a href="#基于多传感器的三维目标检测" class="headerlink" title="基于多传感器的三维目标检测"></a>基于多传感器的三维目标检测</h2><p>基于多传感器的三维目标检测方法最常使用的是相机和激光雷达这两种传感器，也有一些利用雷达作为图像或激光雷达的补充信息加以融合。依据对点云数据处理方式的不同，可以将其分为多视图融合与多模态融合两类。</p>
+<ul>
+<li><p>多视图融合方法通常将点云数据投影为 2D视图，如鸟瞰图（BEV）、前视图（FV），然后与 RGB 图像特征进行融合。(对不同视图进行融合，比如BEV视图，FV视图和RGB视图)</p>
+<blockquote>
+<p>基于多视图的融合方法本质上仍是基于二维数据的，这种降维再投影的操作消除了空间上的相关性，同时简单的高度压缩也使得点之间的拓扑关系丢失，造成检测精度降低</p>
+</blockquote>
+</li>
+<li><p>基于多模态融合的方法同样以图像和点云为输入，不同于多视图方法，其对点云的处理是直接在原始点云上进行的</p>
+<ul>
+<li>将点云投影到BEV层面与图像进行融合。缺点是投影到BEV的过程不可避免地会造成信息损失</li>
+<li>基于视锥的方法：首先对图像进行检测得到 2D 边界框，然后将二维检测结果投影到三维空间中生成截锥体，最后使用 PointNet回归边界框参数。缺点是过于依赖2D检测器性能。</li>
+<li>早期融合</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420203250694.png" alt="image-20230420203250694" style="zoom:80%;" /></p>
+<h2 id="三维目标检测常用数据集"><a href="#三维目标检测常用数据集" class="headerlink" title="三维目标检测常用数据集"></a>三维目标检测常用数据集</h2><h3 id="KITTI"><a href="#KITTI" class="headerlink" title="KITTI"></a>KITTI</h3><p>KITTI 数据集使用 Velodyne 64线 3D激光雷达完成点云数据的采集，还使用摄像机同步进行对应图像的采集</p>
+<p>KITTI 数据集包含<strong>7481个训练样本和7518 个测试样本</strong>，其主要的检测目标有 3 类：Car，Pedestrian，Cyclist。并依据遮挡、截断等情况，按难度将目标分为 Easy，Moderate，Hard这 3个等级。由于 KITTI 的测试集无法获取，大多数人将训练集划分为训练和验证两个集合，分别包含3712和3769个样本。</p>
+<p>与二维目标检测相同，平均准确率（mean Average Precision,mAP）是三维目标检测任务的主要评估指标。</p>
+<h3 id="nuScenes"><a href="#nuScenes" class="headerlink" title="nuScenes"></a>nuScenes</h3><p>由在波士顿和新加坡拍摄的 1 000 个驾驶场景组成，涵盖了<strong>不同地点、不同时间和不同天气</strong>的情况。每个场景的时长为20 秒，其中标注的三维边界框分为 23 个类，带有 8 个属性的标记值。其标注量是 KITTI 的 7倍，且 nuScenes 数据集是这 3 个数据集中唯一一个包含了三维 Radar 数据的数据集。此外，KITTI 数据集多是在白天和良好天气条件下拍摄的，而 nuScenes 数据集还<strong>包含了夜晚及雨天等场景</strong>。</p>
+<p>在三维目标检测任务中，nuScenes 数据集采用的评估指标包括mAP，NDS（nuScenes Detection Score ）和 PKL （ Planning KL-Divergence）。mAP 指标中使用鸟瞰图的中心距离 d 代替三维包围框的交并比进行阈值匹配。</p>
+<p>由于 mAP 中仅考虑了包围框的位置信息，不包括尺寸和方向，因此，nuScenes 还设计了一系列的 TP 指标，分别对预测的三维包围框的平移、尺度、方向、速度和属性进行评估，具体包括 ATE（ Average Translation Error ），ASE（Average Scale Error），AOE（Average Orientation Error），AVE（Average Velocity Error）和 AAE（Average Attribute Error）。NDS将 5 个 TP 指标集成到一个标量中。</p>
+<p>nuScenes 还增加了一个神经规划指标PKL[94-95]，用于对检测器的感知性能进行评估。它测量了规划器在接收到检测结果时与看到现实对象时的规划差异，并以此检验 3D 目标检测对下游自动驾驶任务的影响。PKL是非负值，其值越大代表检测性能越差。</p>
+<h3 id="Waymo-Open-Dataset"><a href="#Waymo-Open-Dataset" class="headerlink" title="Waymo Open Dataset"></a>Waymo Open Dataset</h3><p>目前最大的自动驾驶数据集，使用 5 个激光雷达传感器和 5 个高分辨率针孔相机收集数据，包含 798 个训练场景、202 个验证场景、150 个测试场景，每个场景的时长为 20 秒。Waymo Open Dataset 的注释频率比 nuScenes 高 5 倍，共有 2 500 万个 3D标签和2 200万个 2D标签。</p>
+<p>Waymo Open Dataset 使用的评价指标除了 AP 外，增加了一个包含方向角信息的 APH</p>
+<p>与 KITTI 类似，Waymo依据 3D边界框中包含的激光雷达点数划分了两个难度级别：LEVEL_1 中标注物体的雷达点数不少于 5 个，LEVEL_2中标注物体的雷达点数少于 5个。</p>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><ul>
+<li>二维到三维的深度估计<ul>
+<li>基于图像的方法精度低于LiDAR主要是因为二维向三维转换时的深度估计误差较大</li>
+</ul>
+</li>
+<li>基于 LiDAR的小目标检测<ul>
+<li>目前的算法大多能够识别出距离较近、具有稠密点云的目标，但对于一些远处的、包含雷达点极少的小目标仍然无法正确检测。点云特征提取过程通常会涉及到降采样操作，导致部分点丢失。</li>
+</ul>
+</li>
+<li>检测速度与精度的平衡</li>
+<li>4D 毫米波雷达</li>
+<li>多模态数据融合</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://kns.cnki.net/kcms/detail/50.1075.TP.20230407.1928.030.html">参考综述</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/3D-Detection-and-Segmentation/" rel="tag"># 3D Detection and Segmentation</a>
+              <a href="/tags/Autonomous-Driving/" rel="tag"># Autonomous Driving</a>
+              <a href="/tags/LiDAR/" rel="tag"># LiDAR</a>
+              <a href="/tags/Point-cloud/" rel="tag"># Point cloud</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/" rel="prev" title="CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation">
+      <i class="fa fa-chevron-left"></i> CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/" rel="next" title="TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe">
+      TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Review-of-3D-Object-Detection-for-Autonomous-Driving"><span class="nav-number">1.</span> <span class="nav-text">Review of 3D Object Detection for Autonomous Driving</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%9B%BE%E5%83%8F%E7%9A%84%E4%B8%89%E7%BB%B4%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.1.</span> <span class="nav-text">基于图像的三维目标检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-LiDAR-%E7%9A%84%E4%B8%89%E7%BB%B4%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.2.</span> <span class="nav-text">基于 LiDAR 的三维目标检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#View-based"><span class="nav-number">1.2.1.</span> <span class="nav-text">View-based</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Voxel-based"><span class="nav-number">1.2.2.</span> <span class="nav-text">Voxel-based</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-based"><span class="nav-number">1.2.3.</span> <span class="nav-text">Point-based</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Point-Voxel-based"><span class="nav-number">1.2.4.</span> <span class="nav-text">Point-Voxel-based</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E7%9A%84%E4%B8%89%E7%BB%B4%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B"><span class="nav-number">1.3.</span> <span class="nav-text">基于多传感器的三维目标检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="nav-number">1.4.</span> <span class="nav-text">三维目标检测常用数据集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#KITTI"><span class="nav-number">1.4.1.</span> <span class="nav-text">KITTI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nuScenes"><span class="nav-number">1.4.2.</span> <span class="nav-text">nuScenes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Waymo-Open-Dataset"><span class="nav-number">1.4.3.</span> <span class="nav-text">Waymo Open Dataset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">1.5.</span> <span class="nav-text">Future</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

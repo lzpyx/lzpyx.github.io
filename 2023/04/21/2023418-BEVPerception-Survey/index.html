@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="BEVPerception Survey参考上海ai lab分享 TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe 3D感知中的关键问题获取准确的深度信息是桥接Camera方法和LiDAR方法的关键： Pseudo-LiDAR Track：利用深度估计，将图像处理为伪点云 Cent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BEVPerception Survey">
+<meta property="og:url" content="http://lzpyx.github.io/2023/04/21/2023418-BEVPerception-Survey/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="BEVPerception Survey参考上海ai lab分享 TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe 3D感知中的关键问题获取准确的深度信息是桥接Camera方法和LiDAR方法的关键： Pseudo-LiDAR Track：利用深度估计，将图像处理为伪点云 Cent">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230421131122067.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418112704040.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230421131908083.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418113012481.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418214652782.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230418214834188.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215029665.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215102690.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215325873.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215433877.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215639006.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418220104581.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230418220208966.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230418220320826.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230418220436440.png">
+<meta property="article:published_time" content="2023-04-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-04T09:44:00.310Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Text-driven">
+<meta property="article:tag" content="BEV">
+<meta property="article:tag" content="3D Detection and Segmentation">
+<meta property="article:tag" content="Autonomous Driving">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230421131122067.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/04/21/2023418-BEVPerception-Survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>BEVPerception Survey | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/21/2023418-BEVPerception-Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BEVPerception Survey
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-21T00:00:00+08:00">2023-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-04 17:44:00" itemprop="dateModified" datetime="2023-06-04T17:44:00+08:00">2023-06-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="BEVPerception-Survey"><a href="#BEVPerception-Survey" class="headerlink" title="BEVPerception Survey"></a>BEVPerception Survey</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1A34y1W7Lu/?spm_id_from=333.1007.top_right_bar_window_view_later.content.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考上海ai lab分享</a></p>
+<p>TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe</p>
+<h2 id="3D感知中的关键问题"><a href="#3D感知中的关键问题" class="headerlink" title="3D感知中的关键问题"></a>3D感知中的关键问题</h2><h3 id="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："><a href="#获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：" class="headerlink" title="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："></a>获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：</h3><ul>
+<li>Pseudo-LiDAR Track：利用深度估计，将图像处理为伪点云</li>
+<li>Center-point Track：根据预测的heatmap回归深度</li>
+<li>Depth Pretrain：让backbone编码深度信息</li>
+<li><strong>BEV视角变化：回避直接做depth，在BEV空间下做检测</strong></li>
+</ul>
+<span id="more"></span>
+<h3 id="BEV感知的核心问题："><a href="#BEV感知的核心问题：" class="headerlink" title="BEV感知的核心问题："></a>BEV感知的核心问题：</h3><ul>
+<li>如何通过从透视图到BEV的视图转换来重建丢失的3D信息</li>
+<li>如何在BEV网格中获取真值标注</li>
+<li>如何制定流水线，纳入来自不同来源和视图的特征</li>
+<li>当传感器配置在不同场景中不一样时，如何适应和推广算法</li>
+</ul>
+<h2 id="General-BEV-Perception"><a href="#General-BEV-Perception" class="headerlink" title="General BEV Perception"></a>General BEV Perception</h2><p>基于输入数据，将BEV感知研究主要分为三个部分——BEV摄像机、BEV激光雷达和BEV融合。</p>
+<ul>
+<li>BEV摄像机表示仅有视觉或以视觉为中心的算法，用于从多个周围摄像机进行三维目标检测或分割</li>
+<li>BEV激光雷达描述了点云输入的检测或分割任务</li>
+<li>BEV融合描述了来自多个传感器输入的融合机制，例如摄像头、激光雷达、全球导航卫星系统、里程计、高清地图、CAN总线等。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230421131122067.png" alt="image-20230421131122067"></p>
+<h3 id="发展脉络"><a href="#发展脉络" class="headerlink" title="发展脉络"></a>发展脉络</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418112704040.png" alt="image-20230418112704040" style="zoom:80%;" /></p>
+<h2 id="Methodology-of-BEV-Perception"><a href="#Methodology-of-BEV-Perception" class="headerlink" title="Methodology of BEV Perception"></a>Methodology of BEV Perception</h2><h3 id="BEV-Camera"><a href="#BEV-Camera" class="headerlink" title="BEV Camera"></a>BEV Camera</h3><p>single-camera setting, stereo setting, multi-camera setting使用不同的技术来解决<strong>深度问题</strong></p>
+<h4 id="General-Pipeline"><a href="#General-Pipeline" class="headerlink" title="General Pipeline"></a>General Pipeline</h4><p>基于BEV相机的感知pipeline如图所示，包含三个部分：</p>
+<ul>
+<li>二维特征提取（使用一个2D Feature Extractor进行特征提取）</li>
+<li>视图变换(view transformation): 编码3D信息<ul>
+<li>从2D特征预测深度信息</li>
+<li>从3D空间采样2D特征</li>
+</ul>
+</li>
+<li>3D解码器</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230421131908083.png" alt="image-20230421131908083"></p>
+<h2 id="View-Transformation"><a href="#View-Transformation" class="headerlink" title="View Transformation"></a>View Transformation</h2><p>2D和3D的空间转换</p>
+<ul>
+<li>从3D到2D投影，3D空间中的多个点会投影到同一个点上</li>
+<li>从2D到3D，缺失深度信息，不能对应到3D空间中某一个点上</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418113012481.png" alt="image-20230418113012481"></p>
+<p>解决View Transformation的两种方法</p>
+<ul>
+<li>From 2D to 3D prior：预测深度<ul>
+<li>Lift, Splat, Shoot，深度分布</li>
+<li>Pseudo-LiDAR，稠密深度</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418214652782.png" alt="image-20230418214652782"></p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230418214834188.png" alt="image-20230418214834188"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215029665.png" alt="image-20230418215029665"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215102690.png" alt="image-20230418215102690"></p>
+<ul>
+<li>From 3D to 2D prior：<ul>
+<li>根据3D到2D的投影，采样一个局部区域的2D特征来构成3D特征<ul>
+<li>DETR3D</li>
+<li>显式的BEV feature</li>
+</ul>
+</li>
+<li>隐式的3D Positional Embedding</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215325873.png" alt="image-20230418215325873"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215433877.png" alt="image-20230418215433877"></p>
+<h2 id="BEVFormer"><a href="#BEVFormer" class="headerlink" title="BEVFormer"></a>BEVFormer</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418215639006.png" alt="image-20230418215639006"></p>
+<p>显式的BEV feature的好处：</p>
+<ul>
+<li>适合多任务学习：3D目标检测和地图语义分割</li>
+<li>可迁移性强：常用的2D检测头，都可以通过很小的修改迁移到3D检测上</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230418220104581.png" alt="image-20230418220104581"></p>
+<p>注意力机制</p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230418220208966.png" alt="image-20230418220208966"></p>
+<p>时序线索的作用：</p>
+<ul>
+<li>使用时序可以解决遮挡问题，提高召回率</li>
+<li>定位更加准确</li>
+<li>速度估计更加精确</li>
+</ul>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230418220320826.png" alt="image-20230418220320826"></p>
+<p>多任务有好有坏</p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230418220436440.png" alt="image-20230418220436440"></p>
+<h2 id="BEVFormer-1"><a href="#BEVFormer-1" class="headerlink" title="BEVFormer++"></a>BEVFormer++</h2><h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><p>工业界：</p>
+<ul>
+<li>模型设计</li>
+<li>传感器信息融合</li>
+<li>聚焦三维真值获取</li>
+<li>模型计算效率提升（车端，剪枝，量化，部署）</li>
+</ul>
+<p>学术界：</p>
+<ul>
+<li>模型设计<ul>
+<li>BEV感知/建图/多任务</li>
+<li><strong>BEV空间中的端到端感知决策一体化</strong></li>
+</ul>
+</li>
+<li>数据集Benchmark<ul>
+<li>支持BEV感知/多任务</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Text-driven/" rel="tag"># Text-driven</a>
+              <a href="/tags/BEV/" rel="tag"># BEV</a>
+              <a href="/tags/3D-Detection-and-Segmentation/" rel="tag"># 3D Detection and Segmentation</a>
+              <a href="/tags/Autonomous-Driving/" rel="tag"># Autonomous Driving</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/" rel="prev" title="TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe">
+      <i class="fa fa-chevron-left"></i> TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/10/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/" rel="next" title="线性代数的本质">
+      线性代数的本质 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BEVPerception-Survey"><span class="nav-number">1.</span> <span class="nav-text">BEVPerception Survey</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3D%E6%84%9F%E7%9F%A5%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">3D感知中的关键问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%87%86%E7%A1%AE%E7%9A%84%E6%B7%B1%E5%BA%A6%E4%BF%A1%E6%81%AF%E6%98%AF%E6%A1%A5%E6%8E%A5Camera%E6%96%B9%E6%B3%95%E5%92%8CLiDAR%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B3%E9%94%AE%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BEV%E6%84%9F%E7%9F%A5%E7%9A%84%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">BEV感知的核心问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#General-BEV-Perception"><span class="nav-number">1.2.</span> <span class="nav-text">General BEV Perception</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B1%95%E8%84%89%E7%BB%9C"><span class="nav-number">1.2.1.</span> <span class="nav-text">发展脉络</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-of-BEV-Perception"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology of BEV Perception</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BEV-Camera"><span class="nav-number">1.3.1.</span> <span class="nav-text">BEV Camera</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#General-Pipeline"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">General Pipeline</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View-Transformation"><span class="nav-number">1.4.</span> <span class="nav-text">View Transformation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BEVFormer"><span class="nav-number">1.5.</span> <span class="nav-text">BEVFormer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BEVFormer-1"><span class="nav-number">1.6.</span> <span class="nav-text">BEVFormer++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future"><span class="nav-number">1.7.</span> <span class="nav-text">Future</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

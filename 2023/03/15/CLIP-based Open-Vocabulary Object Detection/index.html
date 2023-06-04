@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ICLR2022 ViLDOPEN-VOCABULARY OBJECT DETECTION VIA VISION AND LANGUAGE KNOWLEDGE DISTILLATION MotivationObject Detection方法是学习去检测数据集中的类别，如果想要增加可检测的类别，通常的做法是增加标签类别，但是类别数增多会对训练样本收集带来更多挑战，对象类别存在长尾问题，罕见类的样本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP-based Open-Vocabulary Object Detection">
+<meta property="og:url" content="http://lzpyx.github.io/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="ICLR2022 ViLDOPEN-VOCABULARY OBJECT DETECTION VIA VISION AND LANGUAGE KNOWLEDGE DISTILLATION MotivationObject Detection方法是学习去检测数据集中的类别，如果想要增加可检测的类别，通常的做法是增加标签类别，但是类别数增多会对训练样本收集带来更多挑战，对象类别存在长尾问题，罕见类的样本">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316142839590.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316143332381.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316220527429.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316220547165.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316221558473.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316222327169.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327221338755.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327222226203.png">
+<meta property="article:published_time" content="2023-03-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-30T01:24:45.769Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Open-Vocabulary Object Detection">
+<meta property="article:tag" content="CLIP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316142839590.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CLIP-based Open-Vocabulary Object Detection | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CLIP-based Open-Vocabulary Object Detection
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-15T00:00:00+08:00">2023-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-30 09:24:45" itemprop="dateModified" datetime="2023-03-30T09:24:45+08:00">2023-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ICLR2022-ViLD"><a href="#ICLR2022-ViLD" class="headerlink" title="ICLR2022 ViLD"></a>ICLR2022 ViLD</h1><p>OPEN-VOCABULARY OBJECT DETECTION VIA VISION AND LANGUAGE KNOWLEDGE DISTILLATION</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Object Detection方法是学习去检测数据集中的类别，如果想要增加可检测的类别，通常的做法是增加标签类别，但是类别数增多会对训练样本收集带来更多挑战，对象类别存在长尾问题，罕见类的样本扩充成本高昂。另一方面，图文对则易于获取。ViLD则是想借助于预先训练的CLIP来实现Open-Vocabulary Detection(OVD).</p>
+<p>OVD旨在仅使用base classes的detection annotations来训练一个detector，可以检测出文本描述的任意类别，也就是可以从base classes泛化到novel classes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316142839590.png" alt="image-20230316142839590"></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>ViLD将OVD转换成了两个子问题，并使用Mask RCNN作为baseline：</p>
+<ul>
+<li>生成object proposals</li>
+<li>Open-vocabulary image classification(使用CLIP对cropped object proposals进行分类) </li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316143332381.png" alt="image-20230316143332381"></p>
+<span id="more"></span>
+<h3 id="Localization-for-Novel-Categories"><a href="#Localization-for-Novel-Categories" class="headerlink" title="Localization for Novel Categories"></a>Localization for Novel Categories</h3><p>将Mask R-CNN的class-specific localization modules(即第二阶段的bbox回归和mask prediction layer)替换为class-agnostic modules，从而泛化到novel objects，实现对base类和novel类的定位</p>
+<h3 id="Open-Vocabulary-Detection-with-Cropped-Regions"><a href="#Open-Vocabulary-Detection-with-Cropped-Regions" class="headerlink" title="Open-Vocabulary Detection with Cropped Regions"></a>Open-Vocabulary Detection with Cropped Regions</h3><p>在获得proposal后(即完成了对object的定位)，作者提出使用CLIP来对每个proposal进行open-vocabulary image classification</p>
+<p><strong>获取image embeddings：</strong></p>
+<p>作者首先crop并resize离线生成的region proposals，然后将其送入CLIP的图像编码器获得image embeddings。作者在此处做了ensemble操作：</p>
+<p>$\mathcal{V}\left(\operatorname{crop}\left(I, \tilde{r}_{\{1 \times, 1.5 \times\}}\right)\right)=\frac{\mathbf{v}}{|\mathbf{v}|}, \text { where } \mathbf{v}=\mathcal{V}\left(\operatorname{crop}\left(I, \tilde{r}_{1 \times}\right)\right)+\mathcal{V}\left(\operatorname{crop}\left(I, \tilde{r}_{1.5 \times}\right)\right)$</p>
+<p>其中$\mathcal{V}$代表CLIP的图像编码器，$\tilde{r}$则代表region proposals。</p>
+<p><strong>获取text embeddings：</strong></p>
+<p>将类别文本经prompt templates转换后送如CLIP的文本编码器$\mathcal{T}$, 获得类别文本特征</p>
+<p>最后计算image embeddings和text embeddings的余弦相似度，确定每个proposal的类别后，使用NMS获得最终的预测结果。</p>
+<blockquote>
+<p>直接采用class-agnostic proposal+CLIP分类的方案缺陷：</p>
+<p><strong>由于每个cropped region都要经过一次CLIP的图像编码器，因此推理速度会很慢。</strong></p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316220527429.png" alt="image-20230316220527429" style="zoom:67%;" /></p>
+<h3 id="ViLD-Vision-and-Language-Knowledge-Distillation"><a href="#ViLD-Vision-and-Language-Knowledge-Distillation" class="headerlink" title="ViLD: Vision and Language Knowledge Distillation"></a>ViLD: Vision and Language Knowledge Distillation</h3><p>为了解决上述的推理速度慢的问题，作者提出了ViLD。</p>
+<h4 id="ViLD-text"><a href="#ViLD-text" class="headerlink" title="ViLD-text"></a>ViLD-text</h4><blockquote>
+<p>Replacing classifier with text embeddings</p>
+</blockquote>
+<p>模型总览图如上图（b）所示，与传统的检测器的不同在于，ViLD通过region embedding与text embedding算相似度来获得logits</p>
+<p>$\mathbf{e}_{r}=\mathcal{R}(\phi(I), r)$</p>
+<p>$\phi(\cdot)$代表backbone，$I$代表图像，$r$代表提前抽好的region proposals，$\mathcal{R}(\cdot)$代表用于产生region embedding的lightweight head（作者将分类层前的输出作为region embeddings, 也就是公式中的$\mathbf{e}_r$）。</p>
+<p>$\mathbf{z}(r)=\left[\operatorname{sim}\left(\mathbf{e}_{r}, \mathbf{e}_{b g}\right), \operatorname{sim}\left(\mathbf{e}_{r}, \mathbf{t}_{1}\right), \cdots, \operatorname{sim}\left(\mathbf{e}_{r}, \mathbf{t}_{\left|C_{B}\right|}\right)\right] $</p>
+<p>$\mathbf{e}_{bg}$代表背景embedding, $\mathbf{t}_n$代表第n类的文本编码，$C_B$代表基础类，上式就是region embedding和所有的文本embedding算相似度，得到类似于logits的输出$\mathbf{z}(r)$。</p>
+<p>然后利用这个logits经过softmax与gt计算CE loss。</p>
+<p>$\mathcal{L}_{\mathrm{ViLD} \text {-text }}=\frac{1}{N} \sum_{r \in P} \mathcal{L}_{\mathrm{CE}}\left(\operatorname{softmax}(\mathbf{z}(r) / \tau), y_{r}\right),$</p>
+<h4 id="ViLD-image"><a href="#ViLD-image" class="headerlink" title="ViLD-image"></a>ViLD-image</h4><blockquote>
+<p>Distilling image embeddings</p>
+</blockquote>
+<p>CLIP的图像编码器得到的图像特征能和文本特征很好的对齐，因此作者想要通过蒸馏的方式，让ViLD中使用的图像编码器得到的region embedding尽量和CLIP图像编码器得到的region embedding一致。在这种情况下，训练不再受基础类的限制，proposal可以是属于基础类的，也可以是属于新类的，因为监督信号是来自CLIP的，而不是数据集的人工标注。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316220547165.png" alt="image-20230316220547165" style="zoom:67%;" /></p>
+<p>需要注意的是，为了加快训练的速度，不在CLIP前向推理耗费太多时间，作者首先采用预训练好的RPN对所有的图像进行推理，把预测的M个proposal（注意ViLD-text是N个，N个是随时可以改变的）保存下来，然后用CLIP对这些proposal抽特征并保存，训练时只需要从硬盘加载即可。</p>
+<p>ViLD整体框架如下，N个proposal是随时可以改变的，M个proposal是pre-computed</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316221558473.png" alt="image-20230316221558473"></p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>LVIS数据集，将common和frequent类作为base类，将rare类作为novel类，测试zero-shot的能力(open-vocabulary)</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316222327169.png" alt="image-20230316222327169"></p>
+<h1 id="CVPR-2022-GLIP"><a href="#CVPR-2022-GLIP" class="headerlink" title="CVPR 2022 GLIP"></a>CVPR 2022 GLIP</h1><p>Grounded Language-Image Pre-training</p>
+<h2 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation"></a>Motivation</h2><p>更加有效的利用图像文本对数据和已有的标注数据，将visual grounding(phrase grounding)任务和object detection任务结合起来进行预训练。<strong>检测数据量大，而grounding数据含有丰富的词汇</strong>，将两个任务统一起来有两个好处：</p>
+<ul>
+<li>同时从两种数据学习如何去grounding</li>
+<li>GLIP可以通过以self-training的方式来为大量的图像-文本对生成伪边界框，从而扩大训练的数据集</li>
+</ul>
+<h2 id="Methodology-1"><a href="#Methodology-1" class="headerlink" title="Methodology"></a>Methodology</h2><p>核心问题：如何将visual grounding和object detection任务统一起来？</p>
+<p>两个任务的主要区别在于分类的loss计算：detection的分类标签是one-hot的，而visual grounding的标签是一个句子</p>
+<p>Detection</p>
+<p>$O=\operatorname{Enc}_{I}(\operatorname{Img}), S_{\mathrm{cls}}=O W^{T}, \mathcal{L}_{\mathrm{cls}}=\operatorname{loss}\left(S_{\mathrm{cls}} ; T\right) .$</p>
+<p>输入图像Img通过图像编码器，获得region embedding $O$, 然后经过分类头(也就是乘上矩阵$W$)得到分类的logits，然后经过NMS筛选定位框，用筛选后的$S_{cls}$和标签计算CE loss</p>
+<p>Visual Grounding</p>
+<p>计算图像区域与prompt中单词的匹配分数(alignment scores $S_{ground}$). 输入图像Img通过图像编码器获得region embedding $O$，然后将输入的句子通过一个文本编码器得到文本特征$P$</p>
+<p>$O=\operatorname{Enc}_{I}(\operatorname{Img}), P=\operatorname{Enc}_{L}(\text { Prompt }), S_{\text {ground }}=O P^{\top}$</p>
+<p>将detection转化为grounding：</p>
+<p>将COCO中的80个类名组成一个文本字符串，作为prompt输入，如图(左)所示，转换为匹配任务</p>
+<p>如图1(右)所示，任何目标检测模型都可以通过用word-region alignment scores（区域/边框的视觉特征与token/短语的语言特征的点积）替换边框分类器中的目标分类logits而转换为关联模型。</p>
+<p>CLIP、GroupViT仅在最后的点积层融合视觉和语言，与此不同的是，GLIP采用深度跨模态融合（使用cross attention来实现两个模态的early fusion，deep fusion），这与Lseg中的交互方式类似，如图(中)所示，这对于学习高质量的语言感知视觉表示和实现优秀的迁移学习性能至关重要。</p>
+<p>这里使用的Alignment Loss其实就是ViLD中的ViLD-text分支</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327221338755.png" alt="image-20230327221338755"></p>
+<h1 id="GLIPv2"><a href="#GLIPv2" class="headerlink" title="GLIPv2"></a>GLIPv2</h1><p>GLIPv2: Unifying Localization and VL Understanding</p>
+<p>融合更多任务，更多数据集</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327222226203.png" alt="image-20230327222226203"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Open-Vocabulary-Object-Detection/" rel="tag"># Open-Vocabulary Object Detection</a>
+              <a href="/tags/CLIP/" rel="tag"># CLIP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/07/Unleashing%20Text%20to%20Image%20Diffusion%20Models%20for%20Visual%20Perception/" rel="prev" title="Unleashing Text-to-Image Diffusion Models for Visual Perception">
+      <i class="fa fa-chevron-left"></i> Unleashing Text-to-Image Diffusion Models for Visual Perception
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/18/CVPR2023%20ODISE/" rel="next" title="CVPR2023 Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models">
+      CVPR2023 Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICLR2022-ViLD"><span class="nav-number">1.</span> <span class="nav-text">ICLR2022 ViLD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Localization-for-Novel-Categories"><span class="nav-number">1.2.1.</span> <span class="nav-text">Localization for Novel Categories</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Detection-with-Cropped-Regions"><span class="nav-number">1.2.2.</span> <span class="nav-text">Open-Vocabulary Detection with Cropped Regions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViLD-Vision-and-Language-Knowledge-Distillation"><span class="nav-number">1.2.3.</span> <span class="nav-text">ViLD: Vision and Language Knowledge Distillation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ViLD-text"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">ViLD-text</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ViLD-image"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">ViLD-image</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR-2022-GLIP"><span class="nav-number">2.</span> <span class="nav-text">CVPR 2022 GLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation-1"><span class="nav-number">2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-1"><span class="nav-number">2.2.</span> <span class="nav-text">Methodology</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GLIPv2"><span class="nav-number">3.</span> <span class="nav-text">GLIPv2</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

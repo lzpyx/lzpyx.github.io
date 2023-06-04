@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TPAMI2022 WSSS&#x2F;WSIS综述A Survey on Label-efﬁcient Deep Segmentation: Bridging the Gap between Weak Supervision and Dense Prediction 语义分割 semantic segmentation 实例分割 instance segmentation  全景分割 panoptic s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TPAMI2022 WSSS&#x2F;WSIS综述">
+<meta property="og:url" content="http://lzpyx.github.io/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="TPAMI2022 WSSS&#x2F;WSIS综述A Survey on Label-efﬁcient Deep Segmentation: Bridging the Gap between Weak Supervision and Dense Prediction 语义分割 semantic segmentation 实例分割 instance segmentation  全景分割 panoptic s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209232047053.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220925104949008.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220925135237871.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081251365.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081039585.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081342067.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081400199.png">
+<meta property="article:published_time" content="2022-10-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-16T01:16:25.701Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="WSSS">
+<meta property="article:tag" content="WSIS">
+<meta property="article:tag" content="Survey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209232047053.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>TPAMI2022 WSSS/WSIS综述 | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TPAMI2022 WSSS/WSIS综述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-08T00:00:00+08:00">2022-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-16 09:16:25" itemprop="dateModified" datetime="2022-10-16T09:16:25+08:00">2022-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="TPAMI2022-WSSS-WSIS综述"><a href="#TPAMI2022-WSSS-WSIS综述" class="headerlink" title="TPAMI2022 WSSS/WSIS综述"></a>TPAMI2022 WSSS/WSIS综述</h1><p>A Survey on Label-efﬁcient Deep Segmentation: Bridging the Gap between Weak Supervision and Dense Prediction</p>
+<p>语义分割 semantic segmentation</p>
+<p>实例分割 instance segmentation </p>
+<p>全景分割 panoptic segmentation</p>
+<p><strong>bridging the gap between weak supervision and dense prediction</strong></p>
+<span id="more"></span>
+<h2 id="引入启发式先验-Unsupervised-amp-image-level-supervision"><a href="#引入启发式先验-Unsupervised-amp-image-level-supervision" class="headerlink" title="引入启发式先验(Unsupervised &amp; image-level supervision)"></a>引入启发式先验(Unsupervised &amp; image-level supervision)</h2><h3 id="cross-label-constraint"><a href="#cross-label-constraint" class="headerlink" title="cross-label constraint"></a>cross-label constraint</h3><ul>
+<li>cross-label constraint:弱标签和密集标签之间存在自然约束，例如图像级类别标签表示至少有一个像素的标签应与该图像级类别标签相同<ul>
+<li>Seed area reﬁnement<ul>
+<li>Expanding by ensemble：通过不同的CAM集合来扩展种子区域</li>
+<li>Re-ﬁnding by erasing</li>
+<li>Discovering by optimization：鼓励分类模型在优化过程中看到更大的区域来发现种子区域</li>
+<li>Reasoning by decoupling：CAM 可能与非目标类的区域重叠的原因可能是存在所谓的共现类，例如“马”和“人”经常同时出现。共现类误导了分类模型。<ul>
+<li>causal inference因果推理，分析并解耦了图像与混杂集（即共现类集）之间的因果关系，以防止种子区域被解释为冗余区域。</li>
+<li>copy-paste：将前景图像粘贴到不同的图像上，从而使前景图像中的类与相应背景之间没有刻板的上下文关系，从而鼓励种子区域更多地关注前景区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="cross-pixel-similarity"><a href="#cross-pixel-similarity" class="headerlink" title="cross-pixel similarity"></a>cross-pixel similarity</h3><ul>
+<li><p>cross-pixel similarity:具有高度相似线索的像素，例如颜色、亮度和纹理，可能属于图像中的同一语义区域；</p>
+<ul>
+<li><p>无监督语义分割</p>
+<ul>
+<li>SegSort</li>
+</ul>
+</li>
+<li><p>Seed area reﬁnement，使用擦除的方式可能会误导种子区域逐渐扩展到语义不正确的区域。一些方法利用了跨像素相似度的先验来指导种子区域的扩展。</p>
+<ul>
+<li><p>自擦除网络SeeNet，使用显著性图来指导种子区域细化</p>
+</li>
+<li><p>跨任务</p>
+<blockquote>
+<p>ICCV2021 Leveraging auxiliary tasks with afﬁnity learning for weakly supervised semantic segmentation</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>Pseudo mask generation</p>
+<ul>
+<li><p>Afﬁnity learning with low-level cues.</p>
+<blockquote>
+<p>ECCV2016 Seed, expand and constrain: Three principles for weakly-supervised image segmentation. </p>
+<ol>
+<li>仅使用具有高置信度的伪标签进行训练</li>
+<li>更新的伪标签应与给定的图像级标签一致</li>
+<li>约束更新的伪掩码符合对象边界</li>
+</ol>
+</blockquote>
+<ul>
+<li>RRM</li>
+</ul>
+</li>
+<li><p>Afﬁnity learning with high-level learned features.</p>
+<ul>
+<li>AffinityNet</li>
+<li>IAL</li>
+<li>MM2021 Adaptive afﬁnity loss and erroneous pseudo-label reﬁnement for weakly supervised semantic segmentation</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="cross-view-consistency"><a href="#cross-view-consistency" class="headerlink" title="cross-view consistency"></a>cross-view consistency</h3><ul>
+<li><p>cross-view consistency:指同一对象在不同视图中表现出的一致性</p>
+<ul>
+<li><p>无监督语义分割</p>
+<ul>
+<li>像素级对比学习View-Agnostic Dense Representation (VADeR)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209232047053.png" alt="image-20220923204729863" style="zoom: 67%;" /></p>
+<ul>
+<li>MaskContrast，结合了 SegSort和对比学习</li>
+<li>孪生结构Siamese structure<ul>
+<li>IIC</li>
+<li>PiCIE（Pixel-level feature Clustering using Invariance and Equivariance）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Seed area reﬁnement, 使用跨视图一致性来提高种子区域的质量，因为跨视图一致性可以促进从同一图像的不同空间扰动获得的 CAM 之间的语义一致性</p>
+<ul>
+<li>SEAM设计了Siamese network，两个分支使用不同的数据增强方式，其中一个分支使用了额外的仿射变换，然后鼓励两分支计算出的CAMs具有一致性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="cross-image-relation"><a href="#cross-image-relation" class="headerlink" title="cross-image relation"></a>cross-image relation</h3><ul>
+<li><p>cross-image relation:来自不同图像的同一类别对象的像素具有语义关系，以从弱标签生成伪密集监督pseudo dense supervision。</p>
+<ul>
+<li><p>无监督语义分割</p>
+<ul>
+<li>Cross-image Relation as Dense Self-supervision:利用无监督预训练的特征作为建立跨图像关系的基础，并进行refine。</li>
+</ul>
+<blockquote>
+<p>NIPS2021 Looking beyond single images for contrastive semantic segmentation learning</p>
+<p>提出了一种逐像素对比学习方法，<strong>隐式</strong>引入了跨图像关系来处理无监督语义分割任务。利用无监督预训练得到的特征进行聚类，然后为每个类分配伪标签，伪标签被用于在对比学习时选择正负对</p>
+<p>ICLR2021 Unsupervised semantic segmentation by distilling feature correspondences</p>
+<p>STEGO 根据特征显示挖掘了跨图像关系</p>
+</blockquote>
+</li>
+<li><p>Seed area reﬁnement，通过鼓励语义共现的不同图像之间的像素级交互来增强种子区域生成的鲁棒性</p>
+<ul>
+<li>co-attention</li>
+<li>GNN</li>
+</ul>
+</li>
+<li><p>Pseudo mask generation</p>
+<ul>
+<li><p>CIAN 利用跨图像关系学习亲和力，从语义共现的图像对生成伪掩码。在每对图像中，一张图像作为查询图像，另一张作为参考图像。查询图像的特征图由参考图像的特征图根据它们两者之间的逐像素亲和力进行调整，从而产生更完整和准确的伪掩模</p>
+<blockquote>
+<p>AAAI2020 Cian: Cross-image afﬁnity net for weakly supervised semantic segmentation</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Segmentation-with-image-level-Supervision"><a href="#Segmentation-with-image-level-Supervision" class="headerlink" title="Segmentation with image-level Supervision"></a>Segmentation with image-level Supervision</h2><h3 id="WSSS-with-image-level-supervision-两阶段pipeline"><a href="#WSSS-with-image-level-supervision-两阶段pipeline" class="headerlink" title="WSSS with image-level supervision 两阶段pipeline"></a>WSSS with image-level supervision 两阶段pipeline</h3><p>第一阶段产生带噪声的伪掩码（生成高质量的种子区域），第二阶段可以等价于带噪监督的语义分割问题，将伪掩码区域的语义传播到整个图像</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220925104949008.png" alt="image-20220925104949008" style="zoom:67%;" /></p>
+<h3 id="WSIS-with-image-level-supervision-主流pipeline"><a href="#WSIS-with-image-level-supervision-主流pipeline" class="headerlink" title="WSIS with image-level supervision 主流pipeline"></a>WSIS with image-level supervision 主流pipeline</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220925135237871.png" alt="image-20220925135237871" style="zoom:67%;" /></p>
+<h4 id="Instance-level-seed-area-generation"><a href="#Instance-level-seed-area-generation" class="headerlink" title="Instance-level seed area generation"></a>Instance-level seed area generation</h4><p>PRM:实例级的种子区域可以通过峰值定位从类别级种子区域获得。由特定类的分类模型提供的种子区域中的高置信度响应（峰值）暗示了属于该类的实例的可能位置。</p>
+<blockquote>
+<p>CVPR2018 Weakly supervised instance segmentation using class peak response</p>
+</blockquote>
+<h4 id="Instance-level-pseudo-mask-generation"><a href="#Instance-level-pseudo-mask-generation" class="headerlink" title="Instance-level pseudo mask generation"></a>Instance-level pseudo mask generation</h4><ul>
+<li><p>Expounding by self-training</p>
+<ul>
+<li><p>PRM的后续工作WISE 和 IAM</p>
+<blockquote>
+<p>BMVC2019 Where are the masks: Instance segmentation with image-level supervision</p>
+<p>CVPR2019 Learning instance activation maps for weakly supervised instance segmentation</p>
+</blockquote>
+</li>
+<li><p>IRNet</p>
+</li>
+</ul>
+</li>
+<li><p>Generating by end-to-end training</p>
+<ul>
+<li><p>Label-PEnet,使用cross-label constraint先验,以在线和粗到细的方式将图像级标签转换为像素级标签,设计了一个由四个并行模块组成的级联管道，即分类、对象检测、实例细化和实例分割模块。采用课程学习策略进行训练，该策略将标签从图像级监督推广到像素级伪掩模，并逐渐提高准确性。</p>
+<blockquote>
+<p>ICCV2019 Label-penet: Sequential label propagation and enhancement networks for weakly<br>supervised instance segmentation</p>
+</blockquote>
+</li>
+<li><p>WSIS-CL，结合了OICR</p>
+<blockquote>
+<p>WACV2021 Weakly supervised instance segmentation by deep community learning</p>
+</blockquote>
+</li>
+<li><p>PDSL,并行执行弱监督对象检测和自监督实例分割。这两个分支的结果受到相关学习的约束，以保持一致的预测</p>
+<blockquote>
+<p>ICCV2021 Parallel detection-and-segmentation learning for weakly supervised instance segmentation</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Segmentation-with-Box-level-Supervision"><a href="#Segmentation-with-Box-level-Supervision" class="headerlink" title="Segmentation with Box-level Supervision"></a>Segmentation with Box-level Supervision</h2><p>narrow down the search space</p>
+<h3 id="Semantic-segmentation-with-box-level-supervision"><a href="#Semantic-segmentation-with-box-level-supervision" class="headerlink" title="Semantic segmentation with box-level supervision"></a>Semantic segmentation with box-level supervision</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081251365.png" alt="image-20221008125102573" style="zoom:67%;" /></p>
+<p>使用Box-level Supervision进行语义分割的核心挑战转变为区分带注释的边界框内的前景对象和背景区域</p>
+<ul>
+<li><p>Boxsup交替更新伪掩码和分割模型,使用unsupervised region proposal method (<strong>MCG</strong>,Multiscale combinatorial grouping,CVPR2014)来提出建议区域，然后重复执行以下步骤：</p>
+<ol>
+<li><p>使用分割模型为每个候选分割(candidate segment)预测语义标签</p>
+</li>
+<li><p>对于每个annotated bounding box，从预测为与边界框相同的语义标签的候选分割中，选择重叠区域最大的一个作为边界框的伪掩码</p>
+</li>
+<li><p>使用伪掩码更新分割模型</p>
+</li>
+</ol>
+<p>但本方法中使用的MCG并未考虑Box-level supervision，因此伪掩码的可靠性不高。</p>
+<blockquote>
+<p>Boxsup: Exploiting bounding boxes to supervise convolutional networks for semantic segmentation,ICCV 2015</p>
+</blockquote>
+</li>
+<li><p>计算注释边界框中每个类的填充率filling rate，指导分割模型训练</p>
+<blockquote>
+<p>Box-driven class-wise region masking and ﬁlling rate guided loss for weakly supervised semantic segmentation, CVPR2019</p>
+</blockquote>
+</li>
+<li><p>计算填充率based on CAM-like map，减少在背景区域的兴趣</p>
+<blockquote>
+<p>Box2seg: Attention weighted loss and discriminative feature learning for weakly supervised segmentation, ECCV2020</p>
+</blockquote>
+</li>
+<li><p>通过从带注释的边界框中删除背景区域来获得伪掩码。作者假设图像背景区域中的small patches在感知上是一致的，这为删除每个带注释的边界框内的背景像素提供了标准</p>
+<blockquote>
+<p>Background-aware pooling and noise-aware loss for weakly-supervised semantic segmentation,CVPR2021</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Instance-segmentation-with-box-level-supervision"><a href="#Instance-segmentation-with-box-level-supervision" class="headerlink" title="Instance segmentation with box-level supervision"></a>Instance segmentation with box-level supervision</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081039585.png" alt="image-20221008103950969" style="zoom:67%;" /></p>
+<h4 id="Mask-prediction-by-self-training"><a href="#Mask-prediction-by-self-training" class="headerlink" title="Mask prediction by self-training"></a>Mask prediction by self-training</h4><ul>
+<li><p>SDI使用整个标注框区域或框内Grabcut产生的初始分割作为伪掩码，然后进行self-training来迭代细化伪掩码并最终产生预测掩码</p>
+<blockquote>
+<p>Simple does it: Weakly supervised instance and semantic segmentation, CVPR 2017</p>
+</blockquote>
+</li>
+<li><p>BBAM使用来自object detector的高级语义信息来产生伪掩码。作者试图在bounding box中找到一些可学习的区域，object detector可以从中预测与从整个bounding box区域获得的结果几乎相同的检测和分类结果。直观地，这些区域代表对象的判别部分。The areas of different object proposals corresponding to a given annotated box were combined as its pseudo mask</p>
+<blockquote>
+<p>Bbam: Bounding box attribution map for weakly supervised semantic and instance segmentation, CVPR 2021</p>
+</blockquote>
+</li>
+<li><p>BoxCaSeg 通过从显着分割数据集引入额外的知识来增强前景/背景分离的能力，从而获得更精确的伪掩码</p>
+<blockquote>
+<p>Weakly-supervised instance segmentation via class-agnostic learning with salient images, CVPR 2021</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="Mask-prediction-by-end-to-end-training"><a href="#Mask-prediction-by-end-to-end-training" class="headerlink" title="Mask prediction by end-to-end training"></a>Mask prediction by end-to-end training</h4><ul>
+<li><p>BBTP和BoxInst使用框监督的端到端实例分割，设计了projection loss来完成cross-label constraint.投影损失保证了给定的标注框与预测的mask沿其四侧的投影之间的一致性。尽管如此，这种投影损失不能对预测掩模的形状施加任何约束，这可能导致出现无意义的掩码，例如全矩形。为了解决这个问题，BBTP和Boxinst中还提供了额外的成对损失函数，它们分别基于空间位置和颜色定义了cross-pixel similarity。</p>
+<blockquote>
+<p>Weakly supervised instance segmentation using the bounding box tightness prior, NIPS 2019</p>
+<p>Boxinst: High-performance instance segmentation with box annotations, CVPR 2021</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081342067.png" alt="image-20221008134218526" style="zoom:67%;" /></p>
+<h2 id="Semi-supervised-Segmentation"><a href="#Semi-supervised-Segmentation" class="headerlink" title="Semi-supervised Segmentation"></a>Semi-supervised Segmentation</h2><h3 id="Semi-supervised-semantic-segmentation"><a href="#Semi-supervised-semantic-segmentation" class="headerlink" title="Semi-supervised semantic segmentation"></a>Semi-supervised semantic segmentation</h3><p>仅提供了一小部分训练图像的像素级标注，而其余训练图像则没有标注。半监督语义分割的目标是将大量未标记的训练图像纳入训练以提高分割性能。一种常用的半监督语义分割的框架是图所示的self-training，它将在带标签的训练图像上训练的分割模型 (教师模型) 应用于无标签的训练图像，以生成伪密集标签 (mask)，然后用伪密集标签  重新训练分割模型(学生模型)。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081400199.png" alt="image-20221008140050132" style="zoom:67%;" /></p>
+<h2 id="Semantic-segmentation-from-noisy-supervision"><a href="#Semantic-segmentation-from-noisy-supervision" class="headerlink" title="Semantic segmentation from noisy supervision"></a>Semantic segmentation from noisy supervision</h2><ul>
+<li>作者观察到一种现象，即随着训练的进行，分割模型倾向于记住注释中的错误。为了防止对错误的过度拟合，他们设计了一种自适应的早期停止机制，并利用多尺度cross-view consistency，来增强对错误标注的鲁棒性。</li>
+</ul>
+<blockquote>
+<p>Adaptive early-learning correction for segmentation from noisy annotations,CVPR 2022</p>
+</blockquote>
+<ul>
+<li>提出通过不确定性估计发现噪声标签，根据cross-view consistency计算不同尺度下预测图之间的像素方差来实现</li>
+</ul>
+<blockquote>
+<p>Uncertainty estimation via response scaling for pseudo-mask noise mitigation in weakly-supervised semantic segmentation, AAAI 2022</p>
+<p>噪声标签:What uncertainties do we need in bayesian deep learning for computer vision? NIPS 2017</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WSSS/" rel="tag"># WSSS</a>
+              <a href="/tags/WSIS/" rel="tag"># WSIS</a>
+              <a href="/tags/Survey/" rel="tag"># Survey</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/09/19/CVPR2017%20OICR/" rel="prev" title="CVPR2017 OICR">
+      <i class="fa fa-chevron-left"></i> CVPR2017 OICR
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/" rel="next" title="R-CNN系列目标检测算法">
+      R-CNN系列目标检测算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TPAMI2022-WSSS-WSIS%E7%BB%BC%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">TPAMI2022 WSSS&#x2F;WSIS综述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E5%90%AF%E5%8F%91%E5%BC%8F%E5%85%88%E9%AA%8C-Unsupervised-amp-image-level-supervision"><span class="nav-number">1.1.</span> <span class="nav-text">引入启发式先验(Unsupervised &amp; image-level supervision)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-label-constraint"><span class="nav-number">1.1.1.</span> <span class="nav-text">cross-label constraint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-pixel-similarity"><span class="nav-number">1.1.2.</span> <span class="nav-text">cross-pixel similarity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-view-consistency"><span class="nav-number">1.1.3.</span> <span class="nav-text">cross-view consistency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-image-relation"><span class="nav-number">1.1.4.</span> <span class="nav-text">cross-image relation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Segmentation-with-image-level-Supervision"><span class="nav-number">1.2.</span> <span class="nav-text">Segmentation with image-level Supervision</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WSSS-with-image-level-supervision-%E4%B8%A4%E9%98%B6%E6%AE%B5pipeline"><span class="nav-number">1.2.1.</span> <span class="nav-text">WSSS with image-level supervision 两阶段pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSIS-with-image-level-supervision-%E4%B8%BB%E6%B5%81pipeline"><span class="nav-number">1.2.2.</span> <span class="nav-text">WSIS with image-level supervision 主流pipeline</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Instance-level-seed-area-generation"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Instance-level seed area generation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Instance-level-pseudo-mask-generation"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Instance-level pseudo mask generation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Segmentation-with-Box-level-Supervision"><span class="nav-number">1.3.</span> <span class="nav-text">Segmentation with Box-level Supervision</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Semantic-segmentation-with-box-level-supervision"><span class="nav-number">1.3.1.</span> <span class="nav-text">Semantic segmentation with box-level supervision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Instance-segmentation-with-box-level-supervision"><span class="nav-number">1.3.2.</span> <span class="nav-text">Instance segmentation with box-level supervision</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mask-prediction-by-self-training"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Mask prediction by self-training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mask-prediction-by-end-to-end-training"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Mask prediction by end-to-end training</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semi-supervised-Segmentation"><span class="nav-number">1.4.</span> <span class="nav-text">Semi-supervised Segmentation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Semi-supervised-semantic-segmentation"><span class="nav-number">1.4.1.</span> <span class="nav-text">Semi-supervised semantic segmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semantic-segmentation-from-noisy-supervision"><span class="nav-number">1.5.</span> <span class="nav-text">Semantic segmentation from noisy supervision</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="对比学习串烧参考 基于对比学习的方法通过使相同实例的相似样本或各种增强彼此接近，而不相似实例彼此远离来学习特征表示。 基于相似性的自监督学习方法如BYOL，通过最小化同一实例的不同增强之间的距离来学习特征表示，并且仅使用正样本对。 InstDiscUnsupervised Feature Learning via Non-Parametric Instance Discrimination 提出了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对比学习综述">
+<meta property="og:url" content="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="对比学习串烧参考 基于对比学习的方法通过使相同实例的相似样本或各种增强彼此接近，而不相似实例彼此远离来学习特征表示。 基于相似性的自监督学习方法如BYOL，通过最小化同一实例的不同增强之间的距离来学习特征表示，并且仅使用正样本对。 InstDiscUnsupervised Feature Learning via Non-Parametric Instance Discrimination 提出了">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115103115579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115104033888.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115104339128.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115105946597.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115112512829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183707197.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115115315814.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115120451608.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115120623445.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183831342.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115122119150.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116104109508.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116181739650.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183912058.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116184510206.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116184800403.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116185306314.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116202531926.png">
+<meta property="article:published_time" content="2022-11-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-30T02:45:48.629Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Unsupervised learning">
+<meta property="article:tag" content="Contrastive learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115103115579.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>对比学习综述 | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对比学习综述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-30 10:45:48" itemprop="dateModified" datetime="2023-01-30T10:45:48+08:00">2023-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="对比学习串烧"><a href="#对比学习串烧" class="headerlink" title="对比学习串烧"></a>对比学习串烧</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19S4y1M7hm/?spm_id_from=333.999.0.0&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考</a></p>
+<p>基于对比学习的方法通过使相同实例的相似样本或各种增强彼此接近，而不相似实例彼此远离来学习特征表示。</p>
+<p>基于相似性的自监督学习方法如BYOL，通过最小化同一实例的不同增强之间的距离来学习特征表示，并且仅使用正样本对。</p>
+<h2 id="InstDisc"><a href="#InstDisc" class="headerlink" title="InstDisc"></a>InstDisc</h2><p>Unsupervised Feature Learning via Non-Parametric Instance Discrimination</p>
+<p>提出了个体判别代理任务，和NCE loss结合进行对比学习，取得了不错的无监督表征学习结果，还提出使用memory bank来存储负样本，并对特征进行动量更新（Proximal Regularization）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115103115579.png" alt="image-20221115103115579"></p>
+<span id="more"></span>
+<h2 id="CVPR2019-InvaSpread"><a href="#CVPR2019-InvaSpread" class="headerlink" title="CVPR2019 InvaSpread"></a>CVPR2019 InvaSpread</h2><p>Unsupervised Embedding Learning via Invariant and Spreading Instance Feature</p>
+<p>SimCLR的前身，没有使用额外的数据结构来存储大量负样本，正负样本来自于同一个mini-batch，而且只使用一个编码器来进行端到端学习</p>
+<p>Motivation：同一实例在不同数据增强下的特征应该是不变的Invariant（相似的），而不同实例的特征应该是分离的Spreading（不相似）。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115104033888.png" alt="image-20221115104033888" style="zoom:67%;" /></p>
+<p>代理任务仍然是个体判别，正负样本来自同一mini-batch，如batch-size设置为256，则正样本有256个，负样本有$(256-1)\times2$个，即正样本就是自己的数据增强版本，负样本是同一mini-batch中其他图片及其数据增强版本。这样做的好处是可以使用端到端学习，并且只使用了一个编码器，不需要借助其他数据结构来储存。但由于batch-size小，负样本数量有限，效果并不惊艳。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115104339128.png" alt="image-20221115104339128"></p>
+<h2 id="CPC"><a href="#CPC" class="headerlink" title="CPC"></a>CPC</h2><p>Representation Learning with Contrastive Predictive Coding</p>
+<p>个体判别属于判别式的代理任务，本文采用的则是生成式的代理任务，预测</p>
+<p>CPC的结构是个普适性的结构，用于处理序列，在图像中就是将图像切成patch，然后变成序列。使用自回归模型预测序列的未来输出。</p>
+<p>$c_t$指通过自回归模型(RNN,LSTM等)编码得到的上下文特征，这一特征可以被用来预测输入序列的未来时刻的编码后的特征也就是$z_{t+1},z_{t+2}…$。在CPC中，$c_t$进行对比学习的正样本就是未来时刻的特征输出$z_{t+1},z_{t+2}…$，负样本则是任意输入经过编码器得到的特征。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115105946597.png" alt="image-20221115105946597"  /></p>
+<h2 id="CMC"><a href="#CMC" class="headerlink" title="CMC"></a>CMC</h2><p>Contrastive Multiview Coding</p>
+<p>一个物体的多个视角都可以被看作是正样本，每个视角可能都是带有噪声且并不完整的，但是最重要的信息在多个视角下都是共享的，CMC想要学习一个强大的特征，具有视角的不变性，旨在增大多视角之间的的互信息。</p>
+<p>CMC选择了NYU RGBD数据集进行实验，其包括4个视角：原始图像，深度图像，surface normal，分割图像。虽然输入是不同的模态，但都是对应同一张图像，所以互为正样本，在特征空间中应该相近，与不匹配的视角图像应该远离。</p>
+<p>需要注意的是，由于是多个模态，输入差别较大，所以可能需要使用不同的编码器对不同模态进行处理。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115112512829.png" alt="image-20221115112512829"></p>
+<h2 id="SimCLR"><a href="#SimCLR" class="headerlink" title="SimCLR"></a>SimCLR</h2><p>A Simple Framework for Contrastive Learning of Visual Representations</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183707197.png" alt="image-20221116183707197"></p>
+<p>SimCLR的正负样本定义与InvaSpread一样，正样本就是自己的数据增强版本，负样本是同一mini-batch中其他图片及其数据增强版本。SimCLR提出的一个重要的创新点是，在编码器$f$编码得到特征$h_i$和$h_j$之后，加上了一个projector（做非线性变换，有relu），也就是$g$，其实是个mlp（全连接层加relu）.除此之外，相比于InvaSpread，SimCLR使用了更强的数据增强手段，以及更大的batch sizes。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115115315814.png" alt="image-20221115115315814"></p>
+<p>采用了多种数据增强方式，其中最有效的是随机裁剪和随机色彩变换</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115120451608.png" alt="image-20221115120451608"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115120623445.png" alt="image-20221115120623445" style="zoom:50%;" /></p>
+<h2 id="MoCo-v2"><a href="#MoCo-v2" class="headerlink" title="MoCo v2"></a>MoCo v2</h2><p>在MoCo v1基础上，借鉴了一些SimCLR的技术，如MLP，更多的数据增强，并使用cosine learning rate，训练更长时长</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183831342.png" alt="image-20221116183831342"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115122119150.png" alt="image-20221115122119150" style="zoom:50%;" /></p>
+<h2 id="SimCLR-v2"><a href="#SimCLR-v2" class="headerlink" title="SimCLR v2"></a>SimCLR v2</h2><p>Big Self-Supervised Models are Strong Semi-Supervised Learners</p>
+<p>用了更大的模型，更强的backbone，mlp由一层变为两层，加了动量编码器</p>
+<h2 id="SwAV"><a href="#SwAV" class="headerlink" title="SwAV"></a>SwAV</h2><p>Unsupervised Learning of Visual Features by Contrasting Cluster Assignments</p>
+<p>Swapped Assignment Views，希望用一个视角得到的特征去预测另一个视角，将匹配问题换成了预测问题</p>
+<p>SwAV将对比学习和聚类结合在一起，并不直接和大量的负样本比（如moco中的6万个负样本，去近似128万的ImageNet），而是和聚类中心比（本文选取K=3000个聚类中心，就是图中的Prototypes $C$,是一个$D\times K$的矩阵，D代表特征维度，与$z_1,z_2$的特征维度是一致的，K=3000）</p>
+<p>代理任务：当$X_1,X_2$是正样本时，$z_1,z_2$的特征应该很相似，应该是可以互相预测的，这也是Swapping Assignments between Views的含义。因此，SwAV将$z_1$和$C$做点乘然后去预测$Q_2$，将$z_2$和$C$做点乘然后去预测$Q_1$</p>
+<p>下图中B代表batchsize，D代表特征维度，K则是聚类中心数量，$Q_1,Q_2$可以视作是GT,使用$z_2,z_1$来交叉预测，然后进行对比学习</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116104109508.png" alt="image-20221116104109508"></p>
+<p>聚类的好处：</p>
+<ul>
+<li>和很多负样本做类比，对负样本的数量要求很高，而且也只是近似，聚类则只需要少量的聚类中心就可以表示了</li>
+<li>聚类中心是有明确的语义含义的</li>
+</ul>
+<p>Multi-crop技术：</p>
+<p>原来的crop往往是先将图像resize到$256\times 256$，然后再随机crop出两个$224\times 224$的区域，由于图片较大，重叠区域多，所以认为是正样本对。大的crop抓住的是整个场景的特征，作者增加了crop的数量，但是由于增加正样本了，模型计算复杂度会变高，因此作者采用了大crop(2个$160\times 160$的crop，学习全局特征)和小crop(4个$96\times 96$，学习局部特征)结合的方式，代替原本的2个$224\times 224$的大crop，使得在得到更多正样本的同时计算代价基本不变</p>
+<h2 id="BYOL"><a href="#BYOL" class="headerlink" title="BYOL"></a>BYOL</h2><p>Bootstrap Your Own Latent A New Approach to Self-Supervised Learning</p>
+<p>latent，feature，embedding，hidden都是指特征</p>
+<p>对比学习中，负样本能够防止模型坍塌，学到捷径解，也就是将所有样本都预测为一致的。BYOL是第一个不需要负样本的对比学习方法。</p>
+<p>对比任务变为预测任务</p>
+<p>$f_{\theta},g_{\theta}$随着梯度更新而更新，$f_{\xi},g_{\xi}$是动量编码器，projection部分与SimCLR一样就是加了个projector, 之前的对比学习方法，如SimCLR，在得到特征$z_{\theta},z_{\xi}$后，需要使这两个特征尽量接近，而BYOL则是再加入了一个predictor $q_{\theta}$（与$g_{\theta}$结构一致，都是一个MLP），然后使经过预测得到$q_{\theta}(z_{\theta})$与$z_{\xi}$尽量一致，直接使用MSE loss进行优化，将原来的匹配问题转换为了预测问题</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116181739650.png" alt="image-20221116181739650"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116183912058.png" alt="image-20221116183912058"></p>
+<h2 id="SimSiam"><a href="#SimSiam" class="headerlink" title="SimSiam"></a>SimSiam</h2><p>Exploring Simple Siamese Representation Learning</p>
+<ul>
+<li>不需要大的batch size</li>
+<li>不需要负样本</li>
+<li>不需要动量编码器</li>
+</ul>
+<p>与BYOL结构非常相似，只是没有使用动量编码器</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116184510206.png" alt="image-20221116184510206" style="zoom:50%;" /></p>
+<p>伪代码</p>
+<p>negative cosine similarity loss其实就是MSE loss</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116184800403.png" alt="image-20221116184800403" style="zoom:50%;" /></p>
+<p>SimSiam可以成功训练，不会发生模型坍塌，主要是因为stop gradient操作的存在，可以把SimSiam看作EM算法，逐步更新，避免坍塌</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116185306314.png" alt="image-20221116185306314" style="zoom: 67%;" /></p>
+<h2 id="MoCo-v3"><a href="#MoCo-v3" class="headerlink" title="MoCo v3"></a>MoCo v3</h2><p>An Empirical Study of  Training Self-Supervised Vision Transformers</p>
+<p>提高ViT训练的稳定性</p>
+<h2 id="DINO"><a href="#DINO" class="headerlink" title="DINO"></a>DINO</h2><p>Emerging Properties in Self-Supervised Vision Transformers</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221116202531926.png" alt="image-20221116202531926" style="zoom:67%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unsupervised-learning/" rel="tag"># Unsupervised learning</a>
+              <a href="/tags/Contrastive-learning/" rel="tag"># Contrastive learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/30/CVPR2022%20CCAM/" rel="prev" title="CVPR2022 CCAM">
+      <i class="fa fa-chevron-left"></i> CVPR2022 CCAM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/08/Few-Shot-Learning-survey/" rel="next" title="Few-Shot Learning Survey">
+      Few-Shot Learning Survey <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7"><span class="nav-number">1.</span> <span class="nav-text">对比学习串烧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InstDisc"><span class="nav-number">2.</span> <span class="nav-text">InstDisc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2019-InvaSpread"><span class="nav-number">3.</span> <span class="nav-text">CVPR2019 InvaSpread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPC"><span class="nav-number">4.</span> <span class="nav-text">CPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMC"><span class="nav-number">5.</span> <span class="nav-text">CMC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimCLR"><span class="nav-number">6.</span> <span class="nav-text">SimCLR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoCo-v2"><span class="nav-number">7.</span> <span class="nav-text">MoCo v2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimCLR-v2"><span class="nav-number">8.</span> <span class="nav-text">SimCLR v2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SwAV"><span class="nav-number">9.</span> <span class="nav-text">SwAV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BYOL"><span class="nav-number">10.</span> <span class="nav-text">BYOL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SimSiam"><span class="nav-number">11.</span> <span class="nav-text">SimSiam</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoCo-v3"><span class="nav-number">12.</span> <span class="nav-text">MoCo v3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DINO"><span class="nav-number">13.</span> <span class="nav-text">DINO</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

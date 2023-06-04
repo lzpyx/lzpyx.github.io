@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="GAN保真度高，多样性较差，训练不够稳定（因为需要同时训练两个网络，需要做平衡，否则容易模型坍塌），不是一个概率模型，生成是隐式的（通过一个网络去完成），数学上不如VAE，扩散模型优美 generator生成器：给定一个随机噪声，生成图像 discriminator判别器：将生成器生成的图像与真实图像送入判别器，做0&#x2F;1二分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Image Generation Survey">
+<meta property="og:url" content="http://lzpyx.github.io/2023/03/05/Image%20Generation%20Survey/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="GAN保真度高，多样性较差，训练不够稳定（因为需要同时训练两个网络，需要做平衡，否则容易模型坍塌），不是一个概率模型，生成是隐式的（通过一个网络去完成），数学上不如VAE，扩散模型优美 generator生成器：给定一个随机噪声，生成图像 discriminator判别器：将生成器生成的图像与真实图像送入判别器，做0&#x2F;1二分类">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230307203145594.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230330110713053.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230330130130154.png">
+<meta property="article:published_time" content="2023-03-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-30T05:06:59.774Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Image Generation">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Text-driven">
+<meta property="article:tag" content="Image editing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230307203145594.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/03/05/Image%20Generation%20Survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Image Generation Survey | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/05/Image%20Generation%20Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Image Generation Survey
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-05T00:00:00+08:00">2023-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-30 13:06:59" itemprop="dateModified" datetime="2023-03-30T13:06:59+08:00">2023-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h1><p>保真度高，多样性较差，训练不够稳定（因为需要同时训练两个网络，需要做平衡，否则容易模型坍塌），不是一个概率模型，生成是隐式的（通过一个网络去完成），数学上不如VAE，扩散模型优美</p>
+<p>generator生成器：给定一个随机噪声，生成图像</p>
+<p>discriminator判别器：将生成器生成的图像与真实图像送入判别器，做0/1二分类</p>
+<span id="more"></span>
+<h1 id="Auto-Encoder-AE"><a href="#Auto-Encoder-AE" class="headerlink" title="Auto-Encoder(AE)"></a>Auto-Encoder(AE)</h1><p>给定输入x经过编码器获得一个维度较小的特征（bottleneck），然后bottleneck再通过decoder生成一个图像，训练时的目标函数就是重建自己</p>
+<h1 id="Denoising-Auto-Encoder-DAE"><a href="#Denoising-Auto-Encoder-DAE" class="headerlink" title="Denoising Auto-Encoder(DAE)"></a>Denoising Auto-Encoder(DAE)</h1><p>与AE的区别在于，输入x经过一定的打乱，加入噪声，然后再将扰乱后的输入送入encoder，重建的目标仍然是重建出原图。这一改进非常有效，不容易产生过拟合，与MAE的思想非常相似，利用了图像冗余性</p>
+<p>AE、DAE、MAE的目的都是为了获得一个好的bottleneck特征，用于分类检测分割等任务，并不是为了做生成，原因是学到的bottleneck特征并不是一个概率分布，没法对其进行采样。</p>
+<h1 id="Variational-Auto-Encoder-VAE"><a href="#Variational-Auto-Encoder-VAE" class="headerlink" title="Variational Auto-Encoder(VAE)"></a>Variational Auto-Encoder(VAE)</h1><p>利用AE和VAE这种encoder-decoder结构来做生成</p>
+<p>VAE和DAE的主要区别在于，中间不再是学习一个固定的bottleneck特征，而是学习一个分布，作者将分布假设为高斯分布，用均值和方差来描述</p>
+<p>整体流程变为输入x，经过encoder后加一些FC层，预测得到均值$u$和标准差$\sigma$，然后根据$z=u+\sigma \cdot \varepsilon $采样得到bottleneck特征$z$, 其中$u$是均值，$\sigma$代表标准差，$\varepsilon$符合均值为0，方差为1的正态分布$N(0,1)$。这样VAE就可以用于生成了，在推理时直接扔掉encoder部分，直接从高斯随机噪声中抽样出$z$送给decoder，就可以得到生成的图像。</p>
+<p>从贝叶斯概率看，VAE从输入x预测z的过程，其实对应的是后验概率$q(z|x)$，然后学习预测得到的分布就是一个先验分布，后面的decoder部分则是给定z去预测x，也就是似然$p(x|z)$，这里所做的就是要maximize likelihood极大似然（<strong>利用已知的样本结果信息，反推最具有可能（最大概率）导致这些样本结果出现的模型参数值</strong>）。</p>
+<h1 id="Vector-Quantized-VQ-VAE"><a href="#Vector-Quantized-VQ-VAE" class="headerlink" title="Vector Quantized(VQ-VAE)"></a>Vector Quantized(VQ-VAE)</h1><p>把VAE进行量化，不去做分布的预测，而是使用一个codebook（一般是$K\times D$的向量，可以理解为$K$个聚类中心）代替。具体来说，输入在经过encoder后得到了特征$f$，尺寸为$h\times w\times D$,然后将每个位置的向量与codebook里的聚类中心算相似度，使用最接近的codebook聚类中心代替原本的向量，从而得到新的量化后的特征quantised feature $f_q$, 这一量化后的特征是非常可控的，因为都是从codebook里来的，优化起来相对容易，后续就是使用量化后的特征来进行图像重建。</p>
+<p>VQ-VAE学习到的是一个固定的codebook，因此没办法像VAE一样做随机采样，然后生成图像，其实更像一个AE，学习到的codebook是作为high-level特征拿去做分割分类等任务的</p>
+<p>视觉自监督学习方法BEIT就是使用了DALL·E生成好的codebook</p>
+<p>如果想把VQ-VAE用于生成，需要再单独训练一个prior网络，在VQ-VAE论文中，作者又单独训练了一个pixel CNN（一个自回归模型）当作prior网络</p>
+<h1 id="Diffusion"><a href="#Diffusion" class="headerlink" title="Diffusion"></a>Diffusion</h1><h2 id="DDPM"><a href="#DDPM" class="headerlink" title="DDPM"></a>DDPM</h2><p>Denoising Diffusion Probabilistic Model, 以往原始的diffusion使用$x_t$来预测$x_{t-1}$，也就是做图像到图像的转化，DDPM认为不好优化，因此DDPM提出不去直接预测图像，而是预测图像到图像转换所加的噪声。用于预测噪声的U-Net的输入有两个，一个是$x_t$，另一个是time embedding，用于告诉U-Net到了反向扩散的哪一步（U-Net在每一步都是共享的），我们希望在反向扩散的开始阶段，先去生成一些低频信息，具有一些大致轮廓，到最后快生成最终图像时能学习到更多高频的信息特征，比如一些物体的细节。</p>
+<p>目标函数：$P(x_{t-1}|x_t)=||\varepsilon-f_{\varepsilon}(x_t,t)||$,也就是给定$x_t$去预测$x_{t-1}$,则loss是我们前向扩散时加的已知噪声$\varepsilon$和现在预测出的噪声$f_{\varepsilon}(x_t,t)$的差值,$f$函数对应U-Net，t对应time embedding。</p>
+<p>DDPM中还发现，如果要预测一个正态分布，需要学均值和方差，但其实只需要学习均值，方差直接用一个常数就可以获得很好的效果。</p>
+<h2 id="improved-DDPM"><a href="#improved-DDPM" class="headerlink" title="improved DDPM"></a>improved DDPM</h2><ul>
+<li>DDPM只学习了均值，在improved DDPM中还学习了方差</li>
+<li>improved DDPM还修改了添加噪声的schedule，从线性的schedule改为了余弦schedule</li>
+<li>大模型</li>
+</ul>
+<h2 id="Diffusion-beats-GAN："><a href="#Diffusion-beats-GAN：" class="headerlink" title="Diffusion beats GAN："></a>Diffusion beats GAN：</h2><ul>
+<li>进一步加大模型</li>
+<li>adaptive group normalization:根据步数t做自适应归一化</li>
+<li>classifier guidance引导模型进行采样和生成：使用一个额外训练的分类器（比如在加噪的imagenet上训练），输入$x_t$图像，做一个交叉熵损失获得梯度，利用梯度引导U-Net，使生成的图像要看起来更像某一类物体。</li>
+<li>后续工作也有使用其他guidance指导信号如CLIP,图像（图像重建做像素级引导/图像风格引导(使用gram matrix)），文本，目标函数变为$P(x_{t-1}|x_t)=||\varepsilon-f_{\varepsilon}(x_t,t,y)||$，y代表condition，也就是上述的引导条件。但是这些方式都有一个共同的缺陷，都用了另外一个额外的模型去做引导，额外的计算量比较多；引导函数和扩散模型分别进行训练，不利于进一步扩增模型规模。</li>
+</ul>
+<h2 id="GLIDE-classifer-free-guidance-："><a href="#GLIDE-classifer-free-guidance-：" class="headerlink" title="GLIDE(classifer-free guidance)："></a>GLIDE(classifer-free guidance)：</h2><ul>
+<li>不用额外的模型进行引导：NIPS2021 Classifier-Free Diffusion Guidance提出了一个等价的结构替换了外部的classifier，从而可以直接使用一个扩散模型来做条件生成任务。模型训练时会生成两个输出，一个是在有conditional(随机高斯噪声+引导信息的embedding)的输出和unconditional采样输入时的输出，用这两个输出的差值来引导模型。</li>
+<li>classifer-free guidance的缺点：对于不同的引导类型，都需要重新训练扩散模型，且训练成本大（需要生成两个输出）</li>
+</ul>
+<h2 id="DALL·E-2-unCLIP"><a href="#DALL·E-2-unCLIP" class="headerlink" title="DALL·E 2 (unCLIP)"></a>DALL·E 2 (unCLIP)</h2><p>虚线上方是CLIP模型，模型是冻结的，将文本输入到文本编码器可以得到一对一的文本特征（因为文本编码器是冻结的）。使用两阶段的方式来生成图像：</p>
+<ul>
+<li>prior：利用一个自回归或者扩散模型预测一个图像特征，也就是下图中prior，训练prior所使用的gt就是CLIP的图像编码器产生的图像特征，这样就可以在没有文本对应图像的推理时，可以通过文本来预测一个图像特征（这个图像特征能很好的和文本对应，同时可以用于生成图像）</li>
+<li>decoder：利用prior生成的图像特征来生成图像，decoder仍然使用扩散模型。</li>
+</ul>
+<p>这样一个显示的生成图像特征的过程可以获得更好的效果</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230307203145594.png" alt="image-20230307203145594"></p>
+<h2 id="Stable-Diffusion-Latent-Diffusion-Models"><a href="#Stable-Diffusion-Latent-Diffusion-Models" class="headerlink" title="Stable Diffusion (Latent Diffusion Models)"></a>Stable Diffusion (Latent Diffusion Models)</h2><p><strong>High-Resolution Image Synthesis with Latent Diffusion Models</strong></p>
+<p>Stable diffusion是一个基于Latent Diffusion Models（潜在扩散模型，LDMs）的文图生成（text-to-image）模型。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/583124756">参考</a></p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>Diffusion model相比GAN可以取得更好的图片生成效果，然而该模型是一种自回归模型，需要反复迭代计算，因此训练和推理代价都很高。论文提出一种在潜在表示空间（latent space）上进行diffusion过程的方法，从而能够大大减少计算复杂度，同时也能达到十分不错的图片生成效果。</p>
+<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p>为了减小普通扩散模型在训练过程中的计算量，LDM将训练分成了两个阶段。第一个阶段训练一个AutoEncoder（包括一个encoder和decoder ，即图中的$\mathbf{\varepsilon}$和$D$）。第二阶段则是基于潜在表示训练扩散模型。有了自编码器，我们就可以利用encoder对图片进行压缩，然后<strong>在潜在表示空间上做diffusion操作</strong>，最后我们<strong>再用解码器恢复到原始像素空间</strong>即可，论文将这个方法称之为感知压缩（Perceptual Compression）。本质上是将高维特征压缩，然后在低维空间中进行操作，大大减小了计算量。</p>
+<p>在潜在表示空间上做diffusion操作其主要过程和标准的扩散模型没有太大的区别，所用到的扩散模型的具体实现为 time-conditional UNet。不同的是，LDM为diffusion操作引入了条件机制（Conditioning Mechanisms），通过cross-attention的方式来实现多模态训练，使得条件图片生成任务也可以实现。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230330110713053.png" alt="image-20230330110713053"></p>
+<h4 id="条件机制（Conditioning-Mechanisms）"><a href="#条件机制（Conditioning-Mechanisms）" class="headerlink" title="条件机制（Conditioning Mechanisms）"></a>条件机制（Conditioning Mechanisms）</h4><p>用于进行条件图像生成。LDM通过在UNet主干网络上增加cross-attention机制来控制图像的合成。对于不同模态的condition $y$，LDM引入一个领域专用编码器（domain specific encoder）$\tau_{\theta}$来对$y$进行编码，将$y$映射为一个中间表示$\tau_{\theta}(y)$,最终模型就可以通过一个cross-attention层映射将控制信息融入到UNet的中间层，cross-attention层的实现如下：</p>
+<p>$\begin{array}{l}<br>\operatorname{Attention}(Q, K, V)=\operatorname{softmax}\left(\frac{Q K^{T}}{\sqrt{d}}\right) \cdot V, \text { with } \\<br>Q=W_{Q}^{(i)} \cdot \varphi_{i}\left(z_{t}\right), K=W_{K}^{(i)} \cdot \tau_{\theta}(y), V=W_{V}^{(i)} \cdot \tau_{\theta}(y)<br>\end{array}$</p>
+<p>其中$\varphi_{i}\left(z_{t}\right)$是UNet的一个展平的中间表征。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230330130130154.png" alt="image-20230330130130154" style="zoom: 80%;" /></p>
+<p>这里假设输入为图像和文本，通常将图像信息作为Q，文本信息作为K和V，因为我们<strong>希望根据文本序列中的信息来选择图像的局部区域</strong>，换句话说是<strong>以文本为条件控制图像的生成</strong>，所以<strong>通过注意力的形式来计算每个文本序列与图像不同区域之间的关联程度，即对于每个文本单词计算它与图像所有位置的相似度得分，然后归一化，并用它们加权求和得到最终加入条件控制的图像表示</strong>。过程如下：</p>
+<ul>
+<li><p>对于两个不同模态的序列：图像生成Q，文本生成K、V；</p>
+</li>
+<li><ul>
+<li>两个不同模态的序列在最后一个维度上要相同</li>
+</ul>
+</li>
+<li><p>对于Q的每个位置，计算它与K中所有位置的关联程度，得到相似度矩阵；</p>
+</li>
+<li><p>将相似度矩阵归一化后得到权重矩阵，表示图像Q与文本K各个位置之间的关联程度；</p>
+</li>
+<li><p>然后再与V相乘进行加权求和，得到加入条件注意力后的新的图像表示，并且它与输入图像维度一致。</p>
+</li>
+</ul>
+<p>这样 cross-attention 就可以帮助模型学习不同序列之间的关联了，能更好地处理不同模态类型的数据。<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzk0MzIzODM5MA==&amp;mid=2247486441&amp;idx=1&amp;sn=06df067828b19ef9aeef99f455f897e9&amp;chksm=c337b670f4403f663f7b98a2aa75cb5062bf5a6222c81ce8f181d79d367971a4587b62da84a1&amp;mpshare=1&amp;scene=1&amp;srcid=0323LxxjpkGIHSccqzfuAEfi&amp;sharer_sharetime=1679576971664&amp;sharer_shareid=7d4f936d3f2209e54cc83ec9baeed2d4&amp;key=2c9667506461a6410dc62fd326c5d32b76bd8fc7679fcc04e51bc38b7af2a91f0efcbb625a09cf04b72aa632cb20aa82836dc94ccec63ced04fa23f8146b48a0eaca71379bb1ce9f2fe26121335064d2e9e1eb1e2a72a3f225b0940b002790ee01196ff1411e4964cfa8fef3a85711a021a0b5c2a8d7d9fb70b0183c162e4190&amp;ascene=1&amp;uin=MTExMDI2NDQwOA%3D%3D&amp;devicetype=Windows+10+x64&amp;version=63090217&amp;lang=zh_CN&amp;exportkey=n_ChQIAhIQfBoTGlQgeZChGo9nWGk1TRL0AQIE97dBBAEAAAAAAE9oAO%2B%2BDMwAAAAOpnltbLcz9gKNyK89dVj0rCkU4VSdOJp27ngUGXMRqLyHVKGch1i%2BgqtJjSvjAKLda9I29X%2BP%2BnrMtOj3nz934L%2BNFrwTgRP1MuJJRkYxzmIcvbGGjEl1XmNFA%2BjwlsGYQO%2Bcc5VMOCPSTICbJiXBJihcMTN%2FXx%2BETxEWa0Fncv44neX3S4ysTN0vyeNoZYlJaQrdunELFbLnCVVLThakmpNOQdQVD8wvpUg%2B%2Fh9rLU3KyfhsM%2BwPdizThTXJcvObm3SpeoN6aGnVvH2mXAv2e95ULgA9%2B7bzBpFn4BE%3D&amp;acctmode=0&amp;pass_ticket=kANr9lAPm1AEkRjwrP8ZSbqlXsnd4YsaRhl6XTQddD%2FBjiQdCBqHg2xxjAqRD13BotR%2BvNACpPhVey5LZViaGw%3D%3D&amp;wx_header=1&amp;fontgear=2">参考</a></p>
+<p>将V设置为UNet特征和condition特征的区别？</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Image-Generation/" rel="tag"># Image Generation</a>
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Text-driven/" rel="tag"># Text-driven</a>
+              <a href="/tags/Image-editing/" rel="tag"># Image editing</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/04/ECCV2022%20A-Simple-Baseline-for-Open-Vocabulary/" rel="prev" title="ECCV2022 A Simple Baseline for Open-Vocabulary Semantic Segmentation with Pre-trained Vision-language Model">
+      <i class="fa fa-chevron-left"></i> ECCV2022 A Simple Baseline for Open-Vocabulary Semantic Segmentation with Pre-trained Vision-language Model
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/07/Unleashing%20Text%20to%20Image%20Diffusion%20Models%20for%20Visual%20Perception/" rel="next" title="Unleashing Text-to-Image Diffusion Models for Visual Perception">
+      Unleashing Text-to-Image Diffusion Models for Visual Perception <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GAN"><span class="nav-number">1.</span> <span class="nav-text">GAN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Auto-Encoder-AE"><span class="nav-number">2.</span> <span class="nav-text">Auto-Encoder(AE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Denoising-Auto-Encoder-DAE"><span class="nav-number">3.</span> <span class="nav-text">Denoising Auto-Encoder(DAE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Variational-Auto-Encoder-VAE"><span class="nav-number">4.</span> <span class="nav-text">Variational Auto-Encoder(VAE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector-Quantized-VQ-VAE"><span class="nav-number">5.</span> <span class="nav-text">Vector Quantized(VQ-VAE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Diffusion"><span class="nav-number">6.</span> <span class="nav-text">Diffusion</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DDPM"><span class="nav-number">6.1.</span> <span class="nav-text">DDPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#improved-DDPM"><span class="nav-number">6.2.</span> <span class="nav-text">improved DDPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Diffusion-beats-GAN%EF%BC%9A"><span class="nav-number">6.3.</span> <span class="nav-text">Diffusion beats GAN：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GLIDE-classifer-free-guidance-%EF%BC%9A"><span class="nav-number">6.4.</span> <span class="nav-text">GLIDE(classifer-free guidance)：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DALL%C2%B7E-2-unCLIP"><span class="nav-number">6.5.</span> <span class="nav-text">DALL·E 2 (unCLIP)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stable-Diffusion-Latent-Diffusion-Models"><span class="nav-number">6.6.</span> <span class="nav-text">Stable Diffusion (Latent Diffusion Models)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-number">6.6.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">6.6.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%9C%BA%E5%88%B6%EF%BC%88Conditioning-Mechanisms%EF%BC%89"><span class="nav-number">6.6.2.1.</span> <span class="nav-text">条件机制（Conditioning Mechanisms）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

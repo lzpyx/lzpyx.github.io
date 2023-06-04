@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="OpenSeeDA Simple Framework for Open-Vocabulary Segmentation and Detection  Motivation将分割和检测进行联合训练，作者引入了一个预训练的文本编码器来为两个任务中涉及到的视觉概念进行文本编码，为了进一步协调两个任务，作者分析了两个任务的差异：  任务差异：分割需要获得前景和背景的mask，而检测只关心前景目标 数据差异">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Simple Framework for Open-Vocabulary Segmentation and Detection">
+<meta property="og:url" content="http://lzpyx.github.io/2023/03/20/A%20Simple%20Framework%20for%20Open%20Vocabulary%20Segmentation%20and%20Detection/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="OpenSeeDA Simple Framework for Open-Vocabulary Segmentation and Detection  Motivation将分割和检测进行联合训练，作者引入了一个预训练的文本编码器来为两个任务中涉及到的视觉概念进行文本编码，为了进一步协调两个任务，作者分析了两个任务的差异：  任务差异：分割需要获得前景和背景的mask，而检测只关心前景目标 数据差异">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320145926431.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320155824550.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320210412106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320220025789.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320224732164.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320230721084.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320232912359.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320234036645.png">
+<meta property="article:published_time" content="2023-03-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-21T02:24:33.333Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Open-Vocabulary Object Detection">
+<meta property="article:tag" content="Open-Vocabulary Segmentation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320145926431.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/03/20/A%20Simple%20Framework%20for%20Open%20Vocabulary%20Segmentation%20and%20Detection/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>A Simple Framework for Open-Vocabulary Segmentation and Detection | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/20/A%20Simple%20Framework%20for%20Open%20Vocabulary%20Segmentation%20and%20Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          A Simple Framework for Open-Vocabulary Segmentation and Detection
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-20T00:00:00+08:00">2023-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-21 10:24:33" itemprop="dateModified" datetime="2023-03-21T10:24:33+08:00">2023-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="OpenSeeD"><a href="#OpenSeeD" class="headerlink" title="OpenSeeD"></a>OpenSeeD</h1><p>A Simple Framework for Open-Vocabulary Segmentation and Detection</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320145926431.png" alt="image-20230320145926431"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>将分割和检测进行联合训练，作者引入了一个预训练的文本编码器来为两个任务中涉及到的视觉概念进行文本编码，为了进一步协调两个任务，作者分析了两个任务的差异：</p>
+<ul>
+<li>任务差异：分割需要获得前景和背景的mask，而检测只关心前景目标</li>
+<li>数据差异：box和mask两种标注具有不同的空间粒度，因此难以直接互换</li>
+</ul>
+<p>实现Open-Vocabulary for both task，Two critical questions：</p>
+<ul>
+<li>如何在检测和分割之间传递语义知识</li>
+<li>如何填补box和mask之间的监督差距</li>
+</ul>
+<span id="more"></span>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320155824550.png" alt="image-20230320155824550" style="zoom:80%;" /></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work:"></a>Related Work:</h2><ul>
+<li><p>Generic Segmentation and Detection: 通用分割和检测模型如DETR，这类方法受限于词汇量，只能完成closed-set检测和分割</p>
+</li>
+<li><p>Open-Vocabulary Segmentation:</p>
+<ul>
+<li>从大模型中蒸馏出visual-semantic knowledge</li>
+<li>DenseCLIP &amp; GroupViT: 微调一个大模型 or 从头训练都可以获得较好的零样本表现</li>
+<li>X-Decoder: 将分割任务和其他几个视觉-语言任务联合起来</li>
+<li>ODISE: 使用text-to-image diffusion model来作为backbone</li>
+<li>不同于这些方法，作者使用了具有纯净数据并且具有更小差距的检测与分割数据来作为监督。</li>
+</ul>
+</li>
+<li><p>Open-Vocabulary Detection:</p>
+<ul>
+<li>从大模型中蒸馏，典型代表VILD, OV-DETR</li>
+<li>GLIP将检测和visual grounding任务结合起来，grounding data使得phrases和region能够更好的对齐</li>
+<li>RegionCLIP &amp; DetCLIP: 从image-text pairs生成伪标注框</li>
+</ul>
+</li>
+<li><p>Weakly-Supervised Segmentation:</p>
+<ul>
+<li>将弱图像级监督转移到细粒度任务通常需要复杂的设计来减小巨大的粒度差距，并且容易受到图像-文本对中的噪声的影响</li>
+<li>对于box annotation的WSSS方法，如BoxInst，Box2Mask，DiscoBox和Mask AutoLabelers，这些方法都是closed-set的。</li>
+</ul>
+</li>
+<li><p>联合检测与分割</p>
+<ul>
+<li><p>Mask R-CNN在COCO上联合学习了检测和实例分割，但其需要在包含对齐的box和mask标注的同一数据集上进行训练</p>
+</li>
+<li><p>Mask dino表明在Object365上预训练的检测模型可以很好的迁移用于COCO panoptic segmentation，遵循预训练-微调范式，这产生了两个separate closed-set models（也就是说一个模型只能单独用于检测或者单独用于分割，并且是closed-set的，不能迁移到novel类）</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><ul>
+<li>使用单个文本编码器来编码两个任务中涉及的所有概念，视觉tokens和语义在公共空间中对齐</li>
+<li>将decoder中的queries分为forground queries（检测和分割中的前景物体）,background queries（分割中的背景物体）和conditioned queries,每种query所对应不同的计算方式</li>
+<li>引入conditioned mask decoding来从boxes中获得mask</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320210412106.png" alt="image-20230320210412106"></p>
+<h3 id="Basic-Loss-Formulation"><a href="#Basic-Loss-Formulation" class="headerlink" title="Basic Loss Formulation"></a>Basic Loss Formulation</h3><p>对于分割任务，可以从masks $\mathbf{m}$来生成准确的boxes $\hat{\mathbf{b}}$</p>
+<p>$\begin{aligned}<br>\mathcal{L}_{a l l} &amp; =\sum_{I,(\mathbf{c}, \mathbf{m}) \in \mathcal{D}_{m}} \overbrace{\left(\mathcal{L}_{m}\left(\mathbf{P}^{\mathbf{m}}, \mathbf{m}\right)+\mathcal{L}_{b}\left(\mathbf{P}^{\mathbf{b}}, \hat{\mathbf{b}}\right)+\mathcal{L}_{c}\left(\mathbf{P}^{\mathbf{c}}, \mathbf{c}\right)\right)}^{\text {Segmentation loss }} \\<br>&amp; +\sum_{I,(\mathbf{c}, \mathbf{b}) \in \mathcal{D}_{b}} \underbrace{\left(\mathcal{L}_{b}\left(\mathbf{P}^{\mathbf{b}}, \mathbf{b}\right)+\mathcal{L}_{c}\left(\mathbf{P}^{\mathbf{c}}, \mathbf{c}\right)\right)}_{\text {Detection loss }}<br>\end{aligned}$</p>
+<h3 id="Bridge-Task-Gap-Decoupled-Foreground-and-Background-Decoding"><a href="#Bridge-Task-Gap-Decoupled-Foreground-and-Background-Decoding" class="headerlink" title="Bridge Task Gap: Decoupled Foreground and Background Decoding"></a>Bridge Task Gap: Decoupled Foreground and Background Decoding</h3><p>解决的问题是如何在检测和分割之间传递语义知识</p>
+<p>作者定义实例分割和检测中出现的视觉概念为foreground，全景分割中的stuff categories作为background。为了减小任务差异，前景解码和背景解码是分别进行的。具体来说，就是对于foreground query和background query分别用decoder得到对应的outputs sets $\left\langle\mathbf{P}_{f}^{m}, \mathbf{P}_{f}^{b}, \mathbf{P}_{f}^{c}\right\rangle$和$\left\langle\mathbf{P}_{b}^{m}, \mathbf{P}_{b}^{b}, \mathbf{P}_{b}^{c}\right\rangle$。将分割数据集也划分为$(\mathbf{c}_f,\mathbf{m}_f)$和$(\mathbf{c}_b,\mathbf{m}_b)$，分别与两个set进行Hungarian Matching（对应下图4(a)中Foreground Query与Foreground GT，Background Query和Background GT对应的Independent Matching）。</p>
+<p>分割使用了前景和背景解码，检测只使用了前景解码</p>
+<p>因此loss formulation可以写成(也就是将分割部分拆开成了前景和背景两项，而检测部分只计算前景)</p>
+<p>$\begin{aligned}<br>\mathcal{L}_{a l l} &amp; =\sum_{I,(\mathbf{c}, \mathbf{m}) \in \mathcal{D}_{m}} \overbrace{\left(\mathcal{L}_{m}\left(\mathbf{P}_{\mathbf{f}}^{\mathbf{m}}, \mathbf{m}_{f}\right)+\mathcal{L}_{b}\left(\mathbf{P}_{\mathbf{f}}^{\mathbf{b}}, \hat{\mathbf{b}}_{f}\right)+\mathcal{L}_{c}\left(\mathbf{P}_{\mathbf{f}}^{\mathbf{c}}, \mathbf{c}_{f}\right)\right)}^{\text {Segmentation loss for foreground }} \\<br>&amp; +\overbrace{\left(\mathcal{L}_{m}\left(\mathbf{P}_{\mathbf{b}}^{\mathbf{m}}, \mathbf{m}_{b}\right)+L_{b}\left(\mathbf{P}_{\mathbf{b}}^{\mathbf{b}}, \hat{\mathbf{b}}_{b}\right)+\mathcal{L}_{c}\left(\mathbf{P}_{\mathbf{b}}^{\mathbf{c}}, \mathbf{c}_{b}\right)\right)}^{\text {Segmentation loss for background }} \\<br>&amp; +\sum_{I,(\mathbf{c}, \mathbf{b}) \in \mathcal{D}_{b}} \underbrace{\left(\mathcal{L}_{b}\left(\mathbf{P}_{\mathbf{f}}^{\mathbf{b}}, \mathbf{b}\right)+\mathcal{L}_{c}\left(\mathbf{P}_{\mathbf{f}}^{\mathbf{c}}, \mathbf{c}\right)\right)}_{\text {Detection loss for foreground }}<br>\end{aligned}$</p>
+<blockquote>
+<p>基于这种显式解耦，模型最大化了检测和分割数据集的前景监督协作，并显著减少了前景和背景类别之间的干扰。</p>
+</blockquote>
+<p>虽然是解耦的，但是前景query和背景query共享同一个decoder，且通过自注意力相互作用，如下图4(b)</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320220025789.png" alt="image-20230320220025789" style="zoom: 67%;" /></p>
+<h4 id="Language-guided-foreground-query-selection"><a href="#Language-guided-foreground-query-selection" class="headerlink" title="Language-guided foreground query selection"></a>Language-guided foreground query selection</h4><p>open-vocabulary setting与传统的closed-set设置的不同之处在于，需要模型来定位远远超出training vocabulary的大量前景对象。但是decoder中能够处理的前景queries数量非常有限，难以处理所有的视觉概念，因此提出了Foreground Query Selection来自适应的选择关于给定文本的queries。</p>
+<p>具体来说，作者在获得了image features $\mathbf{O}$和text features $\mathbf{T}$后，使用一个box head来预测边界框，并计算区域特征和文本特征的相似度，排序后取出top $L_f$(前景query的个数)个，将这top $L_f$个boxes和对应的图像特征作为foreground query送入decoder，如下图中红框所示，content就是box对应的图像特征。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320224732164.png" alt="image-20230320224732164"></p>
+<blockquote>
+<p>通过只选择text-related tokens作为decoder的queries，一定程度上避免了解码与文本不相关的语义，并提供了更好的查询初始化。这种提出前景查询的自适应方式使模型能够在测试场景中有效地迁移到新词汇上。</p>
+</blockquote>
+<h4 id="Learnable-background-queries"><a href="#Learnable-background-queries" class="headerlink" title="Learnable background queries"></a>Learnable background queries</h4><p>与foreground query不同，background queries使用了可学习的queries。可学习的queries可以充分的处理背景类别（相比前景，类别数量较少）</p>
+<h4 id="处理前景背景与以往方法的比较"><a href="#处理前景背景与以往方法的比较" class="headerlink" title="处理前景背景与以往方法的比较"></a>处理前景背景与以往方法的比较</h4><ul>
+<li>Mask2Former和MaskDINO在进行全景分割时，平等的对待前景和背景，这导致了次优解（相同模型在进行实例分割时表现更好）</li>
+<li>Panoptic SegFormer区别对待前景和背景queries，但背景queries是固定的语义类别（预先定义好的背景类别），这限制了处理open-vocabulary类别的能力</li>
+<li>本方法通过语言引导的选择机制获得前景queries，并且使用了完全可学习的背景queries，消除了预定义词汇表的限制。</li>
+</ul>
+<p>下图混合色代表平等对待，蓝色是前景，绿色是背景，加了框代表是选择获得的queries</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320230721084.png" alt="image-20230320230721084"></p>
+<h3 id="Bridge-Data-Gap-Conditioned-Mask-Decoding"><a href="#Bridge-Data-Gap-Conditioned-Mask-Decoding" class="headerlink" title="Bridge Data Gap: Conditioned Mask Decoding"></a>Bridge Data Gap: Conditioned Mask Decoding</h3><p>从mask生成box很容易，作者在这一部分解决了如何从box生成mask的问题。</p>
+<p>Conditioned Mask Decoding将GT box和class label经编码得到的文本特征作为query，然后解码出mask，利用分割数据集作为监督，训练一个从类别+box到mask的映射。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320232912359.png" alt="image-20230320232912359"></p>
+<h4 id="Mapping-Hypothesis-Verification"><a href="#Mapping-Hypothesis-Verification" class="headerlink" title="Mapping Hypothesis Verification"></a>Mapping Hypothesis Verification</h4><p>需要考虑的一个问题是，这样的映射是否能够很好的迁移到具有不同类别的检测数据集上？</p>
+<p>作者就此问题进行了实验验证，在COCO上训练的映射能够很好的迁移到ADE20K上</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230320234036645.png" alt="image-20230320234036645" style="zoom:67%;" /></p>
+<h4 id="Conditioned-Mask-Generation-to-Guide-Detection-Data"><a href="#Conditioned-Mask-Generation-to-Guide-Detection-Data" class="headerlink" title="Conditioned Mask Generation to Guide Detection Data"></a>Conditioned Mask Generation to Guide Detection Data</h4><p>两种在训练阶段使用伪mask的方法：</p>
+<ul>
+<li>Online Mask Assistance：仅训练一个模型，生成实时的mask。不直接将生成的masks作为mask监督，而是使用伪mask来帮助匹配预测和GT实例，因为掩码质量对于监督来说不够强。特别是在早期阶段。</li>
+<li>offline Mask Assistance：使用conditioned mask decoding训练模型直到收敛，并为检测数据生成掩码注释。注释的数据集可以用于训练分割模型。</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>baseline为Mask DINO</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Open-Vocabulary-Object-Detection/" rel="tag"># Open-Vocabulary Object Detection</a>
+              <a href="/tags/Open-Vocabulary-Segmentation/" rel="tag"># Open-Vocabulary Segmentation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/20/ICLR2023-DINO-DETR-with-Improved-DeNoising-Anchor-Boxes-for-End-to-End-Object-Detection/" rel="prev" title="ICLR2023 DINO: DETR with Improved DeNoising Anchor Boxes for End-to-End Object Detection">
+      <i class="fa fa-chevron-left"></i> ICLR2023 DINO: DETR with Improved DeNoising Anchor Boxes for End-to-End Object Detection
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/" rel="next" title="CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation">
+      CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenSeeD"><span class="nav-number">1.</span> <span class="nav-text">OpenSeeD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic-Loss-Formulation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Basic Loss Formulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bridge-Task-Gap-Decoupled-Foreground-and-Background-Decoding"><span class="nav-number">1.3.2.</span> <span class="nav-text">Bridge Task Gap: Decoupled Foreground and Background Decoding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Language-guided-foreground-query-selection"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Language-guided foreground query selection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Learnable-background-queries"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Learnable background queries</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%89%8D%E6%99%AF%E8%83%8C%E6%99%AF%E4%B8%8E%E4%BB%A5%E5%BE%80%E6%96%B9%E6%B3%95%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">处理前景背景与以往方法的比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bridge-Data-Gap-Conditioned-Mask-Decoding"><span class="nav-number">1.3.3.</span> <span class="nav-text">Bridge Data Gap: Conditioned Mask Decoding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mapping-Hypothesis-Verification"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Mapping Hypothesis Verification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Conditioned-Mask-Generation-to-Guide-Detection-Data"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Conditioned Mask Generation to Guide Detection Data</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.4.</span> <span class="nav-text">Experiment</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

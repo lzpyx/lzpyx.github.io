@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="线性代数的本质向量究竟是什么？可以看作ordered list of numbers 向量加法：对应项相加，理解为空间中的移动 向量数乘：scaling，缩放，使用标量scalars和向量相乘完成对向量的缩放，标量和向量的每个分量相乘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性代数的本质">
+<meta property="og:url" content="http://lzpyx.github.io/2023/05/10/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="线性代数的本质向量究竟是什么？可以看作ordered list of numbers 向量加法：对应项相加，理解为空间中的移动 向量数乘：scaling，缩放，使用标量scalars和向量相乘完成对向量的缩放，标量和向量的每个分量相乘">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220610110630699.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220610110747531.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230508211709838.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230508212950740.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623113529131.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623114923059.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623115528819.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623115747160.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623120757248.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509103211654.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215924307.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509104029828.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623152933854.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623130209098.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623162105748.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623164148088.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623164655648.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/1B5CF3C288D154FA0350BF26C76EAAC8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509152633288.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215847968.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509154023462.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509160817852.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509160830451.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215823451.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509162108385.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215802419.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509163021591.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509164547057.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215743507.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509170807056.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215714330.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509171646081.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509172940106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510001908198.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002211115.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215602766.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002618089.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002901070.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510003536300.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215531654.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510003823485.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004026476.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230511215416663.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004436549.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004555872.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004844914.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509233720414.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509234351783.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215250075.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215309552.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509214223713.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509214924556.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509221318525.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215151013.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509230357591.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518105231347.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518105302343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518120840821.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518120906763.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518121121322.png">
+<meta property="article:published_time" content="2023-05-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-18T04:11:27.311Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="随时更新">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220610110630699.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/05/10/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>线性代数的本质 | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/05/10/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线性代数的本质
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-05-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-10T00:00:00+08:00">2023-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-18 12:11:27" itemprop="dateModified" datetime="2023-05-18T12:11:27+08:00">2023-05-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="线性代数的本质"><a href="#线性代数的本质" class="headerlink" title="线性代数的本质"></a>线性代数的本质</h1><h2 id="向量究竟是什么？"><a href="#向量究竟是什么？" class="headerlink" title="向量究竟是什么？"></a>向量究竟是什么？</h2><p>可以看作ordered list of numbers</p>
+<p>向量加法：对应项相加，理解为空间中的移动</p>
+<p>向量数乘：scaling，缩放，使用标量scalars和向量相乘完成对向量的缩放，标量和向量的每个分量相乘</p>
+<span id="more"></span>
+<h2 id="线性组合、张成的空间和基"><a href="#线性组合、张成的空间和基" class="headerlink" title="线性组合、张成的空间和基"></a>线性组合、张成的空间和基</h2><p>基向量的线性组合得到的向量集称为span（张成的空间）</p>
+<p>多个向量，可以移除其中一个而不减少张成的空间，称这些向量线性相关</p>
+<p>另一种表述是，其中一个向量可以表示为其他向量的线性组合，因为这个向量已经落在了其他向量张成的空间中</p>
+<p>如果所有向量都给张成的空间添加了新的维度，则线性无关 </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220610110630699.png" alt="image-20220610110630699" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220610110747531.png" alt="image-20220610110747531" style="zoom:50%;" /></p>
+<h2 id="矩阵与线性变换"><a href="#矩阵与线性变换" class="headerlink" title="矩阵与线性变换"></a>矩阵与线性变换</h2><p>线性变换 Linear Transformation</p>
+<p>当变换满足以下性质时，称为线性：</p>
+<ul>
+<li>直线在变换后依旧是直线，且网格线等距分布<ul>
+<li>推论：$\vec{u}=a\vec{x}+b\vec{y}$， $\vec{u}$的线性变换 $tans(\vec{u})=a<em>tans(\vec{x})+b</em>trans(\vec{y})$</li>
+</ul>
+</li>
+<li>原点保持固定</li>
+</ul>
+<p>若原点移动但其他满足，则为仿射变换</p>
+<p>矩阵乘法和线性变换的关系</p>
+<p>原本的基向量$\vec{i}=\left[ \begin{matrix} 1\\ 0\end{matrix} \right]$, $ \vec{j}=\left[ \begin{matrix} 0\\ 1\end{matrix} \right]$,</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230508211709838.png" alt="image-20230508211709838" style="zoom: 50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230508212950740.png" alt="image-20230508212950740" style="zoom:50%;" /></p>
+<p>每一列就是一个基向量：矩阵<script type="math/tex">\left[ \begin{matrix} a & b\\ c & d\end{matrix} \right]</script>可以理解为第一列是变换后的第一个基向量 $\vec{i}$,第二列则是变换后的第二个基向量$\vec{j}$,将这一矩阵表示的线性变换作用于任意一个向量<script type="math/tex">\left[ \begin{matrix} x\\ y\end{matrix} \right]</script>，最终的结果是基向量的线性加权求和(线性组合，含义是先缩放再做向量加法)，权值就是$x$和$y$</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623113529131.png" alt="image-20220623113529131" style="zoom: 33%;" /></p>
+<p>列线性相关：一个列向量是另一个的倍数（这说明两个变换后的基向量是共线的，这就导致了会将2维空间压缩到直线上）</p>
+<p>把矩阵的列看作变换后的基向量，把矩阵向量乘法看作它们的线性组合, 如果列线性相关，则会压缩维度，如列相关的2x2矩阵代表的线性变换会将一个二维空间挤压到一条直线上，也就是这两个线性相关的列向量张成的一维空间</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623114923059.png" alt="image-20220623114923059" style="zoom: 25%;" /></p>
+<p>先旋转再剪切</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623115528819.png" alt="image-20220623115528819" style="zoom: 25%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623115747160.png" alt="image-20220623115747160" style="zoom: 25%;" /></p>
+<p>从右向左读，先旋转后剪切</p>
+<p>矩阵的乘积就是多个矩阵对应的线性变换相继作用，矩阵乘法不满足交换律，满足结合律</p>
+<p>两个矩阵相乘，将第一个作用的矩阵即M1看作变换后的基向量的组合（也就是基向量第一次到达的地方），然后将第一次变换后得到的基向量$\left[\begin{array}{l}<br>e \\<br>g<br>\end{array}\right]$再使用M2进行变换，也就是使用上一节中的矩阵和向量的乘法，得到最终的基向量</p>
+<p>把M1中的每一列看作变换后的基向量，然后使用M2对每一个基向量做矩阵和向量的乘法，得到最终的基向量，也就是复合矩阵的对应列，比如矩阵<script type="math/tex">\left[ \begin{matrix} a & b\\ c & d\end{matrix} \right]</script>和第一个基向量$\left[\begin{array}{l}<br>e \\<br>g<br>\end{array}\right]$相乘，得到的结果就是复合矩阵的第一个基向量（第一列）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623120757248.png" alt="image-20220623120757248" style="zoom: 33%;" /></p>
+<h2 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h2><p>一个变换的行列式为3，意味着这一变换会将一个区域的面积（体积）增加为原来的3倍</p>
+<ul>
+<li><p>行列式的正负决定了定向，相当于翻转，行列式绝对值代表了区域面积的缩放比例</p>
+</li>
+<li><p>行列式为零，代表变换后的体积(3dim到2dim)、面积(2dim到1dim)为0, 也代表了这一矩阵是列线性相关的</p>
+<ul>
+<li>为什么是列线性相关的：列线性相关说明有两个基向量是共线的，这就导致了空间的压缩</li>
+</ul>
+</li>
+<li><p>关于行列式的正负号，对于三维而言，可以使用右手定则</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509103211654.png" alt="image-20230509103211654" style="zoom:50%;" /></p>
+<p>如果在变换后还满足右手定则，则为正，如果是满足左手，则为负</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215924307.png" alt="image-20230511215924307"></p>
+<p>复合矩阵的行列式等于两个矩阵的行列式的乘积</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509104029828.png" alt="image-20230509104029828" style="zoom:50%;" /></p>
+</li>
+</ul>
+<h2 id="逆矩阵、列空间与零空间、秩"><a href="#逆矩阵、列空间与零空间、秩" class="headerlink" title="逆矩阵、列空间与零空间、秩"></a>逆矩阵、列空间与零空间、秩</h2><p>整理一个线性方程组，所有未知量放在等号左边，常数项放在等号右边</p>
+<p>常数系数constant coefficients，未知变量variables，常数向量</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623152933854.png" alt="image-20220623152933854" style="zoom: 33%;" /></p>
+<p>$A\vec{x}=\vec{v}$可以理解成，我们需要寻找一个向量$\vec{x}$，其经过$A$的线性变换后，与向量$\vec{v}$重合</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623130209098.png" alt="image-20220623130209098" style="zoom: 50%;" /></p>
+<ul>
+<li>对于线性变换A和向量$\vec{v}$,寻找一个向量 $ \vec{x}$在变换后和向量$\vec{v}$重合，只要变换A不将空间压缩到一个更低的维度上，也就是行列式不为0，就一定存在逆变换$A^{-1}$, 使得使用变换A再使用了逆变换 $ A^{-1}$的结果与使用恒等变换的结果一致</li>
+<li>求解方程$A\vec{x}=\vec{v}$（ $det(A)\neq0$）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623162105748.png" alt="image-20220623162105748" style="zoom: 33%;" /></p>
+<ul>
+<li><p>当行列式为0时（ $det(A)=0$），矩阵A对应的变换将空间压缩到更低的维度上，此时就没有逆变换，因为没办法将一条直线“解压缩”到一个平面，或者将一个平面“解压缩”到3维空间，因为函数只能一个输入对应一个输出</p>
+<ul>
+<li>当逆变换不存在时，方程仍可能有解，比如A将空间压缩成直线，但$\vec{v}$恰好落在这条直线上。</li>
+<li>如果$\vec{v}$没有落在这条直线上，则无解<ul>
+<li>可以利用最小二乘求近似解，也就是在A的空间中寻找$\vec{v}$的投影，$A\vec{x}=Project(\vec{v})$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>秩代表了变换后空间的维数</strong>,也就是变换后的基向量能张成的最大空间</p>
+<ul>
+<li>变换后的结果是一条直线，也就是一维的，称这个变换的秩rank为1</li>
+<li>变换后的向量落在某个2维平面上，则称变换的秩为2</li>
+<li><strong>列空间就是矩阵的列（变换后的基向量）张成的空间</strong>，也是变换后的空间，秩就是列空间的维数，秩和列数相等时（秩达到最大），称为满秩，零向量一定在列空间中，因为线性变换保持原点固定不变</li>
+<li>满秩时，原向量和变换后的向量都有一一对应的关系，比如变换后能落在原点的向量只有零向量本身</li>
+</ul>
+</li>
+<li><p><strong>变换后落在原点的原空间中向量的集合称为零空间null space, 也称为矩阵的核kernel</strong></p>
+<ul>
+<li><p>变换后一些向量落在零向量上，“零空间”正是这些向量所构成的空间，若矩阵满秩，则只有原空间中的零向量能落在变换后的零向量上，从方程$A\vec{x}=\vec{v}$中体现为， $ A$矩阵满秩，也就是A中各列向量线性无关，$\vec{x}$存在为一解。</p>
+</li>
+<li><p>零空间也是方程的解，也就是齐次解</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623164148088.png" alt="image-20220623164148088" style="zoom: 33%;" /></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220623164655648.png" alt="image-20220623164655648" style="zoom: 67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/1B5CF3C288D154FA0350BF26C76EAAC8.png" alt="img" style="zoom:67%;" /></p>
+<ul>
+<li>$A\vec{x}$,当A是3x2的矩阵时，实际上是把输入 $ \vec{x}$从二维的输入空间映射到三维空间，矩阵有两列代表输入空间有两个基向量（矩阵乘法中第一个矩阵的列数和第二个矩阵的行数一致，x是个2行1列的向量），有三行表示每一个基向量在变换后都用三个独立的坐标来表述</li>
+</ul>
+<h2 id="点积和对偶性"><a href="#点积和对偶性" class="headerlink" title="点积和对偶性"></a>点积和对偶性</h2><p>对于两个维度相同的向量，点积Dot product就是对应位置相乘然后再相加</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509152633288.png" alt="image-20230509152633288" style="zoom:50%;" /></p>
+<ul>
+<li><p>点积的几何解释：求两个向量的点积，在几何上就是将其中一个向量投影到另一个向量上，然后将投影得到的长度和另一向量长度相乘，符号就是看投影之后的向量和另一向量是否同向</p>
+</li>
+<li><p>从$1\times2$的投影矩阵和向量乘积理解点积：</p>
+<ul>
+<li>描述投影变换的$1\times 2$矩阵的两列，就分别是$\vec{u}$（一个单位向量）的两个坐标，而空间中任意向量经过投影变换的结果，也就是投影矩阵和这个向量相乘，和这个向量与$\vec{u}$的点积在计算上完全相同</li>
+<li>单位向量的点积可以解读为将向量投影到单位向量所在的直线上所得到的投影长度</li>
+</ul>
+</li>
+</ul>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215847968.png" alt="image-20230511215847968" style="zoom:80%;" /></p>
+<ul>
+<li>在任何时候看到一个线性变换，其输出空间是一维数轴（比如一个二维到一维的线性变换$[4\ 1]$）,空间中会存在唯一的向量$\vec{v}$与之相关，因此应用这个线性变换和与向量$\vec{v}$做点积是一样的</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509154023462.png" alt="image-20230509154023462" style="zoom:50%;" /></p>
+<ul>
+<li>将两个向量进行点乘，就是将其中一个向量转换为线性变换</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509160817852.png" alt="image-20230509160817852"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509160830451.png" alt="image-20230509160830451"></p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215823451.png" alt="image-20230511215823451" style="zoom:80%;" /></p>
+<h2 id="叉积的标准介绍"><a href="#叉积的标准介绍" class="headerlink" title="叉积的标准介绍"></a>叉积的标准介绍</h2><p>叉积是两个向量构成的平行四边形的面积</p>
+<p>叉积是有顺序的，对于基向量$\vec{i}$和$\vec{j}$，$\vec{i}$在$\vec{j}$的右边，所以为正，反之为负</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509162108385.png" alt="image-20230509162108385" style="zoom:50%;" /></p>
+<p>叉积的计算可以利用行列式</p>
+<ul>
+<li><p>将两个向量作为矩阵的列向量，然后计算组成矩阵的行列式</p>
+</li>
+<li><p>以下这个判定符号为负，因为v在w的左侧</p>
+</li>
+</ul>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215802419.png" alt="image-20230511215802419" style="zoom:80%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509163021591.png" alt="image-20230509163021591" style="zoom:50%;" /></p>
+<ul>
+<li>两个向量更接近垂直时，平行四边形面积最大</li>
+</ul>
+<p>真正的叉积是通过两个三维向量生成一个新的三维向量</p>
+<ul>
+<li>叉积的结果不是一个数，而是一个向量</li>
+<li>叉积得到的向量的长度就是平行四边形的面积</li>
+<li>方向则垂直于平行四边形，然后用右手定则确定，食指指向v，中指指向w，拇指就是叉积结果向量的方向</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509164547057.png" alt="image-20230509164547057" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215743507.png" alt="image-20230511215743507"></p>
+<h2 id="以线性变换的眼光看叉积"><a href="#以线性变换的眼光看叉积" class="headerlink" title="以线性变换的眼光看叉积"></a>以线性变换的眼光看叉积</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509170807056.png" alt="image-20230509170807056" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215714330.png" alt="image-20230511215714330"></p>
+<p>当向量$\vec{p}$和某个向量$(x,y,z)$点乘时，所得的结果等于一个$3\times3$矩阵的行列式，这个矩阵的第一列为xyz，其余两列为向量v和向量w的坐标，什么样的向量p可以满足这一性质？</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509171646081.png" alt="image-20230509171646081" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509172940106.png" alt="image-20230509172940106" style="zoom:50%;" /></p>
+<h2 id="基变换"><a href="#基变换" class="headerlink" title="基变换"></a>基变换</h2><p>$A^{-1}MA$暗示着一种数学上的转移作用，矩阵$M$代表一种当前基向量视角下的变换，而外侧两个矩阵代表着转移作用，也就是视角上的转换，矩阵乘积仍然代表着同一个变换，只不过是从其他基向量视角的角度来看的</p>
+<p>以下詹妮弗和我们分别代表了两个坐标系</p>
+<p><strong>基变换矩阵：</strong>基变换矩阵的列为詹妮弗的基向量，这个矩阵可以看作一个线性变换，它将我们的基向量$\vec{i}$和$\vec{j}$，也就是我们眼中的(1,0)和(0,1)变换为詹妮弗的基向量，也就是詹妮弗眼中的(1,0)和(0,1)</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510001908198.png" alt="image-20230510001908198" style="zoom:50%;" /></p>
+<p>基变换矩阵的逆：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002211115.png" alt="image-20230510002211115" style="zoom:50%;" /></p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215602766.png" alt="image-20230511215602766" style="zoom:80%;" /></p>
+<p>A矩阵的列代表詹妮弗的基向量，但是是用我们的坐标来描述的</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002618089.png" alt="image-20230510002618089" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510002901070.png" alt="image-20230510002901070" style="zoom:50%;" /></p>
+<p>对于一个用詹妮弗的语言描述的向量，首先利用基变换矩阵转化为用我们的语言描述，这个矩阵代表的是用我们的语言描述的詹妮弗的基向量</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510003536300.png" alt="image-20230510003536300" style="zoom:50%;" /></p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215531654.png" alt="image-20230511215531654" style="zoom:80%;" /></p>
+<p>左侧乘以我们的语言描述的变换矩阵</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510003823485.png" alt="image-20230510003823485" style="zoom:50%;" /></p>
+<p>然后左乘以基变换矩阵的逆，从而得到变换后的向量，用詹妮弗的语言描述的</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004026476.png" alt="image-20230510004026476" style="zoom:50%;" /></p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230511215416663.png" alt="image-20230511215416663" style="zoom: 80%;" /></p>
+<p>可以对任意詹妮弗语言描述的向量做同样的事：先应用基变换矩阵，然后应用线性变换，然后应用基变换矩阵的逆</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004436549.png" alt="image-20230510004436549"></p>
+<p>这三个矩阵的复合就是用詹妮弗语言描述的线性变换矩阵，它接收詹妮弗语言描述的向量，并输出用詹妮弗语言描述的变换后的向量，在这一例子中，詹妮弗的基向量用我们的语言描述就是(2,1)和(-1,1),线性变换是90度旋转</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004555872.png" alt="image-20230510004555872"></p>
+<p>如果用这一矩阵和詹妮弗坐标系中的一个向量相乘，结果就是在他的坐标系中描述的该向量旋转90度的结果</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230510004844914.png" alt="image-20230510004844914"></p>
+<ul>
+<li><p>如何在另一个坐标系中表达当前坐标系所描述的变换</p>
+<ul>
+<li><p>取出你想作为新基的向量的坐标（比如用特征向量作为基），然后将坐标作为一个矩阵的列，这个矩阵就是基变换矩阵</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509233720414.png" alt="image-20230509233720414" style="zoom:50%;" /></p>
+</li>
+<li><p>在当前坐标系表述的变换右侧写下基变换矩阵，左侧写下基变换矩阵的逆，把原始的变换夹在两个矩阵中间时，所得的矩阵代表的是同一个这一变换在新基向量所构成的坐标系的角度观察的结果</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509234351783.png" alt="image-20230509234351783" style="zoom:50%;" /></p>
+<ul>
+<li>用特征向量来完成这件事的意义在于，这个<strong>新矩阵必然是对角的</strong>，并且对角元为对应的特征值，因为这一新矩阵所处的坐标系的基向量在变换中只进行了缩放</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215250075.png" alt="image-20230511215250075"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215309552.png" alt="image-20230511215309552"></p>
+</li>
+</ul>
+<h2 id="特征向量与特征值"><a href="#特征向量与特征值" class="headerlink" title="特征向量与特征值"></a>特征向量与特征值</h2><p>对于某一变换，<strong>向量在变换后仍然留在它自己张成的空间里（向量所在的直线）的向量就是特征向量</strong>，每个特征向量都有一个对应的特征值，即<strong>衡量特征向量在变换中拉伸或压缩比例的因子</strong></p>
+<p>在三维的旋转中，如果能找到旋转这一变换的特征向量，其实找到的就是旋转的轴</p>
+<p>在旋转中，特征向量对应的特征值必须为1，因为旋转并不缩放任何一个向量</p>
+<ul>
+<li>下式可以理解成，向量v经过A变换后的结果与直接对向量v进行$\lambda$缩放的结果重合</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509214223713.png" alt="image-20230509214223713"></p>
+<p>求解特征向量和特征值，实际上就是求解使得这个等式成立的向量$\vec{v}$和$\lambda$</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509214924556.png" alt="image-20230509214924556" style="zoom:50%;" /></p>
+<p>上式的等号左侧是矩阵向量乘积，而右侧是向量数乘，我们需要处理两种不同形式的乘法。</p>
+<ul>
+<li>首先将等号右侧重写为某个矩阵向量乘积，其中矩阵的作用效果是将任一向量乘以$\lambda$，这个矩阵的列代表着变换后的基向量，而每个基向量仅仅与$\lambda$相乘，所以这一矩阵的对角元为$\lambda$，其余位置都是0</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509221318525.png" alt="image-20230509221318525" style="zoom:50%;" /></p>
+<ul>
+<li><p>现在等式两边都是矩阵向量乘积的形式了，因此可以移项然后提出因子$\vec{v}$,得到如下形式：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230511215151013.png" alt="image-20230511215151013"></p>
+</li>
+<li><p>寻找一个向量$\vec{v}$，使得这个新矩阵和$\vec{v}$相乘的结果为零向量</p>
+<ul>
+<li>$\vec{v}$如果为零向量，则等式恒等，但我们关注的是非零向量的情况</li>
+<li><strong>当且仅当矩阵代表的变换将空间压缩到更低的维度时，才会存在一个非零向量，使得矩阵和它的乘积为零向量，而==空间压缩对应的就是矩阵的行列式为零==</strong>，我们通过令$(A-\lambda I)$的行列式为零，求得特征值$\lambda$. </li>
+<li>$\vec{v}$是A 的一个特征向量，在变换中停留在它张成的空间里</li>
+</ul>
+</li>
+<li><p>线性变换不一定有特征向量，比如旋转90度，所有的向量都离开了其原本张成的空间，求特征值会发现没有实数解，没有实数解代表这一变换没有特征向量</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230509230357591.png" alt="image-20230509230357591"></p>
+</li>
+<li><p>对角矩阵的性质：</p>
+<ul>
+<li>对角矩阵所有的基向量都是特征向量</li>
+<li>对角线上元素的值就对应每一列代表的基向量所属的特征值</li>
+<li>对角矩阵的一个重要应用是计算矩阵与自己多次相乘的结果</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518105231347.png" alt="image-20230518105231347" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518105302343.png" alt="image-20230518105302343" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518120840821.png" alt="image-20230518120840821" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518120906763.png" alt="image-20230518120906763" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230518121121322.png" alt="image-20230518121121322" style="zoom:50%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E6%97%B6%E6%9B%B4%E6%96%B0/" rel="tag"># 随时更新</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/04/21/2023418-BEVPerception-Survey/" rel="prev" title="BEVPerception Survey">
+      <i class="fa fa-chevron-left"></i> BEVPerception Survey
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/" rel="next" title="Recovering 3D Human Mesh from Monocular Images: A Survey">
+      Recovering 3D Human Mesh from Monocular Images: A Survey <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-number">1.</span> <span class="nav-text">线性代数的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E7%A9%B6%E7%AB%9F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">向量究竟是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E7%BB%84%E5%90%88%E3%80%81%E5%BC%A0%E6%88%90%E7%9A%84%E7%A9%BA%E9%97%B4%E5%92%8C%E5%9F%BA"><span class="nav-number">1.2.</span> <span class="nav-text">线性组合、张成的空间和基</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2"><span class="nav-number">1.3.</span> <span class="nav-text">矩阵与线性变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">行列式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%86%E7%9F%A9%E9%98%B5%E3%80%81%E5%88%97%E7%A9%BA%E9%97%B4%E4%B8%8E%E9%9B%B6%E7%A9%BA%E9%97%B4%E3%80%81%E7%A7%A9"><span class="nav-number">1.5.</span> <span class="nav-text">逆矩阵、列空间与零空间、秩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E7%A7%AF%E5%92%8C%E5%AF%B9%E5%81%B6%E6%80%A7"><span class="nav-number">1.6.</span> <span class="nav-text">点积和对偶性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%89%E7%A7%AF%E7%9A%84%E6%A0%87%E5%87%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.7.</span> <span class="nav-text">叉积的标准介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2%E7%9A%84%E7%9C%BC%E5%85%89%E7%9C%8B%E5%8F%89%E7%A7%AF"><span class="nav-number">1.8.</span> <span class="nav-text">以线性变换的眼光看叉积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E5%8F%98%E6%8D%A2"><span class="nav-number">1.9.</span> <span class="nav-text">基变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E4%B8%8E%E7%89%B9%E5%BE%81%E5%80%BC"><span class="nav-number">1.10.</span> <span class="nav-text">特征向量与特征值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

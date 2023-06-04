@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learn to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Few-Shot Learning Survey">
+<meta property="og:url" content="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learn to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410150456109.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104836728.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104954557.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410113727853.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410115438233.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410120928089.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410121941739.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410133644727.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410134230975.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410122548265.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410132451151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410135817310.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410140333762.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410140737277.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141227109.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141509223.png">
+<meta property="article:published_time" content="2022-11-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-06T14:43:18.750Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="WSSS">
+<meta property="article:tag" content="WSIS">
+<meta property="article:tag" content="Survey">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Few-Shot Learning Survey | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Few-Shot Learning Survey
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 22:43:18" itemprop="dateModified" datetime="2023-02-06T22:43:18+08:00">2023-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
+<p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
+<p>小样本学习也是一种meta learning，learn to learn</p>
+<p>与监督学习的区别：</p>
+<p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
+<p>k-way n-shot：</p>
+<ul>
+<li>k-way：support set有k个类别</li>
+<li>n-shot：每个类别有n个样本，one-shot就是只有一张图片</li>
+</ul>
+<p>与比赛不同，few shot learning中，设定query是属于surrport set的，而比赛中是需要判断是不是已知类的<br>siamese网络的训练：</p>
+<ol>
+<li>使用正负对进行训练，正对（同一类别）的两个样本的相似度标记为1，负对为0.将样本对输入到同一个网络，提取特征，对特征求差值，得到的特征向量表示两个图片得到的特征向量的区别，然后再送进全连接层，得到一个标量，加上sigmoid进行归一化，得到一个表示similarity的预测值，使用预测值sim和标签（正对为1，负对为0）做crossentropy</li>
+<li>使用triplet loss，训练时每次选取3个样本，一个anchor，一个positive，一个negative，让anchor和positive在特征空间的距离更近，anchor和negative在特征空间的距离更远</li>
+</ol>
+<span id="more"></span>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png" alt="image-20220410100632997"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410150456109.png" alt="image-20220410150456109"></p>
+<p><strong>Cosine Similarity</strong></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104836728.png" alt="image-20220410104836728" style="zoom: 33%;" /></p>
+<p>当x和w的向量长度都是1时，cos就等于x和w的内积</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104954557.png" alt="image-20220410104954557" style="zoom: 67%;" /></p>
+<p><strong>softmax</strong></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410113727853.png" alt="image-20220410113727853" style="zoom:50%;" /></p>
+<p>对向量取指数，然后normalize（归一化）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410115438233.png" alt="image-20220410115438233"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410120928089.png" alt="image-20220410120928089" style="zoom:50%;" /></p>
+<p>softmax分类器，实际上是全连接层加softmax函数，x是输入的特征向量，w是全连接层的参数矩阵，k是类别数，所以w中的每一行对应一个类别</p>
+<h2 id="Pretraining"><a href="#Pretraining" class="headerlink" title="Pretraining"></a>Pretraining</h2><p>预训练一个CNN用于特征提取</p>
+<p>可以使用监督学习或者孪生网络</p>
+<p>从support set中提取特征向量</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410121941739.png" alt="image-20220410121941739" style="zoom: 50%;" /></p>
+<p>然后利用训练好的网络f提取query图像的特征向量，并标准化/归一化（normalize），得到特征向量q，其2范数为1</p>
+<p>将从support set中提取的每个类的平均特征向量作为矩阵M的行向量堆叠起来</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410133644727.png" alt="image-20220410133644727" style="zoom: 50%;" /></p>
+<p>做预测：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410134230975.png" alt="image-20220410134230975" style="zoom: 50%;" /></p>
+<p>结果p应该是个3维的列向量，表示概率分布，表示了query和μ1，μ2，μ3的相似度，其中第一行最大，因为在图中μ1和p是最接近的，其内积最大</p>
+<h3 id="Normalization"><a href="#Normalization" class="headerlink" title="Normalization"></a>Normalization</h3><p>normalize后的二范数是1（归一化）。Normalization主要思想是<strong>对每个样本计算其p-范数，然后对该样本中每个元素除以该范数，这样处理的结果是使得每个处理后样本的p-范数（比如l1-norm,l2-norm）等于1。</strong> </p>
+<p>p-范数:即向量元素绝对值的p次方和的1/p次幂,2范数就是p范数的特例</p>
+<p>对两个向量的l2-norm进行点积（内积），就可以得到这两个向量的余弦相似性。</p>
+<p>L2标准化</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410122548265.png" alt="image-20220410122548265" style="zoom:67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410132451151.png" alt="image-20220410132451151"></p>
+<h2 id="fine-tuning"><a href="#fine-tuning" class="headerlink" title="fine-tuning"></a>fine-tuning</h2><p>在前面的例子中，我们并没有使用学习的方式得到W和b，而是将W设置为M矩阵，b设置为0，但实际上这两个参数是可以学习的，也就是我们可以对softmax分类器在support set中进行学习，可以使用crossEntropy loss对W和b进行学习，yj是one-hot向量，surrport set一般很小，所以加一个regularization来防止过拟合</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410135817310.png" alt="image-20220410135817310" style="zoom:50%;" /></p>
+<p>做fine-tuning时的trick</p>
+<ol>
+<li>合理的初始化</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410140333762.png" alt="image-20220410140333762" style="zoom:50%;" /></p>
+<ol>
+<li>用regularization防止过拟合。entropy regularization是其中一种方式，对每个query都求一个entropy，然后求平均，要让这个平均的entropy越小越好，因为熵越小，代表不确定越小，当p的每个维度都相近时，也就是分辨不出来谁的概率更大时，熵最大，不确定性最大</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410140737277.png" alt="image-20220410140737277" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141227109.png" alt="image-20220410141227109" style="zoom:50%;" /></p>
+<ol>
+<li>cosine similarity + softmax classifier。其实和标准的softmax分类器区别很小，只是在做w和q的内积之前，先做归一化。</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141509223.png" alt="image-20220410141509223" style="zoom:50%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WSSS/" rel="tag"># WSSS</a>
+              <a href="/tags/WSIS/" rel="tag"># WSIS</a>
+              <a href="/tags/Survey/" rel="tag"># Survey</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/" rel="prev" title="对比学习综述">
+      <i class="fa fa-chevron-left"></i> 对比学习综述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/11/08/CVPR2020%20MoCo/" rel="next" title="CVPR2020 MoCo">
+      CVPR2020 MoCo <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Few-Shot-Learning"><span class="nav-number">1.</span> <span class="nav-text">Few-Shot Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pretraining"><span class="nav-number">1.1.</span> <span class="nav-text">Pretraining</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Normalization"><span class="nav-number">1.1.1.</span> <span class="nav-text">Normalization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fine-tuning"><span class="nav-number">1.2.</span> <span class="nav-text">fine-tuning</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

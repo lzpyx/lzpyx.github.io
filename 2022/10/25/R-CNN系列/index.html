@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CVPR2014 R-CNNRich feature hierarchies for accurate object detection and semantic segmentation Methodology 首先模型输入为一张图片，然后在图片上提出了约2000个region proposal  在提取region proposal时，R-CNN采用了selective search。sele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R-CNN系列目标检测算法">
+<meta property="og:url" content="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="CVPR2014 R-CNNRich feature hierarchies for accurate object detection and semantic segmentation Methodology 首先模型输入为一张图片，然后在图片上提出了约2000个region proposal  在提取region proposal时，R-CNN采用了selective search。sele">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081555543.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081957999.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081958626.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210082017226.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210091247815.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210091419797.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210122023227.png">
+<meta property="article:published_time" content="2022-10-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-12T02:02:58.540Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="OD">
+<meta property="article:tag" content="Two-stage">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081555543.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>R-CNN系列目标检测算法 | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          R-CNN系列目标检测算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-25T00:00:00+08:00">2022-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-12 10:02:58" itemprop="dateModified" datetime="2022-11-12T10:02:58+08:00">2022-11-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CVPR2014-R-CNN"><a href="#CVPR2014-R-CNN" class="headerlink" title="CVPR2014 R-CNN"></a>CVPR2014 R-CNN</h1><p>Rich feature hierarchies for accurate object detection and semantic segmentation</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081555543.png" alt="image-20221008155509842" style="zoom: 50%;" /></p>
+<p>首先模型输入为一张图片，然后在图片上提出了约2000个region proposal</p>
+<blockquote>
+<p>在提取region proposal时，R-CNN采用了selective search。selective search的核心是一个SVM，首先将图像分割为若干块，然后利用SVM将属于同一对象的块合并在一起。</p>
+</blockquote>
+<p>然后通过卷积神经网络逐个提取region proposal的特征,对于每一个region proposal都会得到一个4096维的特征向量</p>
+<blockquote>
+<p>R-CNN直接使用了AlexNet，在ImageNet上进行分类训练</p>
+</blockquote>
+<p>然后这些被提取的特征通过支持向量机(SVM)进行分类(每个类别一个SVM)，得到物体的类别，并通过一个bounding box regression调整目标包围框的大小。</p>
+<blockquote>
+<p>实际包含两个子步骤，一是对特征向量进行<strong>分类</strong>（需要根据特征训练分类器）；二是通过<strong>边界回归</strong>（bounding-box regression) 得到精确的目标区域，受 DPM 的启发，作者训练了一个线性的回归模型，这个模型能够针对候选区域的 pool5 数据预测一个新的 box 位置。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h2><p>由于CNN需要固定尺寸输入，R-CNN中采用$227 \times227$作为输入尺寸，在对 Region 进行变换的时候，首先对这些区域进行膨胀处理，在其 box 周围附加了 p=16 个像素</p>
+<p>推理时，采取非极大性抑制，以最高分的区域为基础，剔除掉那些重叠位置的区域</p>
+<p>训练分类，回归时正负样本选择<a target="_blank" rel="noopener" href="https://blog.csdn.net/shenxiaolu1984/article/details/51066975">参考博客</a></p>
+<h3 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h3><p>区域分类技术是语义分割的标准做法，所以 R-CNN 也可以做语义分割，并且作者拿它跟 O2P 来比较。</p>
+<p>作者评估了三种用于计算CPMC区域特征的策略，所有这些策略都从将区域周围的矩形窗口弯曲到227 × 227开始。第一种策略 (完全) 忽略区域的形状，并直接在扭曲的窗口上计算CNN特征，就像进行检测一样。但是，这些特征忽略了区域的非矩形形状。两个区域可能具有非常相似的边界框，而几乎没有重叠。因此，第二种策略 (fg) 仅在区域的前景掩码上计算CNN特征。我们用平均输入替换背景，以便在平均减法之后背景区域为零。第三种策略 (full fg) 简单地连接了full和fg功能</p>
+<h2 id="Contribution-amp-Weakness"><a href="#Contribution-amp-Weakness" class="headerlink" title="Contribution&amp;Weakness"></a>Contribution&amp;Weakness</h2><p>Contribution</p>
+<ul>
+<li>引入CNN,在 ImageNet 上先进行预训练，然后利用成熟的权重参数在 PASCAL VOC 数据集上进行 fine-tune,利用 CNN 抽取特征，然后用一系列的的 SVM 做类别预测。</li>
+<li>训练了一个线性回归模型对 bbox 进行修正。</li>
+</ul>
+<p>Weakness</p>
+<ul>
+<li>使用Selective Seach获取region proposal耗时较长，2s per image</li>
+<li>需要对RoI逐个进行特征提取，2k个region proposal就要前向传播2k次，耗时</li>
+<li>3个模块是分开训练的，且训练时需要大量存储空间</li>
+<li>CNN需要固定尺寸的输入图像，crop/warp产生物体截断或拉伸，会导致输入CNN的信息丢失</li>
+</ul>
+<h1 id="TPAMI2015-SPP-Net"><a href="#TPAMI2015-SPP-Net" class="headerlink" title="TPAMI2015 SPP-Net"></a>TPAMI2015 SPP-Net</h1><p>Spatial Pyramid Pooling in Deep Convolutional Networks for Visual Recognition</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43624538/article/details/87966601?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-87966601-blog-115672200.pc_relevant_multi_platform_whitelistv3&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-87966601-blog-115672200.pc_relevant_multi_platform_whitelistv3&amp;utm_relevant_index=3">参考博客</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>固定输入尺寸问题，其实CNN的卷积层并不需要固定输入尺寸，固定尺寸这一约束来自于最后的全连接层。当遇到任意尺寸的图像时，都是先将图像适应成固定尺寸，方法包括裁剪(crop)和变形(wrap)。但裁剪可能不包含整个对象区域，扭曲变形则会导致几何失真，影响识别的精度。另外，一个预先定义好的尺寸，并不适合在图像中存在不同尺寸的实际情况。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081957999.png" alt="image-20221008195752250" style="zoom:50%;" /></p>
+<h2 id="Methodology-1"><a href="#Methodology-1" class="headerlink" title="Methodology"></a>Methodology</h2><p>为了使网络能够处理任意尺寸输入，将全连接层前的最后一个池化层替换为空间金字塔池化层spatial pyramid pooling layer。</p>
+<p>全连接层的输入是固定长度的向量，这样的向量可以使用词袋模型Bag-of-Words (BoW)得到，空间金字塔池改进了BoW，在每个局部的空间块中进行池化，保留空间信息。这些空间块的大小与图像大小成正比，因此无论图像大小如何，块的数量都是固定的。在本文中，作者在每一个块中采用最大池化max pooling。</p>
+<p>输出向量大小为$kM$，$k$代表filters(卷积核个数)，$M$代表文中所提的”bin”的数量，也就是块数，然后将这一向量作为全连接层的输入，在下图中输出的向量大小为$21\times256$。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081958626.png" alt="image-20221008195846301" style="zoom:50%;" /></p>
+<p>假设输入为尺寸是a x a（也就是13×13）的conv5之后的特征图。对于n x n块的空间金字塔池化，窗口大小为win = 上取整[a/n]，步幅str = 下取整[a/n]. </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210082017226.png" alt="image-20221008201713125" style="zoom:50%;" /></p>
+<h2 id="Details-1"><a href="#Details-1" class="headerlink" title="Details"></a>Details</h2><p>作者在附录中提到了如何将原图上的proposal映射到特征图上。由于我们需要使用proposal来裁剪已被多次采样的卷积特征图 (例如，conv5)，所以我们需要在特征图上对齐proposal窗口。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43624538/article/details/87966601">计算映射参考</a></p>
+<h2 id="Contribution-amp-Weakness-1"><a href="#Contribution-amp-Weakness-1" class="headerlink" title="Contribution&amp;Weakness"></a>Contribution&amp;Weakness</h2><p>Contribution</p>
+<ul>
+<li>SPP能在输入尺寸任意的情况下产生固定大小的输出，这意味着推理时可以使用任意尺寸的图片输入，在训练时则可以使用多尺度训练更进一步提高模型精度（每个epoch，针对一个给定的输入尺寸进行网络训练，然后在下一个epoch，再切换到另一个尺寸）</li>
+<li>SPP使用了多级池化，即多个尺寸的池化窗口，多级池化对于物体的变形十分鲁棒</li>
+</ul>
+<p>Weakness</p>
+<ul>
+<li><p>和RCNN一样，几个模块仍然需要分开训练，提取候选框 | 计算CNN特征| SVM分类 | Bounding Box回归独立训练，大量的中间结果需要转存，无法整体训练模型</p>
+</li>
+<li><p>提出Region Proposal仍然很耗时</p>
+</li>
+<li><p>SPP-Net在无法同时优化在SPP-Layer两边的卷积层和全连接层</p>
+<blockquote>
+<p>SPP中的微调只更新spp层后面的全连接层。在微调阶段SPP-net只能更新FC层,这是因为卷积特征是线下计算的,从而无法在微调阶段反向传播误差。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="ICCV2015-Fast-R-CNN"><a href="#ICCV2015-Fast-R-CNN" class="headerlink" title="ICCV2015 Fast R-CNN"></a>ICCV2015 Fast R-CNN</h1><p><a target="_blank" rel="noopener" href="https://aistudio.csdn.net/62e38a71cd38997446774c7f.html?spm=1001.2101.3001.6650.9&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-9-72851319-blog-87091740.t0_edu_mix&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Eactivity-9-72851319-blog-87091740.t0_edu_mix&amp;utm_relevant_index=11">参考1</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/fengbingchun/article/details/87091740">参考2</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/shenxiaolu1984/article/details/51036677">参考3</a></p>
+<h2 id="Motivation-1"><a href="#Motivation-1" class="headerlink" title="Motivation"></a>Motivation</h2><p>R-CNN存在的问题：</p>
+<ul>
+<li>训练分多步。R-CNN的训练首先要fine tuning一个预训练的网络，然后针对每个类别都训练一个SVM分类器，最后还要用regressors对bounding-box进行回归，另外region proposal也要单独用selective search的方式获得，步骤比较繁琐。</li>
+<li>时间和内存消耗比较大。在训练RCNN中独立的分类器和回归器时，需要大量特征作为训练样本，特征是另外保存在磁盘上再在训练阶段读入的，会增加不必要的耗时（如从磁盘上读入数据）。</li>
+<li>测试速度慢，需要对region proposal进行逐个卷积，存在大量冗余操作。</li>
+</ul>
+<p>SPP-Net算法解决了RCNN中重复卷积的问题，也就是只需要提取一次特征。SPP-Net依然存在的缺点：</p>
+<ul>
+<li>训练步骤过多，无法整体训练</li>
+<li>特征保存在磁盘上，因此无法同时优化在SPP-Layer两边的卷积层和全连接层。</li>
+<li>没有解决使用selective search提出region proposal的耗时问题</li>
+</ul>
+<p>Fast R-CNN取代R-CNN的串行特征提取方式，直接对全图提取特征，减少了特征的重复计算，把分类和位置回归统一用深度网络实现，不再需要额外存储，除了selective search，其他部分都可以合在一起训练，减少了训练步骤。</p>
+<h2 id="Methodology-2"><a href="#Methodology-2" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210091247815.png" alt="image-20221009124719652" style="zoom:67%;" /></p>
+<p>算法输入是图像和selective search产生的region proposal，通过卷积对图像提取一次特征，然后通过RoI projection从特征图上取出RoI的特征，然后使用RoI pooling layer生成固定长度的特征向量送入FCs，然后分别进行分类和回归，在Fast R-CNN中作者使用softmax代替原来的SVM分类器。网络每个RoI有两个输出向量: softmax分类概率和每个类边界框回归偏移（对每个类别都训练一个回归器，且只有非背景的region proposal才需要进行回归）。</p>
+<p><strong>RoI Pooling Layer</strong></p>
+<p>RoI Pooling Layer可以看作SPP-Net的简化版本，并未使用空间金字塔结构，RoI Pooling Layer的作用是根据不同尺寸的region proposal，从最后卷积层输出的feature map提取大小固定的特征向量，即将一个region proposal分割成$H\times W$大小的网格，然后将这个region proposal映射到最后一个卷积层输出的feature map，最后计算每个网格里的最大值(max pooling)作为该网格的输出，所以不管ROI pooling之前的feature map大小是多少，ROI pooling后得到的feature map大小都是$H\times W$。</p>
+<p><strong>Multi-task loss</strong></p>
+<p>$L\left(p, u, t^{u}, v\right)=L_{\mathrm{cls}}(p, u)+\lambda[u \geq 1] L_{\mathrm{loc}}\left(t^{u}, v\right)$</p>
+<p>其中$L_{\mathrm{cls}}(p, u)=-\log p_{u}$,使用了log loss，$p_u$代表真实类的分类概率。分类采用softmax代替SVM进行分类，共输出N(类别)+1(背景)类。softmax由于引入了类间竞争，所以分类效果优于SVM，SVM在R-CNN中用于二分类。</p>
+<p>回归损失输出的是4*N(类别)，4表示的是(x,y,w,h分别表示候选框的中心坐标和宽、高)。比较真实分类对应的预测参数$t^u$ 和真实平移缩放参数为$v$的差别。SmoothL1Loss取代Bouding box回归。</p>
+<p>$L_{\mathrm{loc}}\left(t^{u}, v\right)=\sum_{i \in\{\mathrm{x}, \mathrm{y}, \mathrm{w}, \mathrm{h}\}} \operatorname{smooth}_{L_{1}}\left(t_{i}^{u}-v_{i}\right)$</p>
+<p>$|x|&gt;1$时，变换为线性以降低离群噪声：</p>
+<p>$\operatorname{smooth}_{L_{1}}(x)=\left\{\begin{array}{ll}<br>0.5 x^{2} &amp; \text { if }|x|&lt;1 \\<br>|x|-0.5 &amp; \text { otherwise }<br>\end{array}\right.$</p>
+<p>定位损失只对非背景类计算</p>
+<p>$L=\left\{\begin{array}{ll}<br>L_{\mathrm{cls}}+\lambda L_{\mathrm{loc}} &amp;  \text { 前景 } \\<br>L_{\mathrm{cls}} &amp;  \text { 背景 }<br>\end{array}\right.$</p>
+<h2 id="Details-2"><a href="#Details-2" class="headerlink" title="Details"></a>Details</h2><p>每个RoI由四元组 (r，c，h，w) 定义，该四元组指定其左上角 (r，c) 及其高度和宽度 (h，w)。</p>
+<p>在实际训练中，每个mini-batch包含2张图像和128个region proposal（或者叫ROI），也就是每张图像有64个ROI。然后从这些ROI中挑选约25%的ROI，这些ROI和ground truth的IOU值都大于0.5。另外只采用随机水平翻转的方式增加数据集。<br>测试的时候则每张图像大约2000个ROI。</p>
+<h2 id="Contribution-amp-Weakness-2"><a href="#Contribution-amp-Weakness-2" class="headerlink" title="Contribution&amp;Weakness"></a>Contribution&amp;Weakness</h2><p>Contribution</p>
+<ul>
+<li>将最后一个卷积层的SPP Layer改为RoI Pooling Layer，在网络微调的过程中，不仅微调全连接层，对部分卷积层也进行了微调，得到了更好的检测结果。</li>
+<li>提出了多任务损失函数(Multi-task Loss)，将边框回归直接加入到CNN网络中训练，同时包含了候选区域分类损失和位置回归损失</li>
+<li>为了减少繁琐的目标检测步骤，Fast R-CNN直接使用Softmax替代SVM分类，同时利用多任务损失函数将边框回归也加入到了网络中，这样整个的训练过程只包含提取候选区域和CNN训练两个阶段。</li>
+</ul>
+<p>Weakness</p>
+<ul>
+<li>仍然没有解决使用selective search提出region proposal的耗时问题，提region proposal 2~3s，而提特征分类只需0.32s</li>
+</ul>
+<h1 id="TPAMI2017-Faster-R-CNN"><a href="#TPAMI2017-Faster-R-CNN" class="headerlink" title="TPAMI2017 Faster R-CNN"></a>TPAMI2017 Faster R-CNN</h1><p>Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jiongnima/article/details/79094159?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-79094159-blog-107343260.t0_edu_mix&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2-79094159-blog-107343260.t0_edu_mix&amp;utm_relevant_index=5">参考</a> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32404424">代码参考</a> </p>
+<h2 id="Motivation-2"><a href="#Motivation-2" class="headerlink" title="Motivation"></a>Motivation</h2><p>解决Selective search提出region proposal的耗时问题</p>
+<p>相比Fast R-CNN，主要两处不同:</p>
+<ul>
+<li>使用RPN(Region Proposal Network)代替原来的Selective Search方法产生建议窗口</li>
+<li>产生region proposal的CNN和目标检测的CNN共享</li>
+</ul>
+<h2 id="Methodology-3"><a href="#Methodology-3" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210091419797.png" alt="image-20221009141937246"></p>
+<p>Faster R-CNN的结构主要分为三大部分，第一部分是共享的卷积层-backbone，第二部分是候选区域生成网络-RPN，第三部分是对候选区域进行分类的网络-classifier。其中，RPN与classifier部分均对目标框进行了回归，也就是进行了两次回归，在RPN部分，softmax进行的是二分类，也就是区分前景和背景。classifier部分与Fast R-CNN一致。</p>
+<p><strong>RPN</strong></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210122023227.png" alt="image-20221012202346752" style="zoom: 50%;" /></p>
+<p>RPN依靠一个在共享特征图上滑动的窗口，为每个位置生成$k=9$种预先设置好长宽比与面积的目标框(先验框anchor)。这9种初始anchor包含三种面积(128×128，256×256，512×512)，每种面积又包含三种长宽比(1:1，1:2，2:1)。若共享特征图的大小为$h\times w$则RPN生成的初始anchor的总数为$h\times w\times k$个。RPN对于每个anchor需要做两件事：</p>
+<ol>
+<li><p>判断anchor到底是前景还是背景</p>
+<blockquote>
+<p>如果一个anchor与ground truth的IoU在0.7以上，那这个anchor就算前景(positive)。类似地，如果这个anchor与ground truth的IoU在0.3以下，那么这个anchor就算背景(negative)。IoU介于0.3和0.7的anchor没有使用。在训练anchor属于前景与背景的时候，是在一张图中，随机抽取了128个前景anchor与128个背景anchor。</p>
+</blockquote>
+</li>
+<li><p>为属于前景的anchor进行第一次坐标修正</p>
+<blockquote>
+<p>采用SmoothL1loss（与Fast R-CNN一致），在训练RPN的时候，只对128个随机抽取的<strong>positive anchors</strong>计算框回归损失。</p>
+</blockquote>
+</li>
+</ol>
+<p>RPN部分在$3\times 3$卷积之后分别进行了$1\times1$卷积，其中softmax也就是分类分支的$1\times 1$卷积输出的通道数是$2\times 9=18$，其代表的是9个先验框属于前景和属于背景的概率，bbox reg也就是框回归分支的$1\times 1$卷积输出的通道数为$4\times 9=36$，其代表每个anchor的4个修正坐标的值（xy平移和wh缩放倍数）。</p>
+<p><strong>Classifier</strong></p>
+<p>在RoI Pooling Layer之后，就是Fast R-CNN的分类器和RoI边框修正训练。RoI边框修正和RPN中的anchor边框修正一样也采用SmoothL1 Loss，也是对非背景的RoI进行修正，对于类别标签为背景的RoI，则不进行RoI边框修正的参数训练。</p>
+<p><strong>测试流程</strong></p>
+<pre><code>1) 首先通过RPN生成约20000个anchor(40×60×9)。
+2) 对20000个anchor进行第一次边框修正，得到修订边框后的proposal。
+3) 对超过图像边界的proposal的边进行clip，使得该proposal不超过图像范围。
+4) 忽略掉长或者宽太小的proposal。
+5) 将所有proposal按照前景分数从高到低排序，选取前6000个proposal。
+6) 使用阈值为0.7的NMS算法排除掉重叠的proposal。
+7) 针对上一步剩下的proposal,选取前300个proposal进行分类和第二次边框修正。
+</code></pre><h2 id="Details-3"><a href="#Details-3" class="headerlink" title="Details"></a>Details</h2><h2 id="Contribution-amp-Weakness-3"><a href="#Contribution-amp-Weakness-3" class="headerlink" title="Contribution&amp;Weakness"></a>Contribution&amp;Weakness</h2><p>Contribution</p>
+<ul>
+<li>采用卷积网络自行产生建议框，并且和目标检测网络共享卷积网络，使得建议框数目从原有的约2000个减少为300个，且建议框的质量也有本质的提高.</li>
+</ul>
+<p>Weakness</p>
+<ul>
+<li>ROI pooling存在的问题，Mask R-CNN提出ROI Align解决了对齐问题</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OD/" rel="tag"># OD</a>
+              <a href="/tags/Two-stage/" rel="tag"># Two-stage</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/" rel="prev" title="TPAMI2022 WSSS/WSIS综述">
+      <i class="fa fa-chevron-left"></i> TPAMI2022 WSSS/WSIS综述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/10/30/CVPR2022%20CLIMS/" rel="next" title="CVPR2022 CLIMS">
+      CVPR2022 CLIMS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2014-R-CNN"><span class="nav-number">1.</span> <span class="nav-text">CVPR2014 R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Details"><span class="nav-number">1.2.</span> <span class="nav-text">Details</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Segmentation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Segmentation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Weakness"><span class="nav-number">1.3.</span> <span class="nav-text">Contribution&amp;Weakness</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TPAMI2015-SPP-Net"><span class="nav-number">2.</span> <span class="nav-text">TPAMI2015 SPP-Net</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-1"><span class="nav-number">2.2.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Details-1"><span class="nav-number">2.3.</span> <span class="nav-text">Details</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Weakness-1"><span class="nav-number">2.4.</span> <span class="nav-text">Contribution&amp;Weakness</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ICCV2015-Fast-R-CNN"><span class="nav-number">3.</span> <span class="nav-text">ICCV2015 Fast R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation-1"><span class="nav-number">3.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-2"><span class="nav-number">3.2.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Details-2"><span class="nav-number">3.3.</span> <span class="nav-text">Details</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Weakness-2"><span class="nav-number">3.4.</span> <span class="nav-text">Contribution&amp;Weakness</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TPAMI2017-Faster-R-CNN"><span class="nav-number">4.</span> <span class="nav-text">TPAMI2017 Faster R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation-2"><span class="nav-number">4.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology-3"><span class="nav-number">4.2.</span> <span class="nav-text">Methodology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Details-3"><span class="nav-number">4.3.</span> <span class="nav-text">Details</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Weakness-3"><span class="nav-number">4.4.</span> <span class="nav-text">Contribution&amp;Weakness</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Monocular 3D Human Mesh Recovery(a.k.a. 3D human pose and shape estimation) in the deep learning era 主要考虑RGB图片和单目RGB视频（统称为monocular images）作为输入 存在问题 将2D观察提升到3D空间存在固有的模糊性 多变的人体运动结构 与环境复杂的交互  两种范式：  基于优">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recovering 3D Human Mesh from Monocular Images: A Survey">
+<meta property="og:url" content="http://lzpyx.github.io/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="Monocular 3D Human Mesh Recovery(a.k.a. 3D human pose and shape estimation) in the deep learning era 主要考虑RGB图片和单目RGB视频（统称为monocular images）作为输入 存在问题 将2D观察提升到3D空间存在固有的模糊性 多变的人体运动结构 与环境复杂的交互  两种范式：  基于优">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230530204208351.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531112713411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531150602230.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531153014717.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531153424529.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531112208400.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531160346474.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531162016202.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531162727620.png">
+<meta property="article:published_time" content="2023-05-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-04T10:54:41.584Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="3D human mesh recovery">
+<meta property="article:tag" content="3D from monocular images">
+<meta property="article:tag" content="human pose estimation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230530204208351.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Recovering 3D Human Mesh from Monocular Images: A Survey | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Recovering 3D Human Mesh from Monocular Images: A Survey
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-05-30 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-30T00:00:00+08:00">2023-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-04 18:54:41" itemprop="dateModified" datetime="2023-06-04T18:54:41+08:00">2023-06-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Monocular-3D-Human-Mesh-Recovery"><a href="#Monocular-3D-Human-Mesh-Recovery" class="headerlink" title="Monocular 3D Human Mesh Recovery"></a>Monocular 3D Human Mesh Recovery</h1><p>(a.k.a. <strong>3D human pose and shape estimation</strong>) in the deep learning era</p>
+<p>主要考虑RGB图片和单目RGB视频（统称为monocular images）作为输入</p>
+<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ul>
+<li>将2D观察提升到3D空间存在固有的模糊性</li>
+<li>多变的人体运动结构</li>
+<li>与环境复杂的交互</li>
+</ul>
+<p>两种范式：</p>
+<ul>
+<li>基于优化：以迭代方式显式地将身体模型拟合到2D观察结果，各种数据项和正则化项被探索作为优化目标。</li>
+<li>基于回归：利用神经网络强大的非线性映射能力，直接从原始图像像素预测模型参数。</li>
+</ul>
+<h2 id="Human-Modeling"><a href="#Human-Modeling" class="headerlink" title="Human Modeling"></a>Human Modeling</h2><ul>
+<li><p>基于骨架:无法获得人体的表面</p>
+</li>
+<li><p>基于几何图元(geometric primitives，包括平面矩形，圆柱等)：人体模型是手工制作的，不符合实际</p>
+</li>
+<li><p>statistical modeling：为了将密集点云和三角网格从3D扫描转换为水密的（watertight）和可动画（animatable）的3D人体网格，采取三个主要的预处理步骤：</p>
+<ul>
+<li><p>template mesh registration: fit a template mesh to the 3D point cloud to deal with holes that the triangulated<br>mesh contains</p>
+<blockquote>
+<p>模板网格配准</p>
+</blockquote>
+</li>
+<li><p>skeleton fitting: determine the number of joints and the location and axis orientations of rotations for each joint</p>
+<blockquote>
+<p>骨架匹配：确定关节的数量以及每个关节的旋转位置和轴方向</p>
+</blockquote>
+</li>
+<li><p>skinning: bind every vertex in the surface to the skeleton for animation</p>
+<blockquote>
+<p>蒙皮：将曲面中的每个顶点绑定到骨骼以进行动画</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230530204208351.png" alt="image-20230530204208351" style="zoom:67%;" /></p>
+<span id="more"></span>
+<h3 id="Statistical-Modeling"><a href="#Statistical-Modeling" class="headerlink" title="Statistical Modeling"></a>Statistical Modeling</h3><h4 id="Body-Modeling"><a href="#Body-Modeling" class="headerlink" title="Body Modeling"></a>Body Modeling</h4><p>统计身体建模是指通过利用大量的3D身体扫描并<strong>简单地忽略手部关节或面部表情</strong>来学习<strong>统计</strong>身体模型</p>
+<p>SCAPE 和SMPL 是两个代表性的模型，将身体变形（body deformations）分解为identity-dependent和姿势相关（pose-dependent）的形状变形。</p>
+<h4 id="SMPL"><a href="#SMPL" class="headerlink" title="SMPL"></a>SMPL</h4><p>SMPL （<strong>Skinned Multi-Person Linear Model</strong>）是一种基于顶点的线性模型，描绘了自然姿势中穿着最少的人，这是目前研究界最广泛使用的人体模型，与现有的渲染引擎兼容。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/158700893">参考</a></p>
+<p>SMPL是一个统计模型，通过两种类型的统计参数对人体进行描述：</p>
+<ul>
+<li>形状参数（shape parameters）：一组形状参数$\beta \in \mathbb{R}^{10} $去描述一个人的形状，每一个维度的值都可以解释为人体形状的某个指标，比如高矮，胖瘦等</li>
+<li>姿态参数（pose parameters）：一组姿态参数有着24×3维度的数字，去描述某个时刻人体的动作姿态，其中的24表示的是24个定义好的人体关节点，其中的3并不是如同识别问题里面定义的空间位置坐标（location），而是指的是该节点针对于其父节点的旋转角度的轴角式表达(axis-angle representation)（对于这24个节点，作者定义了一组关节点树）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531112713411.png" alt="image-20230531112713411" style="zoom:50%;" /></p>
+<p>整个从SMPL模型合成数字人体模型的过程分为三大阶段:</p>
+<h5 id="1-基于形状的混合成形（Shape-Blend-Shapes）"><a href="#1-基于形状的混合成形（Shape-Blend-Shapes）" class="headerlink" title="1. 基于形状的混合成形（Shape Blend Shapes）"></a><strong>1. 基于形状的混合成形（Shape Blend Shapes）</strong></h5><p>一个基模版（或者称之为统计上的均值模版）$\bar{\Tau}$ 作为整个人体的基本姿态，这个基模版通过统计得到，用$N=6890$个端点(vertex)表示整个mesh，每个端点有着$(x,y,z)$三个空间坐标。随后通过参数$\beta \in \mathbb{R}^{10} $去描述我们需要的人体姿态和这个基本姿态的偏移量，叠加上去就形成了我们最终期望的人体姿态，这个过程是一个线性的过程。此处得到的人体mesh的姿态称之为静默姿态(rest pose，也可以称之为T-pose)，因为其并没有考虑姿态参数的影响。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531150602230.png" alt="image-20230531150602230" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531153014717.png" alt="image-20230531153014717" style="zoom:50%;" /></p>
+<h5 id="2-基于姿态的混合成形-Pose-Blend-Shapes"><a href="#2-基于姿态的混合成形-Pose-Blend-Shapes" class="headerlink" title="2. 基于姿态的混合成形 (Pose Blend Shapes)"></a>2. 基于姿态的混合成形 (Pose Blend Shapes)</h5><p>当我们根据指定的$\beta$参数对人体mesh进行形状的指定后，我们得到了一个具有特定胖瘦，高矮的mesh，还未加入姿态对人体形状的影响。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531153424529.png" alt="image-20230531153424529" style="zoom:50%;" /></p>
+<p>SMPL定义了24个关节点的层次结构，并且这个层次结构是通过运动学树（Kinematic Tree）定义的，因此保证了子节点和父节点的相对运动关系。<strong>以0号节点为根节点</strong>，通过其他23个节点相对于其父节点（根据其运动学树结构可以定义出节点的父子关系）的旋转角度，我们可以定义出整个人体姿态的姿势。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531112208400.png" alt="image-20230531112208400" style="zoom: 33%;" /></p>
+<p>轴角式表示旋转的方向和大小</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531160346474.png" alt="image-20230531160346474" style="zoom: 50%;" /></p>
+<p>因此使用轴角式的三元数表示来表达这些非根节点的相对于父节点的相对旋转需要用$23\times3$个参数，为了表示整个人体运动的全局旋转（也称之为朝向，Orientation）和空间位移，比如为了表示人体的行走，奔跑等，我们还需要对根节点（0号）定义出旋转和位移，那么同样的，需要用3个参数以轴角式的方式表达旋转，再用3个参数表达空间位移。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531162016202.png" alt="image-20230531162016202" style="zoom: 67%;" /></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># self.pose :   24x3    the pose parameter of the human subject</span></span><br><span class="line"><span class="comment"># self.R    :   24x3x3  the rotation matrices calculated from the pose parameter</span></span><br><span class="line">pose_cube = self.pose.reshape((-<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>))</span><br><span class="line">self.R = self.rodrigues(pose_cube)</span><br><span class="line"></span><br><span class="line"><span class="comment"># I_cube    :   23x3x3  the rotation matrices of the rest pose</span></span><br><span class="line"><span class="comment"># lrotmin   :   207x1   the relative rotation values between the current pose and the rest pose   </span></span><br><span class="line">I_cube = np.broadcast_to(</span><br><span class="line">      np.expand_dims(np.eye(<span class="number">3</span>), axis=<span class="number">0</span>),</span><br><span class="line">      (self.R.shape[<span class="number">0</span>]-<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line">    )</span><br><span class="line">lrotmin = (self.R[<span class="number">1</span>:] - I_cube).ravel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># v_posed   :   6890x3  the blended deformation calculated from the</span></span><br><span class="line">v_posed = v_shaped + self.posedirs.dot(lrotmin)</span><br></pre></td></tr></table></figure>
+<h5 id="3-骨骼点位置估计（Joint-Locations-Estimation）-amp-蒙皮"><a href="#3-骨骼点位置估计（Joint-Locations-Estimation）-amp-蒙皮" class="headerlink" title="3. 骨骼点位置估计（Joint Locations Estimation）&amp; 蒙皮"></a>3. 骨骼点位置估计（Joint Locations Estimation）&amp; 蒙皮</h5><p>骨骼点位置估计整个过程可以可视化成Fig 12所示，每个骨骼点的位置由它本身最为接近的若干个mesh的端点加权决定。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230531162727620.png" alt="image-20230531162727620" style="zoom:50%;" /></p>
+<p>在经过骨骼点位置估计之后，我们便有了对整个人体数字模型进行操作的控制点了，其实就是骨骼点。当我们对骨骼点进行旋转时，我们可以像摆动球形关节娃娃一样将静默姿态下的人体摆成我们需要的姿态。人体mesh端点也会随着其周围的关节点一起变化，形成我们最后看到的人体数字模型。因此蒙皮其实是让静默姿态下的人体骨架“动起来”，并且对其蒙上“皮肤”的过程。</p>
+<h4 id="Whole-Body-Modeling"><a href="#Whole-Body-Modeling" class="headerlink" title="Whole Body Modeling"></a>Whole Body Modeling</h4><p>SMPL-X</p>
+<h4 id="Human-Mesh-Recovery"><a href="#Human-Mesh-Recovery" class="headerlink" title="Human Mesh Recovery"></a>Human Mesh Recovery</h4><p>DM-NeRF</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/3D-human-mesh-recovery/" rel="tag"># 3D human mesh recovery</a>
+              <a href="/tags/3D-from-monocular-images/" rel="tag"># 3D from monocular images</a>
+              <a href="/tags/human-pose-estimation/" rel="tag"># human pose estimation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/05/10/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/" rel="prev" title="线性代数的本质">
+      <i class="fa fa-chevron-left"></i> 线性代数的本质
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Monocular-3D-Human-Mesh-Recovery"><span class="nav-number">1.</span> <span class="nav-text">Monocular 3D Human Mesh Recovery</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">存在问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Human-Modeling"><span class="nav-number">1.2.</span> <span class="nav-text">Human Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Statistical-Modeling"><span class="nav-number">1.2.1.</span> <span class="nav-text">Statistical Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Body-Modeling"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Body Modeling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SMPL"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">SMPL</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%9F%BA%E4%BA%8E%E5%BD%A2%E7%8A%B6%E7%9A%84%E6%B7%B7%E5%90%88%E6%88%90%E5%BD%A2%EF%BC%88Shape-Blend-Shapes%EF%BC%89"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">1. 基于形状的混合成形（Shape Blend Shapes）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%9F%BA%E4%BA%8E%E5%A7%BF%E6%80%81%E7%9A%84%E6%B7%B7%E5%90%88%E6%88%90%E5%BD%A2-Pose-Blend-Shapes"><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">2. 基于姿态的混合成形 (Pose Blend Shapes)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E9%AA%A8%E9%AA%BC%E7%82%B9%E4%BD%8D%E7%BD%AE%E4%BC%B0%E8%AE%A1%EF%BC%88Joint-Locations-Estimation%EF%BC%89-amp-%E8%92%99%E7%9A%AE"><span class="nav-number">1.2.1.2.3.</span> <span class="nav-text">3. 骨骼点位置估计（Joint Locations Estimation）&amp; 蒙皮</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Whole-Body-Modeling"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Whole Body Modeling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Human-Mesh-Recovery"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Human Mesh Recovery</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">71</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
