@@ -551,7 +551,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-04-20 21:17:21" itemprop="dateModified" datetime="2023-04-20T21:17:21+08:00">2023-04-20</time>
+                <time title="Modified: 2023-06-05 17:48:06" itemprop="dateModified" datetime="2023-06-05T17:48:06+08:00">2023-06-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -609,81 +609,14 @@
 </li>
 <li>基于点和体素的Point-Voxel-based方法</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420104604662.png" alt="image-20230420104604662"></p>
-<h3 id="View-based"><a href="#View-based" class="headerlink" title="View-based"></a>View-based</h3><p>将三维点云投影到二维平面，如鸟瞰图（Bird Eye View, BEV），前视图（Front View, FV），然后再处理映射后的点云，降低计算复杂度。</p>
-<p>相比于直接处理稀疏的点云，在更为密集的二维平面如BEV视角下进行目标检测的优势：</p>
-<ul>
-<li>BEV保留了物体在三维空间中的原始物理尺寸</li>
-<li>由于对象在三维空间中是自然分离的，因此 <strong>BEV 上的所有对象之间均无遮挡</strong></li>
-<li>实际的交通场景中，所有物体均是位于地面的，垂直方向上的方差较小</li>
-<li>二维运算相比于三维运算计算量和复杂度更低</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/357626425">PointPillars</a>使用柱形体素(Pillars)来生成二维伪图像</p>
-<h3 id="Voxel-based"><a href="#Voxel-based" class="headerlink" title="Voxel-based"></a>Voxel-based</h3><p>点云是不规则数据，将点云表示为体素网格的形式，进而将点云的特征量化为体素的特征，方便后续处理</p>
-<p>将点云表示为体素的形式，使其规则化，便于运用神经网络进行高效处理，为了实现实时检测，大多数算法均采用基于体素的主体框架，主要改进方向包括：</p>
-<ul>
-<li>扩大体素的接受域<ul>
-<li>Voxel R-CNN</li>
-<li>VoTr</li>
-</ul>
-</li>
-<li>对体素空间进行结构感知</li>
-<li>与其他结构的结合，比如引入蒸馏</li>
-</ul>
-<p>存在问题：体素化会引入量化误差</p>
-<h3 id="Point-based"><a href="#Point-based" class="headerlink" title="Point-based"></a>Point-based</h3><p>点云的特性：</p>
-<ul>
-<li><p>排列不变性：点云是一组点的坐标的集合，集合内部的所有点之间具有排列不变性，即无论数组中点的顺序如何排列，都不会改变点云本身所表示的物体</p>
-</li>
-<li><p>旋转不变性：当数组发生旋转时，点云的形状不会发生变化，也就是说对一个点云集进行旋转操作，集合内所有点的坐标都变了，但表示的还是同一个物体。</p>
-</li>
-</ul>
-<p>这些特性使得研究者难以像处理图像、文字等其他规则序列一样直接处理点云。</p>
-<p>PointNet开创了使用原始点云进行特征提取的先河，使用最大池化和 T-Net 解决了点云数据的无序性和旋转不变性问题</p>
-<p>针对PointNet 中局部信息缺失的问题，PointNet++通过集抽象（Set Abstraction,SA）操作学习不同尺度的局部特征。</p>
-<p>主要是基于PointNet系列进行特征提取，检测精度较高，但计算成本高，难以实现实时检测</p>
-<h3 id="Point-Voxel-based"><a href="#Point-Voxel-based" class="headerlink" title="Point-Voxel-based"></a>Point-Voxel-based</h3><p>结合点云和体素</p>
-<h2 id="基于多传感器的三维目标检测"><a href="#基于多传感器的三维目标检测" class="headerlink" title="基于多传感器的三维目标检测"></a>基于多传感器的三维目标检测</h2><p>基于多传感器的三维目标检测方法最常使用的是相机和激光雷达这两种传感器，也有一些利用雷达作为图像或激光雷达的补充信息加以融合。依据对点云数据处理方式的不同，可以将其分为多视图融合与多模态融合两类。</p>
-<ul>
-<li><p>多视图融合方法通常将点云数据投影为 2D视图，如鸟瞰图（BEV）、前视图（FV），然后与 RGB 图像特征进行融合。(对不同视图进行融合，比如BEV视图，FV视图和RGB视图)</p>
-<blockquote>
-<p>基于多视图的融合方法本质上仍是基于二维数据的，这种降维再投影的操作消除了空间上的相关性，同时简单的高度压缩也使得点之间的拓扑关系丢失，造成检测精度降低</p>
-</blockquote>
-</li>
-<li><p>基于多模态融合的方法同样以图像和点云为输入，不同于多视图方法，其对点云的处理是直接在原始点云上进行的</p>
-<ul>
-<li>将点云投影到BEV层面与图像进行融合。缺点是投影到BEV的过程不可避免地会造成信息损失</li>
-<li>基于视锥的方法：首先对图像进行检测得到 2D 边界框，然后将二维检测结果投影到三维空间中生成截锥体，最后使用 PointNet回归边界框参数。缺点是过于依赖2D检测器性能。</li>
-<li>早期融合</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230420203250694.png" alt="image-20230420203250694" style="zoom:80%;" /></p>
-<h2 id="三维目标检测常用数据集"><a href="#三维目标检测常用数据集" class="headerlink" title="三维目标检测常用数据集"></a>三维目标检测常用数据集</h2><h3 id="KITTI"><a href="#KITTI" class="headerlink" title="KITTI"></a>KITTI</h3><p>KITTI 数据集使用 Velodyne 64线 3D激光雷达完成点云数据的采集，还使用摄像机同步进行对应图像的采集</p>
-<p>KITTI 数据集包含<strong>7481个训练样本和7518 个测试样本</strong>，其主要的检测目标有 3 类：Car，Pedestrian，Cyclist。并依据遮挡、截断等情况，按难度将目标分为 Easy，Moderate，Hard这 3个等级。由于 KITTI 的测试集无法获取，大多数人将训练集划分为训练和验证两个集合，分别包含3712和3769个样本。</p>
-<p>与二维目标检测相同，平均准确率（mean Average Precision,mAP）是三维目标检测任务的主要评估指标。</p>
-<h3 id="nuScenes"><a href="#nuScenes" class="headerlink" title="nuScenes"></a>nuScenes</h3><p>由在波士顿和新加坡拍摄的 1 000 个驾驶场景组成，涵盖了<strong>不同地点、不同时间和不同天气</strong>的情况。每个场景的时长为20 秒，其中标注的三维边界框分为 23 个类，带有 8 个属性的标记值。其标注量是 KITTI 的 7倍，且 nuScenes 数据集是这 3 个数据集中唯一一个包含了三维 Radar 数据的数据集。此外，KITTI 数据集多是在白天和良好天气条件下拍摄的，而 nuScenes 数据集还<strong>包含了夜晚及雨天等场景</strong>。</p>
-<p>在三维目标检测任务中，nuScenes 数据集采用的评估指标包括mAP，NDS（nuScenes Detection Score ）和 PKL （ Planning KL-Divergence）。mAP 指标中使用鸟瞰图的中心距离 d 代替三维包围框的交并比进行阈值匹配。</p>
-<p>由于 mAP 中仅考虑了包围框的位置信息，不包括尺寸和方向，因此，nuScenes 还设计了一系列的 TP 指标，分别对预测的三维包围框的平移、尺度、方向、速度和属性进行评估，具体包括 ATE（ Average Translation Error ），ASE（Average Scale Error），AOE（Average Orientation Error），AVE（Average Velocity Error）和 AAE（Average Attribute Error）。NDS将 5 个 TP 指标集成到一个标量中。</p>
-<p>nuScenes 还增加了一个神经规划指标PKL[94-95]，用于对检测器的感知性能进行评估。它测量了规划器在接收到检测结果时与看到现实对象时的规划差异，并以此检验 3D 目标检测对下游自动驾驶任务的影响。PKL是非负值，其值越大代表检测性能越差。</p>
-<h3 id="Waymo-Open-Dataset"><a href="#Waymo-Open-Dataset" class="headerlink" title="Waymo Open Dataset"></a>Waymo Open Dataset</h3><p>目前最大的自动驾驶数据集，使用 5 个激光雷达传感器和 5 个高分辨率针孔相机收集数据，包含 798 个训练场景、202 个验证场景、150 个测试场景，每个场景的时长为 20 秒。Waymo Open Dataset 的注释频率比 nuScenes 高 5 倍，共有 2 500 万个 3D标签和2 200万个 2D标签。</p>
-<p>Waymo Open Dataset 使用的评价指标除了 AP 外，增加了一个包含方向角信息的 APH</p>
-<p>与 KITTI 类似，Waymo依据 3D边界框中包含的激光雷达点数划分了两个难度级别：LEVEL_1 中标注物体的雷达点数不少于 5 个，LEVEL_2中标注物体的雷达点数少于 5个。</p>
-<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><ul>
-<li>二维到三维的深度估计<ul>
-<li>基于图像的方法精度低于LiDAR主要是因为二维向三维转换时的深度估计误差较大</li>
-</ul>
-</li>
-<li>基于 LiDAR的小目标检测<ul>
-<li>目前的算法大多能够识别出距离较近、具有稠密点云的目标，但对于一些远处的、包含雷达点极少的小目标仍然无法正确检测。点云特征提取过程通常会涉及到降采样操作，导致部分点丢失。</li>
-</ul>
-</li>
-<li>检测速度与精度的平衡</li>
-<li>4D 毫米波雷达</li>
-<li>多模态数据融合</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://kns.cnki.net/kcms/detail/50.1075.TP.20230407.1928.030.html">参考综述</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
