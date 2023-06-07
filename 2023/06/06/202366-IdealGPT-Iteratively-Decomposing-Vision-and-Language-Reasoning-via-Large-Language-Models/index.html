@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="IdealGPTIdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models 使用LLM迭代分解VL reasoning 利用LLM将主问题划分为多个关注视觉细节的子问题，然后使用VLM回答更简单的子问题，并使用另一个LLM根据子答案进行推理获得最终答案。这三个部分反复执行，将问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models">
+<meta property="og:url" content="http://lzpyx.github.io/2023/06/06/202366-IdealGPT-Iteratively-Decomposing-Vision-and-Language-Reasoning-via-Large-Language-Models/index.html">
+<meta property="og:site_name" content="yixuanPan Blog">
+<meta property="og:description" content="IdealGPTIdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models 使用LLM迭代分解VL reasoning 利用LLM将主问题划分为多个关注视觉细节的子问题，然后使用VLM回答更简单的子问题，并使用另一个LLM根据子答案进行推理获得最终答案。这三个部分反复执行，将问题">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606111349666.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606143259530.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606160325794.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606163651713.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606164225912.png">
+<meta property="article:published_time" content="2023-06-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-06T12:36:30.046Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="VL understanding">
+<meta property="article:tag" content="VLMs">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606111349666.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/06/06/202366-IdealGPT-Iteratively-Decomposing-Vision-and-Language-Reasoning-via-Large-Language-Models/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>IdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models | yixuanPan Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">yixuanPan Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/06/202366-IdealGPT-Iteratively-Decomposing-Vision-and-Language-Reasoning-via-Large-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="yixuanPan Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-06 00:00:00 / Modified: 20:36:30" itemprop="dateCreated datePublished" datetime="2023-06-06T00:00:00+08:00">2023-06-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="IdealGPT"><a href="#IdealGPT" class="headerlink" title="IdealGPT"></a>IdealGPT</h1><p>IdealGPT: Iteratively Decomposing Vision and Language Reasoning via Large Language Models</p>
+<p>使用LLM迭代分解VL reasoning</p>
+<p>利用LLM将主问题划分为多个关注视觉细节的子问题，然后使用VLM回答更简单的子问题，并使用另一个LLM根据子答案进行推理获得最终答案。这三个部分反复执行，将问题分而治之，直到模型对主要问题的最终答案有信心。</p>
+<ul>
+<li>透明度+可解释性，推理过程可知</li>
+<li>模块化，可以替换LLM和VLM</li>
+<li>稳健性</li>
+<li>泛化性：可以用于多种任务，不需要对特定任务进行训练或微调</li>
+</ul>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>大型预训练视觉-语言模型推动了VL understanding领域的发展，但以往的端到端方法仍然难以解决需要复杂或多步推理的zero-shot reasoning任务，比如视觉常识推理VCR。</p>
+<p>以往分而治之方法的缺陷：</p>
+<ul>
+<li>依赖于特定领域的子问题分解模型，模型是不可推广到其他领域的</li>
+<li>迫使模型预测最终答案，即使子问题或子答案提供的信息不足。（真实情况中生成的子问题信息量可能是不足或者偏离主要问题的，由此获得的子答案可能也是充满噪声和误差的，因此，现有的方法可能会导致不合理的最终预测或被迫学习虚假的偏差来猜测最终答案。）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606111349666.png" alt="image-20230606111349666" style="zoom:67%;" /></p>
+<span id="more"></span>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606143259530.png" alt="image-20230606143259530" style="zoom: 67%;" /></p>
+<h3 id="Questioner"><a href="#Questioner" class="headerlink" title="Questioner"></a>Questioner</h3><p>如果VQA任务呗设定为多项选择题，具有答案候选集，则Questioner的目标是首先识别出解决主问题$q$所需要的证据，然后将其分解为子证据。为了获得这些子证据，Questioner将生成一组子问题。</p>
+<p>为了提升结果质量，作者对Questioner（ChatGPT）的输入prompt进行了设计，针对不同的任务，prompt会有一些不同。下图是在VCR上使用的prompt示例</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606160325794.png" alt="image-20230606160325794"></p>
+<p>如果仅使用主要问题$q$和prompt作为Questioner输入，初始迭代生成的子问题往往过于通用，而缺乏有用的信息，因为LLM看不到图像，缺少了视觉的输入。对于这一问题，作者使用VLM生成的简短标题来描述图像内容，作为Questioner的附加输入。</p>
+<p>再后续的迭代过程中，Reasoner的分析也会作为额外输入</p>
+<blockquote>
+<p>先前的子问题和子答案可以告知提问者已经问了什么和解决了什么，并且分析可以引导提问者生成更具体的子问题，例如子问题以收集关于特定视觉对象的更多信息证据等等</p>
+</blockquote>
+<h3 id="Answerer"><a href="#Answerer" class="headerlink" title="Answerer"></a>Answerer</h3><p>Answerer的目标是回答Questioner生成的子问题，以提供回答主问题的证据</p>
+<p>在IdealGPT中Answerer采用了一个预先训练的VLM，没有对目标数据集进行微调</p>
+<h3 id="Reasoner"><a href="#Reasoner" class="headerlink" title="Reasoner"></a>Reasoner</h3><p>同样采用ChatGPT，使用了不同的prompt</p>
+<p>输入：</p>
+<ul>
+<li>主问题</li>
+<li>VLM生成的标题</li>
+<li>所有现有的子问题和对应的子答案</li>
+<li>prompt（Reasoner被提示生成分析和最终答案，以下是一个示例）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606163651713.png" alt="image-20230606163651713"></p>
+<h3 id="Illustration"><a href="#Illustration" class="headerlink" title="Illustration"></a>Illustration</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230606164225912.png" alt="image-20230606164225912" style="zoom: 80%;" /></p>
+<h3 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h3><ul>
+<li>正确回答关键子问题在IdealGPT的成功中起着重要的作用。因此，最终结果在很大程度上受到预先训练的VLM的性能的瓶颈。</li>
+<li>ChatGPT是通过短的图像标题来了解图像内容的，更细致的描述可能会提供更多信息，更好地帮助ChatGPT处理看不见的图像</li>
+<li>Prompt是手工设计的，很难在特定情况下找到最佳提示</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VL-understanding/" rel="tag"># VL understanding</a>
+              <a href="/tags/VLMs/" rel="tag"># VLMs</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/06/202366-Zero-shot-Visual-Relation-Detection-via-Composite-Visual-Cues-from-Large-Language-Models/" rel="prev" title="Zero-shot Visual Relation Detection via Composite Visual Cues from Large Language Models">
+      <i class="fa fa-chevron-left"></i> Zero-shot Visual Relation Detection via Composite Visual Cues from Large Language Models
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/07/202367-VisionLLM-Large-Language-Model-is-also-an-Open-Ended-Decoder-for-Vision-Centric-Tasks/" rel="next" title="VisionLLM: Large Language Model is also an Open-Ended Decoder for Vision-Centric Tasks">
+      VisionLLM: Large Language Model is also an Open-Ended Decoder for Vision-Centric Tasks <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IdealGPT"><span class="nav-number">1.</span> <span class="nav-text">IdealGPT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Questioner"><span class="nav-number">1.2.1.</span> <span class="nav-text">Questioner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Answerer"><span class="nav-number">1.2.2.</span> <span class="nav-text">Answerer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reasoner"><span class="nav-number">1.2.3.</span> <span class="nav-text">Reasoner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Illustration"><span class="nav-number">1.2.4.</span> <span class="nav-text">Illustration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limitation"><span class="nav-number">1.2.5.</span> <span class="nav-text">Limitation</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
