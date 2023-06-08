@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230608151832510.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230608160314699.png">
 <meta property="article:published_time" content="2023-06-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-08T08:19:51.541Z">
+<meta property="article:modified_time" content="2023-06-08T09:22:21.938Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="Visual Foundation Models">
@@ -208,7 +208,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-08 16:19:51" itemprop="dateModified" datetime="2023-06-08T16:19:51+08:00">2023-06-08</time>
+                <time title="Modified: 2023-06-08 17:22:21" itemprop="dateModified" datetime="2023-06-08T17:22:21+08:00">2023-06-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,14 +266,14 @@
 <ul>
 <li><p>视觉-语言任务</p>
 <ul>
-<li>image captioning：“The image is <image>. Please generate a caption for the image: ”</li>
-<li>VQA：“The image is <image>. Please generate an answer for the image according to the question: <question>”</li>
+<li>image captioning：“The image is &lt; image&gt;. Please generate a caption for the image: ”</li>
+<li>VQA：“The image is &lt; image&gt;. Please generate an answer for the image according to the question: &lt; question&gt;”</li>
 </ul>
 </li>
 <li><p>视觉任务：通过提供任务描述并通过语言指令指定所需的输出格式来描述视觉任务</p>
 <ul>
 <li>通过任务描述把预期任务传达给语言模型。VisionLLM设计了一组带有占位符的种子指令，并使用LLMs来生成大量相关的任务描述，在训练期间随机选择其中一个</li>
-<li>对于检测、分割等传统感知任务，本文提出了一个统一的输出元组格式$(C,P)$,其中$C$表示类别集中的类索引<class>，$P = \{xi,yi\}^N_{i=1}$表示定位对象的N个点。为了和word tokens的形式对齐，类索引$C$和点$xi,yi$的坐标都被转换成离散的tokens，具体来说，类索引是从0开始的整数，并且点的连续坐标被均匀地离散为范围$[-<range>,<range>]$内的整数。对于目标检测来说，点数N等于2，表示对象的边界框的左上和右下点。<strong>在实例分割的情况下，作者采用沿着对象边界的多个点（$N&gt;8$）来表示实例掩模。如姿态估计（关键点检测）的其他感知任务也可以以这种方式被公式化为语言指令。</strong></li>
+<li>对于检测、分割等传统感知任务，本文提出了一个统一的输出元组格式$(C,P)$,其中$C$表示类别集中的类索引&lt; class&gt;，$P = \{xi,yi\}^N_{i=1}$表示定位对象的N个点。为了和word tokens的形式对齐，类索引$C$和点$xi,yi$的坐标都被转换成离散的tokens，具体来说，类索引是从0开始的整数，并且点的连续坐标被均匀地离散为范围$[-<range>,<range>]$内的整数。对于目标检测来说，点数N等于2，表示对象的边界框的左上和右下点。<strong>在实例分割的情况下，作者采用沿着对象边界的多个点（$N&gt;8$）来表示实例掩模。如姿态估计（关键点检测）的其他感知任务也可以以这种方式被公式化为语言指令。</strong></li>
 </ul>
 <blockquote>
 <p>实例分割语言指令的例子：</p>
@@ -293,9 +293,9 @@
 </ul>
 <p>因此作者使用额外的tokens来拓展LLM的词汇表。</p>
 <ul>
-<li>添加一组location tokens，表示为$\{<p-512>，…<p0>……<p512>\}$，其中<p i>（$i ∈ [-512，512]$）表示image tokens的位置$l_i$的离散化offset，其与图像高度或宽度的相对值等于$i/512$。这些tokens将对象定位任务从连续变量预测转换为更统一的离散分类。</li>
-<li>引入semantic-agnostic classification tokens$\{<c0>，<c1>，…，<c511>\}$来替代原本的表示类别的多个tokens（category name tokens）。类别和tokens的映射可以通过语言指令来灵活的实现，如{“person”：<c0>，“car”：<c1>，“black cat”：<c2>，…}。这种设计允许模型从提供的类别集中选择适当的类别名称，从而促进高效和准确的对象分类。</li>
-<li>为了解决因果框架所造成的低效率，作者引入output-format-as-query decoding，利用LLMs从任务指令中解析结构化输出格式，(e.g., “<cls> <x1> <y1> <x2><y2>” for object detection, “<bos>” for image captioning，beginning of string)，然后将结构化输出格式的tokens作为queries送到decoder，以根据queries生成期望的输出。这种简单的方法使模型不仅可以避免低效，同时对于视觉语言任务保持了一个统一的框架。</li>
+<li>添加一组location tokens，表示为$\{&lt; p-512&gt;，…&lt; p0&gt;……&lt; p512&gt;\}$，其中&lt; p i&gt;（$i ∈ [-512，512]$）表示image tokens的位置$l_i$的离散化offset，其与图像高度或宽度的相对值等于$i/512$。这些tokens将对象定位任务从连续变量预测转换为更统一的离散分类。</li>
+<li>引入semantic-agnostic classification tokens$\{&lt; c0&gt;，&lt; c1&gt;，…，&lt; c511&gt;\}$来替代原本的表示类别的多个tokens（category name tokens）。类别和tokens的映射可以通过语言指令来灵活的实现，如{“person”：&lt; c0&gt;，“car”：&lt; c1&gt;，“black cat”：&lt; c2&gt;，…}。这种设计允许模型从提供的类别集中选择适当的类别名称，从而促进高效和准确的对象分类。</li>
+<li>为了解决因果框架所造成的低效率，作者引入output-format-as-query decoding，利用LLMs从任务指令中解析结构化输出格式，(e.g., “&lt; cls&gt; &lt; x1&gt; &lt; y1&gt; &lt; x2&gt;&lt; y2&gt;” for object detection, “&lt; bos&gt;” for image captioning，beginning of string)，然后将结构化输出格式的tokens作为queries送到decoder，以根据queries生成期望的输出。这种简单的方法使模型不仅可以避免低效，同时对于视觉语言任务保持了一个统一的框架。</li>
 </ul>
 <p>通过这种方式，对象定位和分类的输出被公式化为foreign language，从而将这些以视觉为中心的任务统一为token classification。因此，视觉-语言和视觉任务都可以像语言任务一样用交叉熵损失来监督。此外，为了有效训练，作者采用了低秩自适应（LoRA）方法，这使得在没有过多计算成本的情况下可以训练和微调模型。</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230608160314699.png" alt="image-20230608160314699"></p>
