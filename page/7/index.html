@@ -164,6 +164,379 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%89%B9%E5%BE%81%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/20/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%89%B9%E5%BE%81%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/" class="post-title-link" itemprop="url">基于深度特征的无监督图像检索研究综述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-20T00:00:00+08:00">2022-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 22:27:58" itemprop="dateModified" datetime="2023-02-06T22:27:58+08:00">2023-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/overview/" itemprop="url" rel="index"><span itemprop="name">overview</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="基于深度特征的无监督图像检索研究综述"><a href="#基于深度特征的无监督图像检索研究综述" class="headerlink" title="基于深度特征的无监督图像检索研究综述"></a>基于深度特征的无监督图像检索研究综述</h1><p>content-based image retrieval, CBIR</p>
+<p>基于内容的图像检索CBIR，给定一个查询图像，从数据库图像中找到包含相同实例的图像，需要解决类内差异。</p>
+<p>典型的图像检索流程包括2步：</p>
+<ol>
+<li>从图像中提取一个图像的表示向量</li>
+<li>对表示向量用欧氏距离或余弦距离进行最近邻搜索以找到相似图像</li>
+</ol>
+<p>决定一个图像检索算法性能的关键在于提取的图像表示的好坏</p>
+<h2 id="常用指标"><a href="#常用指标" class="headerlink" title="常用指标"></a>常用指标</h2><p>mAP 平均准确率均值 mean average precision</p>
+<p>对每张查询图像，根据查询图像和数据库图像的表示向量间的距离，可以对数据库图像产生一个排序，，画出对该查询图像的查准率-查全率（P-R）曲线，平均准确率AP就对应P-R曲线下的面积，对所有查询图像的AP做平均，即可得到mAP，值是0%-100%。</p>
+<h2 id="基于深度全局特征的图像检索"><a href="#基于深度全局特征的图像检索" class="headerlink" title="基于深度全局特征的图像检索"></a>基于深度全局特征的图像检索</h2><p>深度神经网络的全连接层特征提供了对图像内容高层级的描述，一些早期工作直接将整张图像输入预训练好的网络，并提取深度全连接特征作为图像的表示向量，这种深度全连接特征的实质时对图像整体语义信息进行描述的深度全局特征。</p>
+<p>为了得到更精简的图像表示，可以用PCA对从深度全连接特征提取的图像表示进行降维（如4096维降到128）</p>
+<p>由于预训练数据集和用于图像检索的数据集差异的存在，文献发现略低层的特征有更好的检索效果，这是因为非常高层的深度特征旨在进行预训练数据集的分类任务，而略低层的深度特征有更好的对其他数据集的泛化能力。</p>
+<p>总结：</p>
+<p>使用深度全局特征作为图像表示十分简单直接，但全局特征旨在进行图像分类，缺乏对图像细节的描述，此外深度全局特征对图像平移、旋转、尺度缩放比较敏感</p>
+<h2 id="基于深度局部特征的图像检索"><a href="#基于深度局部特征的图像检索" class="headerlink" title="基于深度局部特征的图像检索"></a>基于深度局部特征的图像检索</h2><h3 id="局部表示聚合"><a href="#局部表示聚合" class="headerlink" title="局部表示聚合"></a>局部表示聚合</h3><p>受经典 SIFT特征和 BoW聚合思路的启发,一些工作用深度特征代替经典SIFT特征,并对经典编码技术如BoW , VLAD,FV 等加以改进.这类方法先设法从输入图像中提取一系列的局部区域,之后分别将这些图像局部区域前馈网络﹐并生成对应的局部图像表示.最后,通过特定聚合方法将这些局部图像表示聚合为最终图像表示。也就是用多个局部特征融合成图像表示。</p>
+<p>这类方法的关键是如何从输入图像提取局部区域，如何对局部表示进行聚合。提取局部区域的方法主要有3类：基于滑动窗的局部区域提取、兴趣区域检测和基于候选区域(region proposal)的局部区域提取.</p>
+<p>为了精确找到有价值的局部区域,基于滑动窗的方法需要用一系列不同大小的滑动窗口,这需要消耗不小的计算开销.而基于兴趣区域检测和基于候选区域的方法由于只需提取一部分局部区域前馈网络,因此效率相比较高.基于兴趣区域检测的方法沿用了经典图像检索/计算机视觉的特征提取思路,而基于候选区域的方法受到目标检测任务做法的启发.但这些方法都需要多次前馈网络.</p>
+<h3 id="深度卷积特征聚合"><a href="#深度卷积特征聚合" class="headerlink" title="深度卷积特征聚合"></a>深度卷积特征聚合</h3><p>相比深度全局特征（全连接层的一维向量），深度卷积特征（可以理解为DxHxW的特征图）对图像的平移、裁剪、遮挡更不敏感，并保留了更多图像细节信息。相比局部表示聚合的方法，基于深度卷积特征融合的方法只需要前向传播一次，而且可以处理任意大小的图像输入。这类方法关键在于如何对深度卷积特征进行聚合，直接聚合的方法空间全局最大池化，和池化，平均池化等方式，得到一个D维的特征向量，加权聚合这类方法是在聚合时根据不同位置的特征的重要性对深度卷积特征进行加权求和，得到一个D维向量，然后再对D维的D个通道进行加权</p>
+<ul>
+<li>Class-weighted convolutional feature</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20220409164310067.png" alt="image-20220409164310067" style="zoom: 67%;" /></p>
+<p><strong>SUM Pooling</strong></p>
+<p>基于 SUM pooling 的中层特征表示方法，指的是针对中间层的任意一个 channel（比如 VGGNet16, pool5 有 512 个 channel），将该 channel 的 feature map 的所有像素值求和，这样每一个 channel 得到一个实数值，N 个 channel 最终会得到一个长度为 N 的向量，该向量即为 SUM pooling 的结果。 </p>
+<p><strong>AVE pooling</strong></p>
+<p>AVE pooling 就是 average pooling，本质上它跟 SUM pooling 是一样的，只不过是将像素值求和后还除以了 feature map 的尺寸。作者以为，AVE pooling 可以带来一定意义上的平滑，可以减小图像尺寸变化的干扰。设想一张 224224 的图像，将其 resize 到 448448 后，分别采用 SUM pooling 和 AVE pooling 对这两张图像提取特征，我们猜测的结果是，SUM pooling 计算出来的余弦相似度相比于 AVE pooling 算出来的应该更小，也就是 AVE pooling 应该稍微优于 SUM pooling 一些。</p>
+<h3 id="多层融合"><a href="#多层融合" class="headerlink" title="多层融合"></a>多层融合</h3><p>深度特征具有层次性，从低层到高层是由纹理特征到高层语义特征的转变，深度加深，感受野变大，更倾向于捕获全局语义特征，不同层特征的感受野不同，多层特征融合可以同时捕获不同尺度下的图像语义信息。各层的权重不应该相同</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><ol>
+<li>在ImageNet预训练</li>
+<li>VGGNet</li>
+<li>使用原图大小输入，保持原图长宽比</li>
+<li>使用经过ReLU之后的深度特征</li>
+<li>使用sum pooling会比max pooling更好,sum-pooling再除以feature map的尺寸就是ave pooling（CAM的GAP）</li>
+<li>对提取到的图像表示（特征向量）进行l2规范化，PCA白化（用于应对特征向量各维之间的共现co-occurrence效应，并对高维的表示向量进行降维），然后进行再次l2规范化（为了使表示向量的空间由欧式空间映射到余弦空间）</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20220409140821633.png" alt="image-20220409140821633" style="zoom:50%;" /></p>
+<ol>
+<li>从另一个独立的数据集学习PCA的参数</li>
+<li>幂律规范化</li>
+<li>对检索得到的排序进行后处理，对排序结果进行微调，如查询展开：将排序最前面的k个结果的特征向量（表示向量）sum pooling并进行l2规范化，将结果作为新的查询向量重新进行检索。空间重排：</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/19/ICCV2021%20TS-CAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/19/ICCV2021%20TS-CAM/" class="post-title-link" itemprop="url">ICCV2021 TS-CAM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-19T00:00:00+08:00">2022-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-27 16:18:09" itemprop="dateModified" datetime="2022-05-27T16:18:09+08:00">2022-05-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ICCV2021-TS-CAM"><a href="#ICCV2021-TS-CAM" class="headerlink" title="ICCV2021 TS-CAM"></a>ICCV2021 TS-CAM</h1><p>TS-CAM: Token Semantic Coupled Attention Map for Weakly Supervised Object Localization</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/vasgaowei/TS-CAM">github</a></p>
+<h2 id="Motivation-amp-background"><a href="#Motivation-amp-background" class="headerlink" title="Motivation&amp;background"></a>Motivation&amp;background</h2><p>作者认为部分激活是由 CNN 的内在特性引起的，其中卷积操作会产生局部感受野，并且难以捕捉像素之间的远程特征依赖关系。所以提出利用self-attention机制的长程建模能力来避免局部激活问题。TS-CAM首先将一张图像分割成一系列用于spatial embedding的patch token，它们将产生long-range的视觉关联性的attention map去避免局部激活现象。然后TS-CAM为每个patch tokens重新分配与种类有关的语义种类，使它们能够了解对象类别，TS-CAM最终将patch token与语义不可知的attention map耦合，以实现语义感知定位。</p>
+<p>vision transformer应用于WSOL还存在的问题：</p>
+<ul>
+<li>patch embeddings实际上破坏了输入图像的空间拓扑结构，这阻碍了目标定位激活图的生成</li>
+<li>vision transformer的注意力图与语义无关（无法区分对象类）并且不适合语义感知定位semantic-aware localization</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/19/ICCV2021%20TS-CAM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/" class="post-title-link" itemprop="url">ICLR2021 Vision Transformer(ViT)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-17T00:00:00+08:00">2022-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-07-05 12:47:05" itemprop="dateModified" datetime="2022-07-05T12:47:05+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">Transformer基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-16T00:00:00+08:00">2022-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-27 22:34:07" itemprop="dateModified" datetime="2022-05-27T22:34:07+08:00">2022-05-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="核心组件-self-attention"><a href="#核心组件-self-attention" class="headerlink" title="核心组件 self-attention"></a>核心组件 self-attention</h2><h3 id="注意力机制实现的两个步骤"><a href="#注意力机制实现的两个步骤" class="headerlink" title="注意力机制实现的两个步骤"></a>注意力机制实现的两个步骤</h3><ul>
+<li><p>计算注意力分布α</p>
+<ul>
+<li>使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度</li>
+<li>然后使用softmax计算得到注意力分布α</li>
+</ul>
+</li>
+<li><p>利用注意力分布对输入向量($X=(x_1,x_2,···,x_n)$)进行加权求和求平均</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/ICCV2021%20DINO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -405,7 +778,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -418,7 +791,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-count">85</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

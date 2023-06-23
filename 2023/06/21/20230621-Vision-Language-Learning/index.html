@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Vision-Language LearningViLT ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快 ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好  CLIP 使用Image-text contrastive loss训练，使图文对的特征尽量接近 模态交互使用简单的点乘，高效  以往方法中发现比较好的一些经验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vision-Language Learning">
+<meta property="og:url" content="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="Vision-Language LearningViLT ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快 ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好  CLIP 使用Image-text contrastive loss训练，使图文对的特征尽量接近 模态交互使用简单的点乘，高效  以往方法中发现比较好的一些经验">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230621224557706.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622105919294.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622211859643.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622220632343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622221134739.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623091948616.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623110005666.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623105943691.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623110629351.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623113005597.png">
+<meta property="article:published_time" content="2023-06-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-23T03:41:10.954Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-and-Language Pretraining">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230621224557706.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Vision-Language Learning | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vision-Language Learning
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-21T00:00:00+08:00">2023-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-23 11:41:10" itemprop="dateModified" datetime="2023-06-23T11:41:10+08:00">2023-06-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Vision-Language-Learning"><a href="#Vision-Language-Learning" class="headerlink" title="Vision-Language Learning"></a>Vision-Language Learning</h1><h2 id="ViLT"><a href="#ViLT" class="headerlink" title="ViLT"></a>ViLT</h2><ul>
+<li>ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快</li>
+<li>ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好</li>
+</ul>
+<h2 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h2><ul>
+<li>使用Image-text contrastive loss训练，使图文对的特征尽量接近</li>
+<li>模态交互使用简单的点乘，高效</li>
+</ul>
+<h2 id="以往方法中发现比较好的一些经验："><a href="#以往方法中发现比较好的一些经验：" class="headerlink" title="以往方法中发现比较好的一些经验："></a>以往方法中发现比较好的一些经验：</h2><ul>
+<li>视觉文本双分支，且视觉需要更多的参数去学习</li>
+<li>模态融合很重要，用一个vit去做融合会比浅层的融合或者点乘更好</li>
+<li>UNITER、ViLT中使用的Word Patch Alingment（WPA） loss计算起来非常慢</li>
+<li>CLIP使用的ITC loss非常有效</li>
+<li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
+<li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
+</ul>
+<h2 id="ALBEF"><a href="#ALBEF" class="headerlink" title="ALBEF"></a>ALBEF</h2><p>Align before Fuse: Vision and Language Representation Learning with Momentum Distillation</p>
+<ul>
+<li><p>预训练的目标检测器提取的视觉特征和文本端是没有对齐的，没有进行end-to-end训练，对于多模态编码器来说，学习图像文本的特征就比较困难，所以ALBEF提出要在融合之前就对齐图像和文本的特征（实际上就是使用了一个ITC loss）</p>
+</li>
+<li><p>提出momentum distillation（一种自训练方法），使用momentum model来生成伪标签，进而实现自训练，来从noisy web data（从网上爬下来的图像文本对，利用caption filtering来解决noisy web data的问题）获得更好的训练效果</p>
+<blockquote>
+<p>noisy web data中的图像文本对常常是弱相关的，比如文本包含了与图像无关的描述，或者图像包含了文本没有描述的实体对象，有些负样本的描述甚至比GT更好，对ITC和MLM loss都会有影响，使模型学习困难。</p>
+</blockquote>
+<p>momentum model是通过EMA得到的，目的是让模型的预测输出不仅仅跟ground truth的one hot label接近，还要和momentum model出来的pseudo targets要尽可能match，直观来说，模型从one hot label里学习大量信息，但one hot label存在噪声或是错误的时候，稳定的momentum model能够提供一些修正和改进。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230621224557706.png" alt="image-20230621224557706" style="zoom: 50%;" /></p>
+<h2 id="VLMo"><a href="#VLMo" class="headerlink" title="VLMo"></a>VLMo</h2><p>VLMO: Unified Vision-Language Pre-Training with Mixture-of-Modality-Experts</p>
+<p>Motivation_1:</p>
+<ul>
+<li>CLIP,ALIGN所使用的双塔模型（dual-encoder）使用简单的点乘来完成模态的交互，好处是非常适合图文检索的任务，因为特征可以提前抽好，计算时只需要算点乘，但是这种点乘方式只引入了浅的视觉文本交互，不足以完成更加复杂的下游任务比如visual reasoning</li>
+<li>单塔(fusion encoder)模型使用多层的transformer来完成模态间的交互，在更加复杂的下游任务如VL classification上有更好的效果，但对于检索任务来说，这种单塔结构需要把所有可能的图像文本对都过一遍encoder，因此推理速度慢</li>
+</ul>
+<p>为了吸取两种结构的优点，VLMo引入了Mixture-of-Modality-Experts，VLMo可以用作双塔编码器来分别编码图像和文本以用于检索任务，也可以用作融合编码器来模拟图像文本对的深度交互以用于分类任务</p>
+<p>Motivation_2:</p>
+<ul>
+<li>多模态数据当时最大的setting是14million，规模还是不够大，如何能够利用现有的单模态的大规模数据集来提升多模态预训练的性能</li>
+</ul>
+<p>提出stagewise pre-training strategy</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622105919294.png" alt="image-20230622105919294" style="zoom: 50%;" /></p>
+<ul>
+<li>MoME中，MHSA部分是共享的，同样的self-attention weights可以用于不同模态的输入。对于不同的模态选择不同的modality expert</li>
+<li>模型结构灵活，但需要多次前向，训练时间长</li>
+</ul>
+<p>分阶段的预训练</p>
+<ul>
+<li>先在vision上预训练，然后直接利用训练好的self-attention在language上训练L-FFN</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622211859643.png" alt="image-20230622211859643" style="zoom:50%;" /></p>
+<h2 id="BLIP"><a href="#BLIP" class="headerlink" title="BLIP"></a>BLIP</h2><p>BLIP: Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation</p>
+<p>论文: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2201.12086.pdf">https://arxiv.org/pdf/2201.12086.pdf</a></p>
+<p>代码: <a target="_blank" rel="noopener" href="https://github.com/salesforce/BLIP">https://github.com/salesforce/BLIP</a></p>
+<p>Unified </p>
+<ul>
+<li>understanding：图文检索，VQA, VR,VE任务</li>
+<li>generation：Image Captioning</li>
+</ul>
+<p>作者是 ALBEF 原班人马，基本可以看做吸收了 VLMo 思想的 ALBEF。训练的 loss 和技巧都与 ALBEF 一致，属于 ALBEF 的后续工作</p>
+<p>Motivations：</p>
+<ul>
+<li><p>模型角度：encoder-only的模型如CLIP和ALBEF没办法很直接的运用于text generation任务中，而encoder-decoder模型如SimVLM又不能直接的用于image-text retrieval的任务。因此需要提出一个统一框架来同时完成两类任务。</p>
+</li>
+<li><p>数据角度：ALBEF中可以看出足够从noisy web text中学到的是次优解。为了有效清洗数据集，让模型更好利用数据集的图像文本配对信息BILP提出了captioner和filter模型。</p>
+<blockquote>
+<p>captioner作用给定任意一张图片去生成一些字幕，这样可以得到大量的合成数据，再去训练flter model将图像和文本不匹配的对从数据集删掉，大部分爬下来的数据很多是不匹配的noisy文本对。captioner可以生成非常好的有描述性的文本。那么filter会使用cap生成的文本去训练而不是用原有的文本对。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622220632343.png" alt="image-20230622220632343" style="zoom:50%;" /></p>
+<h3 id="Mixture-of-Encoder-and-Decoder"><a href="#Mixture-of-Encoder-and-Decoder" class="headerlink" title="Mixture of Encoder and Decoder"></a>Mixture of Encoder and Decoder</h3><p>BLIP模型结构上整合了 ALBEF 和和 VLMo。BLIP包含4个部分，图像部分是一个完整的ViT模型，文本这边有三个模型分别用于计算三个不同的loss。</p>
+<ul>
+<li>对于第一个N层的文本模型，目的是根据输入的文本，做分类任务，和视觉特征做ITC loss。[CLS]标记被附加到文本输入的开头以总结句子。</li>
+<li>第二个模型在第一个模型基础上加入了cross attention（FFN和Self-Attention部分都是共享参数），引入了图像特征，计算ITM loss，前两个模型其实就是ALBEF的结构，不同的是它可以共享参数。一个任务特定的[Encode]标记被附加到文本中，[Encode]的输出嵌入被用作图像-文本对的多模态表示</li>
+<li>为了做生成任务，第三个模型引入了decoder，第一层的self-attention换成了因果关系注意力（causal self-att），通过前面文本推测后面文本。解码器拿到视觉特征和未掩码的语言特征，过一个 casual self-attention 层，做 GPT 中使用的LM（language modeling） 任务。这里区别于 MLM 的 mask 机制（做完型填空），是通过 causal self-attention 来实现因果推理（前半句预测后半句）.[Decode]token用于表示序列的开始。</li>
+<li>缺点是训练时间仍然很长，图像端只需要一次forward，但文本端需要进行3次forward，分别计算3个loss</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230622221134739.png" alt="image-20230622221134739" style="zoom: 67%;" /></p>
+<h3 id="CapFilt"><a href="#CapFilt" class="headerlink" title="CapFilt"></a>CapFilt</h3><blockquote>
+<p>如何清洗数据集，得到更高质量，更少噪声的图像文本对？</p>
+</blockquote>
+<ul>
+<li>Filter: 将训练好的模型里的图像模型，和做ITC、ITM的两个文本模型拿出来在 COCO 上微调一下，微调过后的MED（Mixture of Encoder and Decoder）就是Filter，可以用于计算图像文本的相似度，判定图文对是否匹配，从而实现过滤。</li>
+<li>Captioner: Image-grounded Text Decoder可以生成文本，在COCO上微调就得到了captioner。在实验中，BLIP 的解码能力很强，生成的captions甚至比gt更好，用于自训练后也可以涨点 2-3。</li>
+</ul>
+<blockquote>
+<p>Captioner被其他方法用于生成captions，一个例子是 stable diffusion ，在做微调时，会遇到数据集只有图片没有 caption 的情况，比如 pokeman 数据。SD用 BLIP 来做caption生成，然后微调 stable diffusion 发现效果很好。 另一个例子是知名的开源多模态数据集 LAION，他们也用了 BLIP 来辅助制作数据集，首先用BLIP来生成40个captions，然后使用CLIP进行ranking，选出最好的caption，然后再用一个模型修复语法和标点。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623091948616.png" alt="image-20230623091948616" style="zoom:67%;" /></p>
+<h2 id="CoCa"><a href="#CoCa" class="headerlink" title="CoCa"></a>CoCa</h2><p>CoCa: Contrastive Captioners are Image-Text Foundation Models</p>
+<p>github: <a target="_blank" rel="noopener" href="https://github.com/lucidrains/CoCa-pytorch">https://github.com/lucidrains/CoCa-pytorch</a></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623110005666.png" alt="image-20230623110005666" style="zoom:50%;" /></p>
+<p>它也是 ALBEF 的后续工作，模型非常像。区别在于：</p>
+<ul>
+<li><p>图像用了 attentional pooling（可学习的pooling）</p>
+</li>
+<li><p>去掉了 ITM loss，目的是加快训练，原本文本需要 forward 2-3 次，去掉 ITM loss 之后只需要 forward 一次就可以了。在 ALBEF 中，ITM 需要完整的 text，而 MLM 需要掩码，所以是两次输入。在 BLIP 中，ITC 一次，ITM 因为在文本模型中插入了新的模块，所以得单独做前向。而 LM 因为用了既多了新的模块又得用 causal self-attention 所以又得单独做一次。在 CoCa 中，为了完成 captioning loss （实际上就是GPT用的Language Modeling loss）和 ITC loss，只需要做一次前向即可。GPT 中把 cls-token 放在最后面就可以得到全局表征来做 ITC loss 了。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623105943691.png" alt="image-20230623105943691" style="zoom:67%;" /></p>
+<p>六边形战士</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623110629351.png" alt="image-20230623110629351" style="zoom: 67%;" /></p>
+<p>总结：</p>
+<ul>
+<li>简单有效的结构设计</li>
+<li>zero-shot 性能很强，在 imagenet 上微调不微调的差距很小</li>
+</ul>
+<h2 id="BEiT-v3"><a href="#BEiT-v3" class="headerlink" title="BEiT v3"></a>BEiT v3</h2><p>(BEiT v3) Image as a Foreign Language: BEiT Pretraining for All Vision and Vision-Language Tasks</p>
+<p>把图像看作语言，用统一的 multi-way transformer (mixture of experts ) 架构和单个 masked modeling loss，将任意模态看做是同一个模态来建模。</p>
+<p>任意模态输入网络后，都被表示为 list of tokens，直接将它们看做是相同的模态来做 masked modeling（完形填空） 。</p>
+<ul>
+<li>可以灵活的处理各种下游任务，包括多模态和单模态的</li>
+</ul>
+<p>如果想要拿过去做下游任务的话，直接将需要的那部分模型拿出来即可。比如做视觉任务就拿视觉模型，做语言任务就拿语言模型。如果是做多模态任务，可以灵活地模拟不同的需求，比如：1. 做生成任务可以拿多模态部分的参数出来 2. 做图文检索可以单独取出视觉部分和语言部分来模拟 CLIP。不仅仅是能做任意任务，还继承了前作的优点，比如 CLIP 这种弱跨模态交互带来的计算效率的优势。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623113005597.png" alt="image-20230623113005597" style="zoom: 67%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-and-Language-Pretraining/" rel="tag"># Vision-and-Language Pretraining</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/" rel="prev" title="DINOv2: Learning Robust Visual Features without Supervision">
+      <i class="fa fa-chevron-left"></i> DINOv2: Learning Robust Visual Features without Supervision
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vision-Language-Learning"><span class="nav-number">1.</span> <span class="nav-text">Vision-Language Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ViLT"><span class="nav-number">1.1.</span> <span class="nav-text">ViLT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP"><span class="nav-number">1.2.</span> <span class="nav-text">CLIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E5%BE%80%E6%96%B9%E6%B3%95%E4%B8%AD%E5%8F%91%E7%8E%B0%E6%AF%94%E8%BE%83%E5%A5%BD%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">以往方法中发现比较好的一些经验：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ALBEF"><span class="nav-number">1.4.</span> <span class="nav-text">ALBEF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VLMo"><span class="nav-number">1.5.</span> <span class="nav-text">VLMo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BLIP"><span class="nav-number">1.6.</span> <span class="nav-text">BLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mixture-of-Encoder-and-Decoder"><span class="nav-number">1.6.1.</span> <span class="nav-text">Mixture of Encoder and Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CapFilt"><span class="nav-number">1.6.2.</span> <span class="nav-text">CapFilt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CoCa"><span class="nav-number">1.7.</span> <span class="nav-text">CoCa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BEiT-v3"><span class="nav-number">1.8.</span> <span class="nav-text">BEiT v3</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
