@@ -420,92 +420,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2019%20ADL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2019%20ADL/" class="post-title-link" itemprop="url">CVPR2019 ADL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:28" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2019-ADL"><a href="#CVPR2019-ADL" class="headerlink" title="CVPR2019 ADL"></a>CVPR2019 ADL</h1><p>Attention-based Dropout Layer for Weakly Supervised Object Localization</p>
-<h2 id="WSOL性质"><a href="#WSOL性质" class="headerlink" title="WSOL性质"></a>WSOL性质</h2><p>仅使用图像级标签来学习对象的位置，不使用位置标注</p>
-<h2 id="ADL方法概述"><a href="#ADL方法概述" class="headerlink" title="ADL方法概述"></a>ADL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191238143.png" alt="image-20220427191238143"></p>
-<p>将feature map通过Channelwise Pooling生成Self-attention map</p>
-<p>从Self-attention map中获得2个掩码：</p>
-<ul>
-<li>设置阈值，得到Drop mask</li>
-<li>sigmoid，得到Importance map</li>
-</ul>
-<p>随机选择其中一个掩码，作为当前iteration的掩码</p>
-<p>Drop mask会遮盖掉最具判别性的区域，使网络获取目标的整体范围，提高localization accuracy</p>
-<p>Importance map会突出信息区域以提高模型的识别能力，提高classification能力</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2019%20ADL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -580,6 +494,92 @@
 </li>
 </ul>
 
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2019%20ADL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2019%20ADL/" class="post-title-link" itemprop="url">CVPR2019 ADL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:28" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2019-ADL"><a href="#CVPR2019-ADL" class="headerlink" title="CVPR2019 ADL"></a>CVPR2019 ADL</h1><p>Attention-based Dropout Layer for Weakly Supervised Object Localization</p>
+<h2 id="WSOL性质"><a href="#WSOL性质" class="headerlink" title="WSOL性质"></a>WSOL性质</h2><p>仅使用图像级标签来学习对象的位置，不使用位置标注</p>
+<h2 id="ADL方法概述"><a href="#ADL方法概述" class="headerlink" title="ADL方法概述"></a>ADL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191238143.png" alt="image-20220427191238143"></p>
+<p>将feature map通过Channelwise Pooling生成Self-attention map</p>
+<p>从Self-attention map中获得2个掩码：</p>
+<ul>
+<li>设置阈值，得到Drop mask</li>
+<li>sigmoid，得到Importance map</li>
+</ul>
+<p>随机选择其中一个掩码，作为当前iteration的掩码</p>
+<p>Drop mask会遮盖掉最具判别性的区域，使网络获取目标的整体范围，提高localization accuracy</p>
+<p>Importance map会突出信息区域以提高模型的识别能力，提高classification能力</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2019%20ADL/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

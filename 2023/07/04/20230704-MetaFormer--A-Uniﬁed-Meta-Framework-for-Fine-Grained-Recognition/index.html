@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230703203848865.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230703205148570.png">
 <meta property="article:published_time" content="2023-07-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-03T13:10:59.147Z">
+<meta property="article:modified_time" content="2023-07-03T13:35:13.681Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -205,7 +205,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:10:59" itemprop="dateModified" datetime="2023-07-03T21:10:59+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-03 21:35:13" itemprop="dateModified" datetime="2023-07-03T21:35:13+08:00">2023-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,11 +233,11 @@
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>FGVC的主流方法主要关注如何使网络关注于最具判别性的区域，这类方法将受人类观察行为启发的定位的inductive bias引入到具有精细结构的神经网络。当一些物种在视觉上难以区分时，人类专家经常使用视觉之外的信息来帮助他们进行分类，所以仅使用视觉信息来完成细粒度分类是不合理的</p>
 <p>最近的最先进的方法通常设计复杂的学习pipeline来解决这个任务。然而，仅凭视觉信息往往不足以准确区分细粒度的视觉类别。元信息（例如，时空先验、属性和文本描述）通常与图像沿着出现，MetaFormer旨在使用一个<strong>统一而简单</strong>的框架来利用各种元信息来辅助细粒度的识别。</p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Hybrid-Framework"><a href="#Hybrid-Framework" class="headerlink" title="Hybrid Framework"></a>Hybrid Framework</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230703203848865.png" alt="image-20230703203848865"></p>
+<span id="more"></span>
 <p>使用卷积来获取视觉信息，用transformer编码meta information和融合信息</p>
 <p>由于Transformer的self-attention是置换不变的，不能有效的利用输入序列中token的顺序，因此作者在计算attention时引入了relative position bias $B$:</p>
 <p>$\operatorname{Attention}(Q, K, V)=\operatorname{SoftMax}\left(Q K^{T} / \sqrt{d}+B\right) V$</p>
 <p>所有额外的tokens（除了图像tokens以外的所有）都共享一个相对位置偏置</p>
-<span id="more"></span>
 <h3 id="Meta-Information"><a href="#Meta-Information" class="headerlink" title="Meta Information"></a>Meta Information</h3><ul>
 <li><p>地理坐标系转换为直角坐标系</p>
 </li>

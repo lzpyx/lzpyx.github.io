@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623110629351.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230623113005597.png">
 <meta property="article:published_time" content="2023-06-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-03T13:16:23.422Z">
+<meta property="article:modified_time" content="2023-07-03T13:35:25.361Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -213,7 +213,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:16:23" itemprop="dateModified" datetime="2023-07-03T21:16:23+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-03 21:35:25" itemprop="dateModified" datetime="2023-07-03T21:35:25+08:00">2023-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,6 +252,7 @@
 <li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
 <li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
 </ul>
+<span id="more"></span>
 <h2 id="ALBEF"><a href="#ALBEF" class="headerlink" title="ALBEF"></a>ALBEF</h2><p>Align before Fuse: Vision and Language Representation Learning with Momentum Distillation</p>
 <ul>
 <li><p>预训练的目标检测器提取的视觉特征和文本端是没有对齐的，没有进行end-to-end训练，对于多模态编码器来说，学习图像文本的特征就比较困难，所以ALBEF提出要在融合之前就对齐图像和文本的特征（实际上就是使用了一个ITC loss）</p>
@@ -264,7 +265,6 @@
 </li>
 </ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230621224557706.png" alt="image-20230621224557706" style="zoom: 50%;" /></p>
-<span id="more"></span>
 <h2 id="VLMo"><a href="#VLMo" class="headerlink" title="VLMo"></a>VLMo</h2><p>VLMO: Unified Vision-Language Pre-Training with Mixture-of-Modality-Experts</p>
 <p>Motivation_1:</p>
 <ul>

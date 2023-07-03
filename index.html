@@ -195,7 +195,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:10:59" itemprop="dateModified" datetime="2023-07-03T21:10:59+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-03 21:35:13" itemprop="dateModified" datetime="2023-07-03T21:35:13+08:00">2023-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,10 +223,6 @@
 <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>FGVC的主流方法主要关注如何使网络关注于最具判别性的区域，这类方法将受人类观察行为启发的定位的inductive bias引入到具有精细结构的神经网络。当一些物种在视觉上难以区分时，人类专家经常使用视觉之外的信息来帮助他们进行分类，所以仅使用视觉信息来完成细粒度分类是不合理的</p>
 <p>最近的最先进的方法通常设计复杂的学习pipeline来解决这个任务。然而，仅凭视觉信息往往不足以准确区分细粒度的视觉类别。元信息（例如，时空先验、属性和文本描述）通常与图像沿着出现，MetaFormer旨在使用一个<strong>统一而简单</strong>的框架来利用各种元信息来辅助细粒度的识别。</p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Hybrid-Framework"><a href="#Hybrid-Framework" class="headerlink" title="Hybrid Framework"></a>Hybrid Framework</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230703203848865.png" alt="image-20230703203848865"></p>
-<p>使用卷积来获取视觉信息，用transformer编码meta information和融合信息</p>
-<p>由于Transformer的self-attention是置换不变的，不能有效的利用输入序列中token的顺序，因此作者在计算attention时引入了relative position bias $B$:</p>
-<p>$\operatorname{Attention}(Q, K, V)=\operatorname{SoftMax}\left(Q K^{T} / \sqrt{d}+B\right) V$</p>
-<p>所有额外的tokens（除了图像tokens以外的所有）都共享一个相对位置偏置</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/07/04/20230704-MetaFormer--A-Uni%EF%AC%81ed-Meta-Framework-for-Fine-Grained-Recognition/#more" rel="contents">
@@ -514,7 +510,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:16:23" itemprop="dateModified" datetime="2023-07-03T21:16:23+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-03 21:35:25" itemprop="dateModified" datetime="2023-07-03T21:35:25+08:00">2023-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -553,18 +549,6 @@
 <li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
 <li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
 </ul>
-<h2 id="ALBEF"><a href="#ALBEF" class="headerlink" title="ALBEF"></a>ALBEF</h2><p>Align before Fuse: Vision and Language Representation Learning with Momentum Distillation</p>
-<ul>
-<li><p>预训练的目标检测器提取的视觉特征和文本端是没有对齐的，没有进行end-to-end训练，对于多模态编码器来说，学习图像文本的特征就比较困难，所以ALBEF提出要在融合之前就对齐图像和文本的特征（实际上就是使用了一个ITC loss）</p>
-</li>
-<li><p>提出momentum distillation（一种自训练方法），使用momentum model来生成伪标签，进而实现自训练，来从noisy web data（从网上爬下来的图像文本对，利用caption filtering来解决noisy web data的问题）获得更好的训练效果</p>
-<blockquote>
-<p>noisy web data中的图像文本对常常是弱相关的，比如文本包含了与图像无关的描述，或者图像包含了文本没有描述的实体对象，有些负样本的描述甚至比GT更好，对ITC和MLM loss都会有影响，使模型学习困难。</p>
-</blockquote>
-<p>momentum model是通过EMA得到的，目的是让模型的预测输出不仅仅跟ground truth的one hot label接近，还要和momentum model出来的pseudo targets要尽可能match，直观来说，模型从one hot label里学习大量信息，但one hot label存在噪声或是错误的时候，稳定的momentum model能够提供一些修正和改进。</p>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230621224557706.png" alt="image-20230621224557706" style="zoom: 50%;" /></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/06/21/20230621-Vision-Language-Learning/#more" rel="contents">
@@ -689,7 +673,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:16:08" itemprop="dateModified" datetime="2023-07-03T21:16:08+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-03 21:34:54" itemprop="dateModified" datetime="2023-07-03T21:34:54+08:00">2023-07-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
