@@ -164,6 +164,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/18/CVPR2023%20ODISE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/18/CVPR2023%20ODISE/" class="post-title-link" itemprop="url">CVPR2023 Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-21 16:01:46" itemprop="dateModified" datetime="2023-03-21T16:01:46+08:00">2023-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ODISE-Open-vocabulary-DIffusion-based-panoptic-SEgmentation"><a href="#ODISE-Open-vocabulary-DIffusion-based-panoptic-SEgmentation" class="headerlink" title="ODISE: Open-vocabulary DIffusion-based panoptic SEgmentation"></a>ODISE: Open-vocabulary DIffusion-based panoptic SEgmentation</h1><p>结合了text-to-image diffusion model和discriminative model（如CLIP）实现全景分割</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>text-to-image diffusion model能够根据任意文本产生高质量的图像，这说明其内部的表征空间与真实世界中的open concepts是高度相关的，其学习到了较好的开放概念的表征。text-image discriminative model如CLIP，擅长将图像进行开放词汇分类。</p>
+<p>本文提出利用上述两种模型的冻结特征来进行开放词汇全景分割。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230321114542664.png" alt="image-20230321114542664"></p>
+<p>text-image discriminative model如CLIP容易混淆对象之间的空间关系，缺乏对空间和关系的理解，作者认为这是将其用于开放词汇全景分割的主要瓶颈。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/18/CVPR2023%20ODISE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -946,94 +1031,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/12/ECCV2020%20DETR/" class="post-title-link" itemprop="url">ECCV2020 DETR</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-12T00:00:00+08:00">2022-11-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-16 20:35:34" itemprop="dateModified" datetime="2022-11-16T20:35:34+08:00">2022-11-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ECCV2020-DETR"><a href="#ECCV2020-DETR" class="headerlink" title="ECCV2020 DETR"></a>ECCV2020 DETR</h1><p>End-to-End Object Detection with Transformers</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。</p>
-<ul>
-<li>proposals: R-CNN系列工作</li>
-<li>anchors: Yolo系列工作</li>
-<li>non-anchor based(window centers): CenterNet,FCOS</li>
-</ul>
-<p>DETR去掉了需要人工设计的组件，如NMS和先验anchor，因此DETR框架是非常简洁的，使目标检测变得简单。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/12/ECCV2020%20DETR/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1103,7 +1100,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1116,7 +1113,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">90</span>
+        <span class="site-state-item-count">91</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
