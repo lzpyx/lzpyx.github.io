@@ -20,15 +20,58 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Towards Open Vocabulary Learning: A Survey">
+  <meta name="description" content="Towards Open Vocabulary Learning: A SurveyMotivation&amp;BackgroundZero-Shot Learning(ZSL)缺少对不可见对象的示例，且在训练期间会将不可见类对象视作背景对象，因此，在推理过程中，模型仅基于其预定义的词嵌入来识别新类别，从而限制了对视觉信息和那些看不见的类别的关系的挖掘。 ZSL和open vocabulary之">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Towards Open Vocabulary Learning: A Survey">
 <meta property="og:url" content="http://lzpyx.github.io/2023/07/03/20230703-Towards-Open-Vocabulary-Learning-A-Survey/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="Towards Open Vocabulary Learning: A Survey">
+<meta property="og:description" content="Towards Open Vocabulary Learning: A SurveyMotivation&amp;BackgroundZero-Shot Learning(ZSL)缺少对不可见对象的示例，且在训练期间会将不可见类对象视作背景对象，因此，在推理过程中，模型仅基于其预定义的词嵌入来识别新类别，从而限制了对视觉信息和那些看不见的类别的关系的挖掘。 ZSL和open vocabulary之">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704104939297.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704110950389.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704124742240.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704165002042.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316143332381.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704143612746.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704145640211.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704150947377.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704152238705.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704154528072.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704160800391.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704162143286.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704163253663.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704165024343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704171423873.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704172054136.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704172705840.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183157231.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704174203394.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704182525253.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704184552971.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183323532.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183930210.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704185325041.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704185924415.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704190422304.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704190633858.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704194303204.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704194316997.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704195027102.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704200008709.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705101006502.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705102123051.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705104725782.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705105319824.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705113904443.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705115812568.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705115858188.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145349622.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145409515.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145650713.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145735174.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145759570.png">
 <meta property="article:published_time" content="2023-07-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-03T11:18:09.524Z">
+<meta property="article:modified_time" content="2023-07-05T07:31:57.611Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -38,6 +81,7 @@
 <meta property="article:tag" content="Object Detection">
 <meta property="article:tag" content="Segmentation">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704104939297.png">
 
 <link rel="canonical" href="http://lzpyx.github.io/2023/07/03/20230703-Towards-Open-Vocabulary-Learning-A-Survey/">
 
@@ -198,10 +242,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-03 00:00:00 / Modified: 19:18:09" itemprop="dateCreated datePublished" datetime="2023-07-03T00:00:00+08:00">2023-07-03</time>
+              <time title="Created: 2023-07-03 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-03T00:00:00+08:00">2023-07-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-05 15:31:57" itemprop="dateModified" datetime="2023-07-05T15:31:57+08:00">2023-07-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -223,7 +273,248 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Towards-Open-Vocabulary-Learning-A-Survey"><a href="#Towards-Open-Vocabulary-Learning-A-Survey" class="headerlink" title="Towards Open Vocabulary Learning: A Survey"></a>Towards Open Vocabulary Learning: A Survey</h1>
+        <h1 id="Towards-Open-Vocabulary-Learning-A-Survey"><a href="#Towards-Open-Vocabulary-Learning-A-Survey" class="headerlink" title="Towards Open Vocabulary Learning: A Survey"></a>Towards Open Vocabulary Learning: A Survey</h1><h2 id="Motivation-amp-Background"><a href="#Motivation-amp-Background" class="headerlink" title="Motivation&amp;Background"></a>Motivation&amp;Background</h2><p>Zero-Shot Learning(ZSL)缺少对不可见对象的示例，且在训练期间会将不可见类对象视作背景对象，因此，在推理过程中，模型仅基于其预定义的词嵌入来识别新类别，从而限制了对视觉信息和那些看不见的类别的关系的挖掘。</p>
+<p>ZSL和open vocabulary之间的关键区别在于，open vocabulary可以使用视觉相关的语言词汇比如image captions来作为辅助的监督，使用语言来作为辅助的弱监督的motivations包括：</p>
+<ul>
+<li>相比于box和mask annotation，language data易于获取，标注成本低</li>
+<li>language data提供了更大的词汇量，因此可以更容易地拓展，具有更强地泛化性</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704104939297.png" alt="image-20230704104939297" style="zoom: 50%;" /></p>
+<ul>
+<li>Open-Set/Open World/OOD：只需要识别出unknown objects，而不需要将它们分到不同的具体类</li>
+<li>Zero-Shot Learning：模型严格在base类上进行训练，novel类在训练时是不可见的，且模型需要为novel类预测具体类别</li>
+<li>Open Vocabulary Learning</li>
+</ul>
+<span id="more"></span>
+<h3 id="History-amp-Roadmap"><a href="#History-amp-Roadmap" class="headerlink" title="History&amp;Roadmap"></a>History&amp;Roadmap</h3><p>灰色框是代表工作，绿色框代表基础模型和VLMs</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704110950389.png" alt="image-20230704110950389"></p>
+<h3 id="Tasks-DataSets-and-Metrics"><a href="#Tasks-DataSets-and-Metrics" class="headerlink" title="Tasks, DataSets, and Metrics"></a>Tasks, DataSets, and Metrics</h3><ul>
+<li>Tasks:<ul>
+<li>object detection</li>
+<li>instance segmentation</li>
+<li>semantic segmentation</li>
+<li>object tracking</li>
+<li>open vocabulary attribution prediction</li>
+<li>video classification</li>
+<li>point cloud classification</li>
+</ul>
+</li>
+<li>Dataset<ul>
+<li>object detection: COCO, LVIS, v3Det</li>
+<li>image segmentation: COCO, ADE20k, PASCAL-VOC2012, PASCAL-Context, Cityscapes</li>
+<li>video segmentation&amp;tracking: VSPW, Youtube-VIS, LV-VIS, MOSE, TAO</li>
+</ul>
+</li>
+<li>Metrics<ul>
+<li>detection: mAP, mAR</li>
+<li>segmentation: mIoU, mask-based mAP, panoptic quality(PQ)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>常见框架</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704124742240.png" alt="image-20230704124742240" style="zoom:67%;" /></p>
+<h3 id="Open-Vocabulary-Object-Detection"><a href="#Open-Vocabulary-Object-Detection" class="headerlink" title="Open Vocabulary Object Detection"></a>Open Vocabulary Object Detection</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704165002042.png" alt="image-20230704165002042"></p>
+<h4 id="Knowledge-Distillation"><a href="#Knowledge-Distillation" class="headerlink" title="Knowledge Distillation"></a>Knowledge Distillation</h4><p>将VLMs的知识蒸馏到detectors中，代表工作如ViLD（two-stage）.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316143332381.png" alt="image-20230316143332381" style="zoom: 50%;" /></p>
+<ul>
+<li>HierKD-单阶段</li>
+<li><p>OADP同时关注物体间关系</p>
+</li>
+<li><p>不单使用novel class names做text distillation，使用更加细粒度的信息包括attributes，captions和物体关系</p>
+<ul>
+<li>PCL使用image captioning model生成captions来描述物体实例</li>
+<li>OVRNet同时检测物体和物体的视觉属性</li>
+</ul>
+</li>
+</ul>
+<h4 id="Region-Text-Pertaining（相关性）"><a href="#Region-Text-Pertaining（相关性）" class="headerlink" title="Region Text Pertaining（相关性）"></a>Region Text Pertaining（相关性）</h4><p>利用易于获取的图像文本对来学习区域文本对齐</p>
+<p>学习区域文本对齐将novel classes的视觉特征和文本特征映射到对齐的特征空间中</p>
+<ul>
+<li><p>OVR-CNN第一个引入了caption data</p>
+</li>
+<li><p>Attribute-Sensitive OVR-CNN在对齐时增强了模型对形容词，动词词组和介词短语的敏感度</p>
+</li>
+<li><p>RegionCLIP通过匹配区域和区域对应的描述来学习视觉区域表征</p>
+<blockquote>
+<p>使用图片描述中的词来填充区域描述模板，然后用CLIP来寻找对应的区域描述和RPN得到的proposal，从而得到region-text pairs</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704143612746.png" alt="image-20230704143612746"></p>
+<ul>
+<li>MaMMUT结合了对比学习和生成式学习</li>
+</ul>
+<h4 id="Training-with-More-Balanced-Data"><a href="#Training-with-More-Balanced-Data" class="headerlink" title="Training with More Balanced Data"></a>Training with More Balanced Data</h4><p>利用更加平衡的数据，包括图像分类数据集，图像文本对数据生成的伪标签，以及额外的检测数据</p>
+<ul>
+<li>Detic使用image-level的监督提升了long-tail detection的性能，Detic基本的insight是，大部分分类数据都是object-centric的，因此RPN得到的最大候选区域可能完整的覆盖了一个属于image-level class的物体，所以可以利用这一点来引入分类数据集</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704145640211.png" alt="image-20230704145640211" style="zoom: 33%;" /></p>
+<ul>
+<li>mm-ovod在Detic基础上引入multi-modal text embeddings来作为classifier。使用LLM来为每个class name生成描述，而不是依赖于手工设计的prompt templates，根据描述来生成text-based embeddings。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704150947377.png" alt="image-20230704150947377" style="zoom: 50%;" /></p>
+<ul>
+<li>PB-OVD使用Grad-CAM配合RPN来产生伪标注框，Grad-CAM的激活图是从预训练的VLM的区域嵌入和词嵌入之间的对齐获得的</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704152238705.png" alt="image-20230704152238705"></p>
+<ul>
+<li>VL-PLM提出使用无类别的目标检测数据集把Faster R-CNN训练为一个类别无关的proposal generator</li>
+<li>LocOV使用RPN中的类别无关的的proposal，通过分别匹配图像和字幕的区域特征和单词嵌入来训练Faster R-CNN</li>
+<li>X-Paste生成rare类的的数据来提升现有方法的分类能力</li>
+<li>OWLv2使用self-training来产生大量的伪标签，以实现更加平衡的学习</li>
+</ul>
+<h4 id="Prompting-Modeling"><a href="#Prompting-Modeling" class="headerlink" title="Prompting Modeling"></a>Prompting Modeling</h4><p>通过将学习到的提示合并到基础模型中，模型可以更容易地将其知识转移到下游任务</p>
+<ul>
+<li>由于negative proposals并不属于任何一个具体类别，DetPro强制negative proposal要与任何对象类别同等的不相似，而不是使用一个background class来代表它</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704154528072.png" alt="image-20230704154528072" style="zoom: 50%;" /></p>
+<ul>
+<li>PromptDet将类别描述引入到prompt中，并探讨了类别在prompt中的位置</li>
+<li>CORA基于DETR框架，提出region prompting，通过对基于CLIP的区域分类器得到的区域特征进行提示，缩小了整体图像与区域分布之间的差距，提出anchor pre-matching来学习可推广的对象定位</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704160800391.png" alt="image-20230704160800391" style="zoom:50%;" /></p>
+<ul>
+<li>Prompt-OVD基于OV-DETR，提出RoI-based masked attention和RoI pruning techniques（剪枝）</li>
+</ul>
+<h4 id="Region-Text-Alignment"><a href="#Region-Text-Alignment" class="headerlink" title="Region Text Alignment"></a>Region Text Alignment</h4><ul>
+<li>OV-DETR将DETR用于OVD，用条件二分图匹配代替二分图匹配</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704162143286.png" alt="image-20230704162143286" style="zoom: 33%;" /></p>
+<ul>
+<li>VLDet将图像转换为一系列区域，caption转换为一系列words，然后使用set matching方法来实现区域和文本的对齐</li>
+<li>BARON提出要对齐bags of regions而不是单个region。它首先将上下文相关的区域分组为一个bag，并将袋子中的每个区域视为句子中的一个词。然后，它将bag of regions送到文本编码器以获得bag-of-regions embeddings。这些bag-of-regions embeddings将与来自VLM的图像编码器的cropped region embeddings对齐。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704163253663.png" alt="image-20230704163253663" style="zoom:50%;" /></p>
+<h3 id="Open-Vocabulary-Segmentation"><a href="#Open-Vocabulary-Segmentation" class="headerlink" title="Open Vocabulary Segmentation"></a>Open Vocabulary Segmentation</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704165024343.png" alt="image-20230704165024343"></p>
+<h4 id="Utilizing-VLMs-to-Leverage-Recognition-Capabilities"><a href="#Utilizing-VLMs-to-Leverage-Recognition-Capabilities" class="headerlink" title="Utilizing VLMs to Leverage Recognition Capabilities"></a>Utilizing VLMs to Leverage Recognition Capabilities</h4><ul>
+<li>LSeg</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704171423873.png" alt="image-20230704171423873"></p>
+<ul>
+<li><p>ZegFormer将问题解耦为类不可知的分割任务和掩码分类任务，它使用从 VLM得到的label embeddings来对proposal masks进行分类，并用CLIP的视觉编码器来获得和语言对齐的视觉特征</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704172054136.png" alt="image-20230704172054136"></p>
+</li>
+<li><p>MaskCLIP将Relative Mask Attention modules插入预训练的CLIP，更高效的利用CLIP的特征</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704172705840.png" alt="image-20230704172705840" style="zoom: 50%;" /></p>
+</li>
+</ul>
+<h4 id="Learning-from-Caption-Data"><a href="#Learning-from-Caption-Data" class="headerlink" title="Learning from Caption Data"></a>Learning from Caption Data</h4><ul>
+<li>OpenSeg</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183157231.png" alt="image-20230704183157231" style="zoom: 33%;" /></p>
+<ul>
+<li>CGG</li>
+</ul>
+<h4 id="Generating-Pseudo-Labels"><a href="#Generating-Pseudo-Labels" class="headerlink" title="Generating Pseudo Labels"></a>Generating Pseudo Labels</h4><ul>
+<li><p>MaskCLIP+将CLIP视觉编码器的最后一层pooling layer替换成了卷积层，用来产生dense feature maps，然后将产生的特征图来生成伪标签，用于训练分割模型</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704174203394.png" alt="image-20230704174203394" style="zoom: 33%;" /></p>
+</li>
+<li><p>OVSeg</p>
+</li>
+<li><p>XPM</p>
+</li>
+</ul>
+<h4 id="Training-without-Pixel-Level-Annotations"><a href="#Training-without-Pixel-Level-Annotations" class="headerlink" title="Training without Pixel-Level Annotations"></a>Training without Pixel-Level Annotations</h4><p>仅使用弱监督，如image caption</p>
+<ul>
+<li><p>GroupViT</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704182525253.png" alt="image-20230704182525253" style="zoom: 50%;" /></p>
+</li>
+<li><p>PACL通过对齐image patches和captions的CLS token来增强对比损失</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704184552971.png" alt="image-20230704184552971"></p>
+<ul>
+<li>ViL-Seg结合了对比损失和聚类损失</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183323532.png" alt="image-20230704183323532" style="zoom: 33%;" /></p>
+<ul>
+<li>SegCLIP进一步引入了重建损失和基于超像素的KL损失</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704183930210.png" alt="image-20230704183930210"></p>
+<h4 id="Jointly-Learning-Several-Tasks"><a href="#Jointly-Learning-Several-Tasks" class="headerlink" title="Jointly Learning Several Tasks"></a>Jointly Learning Several Tasks</h4><p>OVSS，OVIS，OVPS联合训练</p>
+<ul>
+<li>X-Decoder</li>
+<li>FreeSeg，统一框架解决三种分割任务，设计了自适应任务提示模块，并对可学习的提示进行测试时间调整，以捕捉特定于任务的特征</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704185325041.png" alt="image-20230704185325041"></p>
+<ul>
+<li>OpenSeeD同时从检测数据集和分割数据集中学习</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704185924415.png" alt="image-20230704185924415"></p>
+<h4 id="Adopting-Denoising-Diffusion-Models"><a href="#Adopting-Denoising-Diffusion-Models" class="headerlink" title="Adopting Denoising Diffusion Models"></a>Adopting Denoising Diffusion Models</h4><ul>
+<li>ODISE利用了diffusion-based generative models的中间特征</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704190422304.png" alt="image-20230704190422304" style="zoom:50%;" /></p>
+<ul>
+<li>OVDiff提出了一种基于原型的方法来处理开放词汇语义分割。它使用扩散模型来生成各种类别的图像，并将它们视为原型。该方法不需要训练。在测试期间，将输入图像与这些生成的原型进行比较，并且最匹配的原型类别就是输入图像的预测类。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704190633858.png" alt="image-20230704190633858" style="zoom: 50%;" /></p>
+<h3 id="Open-Vocabulary-Video-Understanding"><a href="#Open-Vocabulary-Video-Understanding" class="headerlink" title="Open Vocabulary Video Understanding"></a>Open Vocabulary Video Understanding</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704194303204.png" alt="image-20230704194303204"></p>
+<h3 id="Open-Vocabulary-3D-Scene-Understanding"><a href="#Open-Vocabulary-3D-Scene-Understanding" class="headerlink" title="Open Vocabulary 3D Scene Understanding"></a>Open Vocabulary 3D Scene Understanding</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704194316997.png" alt="image-20230704194316997"></p>
+<h4 id="3D-to-2D-projection"><a href="#3D-to-2D-projection" class="headerlink" title="3D to 2D projection"></a>3D to 2D projection</h4><p>将Open Vocabulary机制扩展到3D感知并不简单，因为很难像CLIP在2D感知中所做的那样为point-language对比训练收集足够的数据。</p>
+<ul>
+<li>PointCLIP将3D点云投影到2D平面，并通过CLIP视觉编码器从投影的深度图中提取视觉特征</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704195027102.png" alt="image-20230704195027102"></p>
+<ul>
+<li>PointCLIP V2P进一步引入了深度图生成和3D prompting</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704200008709.png" alt="image-20230704200008709"></p>
+<h4 id="3D-and-2D-Alignment"><a href="#3D-and-2D-Alignment" class="headerlink" title="3D and 2D Alignment"></a>3D and 2D Alignment</h4><p>将3D点投影到2D可能不能完全利用3D的信息</p>
+<ul>
+<li>ULIP将3Dbackbone提取到的3D特征和CLIP的视觉、文本特征进行对齐</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705101006502.png" alt="image-20230705101006502"></p>
+<ul>
+<li>LidarCLIP对齐3D和2D特征，可以用于3D open vocabulary scene understanding和lidar-to-image generation</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705102123051.png" alt="image-20230705102123051"></p>
+<h4 id="Downstream-Tasks"><a href="#Downstream-Tasks" class="headerlink" title="Downstream Tasks"></a>Downstream Tasks</h4><ul>
+<li><p>OV-3DETIC将定位和识别解耦到两种图像和点云两种模态中去，点云用于定位，而RGB图像用于识别</p>
+</li>
+<li><p>OV-3DET</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705104725782.png" alt="image-20230705104725782"></p>
+<ul>
+<li>PLA专注于3D场景理解，使用多视图图像来提取特征用于对比学习</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705105319824.png" alt="image-20230705105319824"></p>
+<ul>
+<li>OpenMask3D（3D实例分割）提出了多视角融合的方法，从point cloud获得类别无关的3D mask proposals，然后再去CLIP特征空间进行检索分类</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705113904443.png" alt="image-20230705113904443" style="zoom: 50%;" /></p>
+<ul>
+<li>CLIP-FO3D（3D语义分割）使用了知识蒸馏，直接从CLIP学习知识，不需要额外标注</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705115812568.png" alt="image-20230705115812568" style="zoom: 50%;" /></p>
+<ul>
+<li>CLIP2Scene提出通过语义驱动的跨模态对比学习来训练3D网络以进行3D分割</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705115858188.png" alt="image-20230705115858188" style="zoom:50%;" /></p>
+<h2 id="Benchmark-Results"><a href="#Benchmark-Results" class="headerlink" title="Benchmark Results"></a>Benchmark Results</h2><h3 id="Open-Vocabulary-Object-Detection-1"><a href="#Open-Vocabulary-Object-Detection-1" class="headerlink" title="Open Vocabulary Object Detection"></a>Open Vocabulary Object Detection</h3><h4 id="Setting"><a href="#Setting" class="headerlink" title="Setting"></a>Setting</h4><ul>
+<li>COCO dataset包含80类，48类作为base classes，17类作为novel classes，训练使用107761张图片，包括665387个base类的bbox annotations，测试使用4836张图像，包括28538个base类和novel类的bbox annotations</li>
+<li>LVIS dataset包含1203类，866个常见类作为base类，剩下的377个类作为novel类</li>
+</ul>
+<h4 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h4><p>两阶段方法精度明显优于一阶段，BARON使用Faster-RCNN+ResNet-50在COCO上取得42.7$AP_{novel}$，在LVIS上取得22.6$AP_r$</p>
+<p>sota方法BARON，FVLM（冻结主干）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145349622.png" alt="image-20230705145349622"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145409515.png" alt="image-20230705145409515"></p>
+<h3 id="Open-Vocabulary-Segmantic-Segmentation"><a href="#Open-Vocabulary-Segmantic-Segmentation" class="headerlink" title="Open Vocabulary Segmantic Segmentation"></a>Open Vocabulary Segmantic Segmentation</h3><h4 id="Setting-1"><a href="#Setting-1" class="headerlink" title="Setting"></a>Setting</h4><ul>
+<li>ADE20K dataset包含2k张validation images，整个数据集包含2693个前景和背景类</li>
+<li>Pascal Context dataset包含5k张validation images，包含459类</li>
+<li>Pascal VOC有20类被用作evaluation</li>
+</ul>
+<h4 id="Results-1"><a href="#Results-1" class="headerlink" title="Results"></a>Results</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145650713.png" alt="image-20230705145650713"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145735174.png" alt="image-20230705145735174"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705145759570.png" alt="image-20230705145759570"></p>
+<h2 id="Challenges-amp-Outlook"><a href="#Challenges-amp-Outlook" class="headerlink" title="Challenges&amp;Outlook"></a>Challenges&amp;Outlook</h2><h3 id="Explore-Temporal-Information"><a href="#Explore-Temporal-Information" class="headerlink" title="Explore Temporal Information"></a>Explore Temporal Information</h3><p>视频场景</p>
+<h3 id="3D-Open-Vocabulary-Scene-Understanding"><a href="#3D-Open-Vocabulary-Scene-Understanding" class="headerlink" title="3D Open Vocabulary Scene Understanding"></a>3D Open Vocabulary Scene Understanding</h3><p>点云数据标注更加困难，因此将Open Vocabulary引入3D场景非常必要。目前3D open vocabulary scene understanding的解决思路主要集中在设计投影函数来更好的利用2D VLMs，如何将2D模型的知识与3D模型对齐是一个值得探索的方向</p>
+<h3 id="Explore-Foundation-Models-With-Specific-Adapter-For-Custom-Tasks"><a href="#Explore-Foundation-Models-With-Specific-Adapter-For-Custom-Tasks" class="headerlink" title="Explore Foundation Models With Specific Adapter For Custom Tasks"></a>Explore Foundation Models With Specific Adapter For Custom Tasks</h3><p>利用adapter去解决基础模型表现不佳的特定领域的corner case</p>
+<h3 id="Efficient-Training-For-Target-Dataset"><a href="#Efficient-Training-For-Target-Dataset" class="headerlink" title="Efficient Training For Target Dataset"></a>Efficient Training For Target Dataset</h3><p>现有的sota方法需要大量的数据进行预训练，在VLM的帮助下设计高效的学习方法是有必要的，一个可能的解决方案是采用in-context learning，充分探索和利用VLM和LLM的知识。</p>
+<h3 id="Base-Classes-Over-fitting-Issues"><a href="#Base-Classes-Over-fitting-Issues" class="headerlink" title="Base Classes Over-fitting Issues"></a>Base Classes Over-fitting Issues</h3><p>由于模型在基类上训练，因此当出现novel类和base类具有相似形状和语义时，base类的置信度会更高，引入更加细粒度的特征判别建模比如parts和attributes是解决这一问题的潜在方法</p>
+<h3 id="Combining-with-Incremental-Learning"><a href="#Combining-with-Incremental-Learning" class="headerlink" title="Combining with Incremental Learning"></a>Combining with Incremental Learning</h3><p>在真实的场景中，数据标注通常是开放世界和非平稳的，其中新的类可以连续和增量地出现。但是直接转化为增量学习可能会导致灾难性遗忘问题。另一方面，当前的开放世界对象检测（open world object detection）仅关注novel类的定位，而不进行分类。如何在一个框架内同时处理灾难性遗忘问题和新的类检测问题是值得探索的。</p>
+
     </div>
 
     
@@ -312,7 +603,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Towards-Open-Vocabulary-Learning-A-Survey"><span class="nav-number">1.</span> <span class="nav-text">Towards Open Vocabulary Learning: A Survey</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Towards-Open-Vocabulary-Learning-A-Survey"><span class="nav-number">1.</span> <span class="nav-text">Towards Open Vocabulary Learning: A Survey</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation-amp-Background"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation&amp;Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#History-amp-Roadmap"><span class="nav-number">1.1.1.</span> <span class="nav-text">History&amp;Roadmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tasks-DataSets-and-Metrics"><span class="nav-number">1.1.2.</span> <span class="nav-text">Tasks, DataSets, and Metrics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Object-Detection"><span class="nav-number">1.2.1.</span> <span class="nav-text">Open Vocabulary Object Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Knowledge-Distillation"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Knowledge Distillation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Region-Text-Pertaining%EF%BC%88%E7%9B%B8%E5%85%B3%E6%80%A7%EF%BC%89"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Region Text Pertaining（相关性）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Training-with-More-Balanced-Data"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Training with More Balanced Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Prompting-Modeling"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Prompting Modeling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Region-Text-Alignment"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Region Text Alignment</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Segmentation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Open Vocabulary Segmentation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Utilizing-VLMs-to-Leverage-Recognition-Capabilities"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Utilizing VLMs to Leverage Recognition Capabilities</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Learning-from-Caption-Data"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Learning from Caption Data</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generating-Pseudo-Labels"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Generating Pseudo Labels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Training-without-Pixel-Level-Annotations"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Training without Pixel-Level Annotations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jointly-Learning-Several-Tasks"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">Jointly Learning Several Tasks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Adopting-Denoising-Diffusion-Models"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">Adopting Denoising Diffusion Models</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Video-Understanding"><span class="nav-number">1.2.3.</span> <span class="nav-text">Open Vocabulary Video Understanding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.2.4.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3D-to-2D-projection"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">3D to 2D projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3D-and-2D-Alignment"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">3D and 2D Alignment</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Downstream-Tasks"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Downstream Tasks</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Benchmark-Results"><span class="nav-number">1.3.</span> <span class="nav-text">Benchmark Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Object-Detection-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">Open Vocabulary Object Detection</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Setting"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Results"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Vocabulary-Segmantic-Segmentation"><span class="nav-number">1.3.2.</span> <span class="nav-text">Open Vocabulary Segmantic Segmentation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Setting-1"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Results-1"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Results</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Challenges-amp-Outlook"><span class="nav-number">1.4.</span> <span class="nav-text">Challenges&amp;Outlook</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Explore-Temporal-Information"><span class="nav-number">1.4.1.</span> <span class="nav-text">Explore Temporal Information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-Open-Vocabulary-Scene-Understanding"><span class="nav-number">1.4.2.</span> <span class="nav-text">3D Open Vocabulary Scene Understanding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Explore-Foundation-Models-With-Specific-Adapter-For-Custom-Tasks"><span class="nav-number">1.4.3.</span> <span class="nav-text">Explore Foundation Models With Specific Adapter For Custom Tasks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Efficient-Training-For-Target-Dataset"><span class="nav-number">1.4.4.</span> <span class="nav-text">Efficient Training For Target Dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Base-Classes-Over-fitting-Issues"><span class="nav-number">1.4.5.</span> <span class="nav-text">Base Classes Over-fitting Issues</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Combining-with-Incremental-Learning"><span class="nav-number">1.4.6.</span> <span class="nav-text">Combining with Incremental Learning</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

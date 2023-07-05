@@ -364,10 +364,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-03 00:00:00 / Modified: 19:18:09" itemprop="dateCreated datePublished" datetime="2023-07-03T00:00:00+08:00">2023-07-03</time>
+              <time title="Created: 2023-07-03 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-03T00:00:00+08:00">2023-07-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-05 15:31:57" itemprop="dateModified" datetime="2023-07-05T15:31:57+08:00">2023-07-05</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -389,7 +395,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Towards-Open-Vocabulary-Learning-A-Survey"><a href="#Towards-Open-Vocabulary-Learning-A-Survey" class="headerlink" title="Towards Open Vocabulary Learning: A Survey"></a>Towards Open Vocabulary Learning: A Survey</h1>
+          <h1 id="Towards-Open-Vocabulary-Learning-A-Survey"><a href="#Towards-Open-Vocabulary-Learning-A-Survey" class="headerlink" title="Towards Open Vocabulary Learning: A Survey"></a>Towards Open Vocabulary Learning: A Survey</h1><h2 id="Motivation-amp-Background"><a href="#Motivation-amp-Background" class="headerlink" title="Motivation&amp;Background"></a>Motivation&amp;Background</h2><p>Zero-Shot Learning(ZSL)缺少对不可见对象的示例，且在训练期间会将不可见类对象视作背景对象，因此，在推理过程中，模型仅基于其预定义的词嵌入来识别新类别，从而限制了对视觉信息和那些看不见的类别的关系的挖掘。</p>
+<p>ZSL和open vocabulary之间的关键区别在于，open vocabulary可以使用视觉相关的语言词汇比如image captions来作为辅助的监督，使用语言来作为辅助的弱监督的motivations包括：</p>
+<ul>
+<li>相比于box和mask annotation，language data易于获取，标注成本低</li>
+<li>language data提供了更大的词汇量，因此可以更容易地拓展，具有更强地泛化性</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704104939297.png" alt="image-20230704104939297" style="zoom: 50%;" /></p>
+<ul>
+<li>Open-Set/Open World/OOD：只需要识别出unknown objects，而不需要将它们分到不同的具体类</li>
+<li>Zero-Shot Learning：模型严格在base类上进行训练，novel类在训练时是不可见的，且模型需要为novel类预测具体类别</li>
+<li>Open Vocabulary Learning</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/03/20230703-Towards-Open-Vocabulary-Learning-A-Survey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
