@@ -164,6 +164,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/07/202367-VisionLLM-Large-Language-Model-is-also-an-Open-Ended-Decoder-for-Vision-Centric-Tasks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/07/202367-VisionLLM-Large-Language-Model-is-also-an-Open-Ended-Decoder-for-Vision-Centric-Tasks/" class="post-title-link" itemprop="url">VisionLLM: Large Language Model is also an Open-Ended Decoder for Vision-Centric Tasks</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-07T00:00:00+08:00">2023-06-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-20 16:21:25" itemprop="dateModified" datetime="2023-06-20T16:21:25+08:00">2023-06-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="VisionLLM"><a href="#VisionLLM" class="headerlink" title="VisionLLM"></a>VisionLLM</h1><p>本文提出了基于LLM的的框架，用以解决以视觉为中心的任务</p>
+<p>VisionLLM通过<strong>将图像视作语言</strong>并将<strong>以视觉为中心的任务与</strong>可以使用语言指令灵活定义和管理的<strong>语言任务对齐</strong>，为视觉-语言任务提供了统一的视角，基于LLM的解码器可以基于这些语言指令对开放式的任务进行预测</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Vision Foundation Models仍然受限于预训练范式，难以和LLMS的开放任务能力相匹配</p>
+<p>由于模态和任务范式的固有差异，LLM并不能很好的拓展到纯视觉和视觉语言任务</p>
+<p>预训练-微调的范式伴随着显著的边际成本</p>
+<ul>
+<li>(a) Vision generalist models:多任务统一方法被用于实现通才能力，但它们往往难以克服预定义任务所带来的限制，导致在开放式能力方面与LLMs存在差距</li>
+<li>(b) visual prompt tuning(VPT):视觉提示的格式与语言指令的格式非常不同，使得直接将LLM的推理能力和世界知识应用于视觉任务具有挑战性。</li>
+</ul>
+<p>VisionLLM是一个统一的通才框架，将视觉为中心的任务定义与LLMs的方法对齐，利用LLM的推理能力和解析能力为视觉为中心的任务提供开放式任务功能，其包含3个核心组成部分：</p>
+<ul>
+<li>为视觉和视觉语言任务设计的统一语言指令</li>
+<li>语言引导的image tokenizer</li>
+<li>基于LLM的开放式任务解码器：使用语言指令实现各种任务</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230607163158902.png" alt="image-20230607163158902"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/07/202367-VisionLLM-Large-Language-Model-is-also-an-Open-Ended-Decoder-for-Vision-Centric-Tasks/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/06/202366-IdealGPT-Iteratively-Decomposing-Vision-and-Language-Reasoning-via-Large-Language-Models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1005,83 +1101,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/20/ICLR2023-DINO-DETR-with-Improved-DeNoising-Anchor-Boxes-for-End-to-End-Object-Detection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/20/ICLR2023-DINO-DETR-with-Improved-DeNoising-Anchor-Boxes-for-End-to-End-Object-Detection/" class="post-title-link" itemprop="url">ICLR2023 DINO: DETR with Improved DeNoising Anchor Boxes for End-to-End Object Detection</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-03-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-20T00:00:00+08:00">2023-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-23 16:10:33" itemprop="dateModified" datetime="2023-03-23T16:10:33+08:00">2023-03-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1147,7 +1170,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">71</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

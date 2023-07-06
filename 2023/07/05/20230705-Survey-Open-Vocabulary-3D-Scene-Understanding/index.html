@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Open Vocabulary 3D Scene UnderstandingCVPR2022 PointCLIPPointCLIP: Point Cloud Understanding by CLIP 第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning Methodology 抽取点云特征使用投影的方式，将3D的点云投影到几">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Survey: Open Vocabulary 3D Scene Understanding">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="Open Vocabulary 3D Scene UnderstandingCVPR2022 PointCLIPPointCLIP: Point Cloud Understanding by CLIP 第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning Methodology 抽取点云特征使用投影的方式，将3D的点云投影到几">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705211311039.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705213135045.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103116299.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103614613.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706102254944.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png">
+<meta property="article:published_time" content="2023-07-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-06T03:54:58.147Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Survey">
+<meta property="article:tag" content="Open Vocabulary">
+<meta property="article:tag" content="Scene Understanding">
+<meta property="article:tag" content="Object Detection">
+<meta property="article:tag" content="Segmentation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Survey: Open Vocabulary 3D Scene Understanding | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Survey: Open Vocabulary 3D Scene Understanding
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-05T00:00:00+08:00">2023-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-06 11:54:58" itemprop="dateModified" datetime="2023-07-06T11:54:58+08:00">2023-07-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Open-Vocabulary-3D-Scene-Understanding"><a href="#Open-Vocabulary-3D-Scene-Understanding" class="headerlink" title="Open Vocabulary 3D Scene Understanding"></a>Open Vocabulary 3D Scene Understanding</h1><h2 id="CVPR2022-PointCLIP"><a href="#CVPR2022-PointCLIP" class="headerlink" title="CVPR2022 PointCLIP"></a>CVPR2022 PointCLIP</h2><p>PointCLIP: Point Cloud Understanding by CLIP</p>
+<p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
+<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
+<h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
+<h4 id="Zero-shot-Classification"><a href="#Zero-shot-Classification" class="headerlink" title="Zero-shot Classification"></a>Zero-shot Classification</h4><p>经过投影获得了$M$个视角的投影深度图，然后利用CLIP的视觉编码器提取特征，同时用CLIP的文本编码器提取”point cloud  depth map of  a [CLASS]”的文本特征，计算每个视角的视觉特征和文本特征的相似度，然后加权得到最终的相似度(logits)。但这种zero-shot的分类结果和有监督相差甚远，在ModelNet40数据集上的准确率只有20.18%，基本不太可用。原因可能是点云投影图像其实和图像存在较大的gap，且投影的方式其实会丢失信息。</p>
+<h4 id="Inter-view-Adapter-for-PointCLIP"><a href="#Inter-view-Adapter-for-PointCLIP" class="headerlink" title="Inter-view Adapter for PointCLIP"></a>Inter-view Adapter for PointCLIP</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705211311039.png" alt="image-20230705211311039" style="zoom: 50%;" /></p>
+<p>由于PointCLIP的zero-shot classification与有监督方法的存在较大的性能差距，作者考虑了更加实际的few-shot settings，借鉴CLIP-Adapter，提出了Inter-view Adapter（3层MLP），在训练时CLIP的编码器都是冻结的，仅通过交叉熵损失来微调这个可学习的adapter。few-shot samples就可以带来巨大提升，在ModelNet40上的结果，从20.18%提升到了87.20%，基本达到了有监督的方法的效果，并且只用了每个类别16个样本，不到全部数据的1/10。</p>
+<h4 id="Multi-knowledge-Ensemble"><a href="#Multi-knowledge-Ensemble" class="headerlink" title="Multi-knowledge Ensemble"></a>Multi-knowledge Ensemble</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705213135045.png" alt="image-20230705213135045" style="zoom:33%;" /></p>
+<p>传统方法是在3D数据集上from scratch进行训练的，而PointCLIP继承了CLIP中包含的2D先验，作者认为是对以往方法的一个知识补充，因此提出进行模型集成，通过简单相加直接集成它们的预测logit作为最终输出，这为传统方法带来了性能提升，PointCLIP因此可以作为一个即插即用的模块使用。</p>
+<h3 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><ul>
+<li>ModelNet10</li>
+<li>ModelNet40包含9843个样例和40个类</li>
+<li>ScanObjectNN</li>
+</ul>
+<h3 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h3><ul>
+<li>投影得到的图像和CLIP训练所用图像之间的分布仍然存在巨大gap，如表示形式是深度图，没有颜色</li>
+<li>投影方式会损失一部分3D的信息</li>
+<li>多视角的特征融合采用了固定的权重</li>
+<li>CLIP文本端prompt template的小的变换会导致2-3%的性能波动</li>
+</ul>
+<h2 id="PointCLIP-V2"><a href="#PointCLIP-V2" class="headerlink" title="PointCLIP V2"></a>PointCLIP V2</h2><p>PointCLIP V2: Adapting CLIP for Powerful 3D Open-world Learning</p>
+<p>限制PointCLIP的zero-shot能力的两方面原因：</p>
+<ul>
+<li>稀疏的视觉投影。直接投影的方式虽然简单，但是和自然图像有很大的差别，这限制了CLIP的特征提取效果</li>
+<li>原始的文本提示方式。PointCLIP在CLIP中的2D prompt基础上加入了简单的domain-specific words比如”a depth map”，其实并没有很好的描述3D点云的形状等信息</li>
+</ul>
+<p>因此PointCLIP V2就是从这两个方面入手：</p>
+<ul>
+<li><p>生成更逼真的深度图，缩小投影点云和自然图像之间的gap</p>
+</li>
+<li><p>利用LLMs来生成3D信息的描述，作为CLIP的prompt</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103116299.png" alt="image-20230706103116299" style="zoom:50%;" /></p>
+<h3 id="Methodology-1"><a href="#Methodology-1" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103614613.png" alt="image-20230706103614613"></p>
+<h4 id="Realistic-Shape-Projection"><a href="#Realistic-Shape-Projection" class="headerlink" title="Realistic Shape Projection"></a>Realistic Shape Projection</h4><p>将不规则的点云转换为具有深度值的基于网格的体素，然后在顶部应用3D局部池化和Gaussian filtering kernel。这样投影得到的三维形状由更稠密的点和更平滑的深度值组成</p>
+<p>Voxelize → Densify → Smooth → Squeeze</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706102254944.png" alt="image-20230706102254944" style="zoom: 33%;" /></p>
+<ul>
+<li><p>Voxelize</p>
+<p>将点云体素化，就是将归一化的空间点坐标投影到一个个的体素上（类似于图像的像素），当多个点被投影到同一体素时，值取最小深度值，这是因为，从目标图像平面的角度来看，具有较小深度值z的点将遮挡较大的点。</p>
+<p>经过体素化获得了包含稀疏深度值的3D网格$G$，由于点云的稀疏性，其大部分体素是空的。</p>
+</li>
+<li><p>Densify</p>
+<p>为了解决稀疏性，作者通过局部最小池化来使gird更加密集，以保证视觉连续性。具体来说，作者通过局部空间窗口内的最小体素值重新分配$G$中的每个体素，这样的最小池化方式符合投影上遮挡视觉的直观认识。以这种方式，稀疏点之间的原始空体素可以被有效地填充有合理的深度值，而背景体素仍然保持为空，这导出更密集且更平滑的空间表示。</p>
+</li>
+<li><p>Smooth</p>
+<p>局部池化操作可能会在3D表面上引入伪影，因此作者采用非参数高斯核来进行形状平滑和噪声过滤。通过选择合适的核大小和方差，滤波不仅可以去除由densify引入的空间噪声，而且可以保持原始3D形状中的边缘和角点的锐度。由此，我们获得了由3D网格表示的更紧凑和平滑的形状</p>
+</li>
+<li><p>Squeeze</p>
+<p>简单地压缩$G$的depth dimension以获得投影深度图。我们提取每个深度通道的最小值作为每个像素位置的值，并将其重复三次作为RGB三通道的值。与PointCLIP 中的3D到2D透视变换相比，这样的基于网格的正交投影对于硬件实现更友好。</p>
+</li>
+</ul>
+<p>不同投影方式的推理时延和精度比较</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png" alt="image-20230705224145464" style="zoom:50%;" /></p>
+<h4 id="LLM-assisted-3D-Prompting"><a href="#LLM-assisted-3D-Prompting" class="headerlink" title="LLM-assisted 3D Prompting"></a>LLM-assisted 3D Prompting</h4><p>four series of 3D-related language commands</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png" alt="image-20230706115205359" style="zoom: 33%;" /></p>
+<h4 id="Open-world-Understanding"><a href="#Open-world-Understanding" class="headerlink" title="Open-world Understanding"></a>Open-world Understanding</h4><ul>
+<li>Zero-shot Classification</li>
+<li>Few-shot Classification</li>
+<li>Zero-shot Part Segmentation</li>
+<li>Zero-shot 3D Object Detection</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Survey/" rel="tag"># Survey</a>
+              <a href="/tags/Open-Vocabulary/" rel="tag"># Open Vocabulary</a>
+              <a href="/tags/Scene-Understanding/" rel="tag"># Scene Understanding</a>
+              <a href="/tags/Object-Detection/" rel="tag"># Object Detection</a>
+              <a href="/tags/Segmentation/" rel="tag"># Segmentation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/04/20230704-MetaFormer--A-Uni%EF%AC%81ed-Meta-Framework-for-Fine-Grained-Recognition/" rel="prev" title="MetaFormer : A Uniﬁed Meta Framework for Fine-Grained Recognition">
+      <i class="fa fa-chevron-left"></i> MetaFormer : A Uniﬁed Meta Framework for Fine-Grained Recognition
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/" rel="next" title="Towards Open Vocabulary Learning: A Survey">
+      Towards Open Vocabulary Learning: A Survey <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2022-PointCLIP"><span class="nav-number">1.1.</span> <span class="nav-text">CVPR2022 PointCLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E7%82%B9%E4%BA%91%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">抽取点云特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zero-shot-Classification"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Zero-shot Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-view-Adapter-for-PointCLIP"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Inter-view Adapter for PointCLIP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-knowledge-Ensemble"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Multi-knowledge Ensemble</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiments"><span class="nav-number">1.1.2.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-number">1.1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PointCLIP-V2"><span class="nav-number">1.2.</span> <span class="nav-text">PointCLIP V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realistic-Shape-Projection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Realistic Shape Projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLM-assisted-3D-Prompting"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LLM-assisted 3D Prompting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-world-Understanding"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Open-world Understanding</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
