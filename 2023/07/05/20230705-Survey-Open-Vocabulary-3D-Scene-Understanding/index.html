@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png">
 <meta property="article:published_time" content="2023-07-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-06T03:54:58.147Z">
+<meta property="article:modified_time" content="2023-07-06T06:07:49.493Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-06 11:54:58" itemprop="dateModified" datetime="2023-07-06T11:54:58+08:00">2023-07-06</time>
+                <time title="Modified: 2023-07-06 14:07:49" itemprop="dateModified" datetime="2023-07-06T14:07:49+08:00">2023-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,6 +242,7 @@
 <p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
 <h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
 <h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
+<span id="more"></span>
 <h4 id="Zero-shot-Classification"><a href="#Zero-shot-Classification" class="headerlink" title="Zero-shot Classification"></a>Zero-shot Classification</h4><p>经过投影获得了$M$个视角的投影深度图，然后利用CLIP的视觉编码器提取特征，同时用CLIP的文本编码器提取”point cloud  depth map of  a [CLASS]”的文本特征，计算每个视角的视觉特征和文本特征的相似度，然后加权得到最终的相似度(logits)。但这种zero-shot的分类结果和有监督相差甚远，在ModelNet40数据集上的准确率只有20.18%，基本不太可用。原因可能是点云投影图像其实和图像存在较大的gap，且投影的方式其实会丢失信息。</p>
 <h4 id="Inter-view-Adapter-for-PointCLIP"><a href="#Inter-view-Adapter-for-PointCLIP" class="headerlink" title="Inter-view Adapter for PointCLIP"></a>Inter-view Adapter for PointCLIP</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705211311039.png" alt="image-20230705211311039" style="zoom: 50%;" /></p>
 <p>由于PointCLIP的zero-shot classification与有监督方法的存在较大的性能差距，作者考虑了更加实际的few-shot settings，借鉴CLIP-Adapter，提出了Inter-view Adapter（3层MLP），在训练时CLIP的编码器都是冻结的，仅通过交叉熵损失来微调这个可学习的adapter。few-shot samples就可以带来巨大提升，在ModelNet40上的结果，从20.18%提升到了87.20%，基本达到了有监督的方法的效果，并且只用了每个类别16个样本，不到全部数据的1/10。</p>
@@ -404,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -417,7 +418,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

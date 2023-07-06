@@ -164,6 +164,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/" class="post-title-link" itemprop="url">CVPR2021 SLT-Net 增强学习容忍度</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:48:20" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2021-SLT-Net"><a href="#CVPR2021-SLT-Net" class="headerlink" title="CVPR2021 SLT-Net"></a>CVPR2021 SLT-Net</h1><p>Strengthen Learning Tolerance for Weakly Supervised Object Localization增强学习容忍度</p>
+<p>gt known loc acc 87.6%</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/gyguo/SLT-Net">github_STL-Net</a></p>
+<h2 id="WSOL存在的问题"><a href="#WSOL存在的问题" class="headerlink" title="WSOL存在的问题"></a>WSOL存在的问题</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194123087.png" alt="image-20220427194123087" style="zoom: 50%;" /></p>
+<ul>
+<li><p>关注最具判别性的区域</p>
+<blockquote>
+<p>由于 Common Raven 类别和 White-necked Raven  类别除了颈部区域的颜色外几乎没有区别，因此从这些图像中提取的类激活图只会关注鸟的颈部，这将导致对物体位置的错误预测。我们认为，造成这种现象的原因是对语义错误缺乏容忍度</p>
+</blockquote>
+<p><strong>解决方法</strong>(Tolerance to Semantic Mistakes)</p>
+<blockquote>
+<p>减少相似类别之间错误分类的惩罚,缓解这一问题</p>
+</blockquote>
+</li>
+<li><p>视觉敏感性：不同实例的定位精度表现出不同的收敛趋势。（可以理解为鲁棒性不强）</p>
+<blockquote>
+<p>虽然只有图像级监督可用，但该模型在学习过程中几乎无法提取等变模式。这使得模型对输入视觉刺激的变化敏感，例如不同的色调、对比度、纹理、空间位置等。因此，不同实例的定位精度的收敛趋势变得非常不同。这种现象使得很难获得可以对任意输入图像实现准确性能的 WSOL 模型。</p>
+</blockquote>
+<p><strong>解决方法</strong>(Tolerance to Visual Stimulus)</p>
+<blockquote>
+<p>变换图像的视觉响应图与原始图像的视觉响应图相匹配来增强对图像多样性的容忍度。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="WSOL的两类方法"><a href="#WSOL的两类方法" class="headerlink" title="WSOL的两类方法"></a>WSOL的两类方法</h2><p>定位、分类<strong>统一</strong>框架：</p>
+<blockquote>
+<p>Grad-cam, HaS, ACoL, SPG, ADL, Danet, EIL, CutMix</p>
+</blockquote>
+<p>定位、分类<strong>分离</strong>框架：</p>
+<blockquote>
+<p>PSOL, GC-net以及本文提出的SLT-Net</p>
+</blockquote>
+<h2 id="SLT-Net"><a href="#SLT-Net" class="headerlink" title="SLT-Net"></a>SLT-Net</h2><h3 id="总体框架"><a href="#总体框架" class="headerlink" title="总体框架"></a>总体框架</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427194345253.png" alt="image-20220427194345253"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/ECCV2018%20SPG/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -965,89 +1072,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/14/ICCV2021%20DINO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/14/ICCV2021%20DINO/" class="post-title-link" itemprop="url">ICCV2021 DINO</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 11:16:36" itemprop="dateModified" datetime="2022-07-05T11:16:36+08:00">2022-07-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICCV2021-DINO"><a href="#ICCV2021-DINO" class="headerlink" title="ICCV2021 DINO"></a>ICCV2021 DINO</h1><p>Emerging Properties in Self-Supervised Vision Transformers</p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>自监督学习带来的影响：自监督vit特征包含了图像语义分割的明确信息，这在监督学习的vit和CNN中都没有这么清晰</p>
-<p>文章将DINO解释为一种没有标签的自蒸馏形式</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/14/ICCV2021%20DINO/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1117,7 +1141,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1130,7 +1154,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

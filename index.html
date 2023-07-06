@@ -164,6 +164,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/06/20230706-OvarNet-Towards-Open-vocabulary-Object-Attribute-Recognition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/06/20230706-OvarNet-Towards-Open-vocabulary-Object-Attribute-Recognition/" class="post-title-link" itemprop="url">OvarNet: Towards Open-vocabulary Object Attribute Recognition</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-06 00:00:00 / Modified: 13:42:23" itemprop="dateCreated datePublished" datetime="2023-07-06T00:00:00+08:00">2023-07-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="OvarNet"><a href="#OvarNet" class="headerlink" title="OvarNet"></a>OvarNet</h1><p> Open-vocabulary Object Attribute Recognition（面向开放词汇的目标检测与属性识别）</p>
+<p>使用单一模型对图像中任何类别目标同时进行定位、分类和属性预测</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>进行物体属性预测是对视觉场景理解的很好补充，同时训练两个任务会比将两个任务单独对待获得更好的效果</p>
+<p>3个挑战：</p>
+<ul>
+<li>已有的基础模型如CLIP是基于image-caption pairs进行训练的，学到的表征更倾向于物体类别，而不是物体属性，这使得直接将CLIP用于属性预测存在不对齐的问题</li>
+<li>没有同时包含物体框，语义类别和物体属性三种标注的理想的训练集，只有COCO Attributes数据集提供了这样的标注，但是受限于较小的词汇量（196种attributes，29个类别）</li>
+<li>将这三个任务在开放词汇场景下统一到同一个框架中还尚未得到好的探索</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>方法主要分为 3 步：首先，利用目标检测数据和属性预测数据在开放词汇场景下训练一个简单的两阶段的方法；然后，通过利用大量的图文对数据进一步微调这个两阶段模型以提高在 novel/unseen 类别和属性上的性能；最后，为了保证泛化性和前传速度，基于知识蒸馏的范式设计了一个一阶段的算法</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706133937621.png" alt="image-20230706133937621"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -287,7 +365,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-06 11:54:58" itemprop="dateModified" datetime="2023-07-06T11:54:58+08:00">2023-07-06</time>
+                <time title="Modified: 2023-07-06 14:07:49" itemprop="dateModified" datetime="2023-07-06T14:07:49+08:00">2023-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -314,66 +392,14 @@
 <p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
 <h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
 <h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
-<h4 id="Zero-shot-Classification"><a href="#Zero-shot-Classification" class="headerlink" title="Zero-shot Classification"></a>Zero-shot Classification</h4><p>经过投影获得了$M$个视角的投影深度图，然后利用CLIP的视觉编码器提取特征，同时用CLIP的文本编码器提取”point cloud  depth map of  a [CLASS]”的文本特征，计算每个视角的视觉特征和文本特征的相似度，然后加权得到最终的相似度(logits)。但这种zero-shot的分类结果和有监督相差甚远，在ModelNet40数据集上的准确率只有20.18%，基本不太可用。原因可能是点云投影图像其实和图像存在较大的gap，且投影的方式其实会丢失信息。</p>
-<h4 id="Inter-view-Adapter-for-PointCLIP"><a href="#Inter-view-Adapter-for-PointCLIP" class="headerlink" title="Inter-view Adapter for PointCLIP"></a>Inter-view Adapter for PointCLIP</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705211311039.png" alt="image-20230705211311039" style="zoom: 50%;" /></p>
-<p>由于PointCLIP的zero-shot classification与有监督方法的存在较大的性能差距，作者考虑了更加实际的few-shot settings，借鉴CLIP-Adapter，提出了Inter-view Adapter（3层MLP），在训练时CLIP的编码器都是冻结的，仅通过交叉熵损失来微调这个可学习的adapter。few-shot samples就可以带来巨大提升，在ModelNet40上的结果，从20.18%提升到了87.20%，基本达到了有监督的方法的效果，并且只用了每个类别16个样本，不到全部数据的1/10。</p>
-<h4 id="Multi-knowledge-Ensemble"><a href="#Multi-knowledge-Ensemble" class="headerlink" title="Multi-knowledge Ensemble"></a>Multi-knowledge Ensemble</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705213135045.png" alt="image-20230705213135045" style="zoom:33%;" /></p>
-<p>传统方法是在3D数据集上from scratch进行训练的，而PointCLIP继承了CLIP中包含的2D先验，作者认为是对以往方法的一个知识补充，因此提出进行模型集成，通过简单相加直接集成它们的预测logit作为最终输出，这为传统方法带来了性能提升，PointCLIP因此可以作为一个即插即用的模块使用。</p>
-<h3 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><ul>
-<li>ModelNet10</li>
-<li>ModelNet40包含9843个样例和40个类</li>
-<li>ScanObjectNN</li>
-</ul>
-<h3 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h3><ul>
-<li>投影得到的图像和CLIP训练所用图像之间的分布仍然存在巨大gap，如表示形式是深度图，没有颜色</li>
-<li>投影方式会损失一部分3D的信息</li>
-<li>多视角的特征融合采用了固定的权重</li>
-<li>CLIP文本端prompt template的小的变换会导致2-3%的性能波动</li>
-</ul>
-<h2 id="PointCLIP-V2"><a href="#PointCLIP-V2" class="headerlink" title="PointCLIP V2"></a>PointCLIP V2</h2><p>PointCLIP V2: Adapting CLIP for Powerful 3D Open-world Learning</p>
-<p>限制PointCLIP的zero-shot能力的两方面原因：</p>
-<ul>
-<li>稀疏的视觉投影。直接投影的方式虽然简单，但是和自然图像有很大的差别，这限制了CLIP的特征提取效果</li>
-<li>原始的文本提示方式。PointCLIP在CLIP中的2D prompt基础上加入了简单的domain-specific words比如”a depth map”，其实并没有很好的描述3D点云的形状等信息</li>
-</ul>
-<p>因此PointCLIP V2就是从这两个方面入手：</p>
-<ul>
-<li><p>生成更逼真的深度图，缩小投影点云和自然图像之间的gap</p>
-</li>
-<li><p>利用LLMs来生成3D信息的描述，作为CLIP的prompt</p>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103116299.png" alt="image-20230706103116299" style="zoom:50%;" /></p>
-<h3 id="Methodology-1"><a href="#Methodology-1" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706103614613.png" alt="image-20230706103614613"></p>
-<h4 id="Realistic-Shape-Projection"><a href="#Realistic-Shape-Projection" class="headerlink" title="Realistic Shape Projection"></a>Realistic Shape Projection</h4><p>将不规则的点云转换为具有深度值的基于网格的体素，然后在顶部应用3D局部池化和Gaussian filtering kernel。这样投影得到的三维形状由更稠密的点和更平滑的深度值组成</p>
-<p>Voxelize → Densify → Smooth → Squeeze</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706102254944.png" alt="image-20230706102254944" style="zoom: 33%;" /></p>
-<ul>
-<li><p>Voxelize</p>
-<p>将点云体素化，就是将归一化的空间点坐标投影到一个个的体素上（类似于图像的像素），当多个点被投影到同一体素时，值取最小深度值，这是因为，从目标图像平面的角度来看，具有较小深度值z的点将遮挡较大的点。</p>
-<p>经过体素化获得了包含稀疏深度值的3D网格$G$，由于点云的稀疏性，其大部分体素是空的。</p>
-</li>
-<li><p>Densify</p>
-<p>为了解决稀疏性，作者通过局部最小池化来使gird更加密集，以保证视觉连续性。具体来说，作者通过局部空间窗口内的最小体素值重新分配$G$中的每个体素，这样的最小池化方式符合投影上遮挡视觉的直观认识。以这种方式，稀疏点之间的原始空体素可以被有效地填充有合理的深度值，而背景体素仍然保持为空，这导出更密集且更平滑的空间表示。</p>
-</li>
-<li><p>Smooth</p>
-<p>局部池化操作可能会在3D表面上引入伪影，因此作者采用非参数高斯核来进行形状平滑和噪声过滤。通过选择合适的核大小和方差，滤波不仅可以去除由densify引入的空间噪声，而且可以保持原始3D形状中的边缘和角点的锐度。由此，我们获得了由3D网格表示的更紧凑和平滑的形状</p>
-</li>
-<li><p>Squeeze</p>
-<p>简单地压缩$G$的depth dimension以获得投影深度图。我们提取每个深度通道的最小值作为每个像素位置的值，并将其重复三次作为RGB三通道的值。与PointCLIP 中的3D到2D透视变换相比，这样的基于网格的正交投影对于硬件实现更友好。</p>
-</li>
-</ul>
-<p>不同投影方式的推理时延和精度比较</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png" alt="image-20230705224145464" style="zoom:50%;" /></p>
-<h4 id="LLM-assisted-3D-Prompting"><a href="#LLM-assisted-3D-Prompting" class="headerlink" title="LLM-assisted 3D Prompting"></a>LLM-assisted 3D Prompting</h4><p>four series of 3D-related language commands</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png" alt="image-20230706115205359" style="zoom: 33%;" /></p>
-<h4 id="Open-world-Understanding"><a href="#Open-world-Understanding" class="headerlink" title="Open-world Understanding"></a>Open-world Understanding</h4><ul>
-<li>Zero-shot Classification</li>
-<li>Few-shot Classification</li>
-<li>Zero-shot Part Segmentation</li>
-<li>Zero-shot 3D Object Detection</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -963,73 +989,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/08/202368-Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/08/202368-Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models/" class="post-title-link" itemprop="url">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-06-08 00:00:00 / Modified: 19:59:05" itemprop="dateCreated datePublished" datetime="2023-06-08T00:00:00+08:00">2023-06-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1099,7 +1058,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">72</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1112,7 +1071,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-count">92</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
