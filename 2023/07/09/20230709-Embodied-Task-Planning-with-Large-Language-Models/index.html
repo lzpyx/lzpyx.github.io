@@ -36,7 +36,7 @@
 <meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230709215214049.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709220028012.png">
 <meta property="article:published_time" content="2023-07-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-09T14:07:32.380Z">
+<meta property="article:modified_time" content="2023-07-09T14:09:21.616Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
 <meta property="article:tag" content="Large Language Models">
@@ -206,7 +206,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:07:32" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:09:21" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +235,6 @@
 <blockquote>
 <p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
 </blockquote>
-<span id="more"></span>
 <h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
 <p>从周围环境接收信息</p>
 </blockquote>
@@ -268,6 +267,7 @@
 </ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png" alt="image-20230709171352785" style="zoom: 33%;" /></p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png" alt="image-20230709163836147" style="zoom: 50%;" /></p>
+<span id="more"></span>
 <h3 id="Data-Generation-of-Embodied-Task-Planning"><a href="#Data-Generation-of-Embodied-Task-Planning" class="headerlink" title="Data Generation of Embodied Task Planning"></a>Data Generation of Embodied Task Planning</h3><p>利用GPT-3.5来生成为planning agent tuning生成大规模<strong>多模态</strong>数据集</p>
 <p>利用给定具身场景中的所有objects的class name来表示场景，基于这种场景表示，在ALFRED benchmark使用了一个简单的方法来生成embodied task plans数据集的多模态指令，即人为地设计一系列对应着逐步的actions的指令。但对于复杂的现实任务来说，这样的手工标注成本极高。</p>
 <p>本文设计了prompt来模拟具体任务规划的场景，基于object name list来自动生成数据。prompt描述了以下内容：</p>

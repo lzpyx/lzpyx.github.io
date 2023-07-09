@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:07:32" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:09:21" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,6 +218,38 @@
 <blockquote>
 <p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
 </blockquote>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
+<p>从周围环境接收信息</p>
+</blockquote>
+<ul>
+<li>[37] A persistent spatial semantic representation for high-level natural language instruction execution</li>
+<li>[38] Piglet: Language grounding through neuro-symbolic interaction in a 3d world</li>
+<li>[39] Grounding language to autonomously-acquired skills via goal generation</li>
+</ul>
+<blockquote>
+<p>prompt engineering</p>
+<p>设计任务指令和相应动作的简单示例来对LLMs进行提示，以产生合理的任务计划，并通过构建具有语义相似性的映射来过滤出可执行计划子集</p>
+</blockquote>
+<ul>
+<li>[40] Language models as zero-shot planners: Extracting actionable knowledge for embodied agents</li>
+</ul>
+<blockquote>
+<p>根据action feedback为复杂任务生成决策</p>
+</blockquote>
+<ul>
+<li>[41] Pre-trained language models for interactive decision-making</li>
+</ul>
+<blockquote>
+<p>SayCan和LLM-Planner都通过提取场景的latent features或物体名称来为LLMs提供视觉信息</p>
+<p>SayCan只能完成在厨房场景下的任务</p>
+<p>LLM-Planner在ALFRED simulator中实现，大部分任务都非常简单，如putting and placing</p>
+</blockquote>
+<ul>
+<li>[14] Do as i can, not as i say: Grounding language in robotic affordances</li>
+<li>[15] Llm-planner: Few-shot grounded planning for embodied agents with large language models</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png" alt="image-20230709171352785" style="zoom: 33%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png" alt="image-20230709163836147" style="zoom: 50%;" /></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/#more" rel="contents">
