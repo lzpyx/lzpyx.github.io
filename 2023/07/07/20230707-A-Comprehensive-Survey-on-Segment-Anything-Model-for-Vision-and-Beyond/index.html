@@ -20,23 +20,20 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="VLN surveyagent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions">
-<meta property="og:url" content="http://lzpyx.github.io/2023/06/13/2023613-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="A Comprehensive Survey on Segment Anything Model for Vision and Beyond">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="VLN surveyagent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png">
-<meta property="article:published_time" content="2023-06-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-03T11:12:49.049Z">
+<meta property="article:published_time" content="2023-07-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-06T07:42:28.390Z">
 <meta property="article:author" content="lzpyx">
-<meta property="article:tag" content="Embodied AI">
-<meta property="article:tag" content="Visual-and-Language Navigation">
+<meta property="article:tag" content="Survey">
+<meta property="article:tag" content="Scene Understanding">
+<meta property="article:tag" content="SAM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/06/13/2023613-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/">
 
 
 <script id="page-configurations">
@@ -49,7 +46,7 @@
   };
 </script>
 
-  <title>Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions | Yixuan Pan's Blog</title>
+  <title>A Comprehensive Survey on Segment Anything Model for Vision and Beyond | Yixuan Pan's Blog</title>
   
 
 
@@ -173,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/13/2023613-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -186,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions
+          A Comprehensive Survey on Segment Anything Model for Vision and Beyond
         </h1>
 
         <div class="post-meta">
@@ -196,14 +193,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
+              <time title="Created: 2023-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-07T00:00:00+08:00">2023-07-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 19:12:49" itemprop="dateModified" datetime="2023-07-03T19:12:49+08:00">2023-07-03</time>
+                <time title="Modified: 2023-07-06 15:42:28" itemprop="dateModified" datetime="2023-07-06T15:42:28+08:00">2023-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,9 +223,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="VLN-survey"><a href="#VLN-survey" class="headerlink" title="VLN survey"></a>VLN survey</h1><p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883"></p>
-
+        
     </div>
 
     
@@ -237,8 +232,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
-              <a href="/tags/Visual-and-Language-Navigation/" rel="tag"># Visual-and-Language Navigation</a>
+              <a href="/tags/Survey/" rel="tag"># Survey</a>
+              <a href="/tags/Scene-Understanding/" rel="tag"># Scene Understanding</a>
+              <a href="/tags/SAM/" rel="tag"># SAM</a>
           </div>
 
         
@@ -247,12 +243,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/06/08/202368-Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models/" rel="prev" title="Chain-of-Thought Prompting Elicits Reasoning in Large Language Models">
-      <i class="fa fa-chevron-left"></i> Chain-of-Thought Prompting Elicits Reasoning in Large Language Models
+    <a href="/2023/07/07/20230707-A-Survey-on-ObjectNav/" rel="prev" title="A Survey on ObjectNav">
+      <i class="fa fa-chevron-left"></i> A Survey on ObjectNav
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/" rel="next" title="Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances">
-      Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/" rel="next" title="Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions">
+      Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -312,7 +308,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VLN-survey"><span class="nav-number">1.</span> <span class="nav-text">VLN survey</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -326,7 +321,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -339,7 +334,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">97</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

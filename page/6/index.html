@@ -164,6 +164,346 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/15/AAAI2020%20RRM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/15/AAAI2020%20RRM/" class="post-title-link" itemprop="url">AAAI2020 RRM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-15 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-15T00:00:00+08:00">2022-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-18 10:08:01" itemprop="dateModified" datetime="2022-05-18T10:08:01+08:00">2022-05-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
+<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
+<ul>
+<li>分类分支：生成可靠的语义分割掩码</li>
+<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/15/AAAI2020%20RRM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/" class="post-title-link" itemprop="url">流畅的python</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-13 16:32:15" itemprop="dateModified" datetime="2023-02-13T16:32:15+08:00">2023-02-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
+<p>python中所有集合类型都可以使用len()函数查看集合长度，<strong>使用len(obj)而不是obj.len(),也不是obj.<strong> len </strong> ()</strong>,如果是自定义类的对象，python会自己调用类中实现的<strong> len </strong>方法</p>
+<p>魔法方法/特殊方法/双下方法，使用len()的形式调用</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">深度学习常用操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-18 13:20:35" itemprop="dateModified" datetime="2023-06-18T13:20:35+08:00">2023-06-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="深度学习常用操作"><a href="#深度学习常用操作" class="headerlink" title="深度学习常用操作"></a>深度学习常用操作</h1><h1 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h1><h2 id="with-open"><a href="#with-open" class="headerlink" title="with open"></a>with open</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;filename.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">   content = f.read(f)  <span class="comment">#文件的读操作</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">   f.write(<span class="string">&#x27;hello world&#x27;</span>)  <span class="comment">#文件的写操作</span></span><br><span class="line">r:	 <span class="comment"># 以只读方式打开文件。文件的指针将会放在文件的开头。这是**默认模式**。</span></span><br><span class="line">rb:  <span class="comment"># 以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。</span></span><br><span class="line">r+:  <span class="comment"># 打开一个文件用于读写。文件指针将会放在文件的开头。</span></span><br><span class="line">rb+: <span class="comment"># 以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</span></span><br><span class="line">w:	 <span class="comment"># 打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">wb:	 <span class="comment"># 以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">w+:	 <span class="comment"># 打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">wb+: <span class="comment"># 以二进制格式打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">a:	 <span class="comment"># 打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</span></span><br><span class="line">ab:	 <span class="comment"># 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</span></span><br><span class="line">a+:	 <span class="comment"># 打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</span></span><br><span class="line">ab+: <span class="comment"># 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</span></span><br></pre></td></tr></table></figure>
+<h2 id="计时"><a href="#计时" class="headerlink" title="计时"></a>计时</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41204464/article/details/89257205">python 实现计时器（不同实现方式）</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">time_start = time.time() <span class="comment">#开始计时</span></span><br><span class="line"><span class="comment">#要执行的代码，或函数</span></span><br><span class="line">time_end = time.time()    <span class="comment">#结束计时</span></span><br><span class="line">time_c= time_end - time_start   <span class="comment">#运行所花时间</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;time cost&#x27;</span>, time_c, <span class="string">&#x27;s&#x27;</span>)</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2018%20AffinityNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/06/CVPR2018%20AffinityNet/" class="post-title-link" itemprop="url">CVPR2018 AffinityNet</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-06 00:00:00 / Modified: 14:13:24" itemprop="dateCreated datePublished" datetime="2022-05-06T00:00:00+08:00">2022-05-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2018-AffinityNet"><a href="#CVPR2018-AffinityNet" class="headerlink" title="CVPR2018 AffinityNet"></a>CVPR2018 AffinityNet</h1><p>Learning Pixel-level Semantic Affinity with Image-level Supervision for Weakly  Supervised Semantic Segmentation</p>
+<p>使用图像级监督学习像素级语义亲和度的弱监督语义分割</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jiwoon-ahn/psa">github</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>分割标签的不足是进行语义分割的主要障碍之一，在弱监督设定下，训练模型可以分割局部判别部分而不是整个对象区域，本文提出将响应传播到属于同一语义实体的附近区域。提出AffinityNet，预测一对相邻图像坐标之间的语义亲和力。然后通过随机游走将语义传播。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>各类型的弱监督</li>
+<li>图像级标签的弱监督：一些方法将判别定位技术给出的分割种子与超像素等额外的线索结合，估计物体形状。</li>
+<li>学习像素级亲和力</li>
+<li>使用合成标签学习</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>整个框架基于三个DNN，第一个网络用于生成CAM，第二个网络用于预测亲和力即AffinityNet，第三个网络是全监督的分割模型，使用合成标签进行训练。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220506111027887.png" alt="image-20220506111027887"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/06/CVPR2018%20AffinityNet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2022%20AFA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -689,352 +1029,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2019%20ADL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2019%20ADL/" class="post-title-link" itemprop="url">CVPR2019 ADL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:28" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2019-ADL"><a href="#CVPR2019-ADL" class="headerlink" title="CVPR2019 ADL"></a>CVPR2019 ADL</h1><p>Attention-based Dropout Layer for Weakly Supervised Object Localization</p>
-<h2 id="WSOL性质"><a href="#WSOL性质" class="headerlink" title="WSOL性质"></a>WSOL性质</h2><p>仅使用图像级标签来学习对象的位置，不使用位置标注</p>
-<h2 id="ADL方法概述"><a href="#ADL方法概述" class="headerlink" title="ADL方法概述"></a>ADL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191238143.png" alt="image-20220427191238143"></p>
-<p>将feature map通过Channelwise Pooling生成Self-attention map</p>
-<p>从Self-attention map中获得2个掩码：</p>
-<ul>
-<li>设置阈值，得到Drop mask</li>
-<li>sigmoid，得到Importance map</li>
-</ul>
-<p>随机选择其中一个掩码，作为当前iteration的掩码</p>
-<p>Drop mask会遮盖掉最具判别性的区域，使网络获取目标的整体范围，提高localization accuracy</p>
-<p>Importance map会突出信息区域以提高模型的识别能力，提高classification能力</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2019%20ADL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">CVPR2020 PSOL 伪监督对象定位</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:31:22" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-PSOL-伪监督对象定位"><a href="#CVPR2020-PSOL-伪监督对象定位" class="headerlink" title="CVPR2020 PSOL 伪监督对象定位"></a>CVPR2020 PSOL 伪监督对象定位</h1><p>Rethinking the Route Towards Weakly Supervised Object Localization</p>
-<p>pseudo supervised object localization (PSOL)伪监督对象定位</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/tzzcl/PSOL">github</a></p>
-<h2 id="WSOL的特点"><a href="#WSOL的特点" class="headerlink" title="WSOL的特点"></a>WSOL的特点</h2><p>WSOL has the assumption that there is only one object of<br>the specific category in the whole image</p>
-<p>WSOL假设图像中属于特定类别的物体只存在一个（<strong>一类一物one object in one class</strong>）</p>
-<p>相关文章提到了CAM,Grad-CAM,HaS,ACoL,SPG,ADL</p>
-<p><strong>关于WSOD：</strong>WSOD 没有one object in one class的限制。然而，WSOD 经常需要诸如selective search和edge boxes 等生成区域建议的方法，这将花费大量的计算资源和时间。此外，当前的 WSOD 检测器使用高分辨率输入来输出边界框，导致计算负担沉重。因此，大多数 WSOD  方法难以应用于大规模数据集。</p>
-<p><strong>WSOL的缺点：</strong></p>
-<ol>
-<li>Localization tries to localize the whole object while classification tries to classify the object. The classification model often tries to localize only the most discriminative part of the object in an image.定位试图定位整个对象，而分类则试图对对象进行分类。分类模型通常试图仅定位图像中对象最具辨别力的部分。</li>
-<li>CAM类的方法需要确定阈值</li>
-</ol>
-<h2 id="PSOL方法概述"><a href="#PSOL方法概述" class="headerlink" title="PSOL方法概述"></a>PSOL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427192915831.png" alt="image-20220427192915831" style="zoom:67%;" /></p>
-<p>使用DDT-VGG16生成伪标注框(Class-agnostic generated pseudo bounding boxes与类别无关的伪边界框)</p>
-<p>使用伪边界框训练localization网络，进行single-class regression (SCR) </p>
-<p>另一分支单独训练分类网络</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/" class="post-title-link" itemprop="url">CVPR2020  正确评估WSOL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:24:47" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-正确评估WSOL"><a href="#CVPR2020-正确评估WSOL" class="headerlink" title="CVPR2020  正确评估WSOL"></a>CVPR2020  正确评估WSOL</h1><p>Evaluating Weakly Supervised Object Localization Methods Right</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/clovaai/wsolevaluation">源代码和数据集Github</a></p>
-<h2 id="WSOL与WSOD-WSSS的特点"><a href="#WSOL与WSOD-WSSS的特点" class="headerlink" title="WSOL与WSOD,WSSS的特点"></a>WSOL与WSOD,WSSS的特点</h2><p>从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL<strong>对象定位假设图像包含单个类别的对象，并在来自感兴趣类别的对象周围生成二进制掩码或边界框。</strong></p>
-<h2 id="本文对WSOL的理解"><a href="#本文对WSOL的理解" class="headerlink" title="本文对WSOL的理解"></a>本文对WSOL的理解</h2><p>自 WSOL 开创性的类激活映射 (CAM)  工作以来，该领域一直专注于如何扩展注意力区域以更广泛地覆盖对象并更好地定位它们。然而，这些策略依赖于完全本地化监督来验证超参数和模型选择，这在 WSOL  设置中原则上是被禁止的。</p>
-<p><strong>作者认为CAM后的各种方法对WSOL任务的提升依赖于超参和模型的选择，这样的人工选择其实引入了监督信息</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20DAP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2021%20DAP/" class="post-title-link" itemprop="url">CVPR2021 DAP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:38:06" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision"><a href="#CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision" class="headerlink" title="CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision"></a>CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision</h1><p>DAP:Detection-Aware Pre-training with Weak Supervision</p>
-<p><strong>使用WSOL方法来预训练目标检测网络</strong></p>
-<h2 id="传统的分类预训练加微调方式存在的问题"><a href="#传统的分类预训练加微调方式存在的问题" class="headerlink" title="传统的分类预训练加微调方式存在的问题"></a>传统的分类预训练加微调方式存在的问题</h2><p>传统的分类预训练加微调只包含DAP工作流程中的1和4</p>
-<p>分类预训练带来的目标检测经验增益随着预训练数据集的不断增大而递减，且当数据集足够大时，随机初始化也能得到和分类预训练加微调类似的较好结果。</p>
-<p>本文认为预训练和微调任务的不匹配造成了分类预训练的增益递减。不匹配体现在：</p>
-<ol>
-<li>现有的分类预训练通常不知道下游的检测任务。预训练采用单一的全图像分类损失，鼓励平移和尺度不变特征，而检测微调涉及几种不同的分类和回归损失，对目标位置和尺度敏感。</li>
-<li>数据分布不一致。在分类预训练中，检测所需要的定位信息并没有明确提供。</li>
-<li>架构不一致。用于预训练的网络是一个裸骨干网，如ResNet模型，然后是平均池化和线性分类层。相比之下，目标检测器中的网络包含各种附加的架构组件，如区域建议网络(RPN)、特征金字塔网络(FPN)、ROI分类头和边界框回归头等。检测器中这些独特的架构组件没有经过预先训练，而是在检测微调中随机初始化，这可能是次优的。</li>
-</ol>
-<h2 id="DAP工作流程"><a href="#DAP工作流程" class="headerlink" title="DAP工作流程"></a>DAP工作流程</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427193339685.png" alt="image-20220427193339685" style="zoom:67%;" /></p>
-<ol>
-<li>弱监督数据集上进行分类器预训练</li>
-<li>使用WSOL方法生成为标签标注框 </li>
-<li>使用为标签进行检测器预训练</li>
-<li>检测数据集微调训练</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2021%20DAP/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1104,7 +1098,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1117,7 +1111,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">97</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="VLN survey What is an intelligent Embodied AI? Understand information from Vision,Text,Audio, etc.  Make the correct action in the environment.   What can we do to build it from Machine Learning persp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="VLN survey What is an intelligent Embodied AI? Understand information from Vision,Text,Audio, etc.  Make the correct action in the environment.   What can we do to build it from Machine Learning persp">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708115828494.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708120519420.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708121651148.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708124619881.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141031836.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141121913.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142227578.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142924096.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708144426753.png">
+<meta property="article:published_time" content="2023-07-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-09T02:35:24.865Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Visual-and-Language Navigation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-08T00:00:00+08:00">2023-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-09 10:35:24" itemprop="dateModified" datetime="2023-07-09T10:35:24+08:00">2023-07-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="VLN-survey"><a href="#VLN-survey" class="headerlink" title="VLN survey"></a>VLN survey</h1><ul>
+<li>What is an intelligent Embodied AI?<ul>
+<li>Understand information from Vision,Text,Audio, etc. </li>
+<li>Make the correct action in the environment.</li>
+</ul>
+</li>
+<li>What can we do to build it from Machine Learning perspective?<ul>
+<li>Benchmark：<ul>
+<li>Environment as real as possible.</li>
+<li>Communication like human.</li>
+</ul>
+</li>
+<li>Methods:<ul>
+<li>Connecting advancement within single modality.</li>
+<li>Specific solution.</li>
+<li>Training sources.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><ul>
+<li><p>Key elements: Environment, Agent, Oracle(Human)</p>
+</li>
+<li><p>Environment</p>
+<ul>
+<li><p>Photorealistic</p>
+</li>
+<li><p>3D</p>
+</li>
+<li><p>Navigable</p>
+</li>
+</ul>
+</li>
+<li><p>Interaction between Agent and Environment</p>
+<ul>
+<li>Environment renders new observation after each action.</li>
+<li>Agent navigate in the environment, with possible object manipulation.</li>
+</ul>
+</li>
+<li>Communication between Oracle and Agent<ul>
+<li>Use Natural Language</li>
+<li>Task Instruction</li>
+<li>Dialog ability</li>
+</ul>
+</li>
+</ul>
+<p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883" style="zoom: 50%;" /></p>
+<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h2><p>不同数据集从不同角度来解决VLN问题：</p>
+<ul>
+<li>Action Type: Navigation或Navigation+环境交互</li>
+<li>Communication Type: 只要求agent听懂指令 or 听懂指令还要能交流对话，如遇到难以判断的情况向oracle提问</li>
+<li>Environment Type: 室内 or 室外 or 不同地点····</li>
+</ul>
+<p>下表是对VLN benchmark的一个总结，从语言复杂度和任务目标（任务复杂度）两个角度对现有的benchmark(17-22)进行了分类。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708115828494.png" alt="image-20230708115828494" style="zoom: 50%;" /></p>
+<ul>
+<li>Communication Complexity（语言复杂度）的3种类型<ul>
+<li>大部分的benchmark集中在Initial Instruction，也就是在初始时给一个指令，这类benchmark构建和效果评估都相对简单</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708120519420.png" alt="image-20230708120519420" style="zoom: 33%;" /></p>
+<ul>
+<li><p>Task Objective（任务复杂度） </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708121651148.png" alt="image-20230708121651148" style="zoom:33%;" /></p>
+</li>
+</ul>
+<h3 id="Datasets-Highlights"><a href="#Datasets-Highlights" class="headerlink" title="Datasets Highlights"></a>Datasets Highlights</h3><ul>
+<li><p>Room-to-Room</p>
+<blockquote>
+<p>室内场景，有详细的指令</p>
+</blockquote>
+<ul>
+<li>The paper that proposes VLN</li>
+<li>Given a <strong>detailed</strong> instruction, the agent navigates <strong>indoors</strong></li>
+<li>It is extended to many other datasets</li>
+</ul>
+</li>
+<li><p>TOUCHDOWN</p>
+<blockquote>
+<p>基于Google Street View，室外场景</p>
+</blockquote>
+<ul>
+<li>Outdoor Navigation</li>
+<li>More complex environments than Indoors.</li>
+</ul>
+</li>
+<li><p>REVERIE</p>
+<blockquote>
+<p>第一个粗粒度导航的数据集，没有给出具体的信息，agent会随机初始化在房间里的某一位置，然后给出要找的目标（简洁的指令给出），不会给出具体的路线，因此agent需要有更强的对环境的理解能力，甚至需要一些prior knowledge，比如卧室的大致位置，要找刀-刀一般在厨房，这类先验知识</p>
+</blockquote>
+<ul>
+<li>Finding a remote goal based on a concise instruction</li>
+</ul>
+</li>
+<li><p>ALFRED</p>
+<blockquote>
+<p>第一个结合navigation和interaction的数据集，为了完成任务需要和环境交互，比如要去抽屉里拿剪刀，需要先打开抽屉</p>
+</blockquote>
+<ul>
+<li>In order to achieve the task, the agent need to interact with the<br>environment</li>
+</ul>
+</li>
+<li><p>VNLA &amp; HANNA</p>
+<blockquote>
+<p>在agent不知道怎么走的时候，向oracle发送求助信号，oracle是知道地图信息的，因此可以给出提示</p>
+</blockquote>
+<ul>
+<li>Agent sent “help” signal and receive response from Oracle</li>
+</ul>
+</li>
+<li><p>CVDN</p>
+<blockquote>
+<p>第一个dialogue类型的VLN数据集，需要agent主动提问</p>
+</blockquote>
+<ul>
+<li>Agent ask question in Natural Language</li>
+</ul>
+</li>
+<li><p>TEACh</p>
+<blockquote>
+<p>最复杂的数据集之一，要求agent能主动问问题，同时要求navigation和interaction，任务更复杂，对话形式更接近人类对话形式（free-form）</p>
+</blockquote>
+<ul>
+<li>Free-form dialog</li>
+<li>Navigation &amp; Interaction</li>
+</ul>
+</li>
+<li><p>SimBot Challenge</p>
+<blockquote>
+<p>基于TEACh</p>
+</blockquote>
+<ul>
+<li>Build Robot that talks to accomplish task</li>
+<li>Evaluate by human expert</li>
+</ul>
+</li>
+</ul>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><p>输入text, vision和action，输出下一个action</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708124619881.png" alt="image-20230708124619881" style="zoom: 33%;" /></p>
+<h3 id="Representation-Learning"><a href="#Representation-Learning" class="headerlink" title="Representation Learning"></a>Representation Learning</h3><p>帮助agent更好的理解环境，引入先验知识</p>
+<ul>
+<li><p>Pre-training</p>
+<blockquote>
+<p>对模型进行预训练，可以直接引入现有的单模态/多模态大模型</p>
+</blockquote>
+<ul>
+<li>Single modality</li>
+<li>Multi-modality</li>
+<li>VLN domain，在VLN的数据集上做pre-training，如VLN-BERT</li>
+</ul>
+</li>
+<li><p>Semantic Understanding</p>
+<blockquote>
+<p>相当于加入了人的先验，提供一些landmark去指导agent</p>
+</blockquote>
+<ul>
+<li>单模态内重点信息的提取，比如从指令中提取关键词来指导agent</li>
+<li>模态之间的交互</li>
+</ul>
+</li>
+<li><p>Graph Representation</p>
+<ul>
+<li>使用GNN等方式来对图结构进行编码</li>
+<li>使用Graph来表示地图</li>
+</ul>
+</li>
+<li><p>Memory Structure</p>
+<ul>
+<li>handling the image history, action history, and dialog history</li>
+<li>HAMT</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141031836.png" alt="image-20230708141031836"></p>
+</li>
+<li><p>Auxiliary Task</p>
+<ul>
+<li>Using extra loss to 1) get familiar with the environments 2) understand current task</li>
+<li>AuxRN</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141121913.png" alt="image-20230708141121913"></p>
+</li>
+</ul>
+<h3 id="Action-Strategy-Learning"><a href="#Action-Strategy-Learning" class="headerlink" title="Action Strategy Learning"></a>Action Strategy Learning</h3><ul>
+<li><p>Reinforcement Learning</p>
+<ul>
+<li>RCM: connecting reinforcement learning with imitation learning, intrinsic就是使用metric来给reward，extrinsic reward就是使用训练好的model来给reward</li>
+<li>Reward definition<ul>
+<li>Evaluation Metrics and proposed criteria</li>
+<li>Rewards from a trained model</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142227578.png" alt="image-20230708142227578" style="zoom:33%;" /></p>
+</li>
+<li><p>Exploration during Navigation</p>
+<ul>
+<li>Student forcing rather than teacher forcing（会随机探索，而不是在一开始就按照数据集定义的动作走）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142924096.png" alt="image-20230708142924096" style="zoom:50%;" /></p>
+<ul>
+<li>Explore and even predict different directions（使用网络预测往某个方向走会发生什么，Pathdreamer）</li>
+</ul>
+</li>
+<li><p>Navigation Planning</p>
+<blockquote>
+<p>提前计划后面的移动方式</p>
+</blockquote>
+<ul>
+<li>Vision side: waypoint（找出画面中一定要经过的点，做一个先后顺序计划）, generating future view, when to stop</li>
+<li>Text side: key objects in instruction, generative methods based on instruction</li>
+</ul>
+</li>
+<li><p>Asking for Help</p>
+<ul>
+<li>When to ask for help: using action probability, with a specific model</li>
+<li>How to generate questions</li>
+</ul>
+</li>
+</ul>
+<h3 id="Data-centric-Learning"><a href="#Data-centric-Learning" class="headerlink" title="Data-centric Learning"></a>Data-centric Learning</h3><ul>
+<li><p>Data Augmentation</p>
+<ul>
+<li><p>Trajectory-Instruction Augmentation</p>
+<blockquote>
+<p>生成更多的路径（指令语言）</p>
+</blockquote>
+<ul>
+<li>speaker-follower model，speark用于生成数据进行augmentation，对随机走的路径生成语言描述，获取新的data pairs</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708144426753.png" alt="image-20230708144426753"></p>
+<ul>
+<li>Augmentation quality control</li>
+</ul>
+</li>
+<li><p>Environment Augmentation: env drop, env mix</p>
+</li>
+</ul>
+</li>
+<li><p>Curriculum Learning</p>
+<ul>
+<li>从简单的任务开始做，从简单到困难。Room Counts利用路径中包含的room个数来判断难易，instruction lengths则是通过指令长短来判断</li>
+</ul>
+</li>
+<li><p>Multitask Learning</p>
+<ul>
+<li>使用不同的VLN任务同时学习</li>
+</ul>
+</li>
+<li><p>Instruction Interpretation</p>
+<blockquote>
+<p>换一个角度解释指令</p>
+</blockquote>
+<ul>
+<li>Break the long instruction into short ones</li>
+<li>Using waypoint in the instruction</li>
+<li>Encode several instructions for the same trajectory</li>
+</ul>
+</li>
+</ul>
+<h3 id="Prior-exploration"><a href="#Prior-exploration" class="headerlink" title="Prior exploration"></a>Prior exploration</h3><blockquote>
+<p>在测试环境中进行探索，自动给出一些label</p>
+</blockquote>
+<ul>
+<li>Different setting: explore the environments before task execution</li>
+<li>Not comparable to models without prior exploration</li>
+</ul>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Main Metrics in VLN tasks</p>
+<ul>
+<li><p>Goal-oriented Metrics</p>
+<ul>
+<li>Success Rate (SR)，任务是否成果，成功为1，不成功为0，统计成功率</li>
+<li>Goal Progress (GP)，测量到目标的剩余距离的减少</li>
+<li>Path Length (PL)，路径长短</li>
+<li>Success weighted by Path Length (SPL)</li>
+</ul>
+</li>
+<li><p>Path-fidelity Metrics</p>
+<blockquote>
+<p>路径保真度，要求走出的路径和GT的路径要尽可能相似</p>
+</blockquote>
+<ul>
+<li>Coverage weighted by LS (CLS)</li>
+<li>Normalized Dynamic Time Warping (nDTW)</li>
+<li>Success weighted by normalized Dynamic Time Warping (SDTW)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Future-Work"><a href="#Future-Work" class="headerlink" title="Future Work"></a>Future Work</h2><ul>
+<li>缺乏世界知识<ul>
+<li>如何表示知识</li>
+<li>需要哪些知识</li>
+<li>如何将知识和navigation融合在一起</li>
+</ul>
+</li>
+<li>如何解决泛化性差的问题<ul>
+<li>引入更多环境的datasets</li>
+<li>引入更多语言（比如中文下的navigation）</li>
+</ul>
+</li>
+<li>VLN的最后一步<ul>
+<li>如何和环境实现交互</li>
+<li>考虑利用LLM来将任务拆分为元操作库里的动作</li>
+</ul>
+</li>
+<li>可合作的VLN<ul>
+<li>Multiple agents, agent and human</li>
+</ul>
+</li>
+<li>Simulation to Reality<ul>
+<li>Rough Localization（移动的误差）</li>
+<li>Oracle Navigation</li>
+<li>Physical Nature</li>
+</ul>
+</li>
+<li>Ethics &amp; Privacy</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Visual-and-Language-Navigation/" rel="tag"># Visual-and-Language Navigation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/" rel="prev" title="A Comprehensive Survey on Segment Anything Model for Vision and Beyond">
+      <i class="fa fa-chevron-left"></i> A Comprehensive Survey on Segment Anything Model for Vision and Beyond
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/" rel="next" title="Embodied Task Planning with Large Language Models">
+      Embodied Task Planning with Large Language Models <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#VLN-survey"><span class="nav-number">1.</span> <span class="nav-text">VLN survey</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Definition"><span class="nav-number">1.1.</span> <span class="nav-text">Definition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Datasets"><span class="nav-number">1.2.</span> <span class="nav-text">Datasets</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets-Highlights"><span class="nav-number">1.2.1.</span> <span class="nav-text">Datasets Highlights</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methods"><span class="nav-number">1.3.</span> <span class="nav-text">Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Representation-Learning"><span class="nav-number">1.3.1.</span> <span class="nav-text">Representation Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action-Strategy-Learning"><span class="nav-number">1.3.2.</span> <span class="nav-text">Action Strategy Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-centric-Learning"><span class="nav-number">1.3.3.</span> <span class="nav-text">Data-centric Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prior-exploration"><span class="nav-number">1.3.4.</span> <span class="nav-text">Prior exploration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Evaluation"><span class="nav-number">1.4.</span> <span class="nav-text">Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Future-Work"><span class="nav-number">1.5.</span> <span class="nav-text">Future Work</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

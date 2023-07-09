@@ -164,6 +164,329 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/" class="post-title-link" itemprop="url">HomeRobot: Open-Vocabulary Mobile Manipulation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-01 00:00:00 / Modified: 23:42:20" itemprop="dateCreated datePublished" datetime="2023-07-01T00:00:00+08:00">2023-07-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="HomeRobot-Open-Vocabulary-Mobile-Manipulation"><a href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation" class="headerlink" title="HomeRobot: Open-Vocabulary Mobile Manipulation"></a>HomeRobot: Open-Vocabulary Mobile Manipulation</h1><blockquote>
+<p>Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.</p>
+</blockquote>
+<p>OVMM涉及到了感知、语言理解、导航和操作</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/21/20230621-Vision-Language-Learning/" class="post-title-link" itemprop="url">Vision-Language Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-21T00:00:00+08:00">2023-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-03 21:35:25" itemprop="dateModified" datetime="2023-07-03T21:35:25+08:00">2023-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Vision-Language-Learning"><a href="#Vision-Language-Learning" class="headerlink" title="Vision-Language Learning"></a>Vision-Language Learning</h1><h2 id="ViLT"><a href="#ViLT" class="headerlink" title="ViLT"></a>ViLT</h2><ul>
+<li>ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快</li>
+<li>ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好</li>
+</ul>
+<h2 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h2><ul>
+<li>使用Image-text contrastive loss训练，使图文对的特征尽量接近</li>
+<li>模态交互使用简单的点乘，高效</li>
+</ul>
+<h2 id="以往方法中发现比较好的一些经验："><a href="#以往方法中发现比较好的一些经验：" class="headerlink" title="以往方法中发现比较好的一些经验："></a>以往方法中发现比较好的一些经验：</h2><ul>
+<li>视觉文本双分支，且视觉需要更多的参数去学习</li>
+<li>模态融合很重要，用一个vit去做融合会比浅层的融合或者点乘更好</li>
+<li>UNITER、ViLT中使用的Word Patch Alingment（WPA） loss计算起来非常慢</li>
+<li>CLIP使用的ITC loss非常有效</li>
+<li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
+<li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/21/20230621-Vision-Language-Learning/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/" class="post-title-link" itemprop="url">DINOv2: Learning Robust Visual Features without Supervision</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-06-20 00:00:00 / Modified: 15:30:41" itemprop="dateCreated datePublished" datetime="2023-06-20T00:00:00+08:00">2023-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="DINOv2"><a href="#DINOv2" class="headerlink" title="DINOv2"></a>DINOv2</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/" class="post-title-link" itemprop="url">Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-03 21:34:54" itemprop="dateModified" datetime="2023-07-03T21:34:54+08:00">2023-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Instance-speciﬁc-ImageNav-task-InstanceImageNav"><a href="#Instance-speciﬁc-ImageNav-task-InstanceImageNav" class="headerlink" title="Instance-speciﬁc ImageNav task (InstanceImageNav)"></a>Instance-speciﬁc ImageNav task (InstanceImageNav)</h1><p>Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</p>
+<p>任务定义：agent被初始化在一个陌生环境，给定图像目标（ImageNav），agent需要导航到图像所描述的地点</p>
+<p>ImageNav任务没有标准化的任务定义，这使得方法的评估和比较变得很困难，且存在2个缺陷：</p>
+<ul>
+<li>图像目标(image-goals)是从随机位置采样的，这可能导致图像所描述的含义是不明确的，引起歧义</li>
+<li>图像目标对应着特定的相机和agent，这使得下游应用受限</li>
+</ul>
+<p>本文提出了实例特定的ImageNav任务来解决这些问题，具体来说，目标图像会聚焦于场景中特定的对象实例，并且使用独立于agent的相机参数拍摄。本文使用Habitat-Matterport 3D数据集（HM3D）中的场景在Habitat Simulator中实例化InstanceImageNav，并发布标准化benchmark</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613174322542.png" alt="image-20230613174322542" style="zoom:67%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/08/202368-Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -712,370 +1035,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/21/2023418-BEVPerception-Survey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/21/2023418-BEVPerception-Survey/" class="post-title-link" itemprop="url">BEVPerception Survey</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-21T00:00:00+08:00">2023-04-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-04 17:44:00" itemprop="dateModified" datetime="2023-06-04T17:44:00+08:00">2023-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="BEVPerception-Survey"><a href="#BEVPerception-Survey" class="headerlink" title="BEVPerception Survey"></a>BEVPerception Survey</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1A34y1W7Lu/?spm_id_from=333.1007.top_right_bar_window_view_later.content.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考上海ai lab分享</a></p>
-<p>TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe</p>
-<h2 id="3D感知中的关键问题"><a href="#3D感知中的关键问题" class="headerlink" title="3D感知中的关键问题"></a>3D感知中的关键问题</h2><h3 id="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："><a href="#获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：" class="headerlink" title="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："></a>获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：</h3><ul>
-<li>Pseudo-LiDAR Track：利用深度估计，将图像处理为伪点云</li>
-<li>Center-point Track：根据预测的heatmap回归深度</li>
-<li>Depth Pretrain：让backbone编码深度信息</li>
-<li><strong>BEV视角变化：回避直接做depth，在BEV空间下做检测</strong></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/04/21/2023418-BEVPerception-Survey/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/" class="post-title-link" itemprop="url">TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-04-21 00:00:00 / Modified: 13:09:03" itemprop="dateCreated datePublished" datetime="2023-04-21T00:00:00+08:00">2023-04-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Delving-into-the-Devils-of-Bird’s-eye-view-Perception-A-Review-Evaluation-and-Recipe"><a href="#Delving-into-the-Devils-of-Bird’s-eye-view-Perception-A-Review-Evaluation-and-Recipe" class="headerlink" title="Delving into the Devils of Bird’s-eye-view Perception: A Review, Evaluation and Recipe"></a>Delving into the Devils of Bird’s-eye-view Perception: A Review, Evaluation and Recipe</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/" class="post-title-link" itemprop="url">Review of 3D Object Detection for Autonomous Driving </a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-19T00:00:00+08:00">2023-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-05 17:48:06" itemprop="dateModified" datetime="2023-06-05T17:48:06+08:00">2023-06-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Review-of-3D-Object-Detection-for-Autonomous-Driving"><a href="#Review-of-3D-Object-Detection-for-Autonomous-Driving" class="headerlink" title="Review of 3D Object Detection for Autonomous Driving"></a>Review of 3D Object Detection for Autonomous Driving</h1><p>任务目标：三维目标检测可细分为分类和定位两个子任务，通过紧密的三维边界框定位目标，以确定目标的类别、位置、大小、方向等信息</p>
-<p>3D数据的不同表示类型</p>
-<ul>
-<li><p>3D点云是由激光雷达对物体表面进行扫描得到的一组无序点的集合，具有不规则性和高度稀疏性，点云是三维空间(xyz坐标)点的集合。</p>
-<blockquote>
-<p>激光雷达（Light  Detection  And  Ranging,  LiDAR）来获取三维点云，除了激光雷达，雷达（Radio  Detection  and Ranging,  Radar）也可以用来获取点云</p>
-</blockquote>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348563616">体素Voxel</a>：体素是3D空间的像素。量化的，大小固定的点云。每个单元都是固定大小和离散坐标，可以理解为固定分辨率的三维栅格地图。</p>
-</li>
-</ul>
-<h2 id="基于图像的三维目标检测"><a href="#基于图像的三维目标检测" class="headerlink" title="基于图像的三维目标检测"></a>基于图像的三维目标检测</h2><ul>
-<li>Pseudo-LiDAR:从RGB图像生成伪激光雷达，这类方法通常由深度估计和目标检测两个网络组成，首先对RGB图像进行深度估计，然后利用深度将其投影为一个伪激光雷达，最后再像处理点云一样使用三维方法进检测</li>
-</ul>
-<h2 id="基于-LiDAR-的三维目标检测"><a href="#基于-LiDAR-的三维目标检测" class="headerlink" title="基于 LiDAR 的三维目标检测"></a>基于 LiDAR 的三维目标检测</h2><p>点云数据特点：</p>
-<ul>
-<li>提供了三维空间信息，包含了精确的深度和位置信息</li>
-<li>点云具有稀疏性、无序性和分布不均性</li>
-</ul>
-<p>按照对点云数据的处理方式，可以将基于LiDAR的三维目标检测方法分为：</p>
-<ul>
-<li>基于视图的View-based方法<ul>
-<li>将点云投影为二维视图（如鸟瞰图BEV），然后利用2D目标检测算法进行检测</li>
-</ul>
-</li>
-<li>基于体素的Voxel-based方法<ul>
-<li>将三维空间划分为均匀的网格，每个网格称为一个体素，将体素内部的点特征编码为体素特征，从而获得规则的网络输入。</li>
-</ul>
-</li>
-<li>基于原始点的Point-based方法<ul>
-<li>直接对原始点云进行处理</li>
-</ul>
-</li>
-<li>基于点和体素的Point-Voxel-based方法</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/" class="post-title-link" itemprop="url">CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-27T00:00:00+08:00">2023-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-30 10:11:53" itemprop="dateModified" datetime="2023-03-30T10:11:53+08:00">2023-03-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2023-GLIGEN"><a href="#CVPR2023-GLIGEN" class="headerlink" title="CVPR2023 GLIGEN"></a>CVPR2023 GLIGEN</h1><p>GLIGEN: Open-Set Grounded Text-to-Image Generation</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327150803955.png" alt="image-20230327150803955"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>单独使用文本输入来进行图像生成的可控性较差，缺乏精确定位概念或使用参考图像来控制生成过程的能力。扩散生成模型在大规模的图像文本对上进行训练，模型中已经具有大量的概念知识，是否能在现有的预训练扩散模型基础上，赋予新的条件输入模式？</p>
-<p>本文提出的GLIGEN保留文本标题输入的同时，启用了其他模态的输入，在预训练的text-to-image扩散模型基础上，通过不同的条件输入实现了更好的可控性。</p>
-<p>关键难点在于，如何在学习新的grounding信息的同时，不遗忘预训练模型中原有的概念知识。为了保留预训练模型的大量概念知识，GLIGEN中冻结了预训练模型的所有权值，并通过门控机制将grounding信息注入到新的可训练层</p>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>Large scale text-to-image generation models.<ul>
-<li>仅将标题作为输入，可能难以传达诸如对象的精确位置之类的其他信息</li>
-<li>以往模型通常是close-set的</li>
-<li>对于关键点等条件输入，attention方式难以控制</li>
-</ul>
-</li>
-<li>Image generation from layouts（给定bboxes和物体类别，生成图像，是目标检测的逆任务）<ul>
-<li>通常是close-set的，只能生成有限类别的目标</li>
-<li>ReCo对原有模型进行了微调，可能导致知识遗忘</li>
-</ul>
-</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>image prompt提供更好的style和background参考，也可以作为实体提示</p>
-<p>边界框则提升了定位能力和空间概念 </p>
-<p>可以实现grounded generation和grounded inpainting</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1145,7 +1104,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1158,7 +1117,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">97</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

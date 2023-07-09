@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TaPAEmbodied Task Planning with Large Language Models 基于LLMs的具身任务规划 Motivation受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的ac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Embodied Task Planning with Large Language Models">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="TaPAEmbodied Task Planning with Large Language Models 基于LLMs的具身任务规划 Motivation受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的ac">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709183606222.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709201323718.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709185936241.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709214237599.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230709215214049.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709220028012.png">
+<meta property="article:published_time" content="2023-07-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-09T14:05:27.073Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Large Language Models">
+<meta property="article:tag" content="Embodied task planning">
+<meta property="article:tag" content="Open Vocabulary Detection">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Embodied Task Planning with Large Language Models | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Embodied Task Planning with Large Language Models
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:05:27" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="TaPA"><a href="#TaPA" class="headerlink" title="TaPA"></a>TaPA</h1><p>Embodied Task Planning with Large Language Models</p>
+<p>基于LLMs的具身任务规划</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的action sequences。</p>
+<blockquote>
+<p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
+</blockquote>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
+<p>从周围环境接收信息</p>
+</blockquote>
+<ul>
+<li>[37] A persistent spatial semantic representation for high-level natural language instruction execution</li>
+<li>[38] Piglet: Language grounding through neuro-symbolic interaction in a 3d world</li>
+<li>[39] Grounding language to autonomously-acquired skills via goal generation</li>
+</ul>
+<blockquote>
+<p>prompt engineering</p>
+<p>设计任务指令和相应动作的简单示例来对LLMs进行提示，以产生合理的任务计划，并通过构建具有语义相似性的映射来过滤出可执行计划子集</p>
+</blockquote>
+<ul>
+<li>[40] Language models as zero-shot planners: Extracting actionable knowledge for embodied agents</li>
+</ul>
+<blockquote>
+<p>根据action feedback为复杂任务生成决策</p>
+</blockquote>
+<ul>
+<li>[41] Pre-trained language models for interactive decision-making</li>
+</ul>
+<blockquote>
+<p>SayCan和LLM-Planner都通过提取场景的latent features或物体名称来为LLMs提供视觉信息</p>
+<p>SayCan只能完成在厨房场景下的任务</p>
+<p>LLM-Planner在ALFRED simulator中实现，大部分任务都非常简单，如putting and placing</p>
+</blockquote>
+<ul>
+<li>[14] Do as i can, not as i say: Grounding language in robotic affordances</li>
+<li>[15] Llm-planner: Few-shot grounded planning for embodied agents with large language models</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png" alt="image-20230709171352785" style="zoom:50%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png" alt="image-20230709163836147" style="zoom: 50%;" /></p>
+<h3 id="Data-Generation-of-Embodied-Task-Planning"><a href="#Data-Generation-of-Embodied-Task-Planning" class="headerlink" title="Data Generation of Embodied Task Planning"></a>Data Generation of Embodied Task Planning</h3><p>利用GPT-3.5来生成为planning agent tuning生成大规模<strong>多模态</strong>数据集</p>
+<p>利用给定具身场景中的所有objects的class name来表示场景，基于这种场景表示，在ALFRED benchmark使用了一个简单的方法来生成embodied task plans数据集的多模态指令，即人为地设计一系列对应着逐步的actions的指令。但对于复杂的现实任务来说，这样的手工标注成本极高。</p>
+<p>本文设计了prompt来模拟具体任务规划的场景，基于object name list来自动生成数据。prompt描述了以下内容：</p>
+<ul>
+<li>embodied task planning的定义</li>
+<li>生成指令的要求</li>
+<li>几个样例</li>
+</ul>
+<blockquote>
+<p>在生成指令时使用了对应场景所有实例的ground truth label</p>
+</blockquote>
+<p>以下是prompt示例</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709183606222.png" alt="image-20230709183606222" style="zoom:67%;" /></p>
+<p>实际进行规划时，agent只能获取视觉场景中的所有可交互物体，并没有GT object list。因此作者构建了一个多模态数据集，用三元组表示一组数据(visual scenes, instructions, the corresponding plans), 在task planner的训练阶段，直接使用gt object list来避免不准确的视觉感知对训练带来的影响，在task planner的推理阶段，则使用open-vocabulary object detector来预测场景中存在的object list作为task planner的输入。</p>
+<ul>
+<li>编码场景信息的过程</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709201323718.png" alt="image-20230709201323718" style="zoom: 33%;" /></p>
+<p>使用AI2-THOR simulator来作为agent的环境，split the scenes with 80 for training and 20 for evaluation，为了增加训练集容量和多样性，作者做了数据增强的操作，通过直接修改gt object list将原本的80个训练场景扩充到了6400个训练场景。</p>
+<ul>
+<li>对于每个场景类型，首先通过枚举相同类型的所有房间来获取可能出现在这种类型的场景中的对象的列表</li>
+<li>然后随机地用可能存在于相同类型房间，并且未被观察到的其他对象替换存在的对象</li>
+<li>似然性约束（plausibility constraint）旨在防止针对给定场景类型生成违反直觉的对象</li>
+<li>作者收集了15K个样本进行训练，并利用另外60个三元组对本文提出的multimodal data generation framework进行评估</li>
+</ul>
+<p>生成的三元组(visual scenes, instructions, the corresponding plans)数据样例</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709185936241.png" alt="image-20230709185936241" style="zoom:50%;" /></p>
+<h3 id="Grounding-Task-Plans-to-Surrounding-Scenes"><a href="#Grounding-Task-Plans-to-Surrounding-Scenes" class="headerlink" title="Grounding Task Plans to Surrounding Scenes"></a>Grounding Task Plans to Surrounding Scenes</h3><p>由于在使用的场景中可能会出现训练集里没有见过的类，因此引入open-vocabulary object detector。</p>
+<p>agent收集不同位置观察到的RGB图像来感知视觉场景中存在的对象，作者设计了几种图像收集策略来探索周围的3D场景</p>
+<p>image collection strategies可以表示为：</p>
+<p>$\mathcal{S}=\left\{(x, y, \theta) \mid(x, y) \in L(\boldsymbol{\lambda}, \mathcal{A}), \theta=k \theta_{0}\right\}$</p>
+<p>其中$(x,y)$表示位置，$\theta$表示相机朝向，$\boldsymbol{\lambda}$代表调整位置选择标准的超参，$\mathcal{A}$代表可选的区域，$\theta_0$代表相机旋转的最小单元，$k$为整数，也就是每个位置会有间隔的采样不同角度视角下的图像。可选的区域$\mathcal{A}$会被划分为网格，根据采样方式的不同，会遍历所有网格进行采样或者有选择地采样，根据位置的不同，采样点分为全局中心和分块中心，分别获得全局的视觉信息和局部的细粒度视觉信息：</p>
+<ul>
+<li>The overall center point stands for the center of the whole scene without any hyperparameters</li>
+<li>The block-wise center points aim to choose the center of each division in the scene to efficiently acquire fine-grained visual information</li>
+</ul>
+<p>经过实验对比，作者选择the block-wise center point for multi-view RGB image collection。位置选择标准中的网格大小被设置为0.75，相机旋转的单位角度为2π/3。</p>
+<p>然后用OVD对多视角图片进行检测并去重，得到object list，和instruction作为输入，然后TaPA输出对应的action plans。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><ul>
+<li><p>AI2-THOR simulator中进行实验</p>
+</li>
+<li><p>LLaMA-7B pre-trained language model作为task planner的backbone，并使用本文生成的多模态数据进行微调</p>
+</li>
+<li>maximum token number为512</li>
+<li>OVD使用Detic</li>
+<li>8卡3090</li>
+</ul>
+<h3 id="Evaluation-Metrics"><a href="#Evaluation-Metrics" class="headerlink" title="Evaluation Metrics"></a>Evaluation Metrics</h3><p>使用人工投票的方式评估生成的action plan的正确率，错误的类型分为：</p>
+<ul>
+<li>counterfactuals（违反了物理规律，比如在走到门口之前抓住门把手） </li>
+<li>hallucination（和场景中不存在的对象进行交互，例外的情况是交互对象可以是存在于场景中的对象的一部分（例如垃圾桶盖和垃圾桶）或物体的同义词（例如马克杯和杯子））</li>
+</ul>
+<h3 id="Experimental-Results"><a href="#Experimental-Results" class="headerlink" title="Experimental Results"></a>Experimental Results</h3><p>TaPA和其他大模型在60个validation samples上的成功率对比</p>
+<ul>
+<li>其实都还比较低，厨房环境任务最复杂，所以成功率最低</li>
+<li>prompt方式影响很大，LLaVA和LLaMA都是使用各自原始的finetuning prompt</li>
+<li>在进行了instruction tuning后，TaPA比GPT-3.5提升了6.38%</li>
+<li>多模态大模型LLaVA较差的表现反映了在视觉问答任务中整体场景信息不能由单个图像表示的事实，而进行action plan需要对场景进行充分的理解</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709214237599.png" alt="image-20230709214237599" style="zoom: 33%;" /></p>
+<ul>
+<li><p>采样策略和超参设置的影响</p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230709215214049.png" alt="image-20230709215214049" style="zoom: 33%;" /></p>
+</li>
+<li><p>一个对比例子</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709220028012.png" alt="image-20230709220028012" style="zoom: 50%;" /></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Large-Language-Models/" rel="tag"># Large Language Models</a>
+              <a href="/tags/Embodied-task-planning/" rel="tag"># Embodied task planning</a>
+              <a href="/tags/Open-Vocabulary-Detection/" rel="tag"># Open Vocabulary Detection</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/" rel="prev" title="Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions">
+      <i class="fa fa-chevron-left"></i> Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TaPA"><span class="nav-number">1.</span> <span class="nav-text">TaPA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Generation-of-Embodied-Task-Planning"><span class="nav-number">1.3.1.</span> <span class="nav-text">Data Generation of Embodied Task Planning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Grounding-Task-Plans-to-Surrounding-Scenes"><span class="nav-number">1.3.2.</span> <span class="nav-text">Grounding Task Plans to Surrounding Scenes</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.4.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation-Metrics"><span class="nav-number">1.4.1.</span> <span class="nav-text">Evaluation Metrics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experimental-Results"><span class="nav-number">1.4.2.</span> <span class="nav-text">Experimental Results</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -164,6 +164,718 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/" class="post-title-link" itemprop="url">Embodied Task Planning with Large Language Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:05:27" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TaPA"><a href="#TaPA" class="headerlink" title="TaPA"></a>TaPA</h1><p>Embodied Task Planning with Large Language Models</p>
+<p>基于LLMs的具身任务规划</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的action sequences。</p>
+<blockquote>
+<p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
+</blockquote>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
+<p>从周围环境接收信息</p>
+</blockquote>
+<ul>
+<li>[37] A persistent spatial semantic representation for high-level natural language instruction execution</li>
+<li>[38] Piglet: Language grounding through neuro-symbolic interaction in a 3d world</li>
+<li>[39] Grounding language to autonomously-acquired skills via goal generation</li>
+</ul>
+<blockquote>
+<p>prompt engineering</p>
+<p>设计任务指令和相应动作的简单示例来对LLMs进行提示，以产生合理的任务计划，并通过构建具有语义相似性的映射来过滤出可执行计划子集</p>
+</blockquote>
+<ul>
+<li>[40] Language models as zero-shot planners: Extracting actionable knowledge for embodied agents</li>
+</ul>
+<blockquote>
+<p>根据action feedback为复杂任务生成决策</p>
+</blockquote>
+<ul>
+<li>[41] Pre-trained language models for interactive decision-making</li>
+</ul>
+<blockquote>
+<p>SayCan和LLM-Planner都通过提取场景的latent features或物体名称来为LLMs提供视觉信息</p>
+<p>SayCan只能完成在厨房场景下的任务</p>
+<p>LLM-Planner在ALFRED simulator中实现，大部分任务都非常简单，如putting and placing</p>
+</blockquote>
+<ul>
+<li>[14] Do as i can, not as i say: Grounding language in robotic affordances</li>
+<li>[15] Llm-planner: Few-shot grounded planning for embodied agents with large language models</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png" alt="image-20230709171352785" style="zoom:50%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png" alt="image-20230709163836147" style="zoom: 50%;" /></p>
+<h3 id="Data-Generation-of-Embodied-Task-Planning"><a href="#Data-Generation-of-Embodied-Task-Planning" class="headerlink" title="Data Generation of Embodied Task Planning"></a>Data Generation of Embodied Task Planning</h3><p>利用GPT-3.5来生成为planning agent tuning生成大规模<strong>多模态</strong>数据集</p>
+<p>利用给定具身场景中的所有objects的class name来表示场景，基于这种场景表示，在ALFRED benchmark使用了一个简单的方法来生成embodied task plans数据集的多模态指令，即人为地设计一系列对应着逐步的actions的指令。但对于复杂的现实任务来说，这样的手工标注成本极高。</p>
+<p>本文设计了prompt来模拟具体任务规划的场景，基于object name list来自动生成数据。prompt描述了以下内容：</p>
+<ul>
+<li>embodied task planning的定义</li>
+<li>生成指令的要求</li>
+<li>几个样例</li>
+</ul>
+<blockquote>
+<p>在生成指令时使用了对应场景所有实例的ground truth label</p>
+</blockquote>
+<p>以下是prompt示例</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709183606222.png" alt="image-20230709183606222" style="zoom:67%;" /></p>
+<p>实际进行规划时，agent只能获取视觉场景中的所有可交互物体，并没有GT object list。因此作者构建了一个多模态数据集，用三元组表示一组数据(visual scenes, instructions, the corresponding plans), 在task planner的训练阶段，直接使用gt object list来避免不准确的视觉感知对训练带来的影响，在task planner的推理阶段，则使用open-vocabulary object detector来预测场景中存在的object list作为task planner的输入。</p>
+<ul>
+<li>编码场景信息的过程</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709201323718.png" alt="image-20230709201323718" style="zoom: 33%;" /></p>
+<p>使用AI2-THOR simulator来作为agent的环境，split the scenes with 80 for training and 20 for evaluation，为了增加训练集容量和多样性，作者做了数据增强的操作，通过直接修改gt object list将原本的80个训练场景扩充到了6400个训练场景。</p>
+<ul>
+<li>对于每个场景类型，首先通过枚举相同类型的所有房间来获取可能出现在这种类型的场景中的对象的列表</li>
+<li>然后随机地用可能存在于相同类型房间，并且未被观察到的其他对象替换存在的对象</li>
+<li>似然性约束（plausibility constraint）旨在防止针对给定场景类型生成违反直觉的对象</li>
+<li>作者收集了15K个样本进行训练，并利用另外60个三元组对本文提出的multimodal data generation framework进行评估</li>
+</ul>
+<p>生成的三元组(visual scenes, instructions, the corresponding plans)数据样例</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709185936241.png" alt="image-20230709185936241" style="zoom:50%;" /></p>
+<h3 id="Grounding-Task-Plans-to-Surrounding-Scenes"><a href="#Grounding-Task-Plans-to-Surrounding-Scenes" class="headerlink" title="Grounding Task Plans to Surrounding Scenes"></a>Grounding Task Plans to Surrounding Scenes</h3><p>由于在使用的场景中可能会出现训练集里没有见过的类，因此引入open-vocabulary object detector。</p>
+<p>agent收集不同位置观察到的RGB图像来感知视觉场景中存在的对象，作者设计了几种图像收集策略来探索周围的3D场景</p>
+<p>image collection strategies可以表示为：</p>
+<p>$\mathcal{S}=\left\{(x, y, \theta) \mid(x, y) \in L(\boldsymbol{\lambda}, \mathcal{A}), \theta=k \theta_{0}\right\}$</p>
+<p>其中$(x,y)$表示位置，$\theta$表示相机朝向，$\boldsymbol{\lambda}$代表调整位置选择标准的超参，$\mathcal{A}$代表可选的区域，$\theta_0$代表相机旋转的最小单元，$k$为整数，也就是每个位置会有间隔的采样不同角度视角下的图像。可选的区域$\mathcal{A}$会被划分为网格，根据采样方式的不同，会遍历所有网格进行采样或者有选择地采样，根据位置的不同，采样点分为全局中心和分块中心，分别获得全局的视觉信息和局部的细粒度视觉信息：</p>
+<ul>
+<li>The overall center point stands for the center of the whole scene without any hyperparameters</li>
+<li>The block-wise center points aim to choose the center of each division in the scene to efficiently acquire fine-grained visual information</li>
+</ul>
+<p>经过实验对比，作者选择the block-wise center point for multi-view RGB image collection。位置选择标准中的网格大小被设置为0.75，相机旋转的单位角度为2π/3。</p>
+<p>然后用OVD对多视角图片进行检测并去重，得到object list，和instruction作为输入，然后TaPA输出对应的action plans。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><ul>
+<li><p>AI2-THOR simulator中进行实验</p>
+</li>
+<li><p>LLaMA-7B pre-trained language model作为task planner的backbone，并使用本文生成的多模态数据进行微调</p>
+</li>
+<li>maximum token number为512</li>
+<li>OVD使用Detic</li>
+<li>8卡3090</li>
+</ul>
+<h3 id="Evaluation-Metrics"><a href="#Evaluation-Metrics" class="headerlink" title="Evaluation Metrics"></a>Evaluation Metrics</h3><p>使用人工投票的方式评估生成的action plan的正确率，错误的类型分为：</p>
+<ul>
+<li>counterfactuals（违反了物理规律，比如在走到门口之前抓住门把手） </li>
+<li>hallucination（和场景中不存在的对象进行交互，例外的情况是交互对象可以是存在于场景中的对象的一部分（例如垃圾桶盖和垃圾桶）或物体的同义词（例如马克杯和杯子））</li>
+</ul>
+<h3 id="Experimental-Results"><a href="#Experimental-Results" class="headerlink" title="Experimental Results"></a>Experimental Results</h3><p>TaPA和其他大模型在60个validation samples上的成功率对比</p>
+<ul>
+<li>其实都还比较低，厨房环境任务最复杂，所以成功率最低</li>
+<li>prompt方式影响很大，LLaVA和LLaMA都是使用各自原始的finetuning prompt</li>
+<li>在进行了instruction tuning后，TaPA比GPT-3.5提升了6.38%</li>
+<li>多模态大模型LLaVA较差的表现反映了在视觉问答任务中整体场景信息不能由单个图像表示的事实，而进行action plan需要对场景进行充分的理解</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709214237599.png" alt="image-20230709214237599" style="zoom: 33%;" /></p>
+<ul>
+<li><p>采样策略和超参设置的影响</p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230709215214049.png" alt="image-20230709215214049" style="zoom: 33%;" /></p>
+</li>
+<li><p>一个对比例子</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709220028012.png" alt="image-20230709220028012" style="zoom: 50%;" /></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/" class="post-title-link" itemprop="url">Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-08T00:00:00+08:00">2023-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-09 10:35:24" itemprop="dateModified" datetime="2023-07-09T10:35:24+08:00">2023-07-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="VLN-survey"><a href="#VLN-survey" class="headerlink" title="VLN survey"></a>VLN survey</h1><ul>
+<li>What is an intelligent Embodied AI?<ul>
+<li>Understand information from Vision,Text,Audio, etc. </li>
+<li>Make the correct action in the environment.</li>
+</ul>
+</li>
+<li>What can we do to build it from Machine Learning perspective?<ul>
+<li>Benchmark：<ul>
+<li>Environment as real as possible.</li>
+<li>Communication like human.</li>
+</ul>
+</li>
+<li>Methods:<ul>
+<li>Connecting advancement within single modality.</li>
+<li>Specific solution.</li>
+<li>Training sources.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><ul>
+<li><p>Key elements: Environment, Agent, Oracle(Human)</p>
+</li>
+<li><p>Environment</p>
+<ul>
+<li><p>Photorealistic</p>
+</li>
+<li><p>3D</p>
+</li>
+<li><p>Navigable</p>
+</li>
+</ul>
+</li>
+<li><p>Interaction between Agent and Environment</p>
+<ul>
+<li>Environment renders new observation after each action.</li>
+<li>Agent navigate in the environment, with possible object manipulation.</li>
+</ul>
+</li>
+<li>Communication between Oracle and Agent<ul>
+<li>Use Natural Language</li>
+<li>Task Instruction</li>
+<li>Dialog ability</li>
+</ul>
+</li>
+</ul>
+<p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883" style="zoom: 50%;" /></p>
+<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h2><p>不同数据集从不同角度来解决VLN问题：</p>
+<ul>
+<li>Action Type: Navigation或Navigation+环境交互</li>
+<li>Communication Type: 只要求agent听懂指令 or 听懂指令还要能交流对话，如遇到难以判断的情况向oracle提问</li>
+<li>Environment Type: 室内 or 室外 or 不同地点····</li>
+</ul>
+<p>下表是对VLN benchmark的一个总结，从语言复杂度和任务目标（任务复杂度）两个角度对现有的benchmark(17-22)进行了分类。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708115828494.png" alt="image-20230708115828494" style="zoom: 50%;" /></p>
+<ul>
+<li>Communication Complexity（语言复杂度）的3种类型<ul>
+<li>大部分的benchmark集中在Initial Instruction，也就是在初始时给一个指令，这类benchmark构建和效果评估都相对简单</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708120519420.png" alt="image-20230708120519420" style="zoom: 33%;" /></p>
+<ul>
+<li><p>Task Objective（任务复杂度） </p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708121651148.png" alt="image-20230708121651148" style="zoom:33%;" /></p>
+</li>
+</ul>
+<h3 id="Datasets-Highlights"><a href="#Datasets-Highlights" class="headerlink" title="Datasets Highlights"></a>Datasets Highlights</h3><ul>
+<li><p>Room-to-Room</p>
+<blockquote>
+<p>室内场景，有详细的指令</p>
+</blockquote>
+<ul>
+<li>The paper that proposes VLN</li>
+<li>Given a <strong>detailed</strong> instruction, the agent navigates <strong>indoors</strong></li>
+<li>It is extended to many other datasets</li>
+</ul>
+</li>
+<li><p>TOUCHDOWN</p>
+<blockquote>
+<p>基于Google Street View，室外场景</p>
+</blockquote>
+<ul>
+<li>Outdoor Navigation</li>
+<li>More complex environments than Indoors.</li>
+</ul>
+</li>
+<li><p>REVERIE</p>
+<blockquote>
+<p>第一个粗粒度导航的数据集，没有给出具体的信息，agent会随机初始化在房间里的某一位置，然后给出要找的目标（简洁的指令给出），不会给出具体的路线，因此agent需要有更强的对环境的理解能力，甚至需要一些prior knowledge，比如卧室的大致位置，要找刀-刀一般在厨房，这类先验知识</p>
+</blockquote>
+<ul>
+<li>Finding a remote goal based on a concise instruction</li>
+</ul>
+</li>
+<li><p>ALFRED</p>
+<blockquote>
+<p>第一个结合navigation和interaction的数据集，为了完成任务需要和环境交互，比如要去抽屉里拿剪刀，需要先打开抽屉</p>
+</blockquote>
+<ul>
+<li>In order to achieve the task, the agent need to interact with the<br>environment</li>
+</ul>
+</li>
+<li><p>VNLA &amp; HANNA</p>
+<blockquote>
+<p>在agent不知道怎么走的时候，向oracle发送求助信号，oracle是知道地图信息的，因此可以给出提示</p>
+</blockquote>
+<ul>
+<li>Agent sent “help” signal and receive response from Oracle</li>
+</ul>
+</li>
+<li><p>CVDN</p>
+<blockquote>
+<p>第一个dialogue类型的VLN数据集，需要agent主动提问</p>
+</blockquote>
+<ul>
+<li>Agent ask question in Natural Language</li>
+</ul>
+</li>
+<li><p>TEACh</p>
+<blockquote>
+<p>最复杂的数据集之一，要求agent能主动问问题，同时要求navigation和interaction，任务更复杂，对话形式更接近人类对话形式（free-form）</p>
+</blockquote>
+<ul>
+<li>Free-form dialog</li>
+<li>Navigation &amp; Interaction</li>
+</ul>
+</li>
+<li><p>SimBot Challenge</p>
+<blockquote>
+<p>基于TEACh</p>
+</blockquote>
+<ul>
+<li>Build Robot that talks to accomplish task</li>
+<li>Evaluate by human expert</li>
+</ul>
+</li>
+</ul>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><p>输入text, vision和action，输出下一个action</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708124619881.png" alt="image-20230708124619881" style="zoom: 33%;" /></p>
+<h3 id="Representation-Learning"><a href="#Representation-Learning" class="headerlink" title="Representation Learning"></a>Representation Learning</h3><p>帮助agent更好的理解环境，引入先验知识</p>
+<ul>
+<li><p>Pre-training</p>
+<blockquote>
+<p>对模型进行预训练，可以直接引入现有的单模态/多模态大模型</p>
+</blockquote>
+<ul>
+<li>Single modality</li>
+<li>Multi-modality</li>
+<li>VLN domain，在VLN的数据集上做pre-training，如VLN-BERT</li>
+</ul>
+</li>
+<li><p>Semantic Understanding</p>
+<blockquote>
+<p>相当于加入了人的先验，提供一些landmark去指导agent</p>
+</blockquote>
+<ul>
+<li>单模态内重点信息的提取，比如从指令中提取关键词来指导agent</li>
+<li>模态之间的交互</li>
+</ul>
+</li>
+<li><p>Graph Representation</p>
+<ul>
+<li>使用GNN等方式来对图结构进行编码</li>
+<li>使用Graph来表示地图</li>
+</ul>
+</li>
+<li><p>Memory Structure</p>
+<ul>
+<li>handling the image history, action history, and dialog history</li>
+<li>HAMT</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141031836.png" alt="image-20230708141031836"></p>
+</li>
+<li><p>Auxiliary Task</p>
+<ul>
+<li>Using extra loss to 1) get familiar with the environments 2) understand current task</li>
+<li>AuxRN</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708141121913.png" alt="image-20230708141121913"></p>
+</li>
+</ul>
+<h3 id="Action-Strategy-Learning"><a href="#Action-Strategy-Learning" class="headerlink" title="Action Strategy Learning"></a>Action Strategy Learning</h3><ul>
+<li><p>Reinforcement Learning</p>
+<ul>
+<li>RCM: connecting reinforcement learning with imitation learning, intrinsic就是使用metric来给reward，extrinsic reward就是使用训练好的model来给reward</li>
+<li>Reward definition<ul>
+<li>Evaluation Metrics and proposed criteria</li>
+<li>Rewards from a trained model</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142227578.png" alt="image-20230708142227578" style="zoom:33%;" /></p>
+</li>
+<li><p>Exploration during Navigation</p>
+<ul>
+<li>Student forcing rather than teacher forcing（会随机探索，而不是在一开始就按照数据集定义的动作走）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142924096.png" alt="image-20230708142924096" style="zoom:50%;" /></p>
+<ul>
+<li>Explore and even predict different directions（使用网络预测往某个方向走会发生什么，Pathdreamer）</li>
+</ul>
+</li>
+<li><p>Navigation Planning</p>
+<blockquote>
+<p>提前计划后面的移动方式</p>
+</blockquote>
+<ul>
+<li>Vision side: waypoint（找出画面中一定要经过的点，做一个先后顺序计划）, generating future view, when to stop</li>
+<li>Text side: key objects in instruction, generative methods based on instruction</li>
+</ul>
+</li>
+<li><p>Asking for Help</p>
+<ul>
+<li>When to ask for help: using action probability, with a specific model</li>
+<li>How to generate questions</li>
+</ul>
+</li>
+</ul>
+<h3 id="Data-centric-Learning"><a href="#Data-centric-Learning" class="headerlink" title="Data-centric Learning"></a>Data-centric Learning</h3><ul>
+<li><p>Data Augmentation</p>
+<ul>
+<li><p>Trajectory-Instruction Augmentation</p>
+<blockquote>
+<p>生成更多的路径（指令语言）</p>
+</blockquote>
+<ul>
+<li>speaker-follower model，speark用于生成数据进行augmentation，对随机走的路径生成语言描述，获取新的data pairs</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708144426753.png" alt="image-20230708144426753"></p>
+<ul>
+<li>Augmentation quality control</li>
+</ul>
+</li>
+<li><p>Environment Augmentation: env drop, env mix</p>
+</li>
+</ul>
+</li>
+<li><p>Curriculum Learning</p>
+<ul>
+<li>从简单的任务开始做，从简单到困难。Room Counts利用路径中包含的room个数来判断难易，instruction lengths则是通过指令长短来判断</li>
+</ul>
+</li>
+<li><p>Multitask Learning</p>
+<ul>
+<li>使用不同的VLN任务同时学习</li>
+</ul>
+</li>
+<li><p>Instruction Interpretation</p>
+<blockquote>
+<p>换一个角度解释指令</p>
+</blockquote>
+<ul>
+<li>Break the long instruction into short ones</li>
+<li>Using waypoint in the instruction</li>
+<li>Encode several instructions for the same trajectory</li>
+</ul>
+</li>
+</ul>
+<h3 id="Prior-exploration"><a href="#Prior-exploration" class="headerlink" title="Prior exploration"></a>Prior exploration</h3><blockquote>
+<p>在测试环境中进行探索，自动给出一些label</p>
+</blockquote>
+<ul>
+<li>Different setting: explore the environments before task execution</li>
+<li>Not comparable to models without prior exploration</li>
+</ul>
+<h2 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h2><p>Main Metrics in VLN tasks</p>
+<ul>
+<li><p>Goal-oriented Metrics</p>
+<ul>
+<li>Success Rate (SR)，任务是否成果，成功为1，不成功为0，统计成功率</li>
+<li>Goal Progress (GP)，测量到目标的剩余距离的减少</li>
+<li>Path Length (PL)，路径长短</li>
+<li>Success weighted by Path Length (SPL)</li>
+</ul>
+</li>
+<li><p>Path-fidelity Metrics</p>
+<blockquote>
+<p>路径保真度，要求走出的路径和GT的路径要尽可能相似</p>
+</blockquote>
+<ul>
+<li>Coverage weighted by LS (CLS)</li>
+<li>Normalized Dynamic Time Warping (nDTW)</li>
+<li>Success weighted by normalized Dynamic Time Warping (SDTW)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Future-Work"><a href="#Future-Work" class="headerlink" title="Future Work"></a>Future Work</h2><ul>
+<li>缺乏世界知识<ul>
+<li>如何表示知识</li>
+<li>需要哪些知识</li>
+<li>如何将知识和navigation融合在一起</li>
+</ul>
+</li>
+<li>如何解决泛化性差的问题<ul>
+<li>引入更多环境的datasets</li>
+<li>引入更多语言（比如中文下的navigation）</li>
+</ul>
+</li>
+<li>VLN的最后一步<ul>
+<li>如何和环境实现交互</li>
+<li>考虑利用LLM来将任务拆分为元操作库里的动作</li>
+</ul>
+</li>
+<li>可合作的VLN<ul>
+<li>Multiple agents, agent and human</li>
+</ul>
+</li>
+<li>Simulation to Reality<ul>
+<li>Rough Localization（移动的误差）</li>
+<li>Oracle Navigation</li>
+<li>Physical Nature</li>
+</ul>
+</li>
+<li>Ethics &amp; Privacy</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/" class="post-title-link" itemprop="url">A Comprehensive Survey on Segment Anything Model for Vision and Beyond</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-07T00:00:00+08:00">2023-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-06 15:42:28" itemprop="dateModified" datetime="2023-07-06T15:42:28+08:00">2023-07-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/07/20230707-A-Survey-on-ObjectNav/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/07/20230707-A-Survey-on-ObjectNav/" class="post-title-link" itemprop="url">A Survey on ObjectNav</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-07T00:00:00+08:00">2023-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-06 18:10:55" itemprop="dateModified" datetime="2023-07-06T18:10:55+08:00">2023-07-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://embodied-ai.org/#demos">https://embodied-ai.org/#demos</a></p>
+<p><a target="_blank" rel="noopener" href="https://behavior.stanford.edu/">https://behavior.stanford.edu/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/06/20230706-OvarNet-Towards-Open-vocabulary-Object-Attribute-Recognition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -223,6 +935,120 @@
 </ul>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>方法主要分为 3 步：首先，利用目标检测数据和属性预测数据在开放词汇场景下训练一个简单的两阶段的方法；然后，通过利用大量的图文对数据进一步微调这个两阶段模型以提高在 novel/unseen 类别和属性上的性能；最后，为了保证泛化性和前传速度，基于知识蒸馏的范式设计了一个一阶段的算法</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706133937621.png" alt="image-20230706133937621"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/06/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/06/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/" class="post-title-link" itemprop="url">3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-06 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-06T00:00:00+08:00">2023-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-07 16:40:52" itemprop="dateModified" datetime="2023-07-07T16:40:52+08:00">2023-07-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><a href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification" class="headerlink" title="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification"></a>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</h1><p>ObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现有的工作主要通过端到端的reinforcement learning或者modular-based methods来解决这一问题，其中端到端的RL方法以图像序列作为输入，然后直接输出low-level的导航信息，但是受限于低的采样效率和较差的跨数据集泛化性。</p>
+<p>modular-based methods通常包含：</p>
+<ul>
+<li>semantic scene mapping module，用于聚合RGBD观察和来自语义分割网络的输出以形成语义场景图(semantic scene map)</li>
+<li>RL-based goal policy module，这一模块将语义场景图(semantic scene map)作为输入，并学习在线更新目标位置</li>
+<li>local path planning module，用于驱动agent到达目标位置</li>
+</ul>
+<p>现有的modular-based methods主要构建2D maps，scene graphs或neural fields来作为scene maps，这类构建方式都没有很好的利用环境的3D的空间信息。</p>
+<p>但是3D scene representation会为ObjectNav policy learning带来挑战：</p>
+<ul>
+<li>构建和查询跨楼层场景的细粒度3D表示需要大量的计算成本，这会显著减慢RL的训练</li>
+<li>3D场景表示相对2D来说，带来了更复杂和更高维的观察，导致较低的采样效率并阻碍navigation policy的学习</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="任务设定"><a href="#任务设定" class="headerlink" title="任务设定"></a>任务设定</h3><p>agent要求在未知环境中寻找特定类别的物体。agent会被随机初始化在某一位置，且agent是没有预先进行环境建图的，另外还会为agent提供一个特定类别的ID。在每个时间步t，agent都会接收无噪声的机载传感器读数（各类传感器的采样值），包括：</p>
+<ul>
+<li>egocentric RGB-D image</li>
+<li>相对于起始状态的3-DoF pose (2D position and 1D orientation)</li>
+</ul>
+<p>预测的动作空间是离散的，包括:</p>
+<ul>
+<li>move_forward</li>
+<li>turn_left</li>
+<li>turn_right</li>
+<li>stop</li>
+</ul>
+<p>给定500步的有限时间预算，agent在到达指定类别的对象的1米之内时终止移动。</p>
+<h3 id="Method-Overview"><a href="#Method-Overview" class="headerlink" title="Method Overview"></a>Method Overview</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png" alt="image-20230707152630478"></p>
+<h3 id="Navigation-Driven-3D-Scene-Construction"><a href="#Navigation-Driven-3D-Scene-Construction" class="headerlink" title="Navigation-Driven 3D Scene Construction"></a>Navigation-Driven 3D Scene Construction</h3><p>在导航的过程中，agent会不断接收新的观测结果，用于持续增量的构建一个细粒度的3D scene representation，将空间信息和语义信息整合到一起。作者扩展了基于点的在线构建算法以在线组织3D点，并进一步增强语义融合和一致性估计。</p>
+<h4 id="3D-Scene-Representation"><a href="#3D-Scene-Representation" class="headerlink" title="3D Scene Representation"></a>3D Scene Representation</h4><p>在时间步$t$时,将3D场景用点云表示</p>
+<p>$P^{(t)}=\left\{\left(P_{l}^{(t)}, P_{s}^{(t)}, P_{c}^{(t)}\right)\right\} \in \mathbb{R}^{N^{(t)} \times(M+4)} $</p>
+<p>其中$N^{(t)}$代表点的个数，对于每个点$i$，$(M+4)$个通道可以拆分为：</p>
+<ul>
+<li>3维的$P^{(t)}_{i,l}$，代表点位置</li>
+<li>$M$维的点语义表示$P^{(t)}_{i,s}$</li>
+<li>1维的逐点空间语义一致性信息$P^{(t)}_{i,c}$</li>
+</ul>
+<h4 id="Online-3D-Point-Fusion"><a href="#Online-3D-Point-Fusion" class="headerlink" title="Online 3D Point Fusion"></a>Online 3D Point Fusion</h4><p>在时间步t给定新的RGB图像$I^{(t)}_c$和深度图像$I_d^{(t)}$，agent可以通过它们的对应姿态将所有深度图像反向投影到3D世界空间中来获得点位置$P^{(t)}_{l}$，然后利用基于点的构造算法组织这些点。</p>
+<blockquote>
+<p>有了位姿（朝向和位置），加上输入的RGB-D图像，就可以还原每个点在3D世界空间中的位置</p>
+</blockquote>
 
       
     </div>
@@ -365,7 +1191,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-06 14:07:49" itemprop="dateModified" datetime="2023-07-06T14:07:49+08:00">2023-07-06</time>
+                <time title="Modified: 2023-07-06 17:52:16" itemprop="dateModified" datetime="2023-07-06T17:52:16+08:00">2023-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -591,404 +1417,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/" class="post-title-link" itemprop="url">HomeRobot: Open-Vocabulary Mobile Manipulation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-01 00:00:00 / Modified: 23:42:20" itemprop="dateCreated datePublished" datetime="2023-07-01T00:00:00+08:00">2023-07-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="HomeRobot-Open-Vocabulary-Mobile-Manipulation"><a href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation" class="headerlink" title="HomeRobot: Open-Vocabulary Mobile Manipulation"></a>HomeRobot: Open-Vocabulary Mobile Manipulation</h1><blockquote>
-<p>Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.</p>
-</blockquote>
-<p>OVMM涉及到了感知、语言理解、导航和操作</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/21/20230621-Vision-Language-Learning/" class="post-title-link" itemprop="url">Vision-Language Learning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-21T00:00:00+08:00">2023-06-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:35:25" itemprop="dateModified" datetime="2023-07-03T21:35:25+08:00">2023-07-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Vision-Language-Learning"><a href="#Vision-Language-Learning" class="headerlink" title="Vision-Language Learning"></a>Vision-Language Learning</h1><h2 id="ViLT"><a href="#ViLT" class="headerlink" title="ViLT"></a>ViLT</h2><ul>
-<li>ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快</li>
-<li>ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好</li>
-</ul>
-<h2 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h2><ul>
-<li>使用Image-text contrastive loss训练，使图文对的特征尽量接近</li>
-<li>模态交互使用简单的点乘，高效</li>
-</ul>
-<h2 id="以往方法中发现比较好的一些经验："><a href="#以往方法中发现比较好的一些经验：" class="headerlink" title="以往方法中发现比较好的一些经验："></a>以往方法中发现比较好的一些经验：</h2><ul>
-<li>视觉文本双分支，且视觉需要更多的参数去学习</li>
-<li>模态融合很重要，用一个vit去做融合会比浅层的融合或者点乘更好</li>
-<li>UNITER、ViLT中使用的Word Patch Alingment（WPA） loss计算起来非常慢</li>
-<li>CLIP使用的ITC loss非常有效</li>
-<li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
-<li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/21/20230621-Vision-Language-Learning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/" class="post-title-link" itemprop="url">DINOv2: Learning Robust Visual Features without Supervision</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-06-20 00:00:00 / Modified: 15:30:41" itemprop="dateCreated datePublished" datetime="2023-06-20T00:00:00+08:00">2023-06-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="DINOv2"><a href="#DINOv2" class="headerlink" title="DINOv2"></a>DINOv2</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/" class="post-title-link" itemprop="url">Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:34:54" itemprop="dateModified" datetime="2023-07-03T21:34:54+08:00">2023-07-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Instance-speciﬁc-ImageNav-task-InstanceImageNav"><a href="#Instance-speciﬁc-ImageNav-task-InstanceImageNav" class="headerlink" title="Instance-speciﬁc ImageNav task (InstanceImageNav)"></a>Instance-speciﬁc ImageNav task (InstanceImageNav)</h1><p>Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</p>
-<p>任务定义：agent被初始化在一个陌生环境，给定图像目标（ImageNav），agent需要导航到图像所描述的地点</p>
-<p>ImageNav任务没有标准化的任务定义，这使得方法的评估和比较变得很困难，且存在2个缺陷：</p>
-<ul>
-<li>图像目标(image-goals)是从随机位置采样的，这可能导致图像所描述的含义是不明确的，引起歧义</li>
-<li>图像目标对应着特定的相机和agent，这使得下游应用受限</li>
-</ul>
-<p>本文提出了实例特定的ImageNav任务来解决这些问题，具体来说，目标图像会聚焦于场景中特定的对象实例，并且使用独立于agent的相机参数拍摄。本文使用Habitat-Matterport 3D数据集（HM3D）中的场景在Habitat Simulator中实例化InstanceImageNav，并发布标准化benchmark</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613174322542.png" alt="image-20230613174322542" style="zoom:67%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/13/2023613-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/13/2023613-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/" class="post-title-link" itemprop="url">Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 19:12:49" itemprop="dateModified" datetime="2023-07-03T19:12:49+08:00">2023-07-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="VLN-survey"><a href="#VLN-survey" class="headerlink" title="VLN survey"></a>VLN survey</h1><p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1058,7 +1486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1071,7 +1499,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">97</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

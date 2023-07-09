@@ -164,6 +164,352 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2019%20ADL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2019%20ADL/" class="post-title-link" itemprop="url">CVPR2019 ADL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:28" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2019-ADL"><a href="#CVPR2019-ADL" class="headerlink" title="CVPR2019 ADL"></a>CVPR2019 ADL</h1><p>Attention-based Dropout Layer for Weakly Supervised Object Localization</p>
+<h2 id="WSOL性质"><a href="#WSOL性质" class="headerlink" title="WSOL性质"></a>WSOL性质</h2><p>仅使用图像级标签来学习对象的位置，不使用位置标注</p>
+<h2 id="ADL方法概述"><a href="#ADL方法概述" class="headerlink" title="ADL方法概述"></a>ADL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191238143.png" alt="image-20220427191238143"></p>
+<p>将feature map通过Channelwise Pooling生成Self-attention map</p>
+<p>从Self-attention map中获得2个掩码：</p>
+<ul>
+<li>设置阈值，得到Drop mask</li>
+<li>sigmoid，得到Importance map</li>
+</ul>
+<p>随机选择其中一个掩码，作为当前iteration的掩码</p>
+<p>Drop mask会遮盖掉最具判别性的区域，使网络获取目标的整体范围，提高localization accuracy</p>
+<p>Importance map会突出信息区域以提高模型的识别能力，提高classification能力</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2019%20ADL/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/" class="post-title-link" itemprop="url">CVPR2020 PSOL 伪监督对象定位</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:31:22" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2020-PSOL-伪监督对象定位"><a href="#CVPR2020-PSOL-伪监督对象定位" class="headerlink" title="CVPR2020 PSOL 伪监督对象定位"></a>CVPR2020 PSOL 伪监督对象定位</h1><p>Rethinking the Route Towards Weakly Supervised Object Localization</p>
+<p>pseudo supervised object localization (PSOL)伪监督对象定位</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/tzzcl/PSOL">github</a></p>
+<h2 id="WSOL的特点"><a href="#WSOL的特点" class="headerlink" title="WSOL的特点"></a>WSOL的特点</h2><p>WSOL has the assumption that there is only one object of<br>the specific category in the whole image</p>
+<p>WSOL假设图像中属于特定类别的物体只存在一个（<strong>一类一物one object in one class</strong>）</p>
+<p>相关文章提到了CAM,Grad-CAM,HaS,ACoL,SPG,ADL</p>
+<p><strong>关于WSOD：</strong>WSOD 没有one object in one class的限制。然而，WSOD 经常需要诸如selective search和edge boxes 等生成区域建议的方法，这将花费大量的计算资源和时间。此外，当前的 WSOD 检测器使用高分辨率输入来输出边界框，导致计算负担沉重。因此，大多数 WSOD  方法难以应用于大规模数据集。</p>
+<p><strong>WSOL的缺点：</strong></p>
+<ol>
+<li>Localization tries to localize the whole object while classification tries to classify the object. The classification model often tries to localize only the most discriminative part of the object in an image.定位试图定位整个对象，而分类则试图对对象进行分类。分类模型通常试图仅定位图像中对象最具辨别力的部分。</li>
+<li>CAM类的方法需要确定阈值</li>
+</ol>
+<h2 id="PSOL方法概述"><a href="#PSOL方法概述" class="headerlink" title="PSOL方法概述"></a>PSOL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427192915831.png" alt="image-20220427192915831" style="zoom:67%;" /></p>
+<p>使用DDT-VGG16生成伪标注框(Class-agnostic generated pseudo bounding boxes与类别无关的伪边界框)</p>
+<p>使用伪边界框训练localization网络，进行single-class regression (SCR) </p>
+<p>另一分支单独训练分类网络</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2020%20PSOL%20%E4%BC%AA%E7%9B%91%E7%9D%A3%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/" class="post-title-link" itemprop="url">CVPR2020  正确评估WSOL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:24:47" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2020-正确评估WSOL"><a href="#CVPR2020-正确评估WSOL" class="headerlink" title="CVPR2020  正确评估WSOL"></a>CVPR2020  正确评估WSOL</h1><p>Evaluating Weakly Supervised Object Localization Methods Right</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/clovaai/wsolevaluation">源代码和数据集Github</a></p>
+<h2 id="WSOL与WSOD-WSSS的特点"><a href="#WSOL与WSOD-WSSS的特点" class="headerlink" title="WSOL与WSOD,WSSS的特点"></a>WSOL与WSOD,WSSS的特点</h2><p>从输入输出看，给定输入图像，SS语义分割模型生成逐像素类预测 ，OD对象检测模型输出一组具有类预测的边界框，实例分割模型预测一组带有类和实例标签的不相交掩码。另一方面，OL<strong>对象定位假设图像包含单个类别的对象，并在来自感兴趣类别的对象周围生成二进制掩码或边界框。</strong></p>
+<h2 id="本文对WSOL的理解"><a href="#本文对WSOL的理解" class="headerlink" title="本文对WSOL的理解"></a>本文对WSOL的理解</h2><p>自 WSOL 开创性的类激活映射 (CAM)  工作以来，该领域一直专注于如何扩展注意力区域以更广泛地覆盖对象并更好地定位它们。然而，这些策略依赖于完全本地化监督来验证超参数和模型选择，这在 WSOL  设置中原则上是被禁止的。</p>
+<p><strong>作者认为CAM后的各种方法对WSOL任务的提升依赖于超参和模型的选择，这样的人工选择其实引入了监督信息</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2020%20%E6%AD%A3%E7%A1%AE%E8%AF%84%E4%BC%B0WSOL/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20DAP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/27/CVPR2021%20DAP/" class="post-title-link" itemprop="url">CVPR2021 DAP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:38:06" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision"><a href="#CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision" class="headerlink" title="CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision"></a>CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision</h1><p>DAP:Detection-Aware Pre-training with Weak Supervision</p>
+<p><strong>使用WSOL方法来预训练目标检测网络</strong></p>
+<h2 id="传统的分类预训练加微调方式存在的问题"><a href="#传统的分类预训练加微调方式存在的问题" class="headerlink" title="传统的分类预训练加微调方式存在的问题"></a>传统的分类预训练加微调方式存在的问题</h2><p>传统的分类预训练加微调只包含DAP工作流程中的1和4</p>
+<p>分类预训练带来的目标检测经验增益随着预训练数据集的不断增大而递减，且当数据集足够大时，随机初始化也能得到和分类预训练加微调类似的较好结果。</p>
+<p>本文认为预训练和微调任务的不匹配造成了分类预训练的增益递减。不匹配体现在：</p>
+<ol>
+<li>现有的分类预训练通常不知道下游的检测任务。预训练采用单一的全图像分类损失，鼓励平移和尺度不变特征，而检测微调涉及几种不同的分类和回归损失，对目标位置和尺度敏感。</li>
+<li>数据分布不一致。在分类预训练中，检测所需要的定位信息并没有明确提供。</li>
+<li>架构不一致。用于预训练的网络是一个裸骨干网，如ResNet模型，然后是平均池化和线性分类层。相比之下，目标检测器中的网络包含各种附加的架构组件，如区域建议网络(RPN)、特征金字塔网络(FPN)、ROI分类头和边界框回归头等。检测器中这些独特的架构组件没有经过预先训练，而是在检测微调中随机初始化，这可能是次优的。</li>
+</ol>
+<h2 id="DAP工作流程"><a href="#DAP工作流程" class="headerlink" title="DAP工作流程"></a>DAP工作流程</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427193339685.png" alt="image-20220427193339685" style="zoom:67%;" /></p>
+<ol>
+<li>弱监督数据集上进行分类器预训练</li>
+<li>使用WSOL方法生成为标签标注框 </li>
+<li>使用为标签进行检测器预训练</li>
+<li>检测数据集微调训练</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/27/CVPR2021%20DAP/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20SLT-Net%20%E5%A2%9E%E5%BC%BA%E5%AD%A6%E4%B9%A0%E5%AE%B9%E5%BF%8D%E5%BA%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -699,379 +1045,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%89%B9%E5%BE%81%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/20/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%89%B9%E5%BE%81%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/" class="post-title-link" itemprop="url">基于深度特征的无监督图像检索研究综述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-20T00:00:00+08:00">2022-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-06 22:27:58" itemprop="dateModified" datetime="2023-02-06T22:27:58+08:00">2023-02-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/overview/" itemprop="url" rel="index"><span itemprop="name">overview</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="基于深度特征的无监督图像检索研究综述"><a href="#基于深度特征的无监督图像检索研究综述" class="headerlink" title="基于深度特征的无监督图像检索研究综述"></a>基于深度特征的无监督图像检索研究综述</h1><p>content-based image retrieval, CBIR</p>
-<p>基于内容的图像检索CBIR，给定一个查询图像，从数据库图像中找到包含相同实例的图像，需要解决类内差异。</p>
-<p>典型的图像检索流程包括2步：</p>
-<ol>
-<li>从图像中提取一个图像的表示向量</li>
-<li>对表示向量用欧氏距离或余弦距离进行最近邻搜索以找到相似图像</li>
-</ol>
-<p>决定一个图像检索算法性能的关键在于提取的图像表示的好坏</p>
-<h2 id="常用指标"><a href="#常用指标" class="headerlink" title="常用指标"></a>常用指标</h2><p>mAP 平均准确率均值 mean average precision</p>
-<p>对每张查询图像，根据查询图像和数据库图像的表示向量间的距离，可以对数据库图像产生一个排序，，画出对该查询图像的查准率-查全率（P-R）曲线，平均准确率AP就对应P-R曲线下的面积，对所有查询图像的AP做平均，即可得到mAP，值是0%-100%。</p>
-<h2 id="基于深度全局特征的图像检索"><a href="#基于深度全局特征的图像检索" class="headerlink" title="基于深度全局特征的图像检索"></a>基于深度全局特征的图像检索</h2><p>深度神经网络的全连接层特征提供了对图像内容高层级的描述，一些早期工作直接将整张图像输入预训练好的网络，并提取深度全连接特征作为图像的表示向量，这种深度全连接特征的实质时对图像整体语义信息进行描述的深度全局特征。</p>
-<p>为了得到更精简的图像表示，可以用PCA对从深度全连接特征提取的图像表示进行降维（如4096维降到128）</p>
-<p>由于预训练数据集和用于图像检索的数据集差异的存在，文献发现略低层的特征有更好的检索效果，这是因为非常高层的深度特征旨在进行预训练数据集的分类任务，而略低层的深度特征有更好的对其他数据集的泛化能力。</p>
-<p>总结：</p>
-<p>使用深度全局特征作为图像表示十分简单直接，但全局特征旨在进行图像分类，缺乏对图像细节的描述，此外深度全局特征对图像平移、旋转、尺度缩放比较敏感</p>
-<h2 id="基于深度局部特征的图像检索"><a href="#基于深度局部特征的图像检索" class="headerlink" title="基于深度局部特征的图像检索"></a>基于深度局部特征的图像检索</h2><h3 id="局部表示聚合"><a href="#局部表示聚合" class="headerlink" title="局部表示聚合"></a>局部表示聚合</h3><p>受经典 SIFT特征和 BoW聚合思路的启发,一些工作用深度特征代替经典SIFT特征,并对经典编码技术如BoW , VLAD,FV 等加以改进.这类方法先设法从输入图像中提取一系列的局部区域,之后分别将这些图像局部区域前馈网络﹐并生成对应的局部图像表示.最后,通过特定聚合方法将这些局部图像表示聚合为最终图像表示。也就是用多个局部特征融合成图像表示。</p>
-<p>这类方法的关键是如何从输入图像提取局部区域，如何对局部表示进行聚合。提取局部区域的方法主要有3类：基于滑动窗的局部区域提取、兴趣区域检测和基于候选区域(region proposal)的局部区域提取.</p>
-<p>为了精确找到有价值的局部区域,基于滑动窗的方法需要用一系列不同大小的滑动窗口,这需要消耗不小的计算开销.而基于兴趣区域检测和基于候选区域的方法由于只需提取一部分局部区域前馈网络,因此效率相比较高.基于兴趣区域检测的方法沿用了经典图像检索/计算机视觉的特征提取思路,而基于候选区域的方法受到目标检测任务做法的启发.但这些方法都需要多次前馈网络.</p>
-<h3 id="深度卷积特征聚合"><a href="#深度卷积特征聚合" class="headerlink" title="深度卷积特征聚合"></a>深度卷积特征聚合</h3><p>相比深度全局特征（全连接层的一维向量），深度卷积特征（可以理解为DxHxW的特征图）对图像的平移、裁剪、遮挡更不敏感，并保留了更多图像细节信息。相比局部表示聚合的方法，基于深度卷积特征融合的方法只需要前向传播一次，而且可以处理任意大小的图像输入。这类方法关键在于如何对深度卷积特征进行聚合，直接聚合的方法空间全局最大池化，和池化，平均池化等方式，得到一个D维的特征向量，加权聚合这类方法是在聚合时根据不同位置的特征的重要性对深度卷积特征进行加权求和，得到一个D维向量，然后再对D维的D个通道进行加权</p>
-<ul>
-<li>Class-weighted convolutional feature</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20220409164310067.png" alt="image-20220409164310067" style="zoom: 67%;" /></p>
-<p><strong>SUM Pooling</strong></p>
-<p>基于 SUM pooling 的中层特征表示方法，指的是针对中间层的任意一个 channel（比如 VGGNet16, pool5 有 512 个 channel），将该 channel 的 feature map 的所有像素值求和，这样每一个 channel 得到一个实数值，N 个 channel 最终会得到一个长度为 N 的向量，该向量即为 SUM pooling 的结果。 </p>
-<p><strong>AVE pooling</strong></p>
-<p>AVE pooling 就是 average pooling，本质上它跟 SUM pooling 是一样的，只不过是将像素值求和后还除以了 feature map 的尺寸。作者以为，AVE pooling 可以带来一定意义上的平滑，可以减小图像尺寸变化的干扰。设想一张 224224 的图像，将其 resize 到 448448 后，分别采用 SUM pooling 和 AVE pooling 对这两张图像提取特征，我们猜测的结果是，SUM pooling 计算出来的余弦相似度相比于 AVE pooling 算出来的应该更小，也就是 AVE pooling 应该稍微优于 SUM pooling 一些。</p>
-<h3 id="多层融合"><a href="#多层融合" class="headerlink" title="多层融合"></a>多层融合</h3><p>深度特征具有层次性，从低层到高层是由纹理特征到高层语义特征的转变，深度加深，感受野变大，更倾向于捕获全局语义特征，不同层特征的感受野不同，多层特征融合可以同时捕获不同尺度下的图像语义信息。各层的权重不应该相同</p>
-<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><ol>
-<li>在ImageNet预训练</li>
-<li>VGGNet</li>
-<li>使用原图大小输入，保持原图长宽比</li>
-<li>使用经过ReLU之后的深度特征</li>
-<li>使用sum pooling会比max pooling更好,sum-pooling再除以feature map的尺寸就是ave pooling（CAM的GAP）</li>
-<li>对提取到的图像表示（特征向量）进行l2规范化，PCA白化（用于应对特征向量各维之间的共现co-occurrence效应，并对高维的表示向量进行降维），然后进行再次l2规范化（为了使表示向量的空间由欧式空间映射到余弦空间）</li>
-</ol>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20220409140821633.png" alt="image-20220409140821633" style="zoom:50%;" /></p>
-<ol>
-<li>从另一个独立的数据集学习PCA的参数</li>
-<li>幂律规范化</li>
-<li>对检索得到的排序进行后处理，对排序结果进行微调，如查询展开：将排序最前面的k个结果的特征向量（表示向量）sum pooling并进行l2规范化，将结果作为新的查询向量重新进行检索。空间重排：</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/19/ICCV2021%20TS-CAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/19/ICCV2021%20TS-CAM/" class="post-title-link" itemprop="url">ICCV2021 TS-CAM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-19T00:00:00+08:00">2022-04-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-27 16:18:09" itemprop="dateModified" datetime="2022-05-27T16:18:09+08:00">2022-05-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICCV2021-TS-CAM"><a href="#ICCV2021-TS-CAM" class="headerlink" title="ICCV2021 TS-CAM"></a>ICCV2021 TS-CAM</h1><p>TS-CAM: Token Semantic Coupled Attention Map for Weakly Supervised Object Localization</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/vasgaowei/TS-CAM">github</a></p>
-<h2 id="Motivation-amp-background"><a href="#Motivation-amp-background" class="headerlink" title="Motivation&amp;background"></a>Motivation&amp;background</h2><p>作者认为部分激活是由 CNN 的内在特性引起的，其中卷积操作会产生局部感受野，并且难以捕捉像素之间的远程特征依赖关系。所以提出利用self-attention机制的长程建模能力来避免局部激活问题。TS-CAM首先将一张图像分割成一系列用于spatial embedding的patch token，它们将产生long-range的视觉关联性的attention map去避免局部激活现象。然后TS-CAM为每个patch tokens重新分配与种类有关的语义种类，使它们能够了解对象类别，TS-CAM最终将patch token与语义不可知的attention map耦合，以实现语义感知定位。</p>
-<p>vision transformer应用于WSOL还存在的问题：</p>
-<ul>
-<li>patch embeddings实际上破坏了输入图像的空间拓扑结构，这阻碍了目标定位激活图的生成</li>
-<li>vision transformer的注意力图与语义无关（无法区分对象类）并且不适合语义感知定位semantic-aware localization</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/19/ICCV2021%20TS-CAM/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/" class="post-title-link" itemprop="url">ICLR2021 Vision Transformer(ViT)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-17 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-17T00:00:00+08:00">2022-04-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-07-05 12:47:05" itemprop="dateModified" datetime="2022-07-05T12:47:05+08:00">2022-07-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICLR2021-Vision-Transformer-ViT"><a href="#ICLR2021-Vision-Transformer-ViT" class="headerlink" title="ICLR2021 Vision Transformer(ViT)"></a>ICLR2021 Vision Transformer(ViT)</h1><p>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220416141852978.png" alt="image-20220416141852978" style="zoom:67%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">Transformer基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-16 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-16T00:00:00+08:00">2022-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-27 22:34:07" itemprop="dateModified" datetime="2022-05-27T22:34:07+08:00">2022-05-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h1><h2 id="核心组件-self-attention"><a href="#核心组件-self-attention" class="headerlink" title="核心组件 self-attention"></a>核心组件 self-attention</h2><h3 id="注意力机制实现的两个步骤"><a href="#注意力机制实现的两个步骤" class="headerlink" title="注意力机制实现的两个步骤"></a>注意力机制实现的两个步骤</h3><ul>
-<li><p>计算注意力分布α</p>
-<ul>
-<li>使用query对输入向量X进行得分计算，通常是内积，评价x与任务的相关程度</li>
-<li>然后使用softmax计算得到注意力分布α</li>
-</ul>
-</li>
-<li><p>利用注意力分布对输入向量($X=(x_1,x_2,···,x_n)$)进行加权求和求平均</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/16/Transformer%E5%9F%BA%E7%A1%80/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1141,7 +1114,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">72</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1154,7 +1127,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">92</span>
+        <span class="site-state-item-count">97</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
