@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708142924096.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230708144426753.png">
 <meta property="article:published_time" content="2023-07-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-09T14:13:30.070Z">
+<meta property="article:modified_time" content="2023-07-10T11:09:33.135Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
 <meta property="article:tag" content="Visual-and-Language Navigation">
@@ -212,7 +212,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-09 22:13:30" itemprop="dateModified" datetime="2023-07-09T22:13:30+08:00">2023-07-09</time>
+                <time title="Modified: 2023-07-10 19:09:33" itemprop="dateModified" datetime="2023-07-10T19:09:33+08:00">2023-07-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,6 +256,7 @@
 </ul>
 </li>
 </ul>
+<p>两大难题: 数据稀缺和模型的泛化性低</p>
 <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><ul>
 <li><p>Key elements: Environment, Agent, Oracle(Human)</p>
 </li>
@@ -285,7 +286,19 @@
 <p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883" style="zoom: 50%;" /></p>
 <span id="more"></span>
-<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h2><p>不同数据集从不同角度来解决VLN问题：</p>
+<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h2><p>在视觉语言导航的设定中, MatterPort3D 模拟器是将场景划分为离散的可导航位置点集. 这一做法简化导航过程为一个无向图的探索过程, 即每步移动都从邻近的有限点集中选择下一个目标节点. 这在一定程度上减少了视觉信息对任务的影响。</p>
+<p>但高级动作空间中存在过度依赖已知的路径拓扑结构的问题, 不利于未来部署在现实场景中。</p>
+<blockquote>
+<p>受Matterport3D 模拟器不能支持低级动作的影响, 需要通过特定算法将高级动作（节点间的跳转）转换为低级动作（6种基础动作向上、向下、左转 30 度、右转 30 度、前进和停止）, 因此很多模型不便于直接由模拟环境转移现实场景中.</p>
+</blockquote>
+<p>Habitat和iGibson支持连续环境</p>
+<ul>
+<li><p>Beyond the nav-graph: Vision-and-language navigation in continuous environments</p>
+</li>
+<li><p>Topological planning with transformers for vision-and-language navigation</p>
+</li>
+</ul>
+<p>不同数据集从不同角度来解决VLN问题：</p>
 <ul>
 <li>Action Type: Navigation或Navigation+环境交互</li>
 <li>Communication Type: 只要求agent听懂指令 or 听懂指令还要能交流对话，如遇到难以判断的情况向oracle提问</li>
@@ -327,7 +340,7 @@
 </li>
 <li><p>REVERIE</p>
 <blockquote>
-<p>第一个粗粒度导航的数据集，没有给出具体的信息，agent会随机初始化在房间里的某一位置，然后给出要找的目标（简洁的指令给出），不会给出具体的路线，因此agent需要有更强的对环境的理解能力，甚至需要一些prior knowledge，比如卧室的大致位置，要找刀-刀一般在厨房，这类先验知识</p>
+<p>Remote embodied visual referring expression in real indoor environments，第一个粗粒度导航的数据集，没有给出具体的信息，agent会随机初始化在房间里的某一位置，然后给出要找的目标（简洁的指令给出），不会给出具体的路线，因此agent需要有更强的对环境的理解能力，甚至需要一些prior knowledge，比如卧室的大致位置，要找刀-刀一般在厨房，这类先验知识</p>
 </blockquote>
 <ul>
 <li>Finding a remote goal based on a concise instruction</li>
@@ -553,6 +566,7 @@
 </ul>
 </li>
 <li>Ethics &amp; Privacy</li>
+<li>连续环境的VLN</li>
 </ul>
 
     </div>
@@ -652,7 +666,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -665,7 +679,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">101</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

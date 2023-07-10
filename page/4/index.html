@@ -164,6 +164,353 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/18/CVPR2023%20ODISE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/18/CVPR2023%20ODISE/" class="post-title-link" itemprop="url">CVPR2023 Open-Vocabulary Panoptic Segmentation with Text-to-Image Diffusion Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-21 16:01:46" itemprop="dateModified" datetime="2023-03-21T16:01:46+08:00">2023-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ODISE-Open-vocabulary-DIffusion-based-panoptic-SEgmentation"><a href="#ODISE-Open-vocabulary-DIffusion-based-panoptic-SEgmentation" class="headerlink" title="ODISE: Open-vocabulary DIffusion-based panoptic SEgmentation"></a>ODISE: Open-vocabulary DIffusion-based panoptic SEgmentation</h1><p>结合了text-to-image diffusion model和discriminative model（如CLIP）实现全景分割</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>text-to-image diffusion model能够根据任意文本产生高质量的图像，这说明其内部的表征空间与真实世界中的open concepts是高度相关的，其学习到了较好的开放概念的表征。text-image discriminative model如CLIP，擅长将图像进行开放词汇分类。</p>
+<p>本文提出利用上述两种模型的冻结特征来进行开放词汇全景分割。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230321114542664.png" alt="image-20230321114542664"></p>
+<p>text-image discriminative model如CLIP容易混淆对象之间的空间关系，缺乏对空间和关系的理解，作者认为这是将其用于开放词汇全景分割的主要瓶颈。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/18/CVPR2023%20ODISE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/" class="post-title-link" itemprop="url">CLIP-based Open-Vocabulary Object Detection</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-15T00:00:00+08:00">2023-03-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-30 09:24:45" itemprop="dateModified" datetime="2023-03-30T09:24:45+08:00">2023-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ICLR2022-ViLD"><a href="#ICLR2022-ViLD" class="headerlink" title="ICLR2022 ViLD"></a>ICLR2022 ViLD</h1><p>OPEN-VOCABULARY OBJECT DETECTION VIA VISION AND LANGUAGE KNOWLEDGE DISTILLATION</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Object Detection方法是学习去检测数据集中的类别，如果想要增加可检测的类别，通常的做法是增加标签类别，但是类别数增多会对训练样本收集带来更多挑战，对象类别存在长尾问题，罕见类的样本扩充成本高昂。另一方面，图文对则易于获取。ViLD则是想借助于预先训练的CLIP来实现Open-Vocabulary Detection(OVD).</p>
+<p>OVD旨在仅使用base classes的detection annotations来训练一个detector，可以检测出文本描述的任意类别，也就是可以从base classes泛化到novel classes</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316142839590.png" alt="image-20230316142839590"></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>ViLD将OVD转换成了两个子问题，并使用Mask RCNN作为baseline：</p>
+<ul>
+<li>生成object proposals</li>
+<li>Open-vocabulary image classification(使用CLIP对cropped object proposals进行分类) </li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230316143332381.png" alt="image-20230316143332381"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/15/CLIP-based%20Open-Vocabulary%20Object%20Detection/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/07/Unleashing%20Text%20to%20Image%20Diffusion%20Models%20for%20Visual%20Perception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/07/Unleashing%20Text%20to%20Image%20Diffusion%20Models%20for%20Visual%20Perception/" class="post-title-link" itemprop="url">Unleashing Text-to-Image Diffusion Models for Visual Perception</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-07T00:00:00+08:00">2023-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-08 21:02:08" itemprop="dateModified" datetime="2023-03-08T21:02:08+08:00">2023-03-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="VPD-Visual-Perception-with-a-pre-trained-Diffusion-model"><a href="#VPD-Visual-Perception-with-a-pre-trained-Diffusion-model" class="headerlink" title="VPD (Visual Perception with a pre-trained Diffusion model)"></a>VPD (Visual Perception with a pre-trained Diffusion model)</h1><p>如何利用大规模数据预训练的Diffusion model来支持下游的Visual perception 任务</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230308162613703.png" alt="image-20230308162613703" style="zoom: 80%;" /></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>text-to-image diffusion model通过视觉语言预训练获得了更多的high-level knowledge，大规模text-to-image diffusion model能够生成纹理丰富、内容多样、结构合理的高质量图像，同时具有可组合、可编辑的语义。这一现象暗示了大规模的文本-图像扩散模型可以从大量的图像-文本对中隐式地学习高层次和低层次的视觉概念。</p>
+<p>本文旨在研究提取大规模扩散模型所学习到的视觉知识来支持下游的Visual perception 任务。作者提出的VPD框架探索了如何利用pre-trained denoising UNet去为下游视觉感知任务提供语义引导。</p>
+<p>与将知识从常规的预训练模型转移到下游视觉感知任务相比，对diffusion model进行transfer learning存在两个挑战：</p>
+<ul>
+<li>diffusion model和视觉感知任务之间的不兼容性</li>
+<li>UNet类扩散模型和流行视觉backbone之间的架构差异</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/07/Unleashing%20Text%20to%20Image%20Diffusion%20Models%20for%20Visual%20Perception/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/05/Image%20Generation%20Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/05/Image%20Generation%20Survey/" class="post-title-link" itemprop="url">Image Generation Survey</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-05T00:00:00+08:00">2023-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-30 13:06:59" itemprop="dateModified" datetime="2023-03-30T13:06:59+08:00">2023-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h1><p>保真度高，多样性较差，训练不够稳定（因为需要同时训练两个网络，需要做平衡，否则容易模型坍塌），不是一个概率模型，生成是隐式的（通过一个网络去完成），数学上不如VAE，扩散模型优美</p>
+<p>generator生成器：给定一个随机噪声，生成图像</p>
+<p>discriminator判别器：将生成器生成的图像与真实图像送入判别器，做0/1二分类</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/05/Image%20Generation%20Survey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/02/04/ECCV2022%20A-Simple-Baseline-for-Open-Vocabulary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -684,366 +1031,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/12/ECCV2020%20DETR/" class="post-title-link" itemprop="url">ECCV2020 DETR</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-12T00:00:00+08:00">2022-11-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-16 20:35:34" itemprop="dateModified" datetime="2022-11-16T20:35:34+08:00">2022-11-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ECCV2020-DETR"><a href="#ECCV2020-DETR" class="headerlink" title="ECCV2020 DETR"></a>ECCV2020 DETR</h1><p>End-to-End Object Detection with Transformers</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。</p>
-<ul>
-<li>proposals: R-CNN系列工作</li>
-<li>anchors: Yolo系列工作</li>
-<li>non-anchor based(window centers): CenterNet,FCOS</li>
-</ul>
-<p>DETR去掉了需要人工设计的组件，如NMS和先验anchor，因此DETR框架是非常简洁的，使目标检测变得简单。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/12/ECCV2020%20DETR/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/CVPR2020%20MoCo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/08/CVPR2020%20MoCo/" class="post-title-link" itemprop="url">CVPR2020 MoCo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-11-08 00:00:00 / Modified: 22:47:22" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-MoCo"><a href="#CVPR2020-MoCo" class="headerlink" title="CVPR2020 MoCo"></a>CVPR2020 MoCo</h1><p>Momentum Contrast for Unsupervised Visual Representation Learning</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/facebookresearch/moco">github</a></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>无监督表征学习如GPT和BETR在NLP中取得了成功，但在视觉领域有监督的预训练还是占主导地位，作者分析其原因可能是NLP和CV中信号空间的差异，NLP中的单词句子是离散的，可以用于构建tokenized dictionaries（tokenized可以认为把某一个词对应成某一特征），进而进行无监督学习，但在视觉中，信号是在连续的高维空间中的，并不像单词一样具有很强的语义信息，所以不适合建立一个tokenized dictionaries。</p>
-<p>无监督学习训练编码器来实现字典查找，也就是使编码的 “query” 与其匹配的”key”更相似，而与其他”key”特征更不相似。作者认为建立的字典需要满足两个特性：</p>
-<ul>
-<li><p>large</p>
-<blockquote>
-<p>较大的字典能更好地采样底层的连续、高维视觉空间(每一个key就相当于是在特征空间中采样了一个点，采样点越多，越能表示整个特征空间分布)</p>
-</blockquote>
-</li>
-<li><p>consistent</p>
-<blockquote>
-<p>字典中的key应该由相同或相似的编码器表示，以便它们与query的对比是一致的，如果使用不同的编码器，则可能只是简单找到了一个由与query分支编码器相似的编码器产生的key，也就是shortcut solution</p>
-</blockquote>
-</li>
-</ul>
-<p>以往的工作往往受限于这两个方面</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/08/CVPR2020%20MoCo/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/08/Few-Shot-Learning-survey/" class="post-title-link" itemprop="url">Few-Shot Learning Survey</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-06 22:43:18" itemprop="dateModified" datetime="2023-02-06T22:43:18+08:00">2023-02-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
-<p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
-<p>小样本学习也是一种meta learning，learn to learn</p>
-<p>与监督学习的区别：</p>
-<p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
-<p>k-way n-shot：</p>
-<ul>
-<li>k-way：support set有k个类别</li>
-<li>n-shot：每个类别有n个样本，one-shot就是只有一张图片</li>
-</ul>
-<p>与比赛不同，few shot learning中，设定query是属于surrport set的，而比赛中是需要判断是不是已知类的<br>siamese网络的训练：</p>
-<ol>
-<li>使用正负对进行训练，正对（同一类别）的两个样本的相似度标记为1，负对为0.将样本对输入到同一个网络，提取特征，对特征求差值，得到的特征向量表示两个图片得到的特征向量的区别，然后再送进全连接层，得到一个标量，加上sigmoid进行归一化，得到一个表示similarity的预测值，使用预测值sim和标签（正对为1，负对为0）做crossentropy</li>
-<li>使用triplet loss，训练时每次选取3个样本，一个anchor，一个positive，一个negative，让anchor和positive在特征空间的距离更近，anchor和negative在特征空间的距离更远</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/08/Few-Shot-Learning-survey/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/" class="post-title-link" itemprop="url">对比学习综述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-30 10:45:48" itemprop="dateModified" datetime="2023-01-30T10:45:48+08:00">2023-01-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="对比学习串烧"><a href="#对比学习串烧" class="headerlink" title="对比学习串烧"></a>对比学习串烧</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19S4y1M7hm/?spm_id_from=333.999.0.0&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考</a></p>
-<p>基于对比学习的方法通过使相同实例的相似样本或各种增强彼此接近，而不相似实例彼此远离来学习特征表示。</p>
-<p>基于相似性的自监督学习方法如BYOL，通过最小化同一实例的不同增强之间的距离来学习特征表示，并且仅使用正样本对。</p>
-<h2 id="InstDisc"><a href="#InstDisc" class="headerlink" title="InstDisc"></a>InstDisc</h2><p>Unsupervised Feature Learning via Non-Parametric Instance Discrimination</p>
-<p>提出了个体判别代理任务，和NCE loss结合进行对比学习，取得了不错的无监督表征学习结果，还提出使用memory bank来存储负样本，并对特征进行动量更新（Proximal Regularization）</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115103115579.png" alt="image-20221115103115579"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1113,7 +1100,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1126,7 +1113,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">101</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

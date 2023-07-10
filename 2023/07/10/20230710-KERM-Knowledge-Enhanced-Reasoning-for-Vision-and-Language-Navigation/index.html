@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="KERMKERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation github Motivation 知识可以提供与视觉内容互补的关键信息，比如对象和关系的抽象信息，这样的信息对于对齐视角图像中的视觉对象是必不可少的。比如图1中的Navigable Candidate2 和 3，agent可以根据知识&lt; lig">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/10/20230710-KERM-Knowledge-Enhanced-Reasoning-for-Vision-and-Language-Navigation/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="KERMKERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation github Motivation 知识可以提供与视觉内容互补的关键信息，比如对象和关系的抽象信息，这样的信息对于对齐视角图像中的视觉对象是必不可少的。比如图1中的Navigable Candidate2 和 3，agent可以根据知识&lt; lig">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710143358206.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710152742468.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710164419591.png">
+<meta property="article:published_time" content="2023-07-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-10T10:53:21.631Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Embodied task planning">
+<meta property="article:tag" content="Vision-and-Language Navigation">
+<meta property="article:tag" content="Reasoning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710143358206.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/10/20230710-KERM-Knowledge-Enhanced-Reasoning-for-Vision-and-Language-Navigation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>KERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/10/20230710-KERM-Knowledge-Enhanced-Reasoning-for-Vision-and-Language-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          KERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-10 00:00:00 / Modified: 18:53:21" itemprop="dateCreated datePublished" datetime="2023-07-10T00:00:00+08:00">2023-07-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="KERM"><a href="#KERM" class="headerlink" title="KERM"></a>KERM</h1><p>KERM: Knowledge Enhanced Reasoning for Vision-and-Language Navigation</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/XiangyangLi20/KERM">github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li>知识可以提供与视觉内容互补的关键信息，比如对象和关系的抽象信息，这样的信息对于对齐视角图像中的视觉对象是必不可少的。比如图1中的Navigable Candidate2 和 3，agent可以根据知识&lt; light hanging over kitchen island&gt;来判断出应该去2</li>
+<li>知识可以提高agent的泛化能力，指令和navigable candidate是在有限的可见环境中学习的，利用知识有利于迁移到未见过的环境</li>
+<li>知识增加了VLN模型的能力。随着丰富的概念信息被注入到VLN模型中，许多概念之间的相关性被学习。学习到的相关性有利于视觉和语言对齐，特别是对于具有高级指令的任务</li>
+</ul>
+<p>KERM将以区域为中心的知识与导航视图融合，为每一个navigable candidate检索事实（语言描述的知识），作为视觉内容的补充，以获得更好的action prediction</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710143358206.png" alt="image-20230710143358206" style="zoom: 50%;" /></p>
+<span id="more"></span>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>本方法是在离散导航的仿真环境（REVERIE, R2R, SOON）中实现的，仿真环境中提供了navigation connectivity graph, 表示为$\mathcal{G}=\{\mathcal{V}, \mathcal{E}\}$，其中$\mathcal{V}$代表navigable nodes，$\mathcal{E}$代表边。给定自然语言指令，agent探索环境最终到达目标位置。在每一个导航步t，agent都会在当前位置节点观察到一个全景视图，每个全景视图由36张单视角图（及对应的朝向）组成。</p>
+<h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><ul>
+<li>(a) DUET(a dual-scale graph transformer)对全景视图(panoramic view)，拓扑图以及用于动作预测的指令进行编码<ul>
+<li>其中拓扑图是通过将新观察到的信息添加到拓扑地图并更新其节点的视觉表示来随时间构建的</li>
+<li>拓扑图中的节点有三种类型，边缘为实线的节点表示已经访问过的节点，红色表示当前节点，虚线代表navigable nodes</li>
+<li>所有36张当前位置的单视角图，拓扑图以及指令都会被一起送入dual-scale graph transformer来预测下一个位置或者输出停止动作</li>
+</ul>
+</li>
+<li>(b) KERM利用知识来获得上下文表示:<ul>
+<li>首先检索对每个离散视图的视觉特征有补充作用的facts</li>
+<li>然后，instruction、topological map、visual view features和对应的facts被送到the purification module，the fact-aware interaction module和the instruction-guided aggregation module中，以形成知识增强表示</li>
+<li>最后利用dual-scale graph transformer预测action</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710152742468.png" alt="image-20230710152742468" style="zoom: 50%;" /></p>
+<h3 id="Fact-Acquisition"><a href="#Fact-Acquisition" class="headerlink" title="Fact Acquisition"></a>Fact Acquisition</h3><p>high-level的关于物体和关系的抽象知识对于模型关联视觉物体和指令中提及的概念非常重要，有利于对candidate views和instructions的匹配，作者首先基于Visual Genome dataset构建了知识库，然后来利用CLIP来检索每个视图对应的facts</p>
+<h4 id="Knowledge-Base-Construction"><a href="#Knowledge-Base-Construction" class="headerlink" title="Knowledge Base Construction"></a>Knowledge Base Construction</h4><p>为了获取丰富多样的区域描述，作者利用Visual Genome dataset的区域描述来构建知识库。在VG数据集中，属性标注采用”attribute - object”的pair形式，关系标注则采用”subject - predicate - object”的三元组形式。作者将所有的”attribute - object” pairs和”subject - predicate - object” triplets转换为对应的同义词规范形式，在去重后最终获得了630K个facts作为知识库。</p>
+<h4 id="Fact-Retrieval"><a href="#Fact-Retrieval" class="headerlink" title="Fact Retrieval"></a>Fact Retrieval</h4><p>将每个视图crop成5个子区域，并利用CLIP来检索每个子区域对应的facts，每个子区域得到top-5相似的facts。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230710164419591.png" alt="image-20230710164419591" style="zoom: 50%;" /></p>
+<h3 id="Knowledge-Enhanced-Reasoning"><a href="#Knowledge-Enhanced-Reasoning" class="headerlink" title="Knowledge Enhanced Reasoning"></a>Knowledge Enhanced Reasoning</h3><p>在每一个step，the visual features, the history features, the instruction features和the fact features都被送进KERM进行action预测</p>
+<ul>
+<li>visual features: 由CLIP-I进行编码，每个单视图对应5个子区域的特征</li>
+<li>fact features: 由CLIP-T进行编码，每个单视图对应5*5=25个fact features</li>
+<li>historical information和the layout of the explored environment则是由拓扑图的所有节点来表示</li>
+<li>instruction features由multi-layer transformer进行编码</li>
+</ul>
+<h4 id="Purification-Module"><a href="#Purification-Module" class="headerlink" title="Purification Module"></a>Purification Module</h4><p>由于每个视图对应的fact features并不是都是agent完成当前导航任务所需要的，因此作者提出了instruction-aware fact purification module来滤除低相关性的信息，并抓取与当前导航任务最相关的关键信息。</p>
+<ul>
+<li>具体来说，首先计算每个fact和navigation instruction中每个token的相关性，通过the fact-instruction relevance matrix $A$来计算相关性：</li>
+</ul>
+<p>$A=\frac{\left(E_{n} W_{1}\right)\left(L W_{2}\right)^{T}}{\sqrt{d}}$</p>
+<blockquote>
+<p>其中$W_1$和$ W_2$都是可学习参数，$d$代表特征维度，$E_n$代表fact features，$L$代表instruction features，也就是计算点乘时加入了两个可学习参数矩阵。</p>
+</blockquote>
+<ul>
+<li>然后对$A$进行row-wise max-pooling来计算每个fact和instruction的相关性</li>
+</ul>
+<p>$\alpha_n=max\{A_{n,i}\}^M_{i=1}$</p>
+<ul>
+<li>然后利用相关性对fact features进行加权（达到”purified”的目的）</li>
+</ul>
+<p>$E^{‘}_n=\alpha_nE_n$</p>
+<p>visual region features和history features也经过相同的注意力方式进行purify</p>
+<h4 id="Fact-aware-Interaction-Module"><a href="#Fact-aware-Interaction-Module" class="headerlink" title="Fact-aware Interaction Module"></a>Fact-aware Interaction Module</h4><p>在获得purified features后，作者使用多层的跨模态transformer（包括cross-attention和self-attention）进行vision-fact,history-fact之间的交互,得到增强后的vision features和history features</p>
+<h4 id="Instruction-guided-Aggregation-Module"><a href="#Instruction-guided-Aggregation-Module" class="headerlink" title="Instruction-guided Aggregation Module"></a>Instruction-guided Aggregation Module</h4><p>最后使用instruction-guided attention来将vision-fact features聚合到一个统一区域的特征（利用注意力对5个子区域特征进行加权求和，权重是子区域特征和指令特征的相似度），history-fact features同理，然后利用FFN将统一区域特征和历史特征进行融合，最后送入dual-scale graph transformer进行action prediction</p>
+<h3 id="Training-and-Inference"><a href="#Training-and-Inference" class="headerlink" title="Training and Inference"></a>Training and Inference</h3><h4 id="Pretraining"><a href="#Pretraining" class="headerlink" title="Pretraining"></a>Pretraining</h4><p>利用4个任务预训练KERM模型</p>
+<ul>
+<li>Masked language modeling</li>
+<li>Masked view classification：利用分类模型来获得view image的标签，然后再用于训练KERM</li>
+<li>Single-step action prediction(SAP)</li>
+<li>Object grounding</li>
+</ul>
+<h4 id="Fine-tuning-and-Inference"><a href="#Fine-tuning-and-Inference" class="headerlink" title="Fine-tuning and Inference"></a>Fine-tuning and Inference</h4><ul>
+<li>imitation learning method</li>
+<li>SAP</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><ul>
+<li>REVERIE<ul>
+<li>指令比较简洁，平均包含21个词</li>
+<li>每张全景图都有bbox标注，agent在导航的最后需要选取正确的bbox</li>
+<li>path length is between 4 and 7 steps</li>
+</ul>
+</li>
+<li>SOON<ul>
+<li>指令描述了目标地点和目标对象</li>
+<li>指令平均包含47个词</li>
+<li>没有物体的bbox标注，agent需要预测目标对象的中心点位置</li>
+<li>path length is between 2 and 21 steps</li>
+</ul>
+</li>
+<li>R2R<ul>
+<li>提供了每一步的指令</li>
+<li>不要求预测物体位置</li>
+<li>The average length of instructions is 32 words </li>
+<li>The average length of paths is 6 steps</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Embodied-task-planning/" rel="tag"># Embodied task planning</a>
+              <a href="/tags/Vision-and-Language-Navigation/" rel="tag"># Vision-and-Language Navigation</a>
+              <a href="/tags/Reasoning/" rel="tag"># Reasoning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/" rel="prev" title="Embodied Task Planning with Large Language Models">
+      <i class="fa fa-chevron-left"></i> Embodied Task Planning with Large Language Models
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/10/20230710-ETPNav-Evolving-Topological-Planning-for-Vision-Language-Navigation-in-Continuous-Environments/" rel="next" title="ETPNav: Evolving Topological Planning for Vision-Language Navigation in Continuous Environments">
+      ETPNav: Evolving Topological Planning for Vision-Language Navigation in Continuous Environments <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#KERM"><span class="nav-number">1.</span> <span class="nav-text">KERM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">1.2.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fact-Acquisition"><span class="nav-number">1.2.2.</span> <span class="nav-text">Fact Acquisition</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Knowledge-Base-Construction"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Knowledge Base Construction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fact-Retrieval"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Fact Retrieval</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Knowledge-Enhanced-Reasoning"><span class="nav-number">1.2.3.</span> <span class="nav-text">Knowledge Enhanced Reasoning</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Purification-Module"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Purification Module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fact-aware-Interaction-Module"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Fact-aware Interaction Module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Instruction-guided-Aggregation-Module"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Instruction-guided Aggregation Module</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training-and-Inference"><span class="nav-number">1.2.4.</span> <span class="nav-text">Training and Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pretraining"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Pretraining</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fine-tuning-and-Inference"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Fine-tuning and Inference</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.3.</span> <span class="nav-text">Experiment</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">101</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

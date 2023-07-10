@@ -164,6 +164,366 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/12/ECCV2020%20DETR/" class="post-title-link" itemprop="url">ECCV2020 DETR</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-12T00:00:00+08:00">2022-11-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-16 20:35:34" itemprop="dateModified" datetime="2022-11-16T20:35:34+08:00">2022-11-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ECCV2020-DETR"><a href="#ECCV2020-DETR" class="headerlink" title="ECCV2020 DETR"></a>ECCV2020 DETR</h1><p>End-to-End Object Detection with Transformers</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。</p>
+<ul>
+<li>proposals: R-CNN系列工作</li>
+<li>anchors: Yolo系列工作</li>
+<li>non-anchor based(window centers): CenterNet,FCOS</li>
+</ul>
+<p>DETR去掉了需要人工设计的组件，如NMS和先验anchor，因此DETR框架是非常简洁的，使目标检测变得简单。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/12/ECCV2020%20DETR/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/CVPR2020%20MoCo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/08/CVPR2020%20MoCo/" class="post-title-link" itemprop="url">CVPR2020 MoCo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-11-08 00:00:00 / Modified: 22:47:22" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2020-MoCo"><a href="#CVPR2020-MoCo" class="headerlink" title="CVPR2020 MoCo"></a>CVPR2020 MoCo</h1><p>Momentum Contrast for Unsupervised Visual Representation Learning</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/facebookresearch/moco">github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>无监督表征学习如GPT和BETR在NLP中取得了成功，但在视觉领域有监督的预训练还是占主导地位，作者分析其原因可能是NLP和CV中信号空间的差异，NLP中的单词句子是离散的，可以用于构建tokenized dictionaries（tokenized可以认为把某一个词对应成某一特征），进而进行无监督学习，但在视觉中，信号是在连续的高维空间中的，并不像单词一样具有很强的语义信息，所以不适合建立一个tokenized dictionaries。</p>
+<p>无监督学习训练编码器来实现字典查找，也就是使编码的 “query” 与其匹配的”key”更相似，而与其他”key”特征更不相似。作者认为建立的字典需要满足两个特性：</p>
+<ul>
+<li><p>large</p>
+<blockquote>
+<p>较大的字典能更好地采样底层的连续、高维视觉空间(每一个key就相当于是在特征空间中采样了一个点，采样点越多，越能表示整个特征空间分布)</p>
+</blockquote>
+</li>
+<li><p>consistent</p>
+<blockquote>
+<p>字典中的key应该由相同或相似的编码器表示，以便它们与query的对比是一致的，如果使用不同的编码器，则可能只是简单找到了一个由与query分支编码器相似的编码器产生的key，也就是shortcut solution</p>
+</blockquote>
+</li>
+</ul>
+<p>以往的工作往往受限于这两个方面</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/08/CVPR2020%20MoCo/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/08/Few-Shot-Learning-survey/" class="post-title-link" itemprop="url">Few-Shot Learning Survey</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-06 22:43:18" itemprop="dateModified" datetime="2023-02-06T22:43:18+08:00">2023-02-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
+<p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
+<p>小样本学习也是一种meta learning，learn to learn</p>
+<p>与监督学习的区别：</p>
+<p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
+<p>k-way n-shot：</p>
+<ul>
+<li>k-way：support set有k个类别</li>
+<li>n-shot：每个类别有n个样本，one-shot就是只有一张图片</li>
+</ul>
+<p>与比赛不同，few shot learning中，设定query是属于surrport set的，而比赛中是需要判断是不是已知类的<br>siamese网络的训练：</p>
+<ol>
+<li>使用正负对进行训练，正对（同一类别）的两个样本的相似度标记为1，负对为0.将样本对输入到同一个网络，提取特征，对特征求差值，得到的特征向量表示两个图片得到的特征向量的区别，然后再送进全连接层，得到一个标量，加上sigmoid进行归一化，得到一个表示similarity的预测值，使用预测值sim和标签（正对为1，负对为0）做crossentropy</li>
+<li>使用triplet loss，训练时每次选取3个样本，一个anchor，一个positive，一个negative，让anchor和positive在特征空间的距离更近，anchor和negative在特征空间的距离更远</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/08/Few-Shot-Learning-survey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/" class="post-title-link" itemprop="url">对比学习综述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-01-30 10:45:48" itemprop="dateModified" datetime="2023-01-30T10:45:48+08:00">2023-01-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="对比学习串烧"><a href="#对比学习串烧" class="headerlink" title="对比学习串烧"></a>对比学习串烧</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV19S4y1M7hm/?spm_id_from=333.999.0.0&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考</a></p>
+<p>基于对比学习的方法通过使相同实例的相似样本或各种增强彼此接近，而不相似实例彼此远离来学习特征表示。</p>
+<p>基于相似性的自监督学习方法如BYOL，通过最小化同一实例的不同增强之间的距离来学习特征表示，并且仅使用正样本对。</p>
+<h2 id="InstDisc"><a href="#InstDisc" class="headerlink" title="InstDisc"></a>InstDisc</h2><p>Unsupervised Feature Learning via Non-Parametric Instance Discrimination</p>
+<p>提出了个体判别代理任务，和NCE loss结合进行对比学习，取得了不错的无监督表征学习结果，还提出使用memory bank来存储负样本，并对特征进行动量更新（Proximal Regularization）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221115103115579.png" alt="image-20221115103115579"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/30/CVPR2022%20CCAM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -682,346 +1042,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/06/08/Splashtop%20Wired%20XDisplay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/06/08/Splashtop%20Wired%20XDisplay/" class="post-title-link" itemprop="url">环境搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-06-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-08T00:00:00+08:00">2022-06-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-12-08 11:56:17" itemprop="dateModified" datetime="2022-12-08T11:56:17+08:00">2022-12-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>ipad作为扩展屏</p>
-<p>记得下载itunes在windows上</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52906701/article/details/123000463">Splashtop Wired XDisplay只能复制不能扩展</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/21/BMVC2021%20LOST/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/21/BMVC2021%20LOST/" class="post-title-link" itemprop="url">BMVC2021 LOST</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-21 00:00:00 / Modified: 22:08:52" itemprop="dateCreated datePublished" datetime="2022-05-21T00:00:00+08:00">2022-05-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="BMVC2021-LOST"><a href="#BMVC2021-LOST" class="headerlink" title="BMVC2021 LOST"></a>BMVC2021 LOST</h1><p><a target="_blank" rel="noopener" href="https://github.com/valeoai/LOST">github</a></p>
-<p>LOST在无监督单目标发现（左），多目标发现（中），目标检测（右）中的应用，在目标检测应用中，LOST发现的对象将被聚类到类别中，然后使用据类标签来训练经典的对象检测器</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521111109107.png" alt="image-20220521111109107"></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>通常使用区域建议作为输入，无监督对象发现利用来自整个图像集合的信息并探索图像间相似性以无监督方式定位对象</p>
-<p>Our localization method stays at the level of a single image, rather than exploring inter-image similarity, which makes it linear w.r.t. the number of images and thus highly scalable.</p>
-<p>我们的定位方法停留在单个图像的级别，而不是探索图像间的相似性，这使其成为线性 w.r.t。图像的数量，因此具有高度可扩展性。依赖于自监督transformer的强大功能，并且只考虑图像内的相似性，本方法可以用很少的计算在单个图像中定位对象。</p>
-<p>主要工作：</p>
-<ul>
-<li>利用自监督预训练transformer提取特征，使用图像中补丁的相关性提出一种对于一张图片的单目标定位方法，这一方法关于数据集大小具有线性复杂度。</li>
-<li>利用它来训练与类无关和类感知的无监督对象检测器，能够准确地定位每个图像的多个对象，并且在类感知的情况下，将它们分组到语义一致的类中</li>
-<li>在无监督对象发现方面以显着优势超越了最先进的技术</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/21/BMVC2021%20LOST/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/19/TPAMI2021%20A2GNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/19/TPAMI2021%20A2GNN/" class="post-title-link" itemprop="url">TPAMI2021 A2GNN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-19T00:00:00+08:00">2022-05-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-20 21:00:21" itemprop="dateModified" datetime="2022-05-20T21:00:21+08:00">2022-05-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="TPAMI2021-Affinity-Attention-Graph-Neural-Network"><a href="#TPAMI2021-Affinity-Attention-Graph-Neural-Network" class="headerlink" title="TPAMI2021 Affinity Attention Graph Neural Network"></a>TPAMI2021 Affinity Attention Graph Neural Network</h1><p>Affinity Attention Graph Neural Network for Weakly Supervised Semantic  Segmentation 亲和力与图卷积神经网络的结合</p>
-<p>将弱监督转换为semi-supervised（部分点是有标注的）</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>图神经网络GNN可以可以直接在不同节点之间建立长距离关系（边），聚合多个连接节点的信息，从而抑制标签噪声的负面影响，在标签有限的半监督任务中GNN也表现良好。</p>
-<p>GraphNet的缺点：</p>
-<ul>
-<li>GraphNet通过阈值构建了一个未加权的邻接图（邻接矩阵A）作为输入，会丢失一些信息，这样的图不能准确地提供足够的信息，因为它平等地对待所有边，边权重为 0 或  1，尽管实际上并非所有连接的节点都期望相同的亲和力。(邻接图中所有的边都是0或1，并不能很好的体现亲和力)</li>
-<li>GraphNet仅使用初始的标签节点进行训练，这使得当输入的初始节点特征不准确时，会导致不正确的特征聚合，只使用交叉熵损失，不能减轻不正确的节点、边和标签的影响。</li>
-</ul>
-<p>作者设计了一个 Affinity Attention Graph Neural Network (A2GNN) 来解决上述问题。具体来说，作者提出了一种新的亲和力CNN来将图像转换为加权图，而不是使用传统方法来构建未加权图。加权图比未加权图更合适，因为它可以为不同的节点对提供不同的亲和力。之前的方法如GraphNet只考虑局部连接的节点，构建了一个基于超像素的未加权图，而本文同时考虑了局部和长距离边，构建的加权图将一个像素视为一个节点。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518201510961.png" alt="image-20220518201510961"></p>
-<p>特点：</p>
-<ul>
-<li>soft edge</li>
-<li>pixel as node</li>
-<li>local and long distance</li>
-</ul>
-<p>为了产生准确的伪标签，作者设计了一个新的 GNN 层，其中应用了注意力机制和边缘权重，以确保准确的传播。因此，具有弱/无边缘连接或低注意力的成对节点之间的特征聚合可以显着下降，从而相应地消除不正确的传播。随着训练的进行，节点注意力会动态变化。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/19/TPAMI2021%20A2GNN/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/18/MM2018%20Graphnet/" class="post-title-link" itemprop="url">MM2018 Graphnet</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-18 00:00:00 / Modified: 20:00:49" itemprop="dateCreated datePublished" datetime="2022-05-18T00:00:00+08:00">2022-05-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MM2018-Graphnet"><a href="#MM2018-Graphnet" class="headerlink" title="MM2018 Graphnet"></a>MM2018 Graphnet</h1><p>Graphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation</p>
-<p>通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标记像素传播到未标记像素。</p>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>WSSS</li>
-<li>GCN</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png" alt="image-20220518171553332"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/18/MM2018%20Graphnet/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1091,7 +1111,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1104,7 +1124,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">101</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
