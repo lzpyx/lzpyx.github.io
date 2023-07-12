@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Meta OmniumMeta Omnium是一个跨多个视觉任务的数据集，包括识别，关键点定位，语义分割和回归。提供统一框架，用于以一致的方式在广泛的视觉应用中评估meta-learners   现有的benchmarks仅测试meta-learners在分类或密集预测等任务中学习的能力。Meta Omnium独特地测试了元学习者跨多种任务类型学习的能力。 涵盖多个视觉领域（从自然图像到医学和工业">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="Meta OmniumMeta Omnium是一个跨多个视觉任务的数据集，包括识别，关键点定位，语义分割和回归。提供统一框架，用于以一致的方式在广泛的视觉应用中评估meta-learners   现有的benchmarks仅测试meta-learners在分类或密集预测等任务中学习的能力。Meta Omnium独特地测试了元学习者跨多种任务类型学习的能力。 涵盖多个视觉领域（从自然图像到医学和工业">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711162435776.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711170654082.png">
+<meta property="article:published_time" content="2023-07-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-11T09:51:34.429Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Benchmark">
+<meta property="article:tag" content="Meta learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711162435776.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-11 00:00:00 / Modified: 17:51:34" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Meta-Omnium"><a href="#Meta-Omnium" class="headerlink" title="Meta Omnium"></a>Meta Omnium</h1><p>Meta Omnium是一个跨多个视觉任务的数据集，包括识别，关键点定位，语义分割和回归。提供统一框架，用于以一致的方式在广泛的视觉应用中评估meta-learners</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711162435776.png" alt="image-20230711162435776" style="zoom:33%;" /></p>
+<ul>
+<li>现有的benchmarks仅测试meta-learners在分类或密集预测等任务中学习的能力。Meta Omnium独特地测试了元学习者跨多种任务类型学习的能力。</li>
+<li>涵盖多个视觉领域（从自然图像到医学和工业图像）</li>
+<li>提供了全面评估分布内和分布外泛化的能力</li>
+<li>明确的超参数调整和模型选择协议，以促进元学习算法之间的公平比较</li>
+<li>具有适中的计算成本，使其可用于资源适度的大学和大型机构的研究</li>
+</ul>
+<p>传统的within-task meta-learning benchmarks更多地依赖于共同的表征学习而不是learning-to-learn，Meta Omnium更好地测试了learning-to-learn的能力，因为组成的任务需要更多样化的表征</p>
+<p>baseline具有最小的task-specific decoders，评估learning-to-learn的能力，而不是融入先验</p>
+<h3 id="Data-Splits-and-Tasks"><a href="#Data-Splits-and-Tasks" class="headerlink" title="Data Splits and Tasks"></a>Data Splits and Tasks</h3><p>对于每个主要任务（分类，分割，关键点定位），数据集都被分为seen datasets（用于meta-training）,unseen datasets（用于out-of-domain meta-validation and meta-testing）。</p>
+<p>seen datasets按照类别将其划分为meta-train/val/test</p>
+<p>unseen不划分，数据集中所有类别都会被用于validation和testing</p>
+<ul>
+<li>每个任务对应多个数据集，实线框代表seen datasets，虚线框代表unseen datasets</li>
+<li>The seen (ID) datasets are divided class-wise into meta-train/meta-val/meta-test splits.</li>
+<li>The unseen datasets are held out for out-of-distribution (OD) evaluation.</li>
+<li>Meta-training is conducted on the ID-meta-train split of the seen datasets (blue).</li>
+<li>Models are validated on ID validation class splits, or OOD validation datasets (green).</li>
+<li>Results are reported on the ID test class splits and OOD test datasets (orange).</li>
+<li>另外还保留了regression task来评估新任务上的泛化性，regression任务中的数据集在meta-training时并没有被使用</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711170654082.png" alt="image-20230711170654082" style="zoom: 33%;" /></p>
+<p>两种训练范式：</p>
+<ul>
+<li>Single-task meta-learning：在一个特定task family内进行训练和测试，评估meta-learning的效果</li>
+<li>Multi-task meta-learning：在所有的task families上进行训练，评估meta-learning的效果</li>
+</ul>
+<p>两种评估方式：</p>
+<ul>
+<li>Within-distribution generalization (ID): How well do meta-learners generalize to novel test concepts within<br>the seen datasets?</li>
+<li>Out-distribution generalization (OOD): How well do meta-learners generalize to novel concepts in unseen datasets?</li>
+</ul>
+<h3 id="Datasets-and-Metrics"><a href="#Datasets-and-Metrics" class="headerlink" title="Datasets and Metrics"></a>Datasets and Metrics</h3><h4 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h4><p>选择Meta-Album中的10个datasets，每个数据集包含19-706类，图片大小为$128 \times128$，每个类别有40张图像。其中3个数据集被保留用于out-of-distribution meta-validation，4个数据集用于out-of-distribution meta-test</p>
+<h4 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h4><ul>
+<li>将FSS1000用于in-distribution，包含10000张图像，1000个类</li>
+<li>FSS1000结合VizWiz用于OOD meta-validation，包含862张图像，22个类</li>
+<li>modified Pascal5i（包含7242张图像，6个类）和医学图像数据集PH2（包含200张图像，3个类）用于meta-testing</li>
+<li>所有图像都被resize为$224\times 224$</li>
+<li>在进行few-shot learning时排除了与FSS1000数据集类别重叠的类，因此所有数据集之间没有重叠的类</li>
+</ul>
+<h4 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h4><ul>
+<li>animal-pose for in-distribution，包含5个动物类别，超过4k张图像中的6k个实例,每个动物都被从原图像中crop出来。cat和dog用于训练，horse和sheep用于in-domain validation，cow用于in-domain testing</li>
+<li>synthetic animal-pose for OOD meta-validation,用从随机背景上的各种视点和照明渲染的动物CAD模型生成合成图像。在最终的数据集中只保留马和老虎类别。</li>
+<li>MPII human-pose for OOD meta-testing,包括约40k人超过25k张带有人体关节点标注的图像</li>
+<li>所有图像都被resize到$128\times128$</li>
+</ul>
+<h4 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a>Regression</h4><ul>
+<li><p>ShapeNet1D，预测航向角，总共包含30个类别，我们从测试集中保留了3个类别</p>
+</li>
+<li><p>ShapeNet2D，具有航向角和俯仰角的2D旋转，ShapeNet2D的测试集总共包含300个类别，每个类别30张图像</p>
+</li>
+<li><p>Distractor，预测目标物体位置，它总共包含12个类别，测试集有2个类别，每个类别包含1000个对象，每个对象有36个图像</p>
+</li>
+<li><p>Pascal1D，预测航向角，整个Pascal1D包含来自10个类别的65个对象。测试集包含15个对象，每个对象具有100个图像</p>
+</li>
+<li><p>所有图像都被resize到$128\times128$</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Benchmark/" rel="tag"># Benchmark</a>
+              <a href="/tags/Meta-learning/" rel="tag"># Meta learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/10/20230710-EmbodiedGPT/" rel="prev" title="EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought">
+      <i class="fa fa-chevron-left"></i> EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/" rel="next" title="Learning to Explore using Active Neural SLAM">
+      Learning to Explore using Active Neural SLAM <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Meta-Omnium"><span class="nav-number">1.</span> <span class="nav-text">Meta Omnium</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data-Splits-and-Tasks"><span class="nav-number">1.0.1.</span> <span class="nav-text">Data Splits and Tasks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets-and-Metrics"><span class="nav-number">1.0.2.</span> <span class="nav-text">Datasets and Metrics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Classification"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Segmentation"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">Segmentation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Keypoints"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">Keypoints</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Regression"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">Regression</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

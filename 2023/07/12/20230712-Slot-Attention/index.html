@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Object-Centric Learning with Slot Attention和DETR中的decoder非常接近 DETR笔记 每个slot可以理解为一个特征向量，本文聚焦于如何从 CNN 的 feature map 中聚类&#x2F;抽象出 set of slots   Slot Attention module模块本质上基本就是 multi-layer weight-sharing trans">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Slot Attention">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/12/20230712-Slot-Attention/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="Object-Centric Learning with Slot Attention和DETR中的decoder非常接近 DETR笔记 每个slot可以理解为一个特征向量，本文聚焦于如何从 CNN 的 feature map 中聚类&#x2F;抽象出 set of slots   Slot Attention module模块本质上基本就是 multi-layer weight-sharing trans">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123723688.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123813393.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712162150581.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712184648846.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712185326036.png">
+<meta property="article:published_time" content="2023-07-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-12T11:15:00.245Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Vision-and-Language Navigation">
+<meta property="article:tag" content="Slot Attention">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123723688.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/12/20230712-Slot-Attention/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Slot Attention | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/12/20230712-Slot-Attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Slot Attention
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-12 00:00:00 / Modified: 19:15:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Object-Centric-Learning-with-Slot-Attention"><a href="#Object-Centric-Learning-with-Slot-Attention" class="headerlink" title="Object-Centric Learning with Slot Attention"></a>Object-Centric Learning with Slot Attention</h1><p>和DETR中的decoder非常接近</p>
+<p><a href="https://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">DETR笔记</a></p>
+<p>每个slot可以理解为一个特征向量，本文聚焦于如何从 CNN 的 feature map 中聚类/抽象出 set of slots</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123723688.png" alt="image-20230712123723688" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123813393.png" alt="image-20230712123813393" style="zoom:50%;" /></p>
+<p>Slot Attention module模块本质上基本就是 multi-layer weight-sharing transformer decoder (去掉 self-attention)</p>
+<ul>
+<li><p>inputs是$N\times D_{input}$的feature map</p>
+</li>
+<li><p>从一个高斯分布中采样出K个$D_{slots}$维的可学习参数，作为slots（可以理解为 DETR 的 object queries，K个slot）的初始化（可以理解为从VAE学到的高斯分布采样得到的）</p>
+</li>
+<li>这里的attn其实就是transformer decoder中的cross-attention</li>
+<li>计算 updates，注意这里是 WeightedMean，而不是 transformer 里的 WeightedSum，但只是相差了常数系数</li>
+<li>利用 GRU和updates 对之前的 slots 进行更新。 ablation中其实看到 GRU 的作用并不太明显</li>
+<li><strong>关键区别在于 attention 的归一化维度不同</strong>，slot attention 沿 slot 维度归一化，换言之对于每个 pixel，各 slot 对其 attention 之和为 1（即各 slot 互斥的瓜分各个 pixel，这也是论文中“the slots compete for input keys”所想表达的意思）；而 transformer decoder 的 cross attention 沿 inputs 维度归一化，即每个 slot 对 inputs 中各 pixel 的 attention 之和为 1，slot 之间是互不相关的。</li>
+<li>另外要注意的是，由于 slots 从高斯分布中采样，优化的其实只有 mu, sigma 两个参数，而非 DETR 里直接优化。每次调用 Slot Attention module 时，slots 都要重新采样，而不是从一而终的用固定的 object queries。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># simplified slot attention module</span></span><br><span class="line">slots = slots_mu + exp(slots_log_sigma) * random.normal([N, num_slots, slot_size])</span><br><span class="line">inputs = LayerNorm(inputs)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T) <span class="comment"># loop == multi-layer</span></span><br><span class="line">    attn = Softmax(dot(k(inputs), q(slots).T), axis=<span class="string">&#x27;slots&#x27;</span>)</span><br><span class="line">    slots = WeightedMean(weights=attn + <span class="number">1e-6</span>, values=v(inputs)) <span class="comment"># not sum</span></span><br><span class="line">    slots += MLP(LayerNorm(slots))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># simplifed transformer decoder layer</span></span><br><span class="line">slots += LayerNorm(self_attn(slots, slots, slots)) <span class="comment"># self-attention</span></span><br><span class="line"></span><br><span class="line">attn = Softmax(dot(k(inputs), q(slots).T), axis=<span class="string">&#x27;inputs&#x27;</span>) <span class="comment"># cross-attention</span></span><br><span class="line">slots = WeightedSum(weights=attn + <span class="number">1e-6</span>, values=v(inputs)) </span><br><span class="line">slots += LayerNorm(slots)</span><br><span class="line"></span><br><span class="line">slots += LayerNorm(MLP(slots))</span><br><span class="line"><span class="keyword">return</span> slots</span><br></pre></td></tr></table></figure>
+<h1 id="Local-Slot-Attention-for-Vision-and-Language-Navigation"><a href="#Local-Slot-Attention-for-Vision-and-Language-Navigation" class="headerlink" title="Local Slot Attention for Vision-and-Language Navigation"></a>Local Slot Attention for Vision-and-Language Navigation</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>当前的基于transformer的解决VLN的模型中存在两个问题：</p>
+<ul>
+<li>模型独立地处理每个视图，而不整体的考虑</li>
+<li>self-attention中没有对空间进行限制，可能引入额外噪声，在大范围内进行self-attention的计算代价较大</li>
+</ul>
+<blockquote>
+<p>PREVALENT中一个视点的所有36个视图在每个时间步彼此关注，以整合来自整个场景的信息。这不仅在计算上是昂贵的，而且违背常识，因为具有大空间距离的区域通常是不相关的。来自远程视图的这种信息可能成为干扰导航决策的噪声。</p>
+<p>在Recurrent VLN-Bert中，仅关注候选视图。这减少了内存的使用，但是也将agent的感受野限制在了孤立的candidate view中，视觉线索可能在candidate view中被裁剪或模糊，并且不能对应于语言指令。</p>
+</blockquote>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><blockquote>
+<p>The state of navigation is composed of the history of visual perceptions and the embedding of language instructions.</p>
+<p>The state of the agent includes its pose, which is the embedding of its current heading and elevation</p>
+</blockquote>
+<h3 id="Panoramic-Action-Space"><a href="#Panoramic-Action-Space" class="headerlink" title="Panoramic Action Space"></a>Panoramic Action Space</h3><ul>
+<li><p>全景动作空间：每个viewpoint被表示为由3 × 12views组成的全景图，每个视图对应于特定的航向角和俯仰角，FOV(视角范围)为60度，分辨率为$640\times 480$，航向角范围为0到360度，间隔为30度，俯仰角为0、30或-30度。</p>
+</li>
+<li><p>candidate view：在36个views中，有些view是朝向另外的viewpoint的，被称为candidate view</p>
+</li>
+<li>本文利用ResNet-152 model pre-trained on the Place365 dataset来对view预提取特征，每个view被编码为2048维的tensor</li>
+<li>为了表示每个view的位置特征，采用重复32次的$(sin(𝜓𝑖),cos(𝜓𝑖),sin(𝜔𝑖),cos(𝜔𝑖))$的四元数作为第i个候选视图的角度特征，其中𝜓𝑖，𝜔𝑖分别表示其相对于agent的当前朝向的航向角和俯仰角，这一角度特征的维度为128，角度特征将和图像特征进行拼接，维度为2176，作为view feature，最后得到属于一个viewpoint的feature map shape为(36, 2176)</li>
+</ul>
+<h3 id="Revisiting-Recurrent-VLN-Bert"><a href="#Revisiting-Recurrent-VLN-Bert" class="headerlink" title="Revisiting Recurrent VLN-Bert"></a>Revisiting Recurrent VLN-Bert</h3><ul>
+<li>通过BERT对language instructions进行编码，并把[CLS] token（$L_{cls}$）作为initial navigation state, [CLS] token会在导航过程中不断更新，其他token（表示为$L_{/cls}$）固定不变</li>
+<li>在action selection阶段，multi-layer cross-attention module中将view features和state embedding ([CLS] token)拼接起来作为queries, instruction embedding的固定token($L_{/cls}$)作为context(keys and values), 然后计算cross-attention</li>
+</ul>
+<p>$\mathrm{L}_{c l s}^{X}, \mathrm{~V}_{t}^{X}=\text { Attention }_{\text {cross }}\left(\left[\mathrm{L}_{c l s} ; \mathrm{V}_{t}\right], \mathrm{L}_{/ c l s}\right)$</p>
+<blockquote>
+<p>cross-attention module的输出被分为两部分作为[$\mathrm{L}_{c l s}^{X}$; $\mathrm{~V}_{t}^{X}$]。$\mathrm{L}_{c l s}^{X}$表示[CLS]token的embedding（即state embedding），并且$\mathrm{~V}_{t}^{X}$表示视觉输入的embedding。</p>
+</blockquote>
+<ul>
+<li>multi-layer self-attention module整合candidate views的信息到[CLS] token中，最后一层self-attention layer的[CLS] token对所有candidate views的attention weights就是action selection score，agent选择得分最高的candidate view移动或停止</li>
+<li>然后计算language embedding$\mathrm{L}_{/c l s}^{X}$和visual embedding点乘获得多模态特征，再经过linear projection得到下一个时间步的navigation state（即用这一state替代$L_{cls}$，完成状态更新）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712162150581.png" alt="image-20230712162150581" style="zoom:50%;" /></p>
+<h3 id="Slot-Attention"><a href="#Slot-Attention" class="headerlink" title="Slot Attention"></a>Slot Attention</h3><ul>
+<li><p>将shape为(36,2176)的feature map（见<strong>Panoramic Action Space</strong>中的定义）作为Slot Attention mudule的input keys$I_{key}$</p>
+</li>
+<li><p>由于候选视图表示可导航方向，因此它们应该是导航任务的viewpoint的最显著部分，利用这一先验知识，使用candidate views来初始化slots，然后slots作为slot attention module的input queries $I_{query}$</p>
+</li>
+<li><p>对于slots来说，只需要更新visual information而不需要更新角度特征，所以将angle feature从feature map中去除，作为input values $I_{value}$</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712184648846.png" alt="image-20230712184648846" style="zoom:50%;" /></p>
+<h3 id="Local-Attention-Mask"><a href="#Local-Attention-Mask" class="headerlink" title="Local Attention Mask"></a>Local Attention Mask</h3><p>如果slot（candidate view）更靠近上下文视图，希望注意力权重更高，如果slot和上下文视图距离较远，则希望注意力权重更低。因此作者采用了一个简单的local attention mask来限制注意力的范围，使slot attention更稳定。</p>
+<ul>
+<li>36个views被视作$3\times 12$的网格</li>
+<li>举例来说，通过应用$3\times 3$局部掩模，candidate view仅关注周围的$3\times 3$区域。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712185326036.png" alt="image-20230712185326036" style="zoom: 50%;" /></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><p>The R2R dataset contains 10,567 panoramic views of 90 real-world in-door environments and 7,189 trajectories, each one is attached with three instructions written in natural language</p>
+<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
+<li><strong>Navigation Error(NE)</strong>, the shortest path length between the agent’s final position and the goal location.</li>
+<li><strong>Success Rate (SR)</strong>, the percentage of the agent successfully stops within 3 meters of the goal location.</li>
+<li><strong>Oracle Success Rate (OSR)</strong>, as long as the agent is ever within 3 meters ofthe goal location in its trajectory, it is considered successful. </li>
+<li><strong>Success rate weighted by Path Length (SPL)</strong>, trades-off success rate against trajectory length, higher SPL means more efficient navigation and less exploration.</li>
+</ul>
+<p>single NVIDIA 2080 Ti</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Vision-and-Language-Navigation/" rel="tag"># Vision-and-Language Navigation</a>
+              <a href="/tags/Slot-Attention/" rel="tag"># Slot Attention</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/" rel="prev" title="Learning to Explore using Active Neural SLAM">
+      <i class="fa fa-chevron-left"></i> Learning to Explore using Active Neural SLAM
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-Centric-Learning-with-Slot-Attention"><span class="nav-number">1.</span> <span class="nav-text">Object-Centric Learning with Slot Attention</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local-Slot-Attention-for-Vision-and-Language-Navigation"><span class="nav-number">2.</span> <span class="nav-text">Local Slot Attention for Vision-and-Language Navigation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">2.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Panoramic-Action-Space"><span class="nav-number">2.2.1.</span> <span class="nav-text">Panoramic Action Space</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Revisiting-Recurrent-VLN-Bert"><span class="nav-number">2.2.2.</span> <span class="nav-text">Revisiting Recurrent VLN-Bert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Slot-Attention"><span class="nav-number">2.2.3.</span> <span class="nav-text">Slot Attention</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Local-Attention-Mask"><span class="nav-number">2.2.4.</span> <span class="nav-text">Local Attention Mask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">2.3.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets"><span class="nav-number">2.3.1.</span> <span class="nav-text">Datasets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metrics"><span class="nav-number">2.3.2.</span> <span class="nav-text">Metrics</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
