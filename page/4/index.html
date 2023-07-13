@@ -164,6 +164,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/" class="post-title-link" itemprop="url">Review of 3D Object Detection for Autonomous Driving </a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-19T00:00:00+08:00">2023-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-06-05 17:48:06" itemprop="dateModified" datetime="2023-06-05T17:48:06+08:00">2023-06-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Review-of-3D-Object-Detection-for-Autonomous-Driving"><a href="#Review-of-3D-Object-Detection-for-Autonomous-Driving" class="headerlink" title="Review of 3D Object Detection for Autonomous Driving"></a>Review of 3D Object Detection for Autonomous Driving</h1><p>任务目标：三维目标检测可细分为分类和定位两个子任务，通过紧密的三维边界框定位目标，以确定目标的类别、位置、大小、方向等信息</p>
+<p>3D数据的不同表示类型</p>
+<ul>
+<li><p>3D点云是由激光雷达对物体表面进行扫描得到的一组无序点的集合，具有不规则性和高度稀疏性，点云是三维空间(xyz坐标)点的集合。</p>
+<blockquote>
+<p>激光雷达（Light  Detection  And  Ranging,  LiDAR）来获取三维点云，除了激光雷达，雷达（Radio  Detection  and Ranging,  Radar）也可以用来获取点云</p>
+</blockquote>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348563616">体素Voxel</a>：体素是3D空间的像素。量化的，大小固定的点云。每个单元都是固定大小和离散坐标，可以理解为固定分辨率的三维栅格地图。</p>
+</li>
+</ul>
+<h2 id="基于图像的三维目标检测"><a href="#基于图像的三维目标检测" class="headerlink" title="基于图像的三维目标检测"></a>基于图像的三维目标检测</h2><ul>
+<li>Pseudo-LiDAR:从RGB图像生成伪激光雷达，这类方法通常由深度估计和目标检测两个网络组成，首先对RGB图像进行深度估计，然后利用深度将其投影为一个伪激光雷达，最后再像处理点云一样使用三维方法进检测</li>
+</ul>
+<h2 id="基于-LiDAR-的三维目标检测"><a href="#基于-LiDAR-的三维目标检测" class="headerlink" title="基于 LiDAR 的三维目标检测"></a>基于 LiDAR 的三维目标检测</h2><p>点云数据特点：</p>
+<ul>
+<li>提供了三维空间信息，包含了精确的深度和位置信息</li>
+<li>点云具有稀疏性、无序性和分布不均性</li>
+</ul>
+<p>按照对点云数据的处理方式，可以将基于LiDAR的三维目标检测方法分为：</p>
+<ul>
+<li>基于视图的View-based方法<ul>
+<li>将点云投影为二维视图（如鸟瞰图BEV），然后利用2D目标检测算法进行检测</li>
+</ul>
+</li>
+<li>基于体素的Voxel-based方法<ul>
+<li>将三维空间划分为均匀的网格，每个网格称为一个体素，将体素内部的点特征编码为体素特征，从而获得规则的网络输入。</li>
+</ul>
+</li>
+<li>基于原始点的Point-based方法<ul>
+<li>直接对原始点云进行处理</li>
+</ul>
+</li>
+<li>基于点和体素的Point-Voxel-based方法</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/04/19/2023418-Review-of-3D-Object-Detection-for-Autonomous-Driving/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -944,95 +1059,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/30/CutLER/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/30/CutLER/" class="post-title-link" itemprop="url">Cut and Learn for Unsupervised Object Detection and Instance Segmentation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-01-30 00:00:00 / Modified: 15:44:33" itemprop="dateCreated datePublished" datetime="2023-01-30T00:00:00+08:00">2023-01-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CutLER"><a href="#CutLER" class="headerlink" title="CutLER"></a>CutLER</h1><p>Cut and Learn for Unsupervised Object Detection and Instance Segmentation</p>
-<p>利用自监督模型的特性，在无监督的情况下发现对象，并用于训练一个无监督的定位模型。</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>这项工作中，作者研究了无监督的目标检测和实例分割模型，这些模型可以在没有任何人工标记的情况下进行训练。</p>
-<p>Key insight: 简单的probing和训练机制可以放大自监督模型的固有定位能力，从而产生最先进的无监督zero-shot detectors。</p>
-<p>以往的自监督ViT模型可以无监督检测图像中的单个显著对象，如TokenCut，但这种显著对象检测方法只能定位单个对象，不能用于包含多个对象的真实世界图像。</p>
-<p>FreeSOLO和DETReg也旨在进行无监督的多对象检测或多对象发现，但它们依赖于特定的检测架构，且在ImageNet训练过后，还需要在特定域内完成微调，而不能直接应用。</p>
-<p>CutLER特点：</p>
-<ul>
-<li>Simplicity：不受主干架构选择影响（不需要特定的检测架构），易于训练</li>
-<li>Zero-shot detector：尽在ImagNet上进行训练，直接在11个不同的benchmark上进行zero-shot推理，甚至优于以往使用了特定域内数据的方法</li>
-<li>Robustness：域适应性很强</li>
-<li>Pretraining for supervised detection：将CutLER作为预训练模型，提升下游全监督任务性能</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230130142543886.png" alt="image-20230130142543886" style="zoom:67%;" /></p>
-<p>在ImageNet上训练，直接应用到广泛域上进行分割和检测任务。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/01/30/CutLER/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1102,7 +1128,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1115,7 +1141,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

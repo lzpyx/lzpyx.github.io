@@ -28,8 +28,9 @@
 <meta property="og:description" content="Learning to Explore using Active Neural SLAMMotivation未知环境中导航的核心问题是探索，即，如何有效地访问尽可能多的环境，最大化覆盖环境范围以给予在未知环境中找到目标的机会，或在有限的时间预算上对环境进行有效的预建图。 为了在未知环境中进行高效主动探索，agent需要知道：  where it has been before (i.e. Mapp">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711144056730.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713110153314.png">
 <meta property="article:published_time" content="2023-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-11T08:07:27.061Z">
+<meta property="article:modified_time" content="2023-07-13T14:22:20.974Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
 <meta property="article:tag" content="Exploration">
@@ -196,10 +197,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-11 00:00:00 / Modified: 16:07:27" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:22:20" itemprop="dateModified" datetime="2023-07-13T22:22:20+08:00">2023-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -241,8 +248,28 @@
 <li><p>灵活的输入模态</p>
 </li>
 </ul>
-<h2 id="Task-Setup"><a href="#Task-Setup" class="headerlink" title="Task Setup"></a>Task Setup</h2><p>探索任务的目标是在固定时间预算内最大化探索覆盖范围，覆盖范围定义为地图中已知可穿越的总面积。</p>
-<p>使用Gibson和Matterport datasets</p>
+<span id="more"></span>
+<h2 id="Task-Setup"><a href="#Task-Setup" class="headerlink" title="Task Setup"></a>Task Setup</h2><ul>
+<li><p>探索任务的目标是在固定时间预算内最大化探索覆盖范围，覆盖范围定义为地图中已知可穿越的总面积。</p>
+</li>
+<li><p>使用Gibson和Matterport datasets</p>
+</li>
+<li><p>以往的工作假设了简单的agent motion，比如假设agent在网格上动作，且转向都为90度，或者虽然是细粒度控制，但是假设了motion和pose是没有噪声的。因此本文收集了真实世界的运动和传感器数据，以在仿真中建立更真实的agent motion and sensor noise models</p>
+</li>
+</ul>
+<h3 id="Actuation-and-Sensor-Noise-Model"><a href="#Actuation-and-Sensor-Noise-Model" class="headerlink" title="Actuation and Sensor Noise Model"></a>Actuation and Sensor Noise Model</h3><p>用$(x,y,o)$来表示agent pose，其中$x,y$代表位置坐标，以米为单位，$o$代表agent的朝向，以弧度为单位，从$x$轴逆时针测量。</p>
+<p>假设agent一开始的位置为$p_0=(0,0,0)$,agent要执行动作$a_t$，每个动作是通过向robot发出控制指令来完成的，假设对应的控制指令为$\Delta u_a=(x_A,y_a,o_a)$，执行完动作后的实际agent pose为$p_1=(x^{\star},y^{\star},o^{\star})$, The actuation noise(动作噪声)代表了动作之后的实际pose $p_1$和预期的pose $(p_0+\Delta u)$之间的差：</p>
+<p>$\epsilon_{a c t}=p_{1}-\left(p_{0}+\Delta u\right)=\left(x^{\star}-x_{a}, y^{\star}-y_{a}, o^{\star}-o_{a}\right)$</p>
+<p>移动机器人通常配备估计姿态的传感器，假设传感器估计的<strong>动作后</strong>的姿态为$p_1’=(x’,y’,o’)$, The sensor noise定义为传感器估计的姿态和实际姿态的差：</p>
+<p>$\epsilon_{s e n}=p_{1}^{\prime}-p_{1}=\left(x^{\prime}-x^{\star}, y^{\prime}-y^{\star}, o^{\prime}-o^{\star}\right)$</p>
+<p>使用三个默认导航操作：</p>
+<ul>
+<li>向前：向前移动25cm，$u_{Forward}=(0.25,0,0)$</li>
+<li>右转：就地顺时针旋转10度, $u_{right}=(0,0,-10*\pi /180)$</li>
+<li>左转：就地逆时针旋转10度, $u_{left}=(0,0,10*\pi /180)$</li>
+</ul>
+<p>实际执行时，向前的平移操作会有旋转动作噪声，而旋转会有平移动作噪声</p>
+<p>对于每个动作$a$，我们针对动作噪声和传感器噪声拟合单独的混合高斯模型，3种动作，每种动作对应2种噪声，总共6个混合高斯模型。这些高斯混合模型中的每个分量是3个变量x、y和o的多变量高斯。对于每个模型，我们收集了600个数据点。使用交叉验证选择每个高斯混合模型中的分量的数量。</p>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711144056730.png" alt="image-20230711144056730" style="zoom:50%;" /></p>
 <p>由3个部分组成：</p>
 <ul>
@@ -265,6 +292,70 @@
 </ul>
 </li>
 </ul>
+<h3 id="Map-Representation"><a href="#Map-Representation" class="headerlink" title="Map Representation"></a>Map Representation</h3><p>The Active Neural SLAM model在内部维护空间地图$m_t$和agent姿态$x_t$.</p>
+<ul>
+<li><p>spatial map $m_t$是一个$2\times M \times M$的矩阵，$M\times M$代表地图大小，这张空间地图中的每个元素对应于物理世界中一个大小为$25cm^2(5cm × 5cm)$的单元，第一通道中的每个元素表示在相应位置处的障碍物的概率，第二通道中的每个元素表示该位置被探索的概率，当已知某一cell是自由空间或障碍物时，认为这一cell被探索，空间地图被全零初始化为$m_0=[0]^{2\times M \times M}$</p>
+</li>
+<li><p>$x_t$代表了时间步t时agent的pose（位置和朝向），agent总是被初始化在地图中心，面朝东方(x轴正方向)，即$x_0=(M/2,M/2,0.0)$</p>
+</li>
+</ul>
+<h3 id="Neural-SLAM-Module"><a href="#Neural-SLAM-Module" class="headerlink" title="Neural SLAM Module"></a>Neural SLAM Module</h3><p>Neural SLAM Module($f_{SLAM}$)产生自由空间地图（free space maps）</p>
+<p>输入包括：</p>
+<ul>
+<li>RGB图像$s_t$</li>
+<li>最近两次传感器读数$x’_{t-1:t}$</li>
+<li>上次估计的位姿$\hat{x}_{t-1}$</li>
+<li>上次估计的地图$m_{t-1}$</li>
+</ul>
+<p>输出：</p>
+<ul>
+<li>当前估计的位姿$\hat{x}_t$</li>
+<li>当前估计的地图$m_t$</li>
+</ul>
+<p>即$m_{t}, \hat{x}_{t}=f_{S L A M}\left(s_{t}, x_{t-1: t}^{\prime}, \hat{x}_{t-1}, m_{t-1} \mid \theta_{S}\right)$, 其中$\theta_{S}$代表Neural SLAM Module的可学习参数，包含两个组件：</p>
+<ul>
+<li>Mapper($f_{Map}$)输出egocentric top-down 2D spatial map $p_{t}^{e g o} \in[0,1]^{2 \times V \times V}$,$V$是视觉范围，预测当前观测中的障碍物和已探测的区域。</li>
+<li>Pose Estimator($f_{PE}$)基于过去的pose estimation($\hat{x}_{t−1}$)和最近两个egocentric map predictions ($p^{ego}_{t−1:t}$)来预测agent pose($\hat{x}_t$), 本质上是比较当前egocentric map prediction与上一个egocentric map prediction，以预测两个地图之间的姿态变化</li>
+</ul>
+<p>基于Pose Estimator给出的姿态估计，将Mapper输出的egocentric map转换为geocentric map，然后与先前的空间地图($m_{t-1}$)聚合以获得当前地图（$m_t$）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713110153314.png" alt="image-20230713110153314" style="zoom:50%;" /></p>
+<h3 id="Global-Policy"><a href="#Global-Policy" class="headerlink" title="Global Policy"></a>Global Policy</h3><p>Global Policy的输入是 $h_{t} \in[0,1]^{4 \times M \times M}$，其中前两个通道代表Neural SLAM Module输出的空间地图$m_t$, 第三个通道是Neural SLAM Module输出的agent位置（这一通道的$M \times M$的地图上，agent位置为1，其他为0），第四个通道代表已访问过的位置（历史上agent经过的所有位置置1）</p>
+<p>$\begin{array}{ll}<br>h_{t}[c, i, j]=m_{t}[c, i, j] &amp; \forall c \in\{0,1\} \\<br>h_{t}[2, i, j]=1 &amp; \text { if } i=\hat{x}_{t}[0] \text { and } j=\hat{x}_{t}[1] \\<br>h_{t}[3, i, j]=1 &amp; \text { if }(i, j) \in\left[\left(\hat{x}_{k}[0], \hat{x}_{k}[1]\right)\right]_{k \in\{0,1, \ldots, t\}}<br>\end{array}$</p>
+<p>$h_t$经过两个变换后再送进Global Policy</p>
+<ul>
+<li>从$h_t$中采样得到agent周围大小为$4\times G\times G$的窗口</li>
+<li>对$h_t$进行max pooling，得到$4\times G\times G$的特征图</li>
+</ul>
+<p>这两种变换的结果都被叠加形成一个大小为8 ×G×G的张量，并作为输入传递给Global Policy model</p>
+<p>Global Policy model使用卷积神经网络来预测long-term goal（$g_t^l$属于$G\times G$的空间），$g_t^l=\pi_G(h_t|\theta_G)$, 其中$\theta_G$代表Global Policy model的可学习参数</p>
+<h3 id="Planner"><a href="#Planner" class="headerlink" title="Planner"></a>Planner</h3><p>输入为：</p>
+<ul>
+<li>long-term goal ($g^l_t$)</li>
+<li>spatial obstacle map($m_t$)</li>
+<li>agent pose estimate($\hat{x}_t$)</li>
+</ul>
+<p>输出：</p>
+<ul>
+<li>short-term goal($g^s_t$)</li>
+</ul>
+<p>使用Fast Marching Method (Sethian, 1996)得到当前位置到长期目标位置的最短路径。未探索的区域被视为planning的自由空间。然后将计划路径上距离智能体0.25m内的最远点作为short-term goal</p>
+<h3 id="Local-Policy"><a href="#Local-Policy" class="headerlink" title="Local Policy"></a>Local Policy</h3><p>输入：</p>
+<ul>
+<li>current RGB observation ($s_t$) </li>
+<li>the short-term goal ($g^s_t$ )</li>
+</ul>
+<p>输出：</p>
+<ul>
+<li>navigational action  $a_{t}=\pi_{L}\left(s_{t}, g_{t}^{s} \mid \theta_{L}\right)$, $\theta_{L}$代表Local Policy的可学习参数</li>
+</ul>
+<p>short-term goal坐标在传递到Local Policy之前被转换为相对于agent位置的距离和角度，Local Policy利用recurrent neural<br>network实现。</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>本文基于 Habitat 模拟器，在Gibson和Matterport(MP3D)数据集上进行实验。Gibson 主要由办公室场景组成，而MP3D主要由家庭场景组成。使用Gibson 作为训练测试集，MP3D做为泛化测试集。Gibson 测试集是不公开的，在线测试。</p>
+<p>观察空间由大小为$3\times 128\times 128$的RGB图像和大小为$3\times 1$的基础里程计传感器读数组成，里程计的$3\times 1$的读数表示agent的x-y坐标和方向的变化。</p>
+<p>动作空间由三个动作组成:前进、左转、右转。</p>
+<p>目标是固定时间内最大化覆盖范围。覆盖范围是地图上已知可穿越的总面积。</p>
+<p>traversable point：在代理的视野范围内并且距离小于3.2米点就是已知的可穿越的点。</p>
+<p>评估指标： 覆盖范围的面积和覆盖范围的百分比</p>
+<p>为了分析所有模型在场景大小方面的性能，将Gibson验证集分为两部分，一个由10个场景组成的小集合，可探索区域从16 $m^2$到36$m^2$，一个由4个场景组成的大集合，可探索区域从55 $m^2$到100$m^2$。</p>
 
     </div>
 
@@ -289,8 +380,8 @@
       <i class="fa fa-chevron-left"></i> Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/07/12/20230712-Slot-Attention/" rel="next" title="Slot Attention">
-      Slot Attention <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/12/20230712-Few-Shot-Learning/" rel="next" title="Few-Shot Learning">
+      Few-Shot Learning <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -350,7 +441,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Learning-to-Explore-using-Active-Neural-SLAM"><span class="nav-number">1.</span> <span class="nav-text">Learning to Explore using Active Neural SLAM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task-Setup"><span class="nav-number">1.2.</span> <span class="nav-text">Task Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Learning-to-Explore-using-Active-Neural-SLAM"><span class="nav-number">1.</span> <span class="nav-text">Learning to Explore using Active Neural SLAM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task-Setup"><span class="nav-number">1.2.</span> <span class="nav-text">Task Setup</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Actuation-and-Sensor-Noise-Model"><span class="nav-number">1.2.1.</span> <span class="nav-text">Actuation and Sensor Noise Model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Representation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Map Representation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Neural-SLAM-Module"><span class="nav-number">1.3.2.</span> <span class="nav-text">Neural SLAM Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Global-Policy"><span class="nav-number">1.3.3.</span> <span class="nav-text">Global Policy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Planner"><span class="nav-number">1.3.4.</span> <span class="nav-text">Planner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Local-Policy"><span class="nav-number">1.3.5.</span> <span class="nav-text">Local Policy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.4.</span> <span class="nav-text">Experiment</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -364,7 +455,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -377,7 +468,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

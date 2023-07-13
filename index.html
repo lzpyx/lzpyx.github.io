@@ -187,10 +187,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-12 00:00:00 / Modified: 19:15:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
+              <time title="Created: 2023-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:21:57" itemprop="dateModified" datetime="2023-07-13T22:21:57+08:00">2023-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -216,78 +222,101 @@
 <p><a href="https://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">DETR笔记</a></p>
 <p>每个slot可以理解为一个特征向量，本文聚焦于如何从 CNN 的 feature map 中聚类/抽象出 set of slots</p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123723688.png" alt="image-20230712123723688" style="zoom:50%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123813393.png" alt="image-20230712123813393" style="zoom:50%;" /></p>
-<p>Slot Attention module模块本质上基本就是 multi-layer weight-sharing transformer decoder (去掉 self-attention)</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/12/20230712-Slot-Attention/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/12/20230712-Few-Shot-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/12/20230712-Few-Shot-Learning/" class="post-title-link" itemprop="url">Few-Shot Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:23:08" itemprop="dateModified" datetime="2023-07-13T22:23:08+08:00">2023-07-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Prototypical-Networks-for-Few-shot-Learning"><a href="#Prototypical-Networks-for-Few-shot-Learning" class="headerlink" title="Prototypical Networks for Few-shot Learning"></a>Prototypical Networks for Few-shot Learning</h1><ul>
+<li>对于分类问题，原型网络将其看做在语义空间中寻找每一类的原型中心。</li>
+<li>针对Few-shot的任务定义，原型网络训练时学习如何拟合中心。学习一个度量函数，该度量函数可以通过少量的几个样本找到所属类别在该度量空间的原型中心。</li>
+<li>测试时，用支持集（Support Set）中的样本来计算新的类别的聚类中心，再利用最近邻分类器的思路进行预测。本文主要针对Few-Show／Zero-Shot任务中过拟合的问题进行研究，将原型网络和聚类联系起来，和目前的一些方法进行比较，取得了不错的效果。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712221559551.png" alt="image-20230712221559551" style="zoom:50%;" /></p>
 <ul>
-<li><p>inputs是$N\times D_{input}$的feature map</p>
-</li>
-<li><p>从一个高斯分布中采样出K个$D_{slots}$维的可学习参数，作为slots（可以理解为 DETR 的 object queries，K个slot）的初始化（可以理解为从VAE学到的高斯分布采样得到的）</p>
-</li>
-<li>这里的attn其实就是transformer decoder中的cross-attention</li>
-<li>计算 updates，注意这里是 WeightedMean，而不是 transformer 里的 WeightedSum，但只是相差了常数系数</li>
-<li>利用 GRU和updates 对之前的 slots 进行更新。 ablation中其实看到 GRU 的作用并不太明显</li>
-<li><strong>关键区别在于 attention 的归一化维度不同</strong>，slot attention 沿 slot 维度归一化，换言之对于每个 pixel，各 slot 对其 attention 之和为 1（即各 slot 互斥的瓜分各个 pixel，这也是论文中“the slots compete for input keys”所想表达的意思）；而 transformer decoder 的 cross attention 沿 inputs 维度归一化，即每个 slot 对 inputs 中各 pixel 的 attention 之和为 1，slot 之间是互不相关的。</li>
-<li>另外要注意的是，由于 slots 从高斯分布中采样，优化的其实只有 mu, sigma 两个参数，而非 DETR 里直接优化。每次调用 Slot Attention module 时，slots 都要重新采样，而不是从一而终的用固定的 object queries。</li>
+<li>$C_k$代表类的原型，是支持集样本embedding的均值向量</li>
+<li>$S_k$代表支持集中每个类的样本</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># simplified slot attention module</span></span><br><span class="line">slots = slots_mu + exp(slots_log_sigma) * random.normal([N, num_slots, slot_size])</span><br><span class="line">inputs = LayerNorm(inputs)</span><br><span class="line"><span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(T) <span class="comment"># loop == multi-layer</span></span><br><span class="line">    attn = Softmax(dot(k(inputs), q(slots).T), axis=<span class="string">&#x27;slots&#x27;</span>)</span><br><span class="line">    slots = WeightedMean(weights=attn + <span class="number">1e-6</span>, values=v(inputs)) <span class="comment"># not sum</span></span><br><span class="line">    slots += MLP(LayerNorm(slots))</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># simplifed transformer decoder layer</span></span><br><span class="line">slots += LayerNorm(self_attn(slots, slots, slots)) <span class="comment"># self-attention</span></span><br><span class="line"></span><br><span class="line">attn = Softmax(dot(k(inputs), q(slots).T), axis=<span class="string">&#x27;inputs&#x27;</span>) <span class="comment"># cross-attention</span></span><br><span class="line">slots = WeightedSum(weights=attn + <span class="number">1e-6</span>, values=v(inputs)) </span><br><span class="line">slots += LayerNorm(slots)</span><br><span class="line"></span><br><span class="line">slots += LayerNorm(MLP(slots))</span><br><span class="line"><span class="keyword">return</span> slots</span><br></pre></td></tr></table></figure>
-<h1 id="Local-Slot-Attention-for-Vision-and-Language-Navigation"><a href="#Local-Slot-Attention-for-Vision-and-Language-Navigation" class="headerlink" title="Local Slot Attention for Vision-and-Language Navigation"></a>Local Slot Attention for Vision-and-Language Navigation</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>当前的基于transformer的解决VLN的模型中存在两个问题：</p>
+<p>$\mathbf{c}_{k}=\frac{1}{\left|S_{k}\right|} \sum_{\left(\mathbf{x}_{i}, y_{i}\right) \in S_{k}} f_{\phi}\left(\mathbf{x}_{i}\right)$</p>
 <ul>
-<li>模型独立地处理每个视图，而不整体的考虑</li>
-<li>self-attention中没有对空间进行限制，可能引入额外噪声，在大范围内进行self-attention的计算代价较大</li>
+<li>计算query instance和各个类原型间的距离，通过softmax得到分类概率分布</li>
 </ul>
-<blockquote>
-<p>PREVALENT中一个视点的所有36个视图在每个时间步彼此关注，以整合来自整个场景的信息。这不仅在计算上是昂贵的，而且违背常识，因为具有大空间距离的区域通常是不相关的。来自远程视图的这种信息可能成为干扰导航决策的噪声。</p>
-<p>在Recurrent VLN-Bert中，仅关注候选视图。这减少了内存的使用，但是也将agent的感受野限制在了孤立的candidate view中，视觉线索可能在candidate view中被裁剪或模糊，并且不能对应于语言指令。</p>
-</blockquote>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><blockquote>
-<p>The state of navigation is composed of the history of visual perceptions and the embedding of language instructions.</p>
-<p>The state of the agent includes its pose, which is the embedding of its current heading and elevation</p>
-</blockquote>
-<h3 id="Panoramic-Action-Space"><a href="#Panoramic-Action-Space" class="headerlink" title="Panoramic Action Space"></a>Panoramic Action Space</h3><ul>
-<li><p>全景动作空间：每个viewpoint被表示为由3 × 12views组成的全景图，每个视图对应于特定的航向角和俯仰角，FOV(视角范围)为60度，分辨率为$640\times 480$，航向角范围为0到360度，间隔为30度，俯仰角为0、30或-30度。</p>
-</li>
-<li><p>candidate view：在36个views中，有些view是朝向另外的viewpoint的，被称为candidate view</p>
-</li>
-<li>本文利用ResNet-152 model pre-trained on the Place365 dataset来对view预提取特征，每个view被编码为2048维的tensor</li>
-<li>为了表示每个view的位置特征，采用重复32次的$(sin(𝜓𝑖),cos(𝜓𝑖),sin(𝜔𝑖),cos(𝜔𝑖))$的四元数作为第i个候选视图的角度特征，其中𝜓𝑖，𝜔𝑖分别表示其相对于agent的当前朝向的航向角和俯仰角，这一角度特征的维度为128，角度特征将和图像特征进行拼接，维度为2176，作为view feature，最后得到属于一个viewpoint的feature map shape为(36, 2176)</li>
-</ul>
-<h3 id="Revisiting-Recurrent-VLN-Bert"><a href="#Revisiting-Recurrent-VLN-Bert" class="headerlink" title="Revisiting Recurrent VLN-Bert"></a>Revisiting Recurrent VLN-Bert</h3><ul>
-<li>通过BERT对language instructions进行编码，并把[CLS] token（$L_{cls}$）作为initial navigation state, [CLS] token会在导航过程中不断更新，其他token（表示为$L_{/cls}$）固定不变</li>
-<li>在action selection阶段，multi-layer cross-attention module中将view features和state embedding ([CLS] token)拼接起来作为queries, instruction embedding的固定token($L_{/cls}$)作为context(keys and values), 然后计算cross-attention</li>
-</ul>
-<p>$\mathrm{L}_{c l s}^{X}, \mathrm{~V}_{t}^{X}=\text { Attention }_{\text {cross }}\left(\left[\mathrm{L}_{c l s} ; \mathrm{V}_{t}\right], \mathrm{L}_{/ c l s}\right)$</p>
-<blockquote>
-<p>cross-attention module的输出被分为两部分作为[$\mathrm{L}_{c l s}^{X}$; $\mathrm{~V}_{t}^{X}$]。$\mathrm{L}_{c l s}^{X}$表示[CLS]token的embedding（即state embedding），并且$\mathrm{~V}_{t}^{X}$表示视觉输入的embedding。</p>
-</blockquote>
-<ul>
-<li>multi-layer self-attention module整合candidate views的信息到[CLS] token中，最后一层self-attention layer的[CLS] token对所有candidate views的attention weights就是action selection score，agent选择得分最高的candidate view移动或停止</li>
-<li>然后计算language embedding$\mathrm{L}_{/c l s}^{X}$和visual embedding点乘获得多模态特征，再经过linear projection得到下一个时间步的navigation state（即用这一state替代$L_{cls}$，完成状态更新）</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712162150581.png" alt="image-20230712162150581" style="zoom:50%;" /></p>
-<h3 id="Slot-Attention"><a href="#Slot-Attention" class="headerlink" title="Slot Attention"></a>Slot Attention</h3><ul>
-<li><p>将shape为(36,2176)的feature map（见<strong>Panoramic Action Space</strong>中的定义）作为Slot Attention mudule的input keys$I_{key}$</p>
-</li>
-<li><p>由于候选视图表示可导航方向，因此它们应该是导航任务的viewpoint的最显著部分，利用这一先验知识，使用candidate views来初始化slots，然后slots作为slot attention module的input queries $I_{query}$</p>
-</li>
-<li><p>对于slots来说，只需要更新visual information而不需要更新角度特征，所以将angle feature从feature map中去除，作为input values $I_{value}$</p>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712184648846.png" alt="image-20230712184648846" style="zoom:50%;" /></p>
-<h3 id="Local-Attention-Mask"><a href="#Local-Attention-Mask" class="headerlink" title="Local Attention Mask"></a>Local Attention Mask</h3><p>如果slot（candidate view）更靠近上下文视图，希望注意力权重更高，如果slot和上下文视图距离较远，则希望注意力权重更低。因此作者采用了一个简单的local attention mask来限制注意力的范围，使slot attention更稳定。</p>
-<ul>
-<li>36个views被视作$3\times 12$的网格</li>
-<li>举例来说，通过应用$3\times 3$局部掩模，candidate view仅关注周围的$3\times 3$区域。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712185326036.png" alt="image-20230712185326036" style="zoom: 50%;" /></p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><p>The R2R dataset contains 10,567 panoramic views of 90 real-world in-door environments and 7,189 trajectories, each one is attached with three instructions written in natural language</p>
-<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
-<li><strong>Navigation Error(NE)</strong>, the shortest path length between the agent’s final position and the goal location.</li>
-<li><strong>Success Rate (SR)</strong>, the percentage of the agent successfully stops within 3 meters of the goal location.</li>
-<li><strong>Oracle Success Rate (OSR)</strong>, as long as the agent is ever within 3 meters ofthe goal location in its trajectory, it is considered successful. </li>
-<li><strong>Success rate weighted by Path Length (SPL)</strong>, trades-off success rate against trajectory length, higher SPL means more efficient navigation and less exploration.</li>
-</ul>
-<p>single NVIDIA 2080 Ti</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712222740817.png" alt="image-20230712222740817" style="zoom:50%;" /></p>
 
       
     </div>
@@ -330,10 +359,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-11 00:00:00 / Modified: 16:07:27" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:22:20" itemprop="dateModified" datetime="2023-07-13T22:22:20+08:00">2023-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -375,31 +410,14 @@
 <li><p>灵活的输入模态</p>
 </li>
 </ul>
-<h2 id="Task-Setup"><a href="#Task-Setup" class="headerlink" title="Task Setup"></a>Task Setup</h2><p>探索任务的目标是在固定时间预算内最大化探索覆盖范围，覆盖范围定义为地图中已知可穿越的总面积。</p>
-<p>使用Gibson和Matterport datasets</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711144056730.png" alt="image-20230711144056730" style="zoom:50%;" /></p>
-<p>由3个部分组成：</p>
-<ul>
-<li><strong>Neural SLAM Module</strong>，根据当前的观察和先前的预测来预测环境地图和agent pose<ul>
-<li>使用卷积对visual obervation进行encode，然后再反卷积decode出map</li>
-<li>学习structured map和pose representations</li>
-<li>通过有监督学习进行训练，使用binary cross-entropy loss for <strong>map prediction</strong> and mean-squared loss for <strong>pose prediction</strong>.</li>
-</ul>
-</li>
-<li><strong>Global Policy</strong>，使用预测的地图和agent pose来生成long-term goal，并使用当前地图上的分析路径规划（如 Dijkstra 或 A*）将其转换为short-term goal<ul>
-<li>使用CNN产生long-term goal</li>
-<li>在course time-scale运行，每25步运行一次</li>
-<li>使用强化学习进行训练，将探索区域的增加作为reward</li>
-</ul>
-</li>
-<li><strong>Local Policy</strong>，根据当前观察输出导航操作以实现short-term goal<ul>
-<li>CNN+GRU</li>
-<li>在fine time-scale运行，每步都输出一个low-level navigation action</li>
-<li>使用二元交叉熵损失+imitation learning进行训练</li>
-</ul>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -441,10 +459,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-11 00:00:00 / Modified: 17:51:34" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:22:50" itemprop="dateModified" datetime="2023-07-13T22:22:50+08:00">2023-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -477,55 +501,93 @@
 </ul>
 <p>传统的within-task meta-learning benchmarks更多地依赖于共同的表征学习而不是learning-to-learn，Meta Omnium更好地测试了learning-to-learn的能力，因为组成的任务需要更多样化的表征</p>
 <p>baseline具有最小的task-specific decoders，评估learning-to-learn的能力，而不是融入先验</p>
-<h3 id="Data-Splits-and-Tasks"><a href="#Data-Splits-and-Tasks" class="headerlink" title="Data Splits and Tasks"></a>Data Splits and Tasks</h3><p>对于每个主要任务（分类，分割，关键点定位），数据集都被分为seen datasets（用于meta-training）,unseen datasets（用于out-of-domain meta-validation and meta-testing）。</p>
-<p>seen datasets按照类别将其划分为meta-train/val/test</p>
-<p>unseen不划分，数据集中所有类别都会被用于validation和testing</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/" class="post-title-link" itemprop="url">Object Goal Navigation using Goal-Oriented Semantic Exploration</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 15:59:05" itemprop="dateModified" datetime="2023-07-13T15:59:05+08:00">2023-07-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration"><a href="#Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration" class="headerlink" title="Object Goal Navigation using Goal-Oriented Semantic Exploration"></a>Object Goal Navigation using Goal-Oriented Semantic Exploration</h1><p>object goal navigation：在未知环境中导航到一个给定物体类别的实例对象位置</p>
+<p>假设要求agent在未知环境中导航到“dining table”，在语义理解方面，该任务不仅涉及对象检测，即“dining table”看起来像什么，但也要<strong>了解“dining table”在哪里更有可能被找到</strong>。</p>
 <ul>
-<li>每个任务对应多个数据集，实线框代表seen datasets，虚线框代表unseen datasets</li>
-<li>The seen (ID) datasets are divided class-wise into meta-train/meta-val/meta-test splits.</li>
-<li>The unseen datasets are held out for out-of-distribution (OD) evaluation.</li>
-<li>Meta-training is conducted on the ID-meta-train split of the seen datasets (blue).</li>
-<li>Models are validated on ID validation class splits, or OOD validation datasets (green).</li>
-<li>Results are reported on the ID test class splits and OOD test datasets (orange).</li>
-<li>另外还保留了regression task来评估新任务上的泛化性，regression任务中的数据集在meta-training时并没有被使用</li>
+<li>long-term episodic memory可以使agent有效探索和跟踪环境</li>
+<li>学习语义先验可以使agent使用episodic memory来决定接下来探索哪个区域，以便在最少的时间内找到目标对象。</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711170654082.png" alt="image-20230711170654082" style="zoom: 33%;" /></p>
-<p>两种训练范式：</p>
-<ul>
-<li>Single-task meta-learning：在一个特定task family内进行训练和测试，评估meta-learning的效果</li>
-<li>Multi-task meta-learning：在所有的task families上进行训练，评估meta-learning的效果</li>
-</ul>
-<p>两种评估方式：</p>
-<ul>
-<li>Within-distribution generalization (ID): How well do meta-learners generalize to novel test concepts within<br>the seen datasets?</li>
-<li>Out-distribution generalization (OOD): How well do meta-learners generalize to novel concepts in unseen datasets?</li>
-</ul>
-<h3 id="Datasets-and-Metrics"><a href="#Datasets-and-Metrics" class="headerlink" title="Datasets and Metrics"></a>Datasets and Metrics</h3><h4 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h4><p>选择Meta-Album中的10个datasets，每个数据集包含19-706类，图片大小为$128 \times128$，每个类别有40张图像。其中3个数据集被保留用于out-of-distribution meta-validation，4个数据集用于out-of-distribution meta-test</p>
-<h4 id="Segmentation"><a href="#Segmentation" class="headerlink" title="Segmentation"></a>Segmentation</h4><ul>
-<li>将FSS1000用于in-distribution，包含10000张图像，1000个类</li>
-<li>FSS1000结合VizWiz用于OOD meta-validation，包含862张图像，22个类</li>
-<li>modified Pascal5i（包含7242张图像，6个类）和医学图像数据集PH2（包含200张图像，3个类）用于meta-testing</li>
-<li>所有图像都被resize为$224\times 224$</li>
-<li>在进行few-shot learning时排除了与FSS1000数据集类别重叠的类，因此所有数据集之间没有重叠的类</li>
-</ul>
-<h4 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h4><ul>
-<li>animal-pose for in-distribution，包含5个动物类别，超过4k张图像中的6k个实例,每个动物都被从原图像中crop出来。cat和dog用于训练，horse和sheep用于in-domain validation，cow用于in-domain testing</li>
-<li>synthetic animal-pose for OOD meta-validation,用从随机背景上的各种视点和照明渲染的动物CAD模型生成合成图像。在最终的数据集中只保留马和老虎类别。</li>
-<li>MPII human-pose for OOD meta-testing,包括约40k人超过25k张带有人体关节点标注的图像</li>
-<li>所有图像都被resize到$128\times128$</li>
-</ul>
-<h4 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a>Regression</h4><ul>
-<li><p>ShapeNet1D，预测航向角，总共包含30个类别，我们从测试集中保留了3个类别</p>
-</li>
-<li><p>ShapeNet2D，具有航向角和俯仰角的2D旋转，ShapeNet2D的测试集总共包含300个类别，每个类别30张图像</p>
-</li>
-<li><p>Distractor，预测目标物体位置，它总共包含12个类别，测试集有2个类别，每个类别包含1000个对象，每个对象有36个图像</p>
-</li>
-<li><p>Pascal1D，预测航向角，整个Pascal1D包含来自10个类别的65个对象。测试集包含15个对象，每个对象具有100个图像</p>
-</li>
-<li><p>所有图像都被resize到$128\times128$</p>
-</li>
-</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713155844851.png" alt="image-20230713155844851" style="zoom:50%;" /></p>
 
       
     </div>
@@ -966,209 +1028,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/" class="post-title-link" itemprop="url">Vision-and-Language Navigation: A Survey of Tasks, Methods, and Future Directions</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-08T00:00:00+08:00">2023-07-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-10 19:09:33" itemprop="dateModified" datetime="2023-07-10T19:09:33+08:00">2023-07-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="VLN-survey"><a href="#VLN-survey" class="headerlink" title="VLN survey"></a>VLN survey</h1><ul>
-<li>What is an intelligent Embodied AI?<ul>
-<li>Understand information from Vision,Text,Audio, etc. </li>
-<li>Make the correct action in the environment.</li>
-</ul>
-</li>
-<li>What can we do to build it from Machine Learning perspective?<ul>
-<li>Benchmark：<ul>
-<li>Environment as real as possible.</li>
-<li>Communication like human.</li>
-</ul>
-</li>
-<li>Methods:<ul>
-<li>Connecting advancement within single modality.</li>
-<li>Specific solution.</li>
-<li>Training sources.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p>两大难题: 数据稀缺和模型的泛化性低</p>
-<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><ul>
-<li><p>Key elements: Environment, Agent, Oracle(Human)</p>
-</li>
-<li><p>Environment</p>
-<ul>
-<li><p>Photorealistic</p>
-</li>
-<li><p>3D</p>
-</li>
-<li><p>Navigable</p>
-</li>
-</ul>
-</li>
-<li><p>Interaction between Agent and Environment</p>
-<ul>
-<li>Environment renders new observation after each action.</li>
-<li>Agent navigate in the environment, with possible object manipulation.</li>
-</ul>
-</li>
-<li>Communication between Oracle and Agent<ul>
-<li>Use Natural Language</li>
-<li>Task Instruction</li>
-<li>Dialog ability</li>
-</ul>
-</li>
-</ul>
-<p>agent和oracle使用自然语言进行交流，智能体可以请求引导，oracle可以做出响应回答。agent根据接收到的指令和观察到的环境进行导航并与环境交互以完成任务，同时oracle观察环境和agent的状态，并可以与通过与环境交互的方式来帮助agent。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613235745883.png" alt="image-20230613235745883" style="zoom: 50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/07/20230707-A-Comprehensive-Survey-on-Segment-Anything-Model-for-Vision-and-Beyond/" class="post-title-link" itemprop="url">A Comprehensive Survey on Segment Anything Model for Vision and Beyond</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-07T00:00:00+08:00">2023-07-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-06 15:42:28" itemprop="dateModified" datetime="2023-07-06T15:42:28+08:00">2023-07-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1238,7 +1097,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1251,7 +1110,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

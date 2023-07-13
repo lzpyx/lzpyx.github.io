@@ -164,6 +164,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/30/CutLER/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/30/CutLER/" class="post-title-link" itemprop="url">Cut and Learn for Unsupervised Object Detection and Instance Segmentation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-01-30 00:00:00 / Modified: 15:44:33" itemprop="dateCreated datePublished" datetime="2023-01-30T00:00:00+08:00">2023-01-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CutLER"><a href="#CutLER" class="headerlink" title="CutLER"></a>CutLER</h1><p>Cut and Learn for Unsupervised Object Detection and Instance Segmentation</p>
+<p>利用自监督模型的特性，在无监督的情况下发现对象，并用于训练一个无监督的定位模型。</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>这项工作中，作者研究了无监督的目标检测和实例分割模型，这些模型可以在没有任何人工标记的情况下进行训练。</p>
+<p>Key insight: 简单的probing和训练机制可以放大自监督模型的固有定位能力，从而产生最先进的无监督zero-shot detectors。</p>
+<p>以往的自监督ViT模型可以无监督检测图像中的单个显著对象，如TokenCut，但这种显著对象检测方法只能定位单个对象，不能用于包含多个对象的真实世界图像。</p>
+<p>FreeSOLO和DETReg也旨在进行无监督的多对象检测或多对象发现，但它们依赖于特定的检测架构，且在ImageNet训练过后，还需要在特定域内完成微调，而不能直接应用。</p>
+<p>CutLER特点：</p>
+<ul>
+<li>Simplicity：不受主干架构选择影响（不需要特定的检测架构），易于训练</li>
+<li>Zero-shot detector：尽在ImagNet上进行训练，直接在11个不同的benchmark上进行zero-shot推理，甚至优于以往使用了特定域内数据的方法</li>
+<li>Robustness：域适应性很强</li>
+<li>Pretraining for supervised detection：将CutLER作为预训练模型，提升下游全监督任务性能</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20230130142543886.png" alt="image-20230130142543886" style="zoom:67%;" /></p>
+<p>在ImageNet上训练，直接应用到广泛域上进行分割和检测任务。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/30/CutLER/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/29/ECCV2022%20OpenSeg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -631,7 +720,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-06 22:43:18" itemprop="dateModified" datetime="2023-02-06T22:43:18+08:00">2023-02-06</time>
+                <time title="Modified: 2023-07-12 22:08:56" itemprop="dateModified" datetime="2023-07-12T22:08:56+08:00">2023-07-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -656,7 +745,7 @@
       
           <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
 <p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
-<p>小样本学习也是一种meta learning，learn to learn</p>
+<p>小样本学习也是一种meta learning，learning to learn</p>
 <p>与监督学习的区别：</p>
 <p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
 <p>k-way n-shot：</p>
@@ -949,100 +1038,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/" class="post-title-link" itemprop="url">R-CNN系列目标检测算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-10-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-25T00:00:00+08:00">2022-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-12 10:02:58" itemprop="dateModified" datetime="2022-11-12T10:02:58+08:00">2022-11-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2014-R-CNN"><a href="#CVPR2014-R-CNN" class="headerlink" title="CVPR2014 R-CNN"></a>CVPR2014 R-CNN</h1><p>Rich feature hierarchies for accurate object detection and semantic segmentation</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081555543.png" alt="image-20221008155509842" style="zoom: 50%;" /></p>
-<p>首先模型输入为一张图片，然后在图片上提出了约2000个region proposal</p>
-<blockquote>
-<p>在提取region proposal时，R-CNN采用了selective search。selective search的核心是一个SVM，首先将图像分割为若干块，然后利用SVM将属于同一对象的块合并在一起。</p>
-</blockquote>
-<p>然后通过卷积神经网络逐个提取region proposal的特征,对于每一个region proposal都会得到一个4096维的特征向量</p>
-<blockquote>
-<p>R-CNN直接使用了AlexNet，在ImageNet上进行分类训练</p>
-</blockquote>
-<p>然后这些被提取的特征通过支持向量机(SVM)进行分类(每个类别一个SVM)，得到物体的类别，并通过一个bounding box regression调整目标包围框的大小。</p>
-<blockquote>
-<p>实际包含两个子步骤，一是对特征向量进行<strong>分类</strong>（需要根据特征训练分类器）；二是通过<strong>边界回归</strong>（bounding-box regression) 得到精确的目标区域，受 DPM 的启发，作者训练了一个线性的回归模型，这个模型能够针对候选区域的 pool5 数据预测一个新的 box 位置。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1112,7 +1107,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1125,7 +1120,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

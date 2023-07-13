@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711162435776.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711170654082.png">
 <meta property="article:published_time" content="2023-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-11T09:51:34.429Z">
+<meta property="article:modified_time" content="2023-07-13T14:22:50.814Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Benchmark">
 <meta property="article:tag" content="Meta learning">
@@ -196,10 +196,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-11 00:00:00 / Modified: 17:51:34" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-13 22:22:50" itemprop="dateModified" datetime="2023-07-13T22:22:50+08:00">2023-07-13</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -232,6 +238,7 @@
 </ul>
 <p>传统的within-task meta-learning benchmarks更多地依赖于共同的表征学习而不是learning-to-learn，Meta Omnium更好地测试了learning-to-learn的能力，因为组成的任务需要更多样化的表征</p>
 <p>baseline具有最小的task-specific decoders，评估learning-to-learn的能力，而不是融入先验</p>
+<span id="more"></span>
 <h3 id="Data-Splits-and-Tasks"><a href="#Data-Splits-and-Tasks" class="headerlink" title="Data Splits and Tasks"></a>Data Splits and Tasks</h3><p>对于每个主要任务（分类，分割，关键点定位），数据集都被分为seen datasets（用于meta-training）,unseen datasets（用于out-of-domain meta-validation and meta-testing）。</p>
 <p>seen datasets按照类别将其划分为meta-train/val/test</p>
 <p>unseen不划分，数据集中所有类别都会被用于validation和testing</p>
@@ -300,8 +307,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/10/20230710-EmbodiedGPT/" rel="prev" title="EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought">
-      <i class="fa fa-chevron-left"></i> EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought
+    <a href="/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/" rel="prev" title="Object Goal Navigation using Goal-Oriented Semantic Exploration">
+      <i class="fa fa-chevron-left"></i> Object Goal Navigation using Goal-Oriented Semantic Exploration
     </a></div>
       <div class="post-nav-item">
     <a href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/" rel="next" title="Learning to Explore using Active Neural SLAM">
@@ -379,7 +386,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -392,7 +399,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

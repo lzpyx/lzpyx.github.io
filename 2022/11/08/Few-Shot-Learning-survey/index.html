@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learn to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别">
+  <meta name="description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learning to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Few-Shot Learning Survey">
 <meta property="og:url" content="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learn to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别">
+<meta property="og:description" content="Few-Shot Learning参考shusenwang 讲解 support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同 小样本学习也是一种meta learning，learning to learn 与监督学习的区别： 传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410150456109.png">
@@ -45,11 +45,9 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141227109.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410141509223.png">
 <meta property="article:published_time" content="2022-11-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-06T14:43:18.750Z">
+<meta property="article:modified_time" content="2023-07-12T14:08:56.059Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Survey">
-<meta property="article:tag" content="WSSS">
-<meta property="article:tag" content="WSIS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png">
 
@@ -220,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-06 22:43:18" itemprop="dateModified" datetime="2023-02-06T22:43:18+08:00">2023-02-06</time>
+                <time title="Modified: 2023-07-12 22:08:56" itemprop="dateModified" datetime="2023-07-12T22:08:56+08:00">2023-07-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,7 +243,7 @@
       
         <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
 <p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
-<p>小样本学习也是一种meta learning，learn to learn</p>
+<p>小样本学习也是一种meta learning，learning to learn</p>
 <p>与监督学习的区别：</p>
 <p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
 <p>k-way n-shot：</p>
@@ -259,12 +257,12 @@
 <li>使用triplet loss，训练时每次选取3个样本，一个anchor，一个positive，一个negative，让anchor和positive在特征空间的距离更近，anchor和negative在特征空间的距离更远</li>
 </ol>
 <span id="more"></span>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png" alt="image-20220410100632997"></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410150456109.png" alt="image-20220410150456109"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410100632997.png" alt="image-20220410100632997" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410150456109.png" alt="image-20220410150456109" style="zoom:50%;" /></p>
 <p><strong>Cosine Similarity</strong></p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104836728.png" alt="image-20220410104836728" style="zoom: 33%;" /></p>
 <p>当x和w的向量长度都是1时，cos就等于x和w的内积</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104954557.png" alt="image-20220410104954557" style="zoom: 67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410104954557.png" alt="image-20220410104954557" style="zoom: 50%;" /></p>
 <p><strong>softmax</strong></p>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220410113727853.png" alt="image-20220410113727853" style="zoom:50%;" /></p>
 <p>对向量取指数，然后normalize（归一化）</p>
@@ -313,8 +311,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Survey/" rel="tag"># Survey</a>
-              <a href="/tags/WSSS/" rel="tag"># WSSS</a>
-              <a href="/tags/WSIS/" rel="tag"># WSIS</a>
           </div>
 
         
@@ -402,7 +398,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -415,7 +411,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">106</span>
+        <span class="site-state-item-count">107</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
