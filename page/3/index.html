@@ -164,6 +164,173 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/" class="post-title-link" itemprop="url">HomeRobot: Open-Vocabulary Mobile Manipulation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-01 00:00:00 / Modified: 23:42:20" itemprop="dateCreated datePublished" datetime="2023-07-01T00:00:00+08:00">2023-07-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="HomeRobot-Open-Vocabulary-Mobile-Manipulation"><a href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation" class="headerlink" title="HomeRobot: Open-Vocabulary Mobile Manipulation"></a>HomeRobot: Open-Vocabulary Mobile Manipulation</h1><blockquote>
+<p>Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.</p>
+</blockquote>
+<p>OVMM涉及到了感知、语言理解、导航和操作</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/21/20230621-Vision-Language-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/06/21/20230621-Vision-Language-Learning/" class="post-title-link" itemprop="url">Vision-Language Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-21T00:00:00+08:00">2023-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-03 21:35:25" itemprop="dateModified" datetime="2023-07-03T21:35:25+08:00">2023-07-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Vision-Language-Learning"><a href="#Vision-Language-Learning" class="headerlink" title="Vision-Language Learning"></a>Vision-Language Learning</h1><h2 id="ViLT"><a href="#ViLT" class="headerlink" title="ViLT"></a>ViLT</h2><ul>
+<li>ViLT移除了多模态学习框架中预训练的目标检测器，换成了可以学习的Patch Embedding Layer，推理时间快</li>
+<li>ViLT的训练时间长，复杂度大，视觉端不够强，效果不够好</li>
+</ul>
+<h2 id="CLIP"><a href="#CLIP" class="headerlink" title="CLIP"></a>CLIP</h2><ul>
+<li>使用Image-text contrastive loss训练，使图文对的特征尽量接近</li>
+<li>模态交互使用简单的点乘，高效</li>
+</ul>
+<h2 id="以往方法中发现比较好的一些经验："><a href="#以往方法中发现比较好的一些经验：" class="headerlink" title="以往方法中发现比较好的一些经验："></a>以往方法中发现比较好的一些经验：</h2><ul>
+<li>视觉文本双分支，且视觉需要更多的参数去学习</li>
+<li>模态融合很重要，用一个vit去做融合会比浅层的融合或者点乘更好</li>
+<li>UNITER、ViLT中使用的Word Patch Alingment（WPA） loss计算起来非常慢</li>
+<li>CLIP使用的ITC loss非常有效</li>
+<li>MLM loss有效（Mask Language Modeling，也就是BERT的训练方式，遮住一个词再去预测这个词，做完形填空，在ALBEF中就是输入图像和被遮盖的句子，然后预测完整句子）</li>
+<li>ITM loss有效（Image Text Matching loss，二分类问题，判断当前图像和文本是不是一个对，如果不做限制，会很快达到较高的准确率，因为负样本很多，因此通常需要做限制，比如ALBEF中选最接近正样本的负样本，利用在ITC loss中计算的相似度，选除自己之外最相似的负样本）</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/06/21/20230621-Vision-Language-Learning/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/20/2023613-DINOv2-Learning-Robust-Visual-Features-without-Supervision/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -868,161 +1035,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/21/2023418-BEVPerception-Survey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/21/2023418-BEVPerception-Survey/" class="post-title-link" itemprop="url">BEVPerception Survey</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-04-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-21T00:00:00+08:00">2023-04-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-04 17:44:00" itemprop="dateModified" datetime="2023-06-04T17:44:00+08:00">2023-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="BEVPerception-Survey"><a href="#BEVPerception-Survey" class="headerlink" title="BEVPerception Survey"></a>BEVPerception Survey</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1A34y1W7Lu/?spm_id_from=333.1007.top_right_bar_window_view_later.content.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考上海ai lab分享</a></p>
-<p>TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe</p>
-<h2 id="3D感知中的关键问题"><a href="#3D感知中的关键问题" class="headerlink" title="3D感知中的关键问题"></a>3D感知中的关键问题</h2><h3 id="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："><a href="#获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：" class="headerlink" title="获取准确的深度信息是桥接Camera方法和LiDAR方法的关键："></a>获取准确的深度信息是桥接Camera方法和LiDAR方法的关键：</h3><ul>
-<li>Pseudo-LiDAR Track：利用深度估计，将图像处理为伪点云</li>
-<li>Center-point Track：根据预测的heatmap回归深度</li>
-<li>Depth Pretrain：让backbone编码深度信息</li>
-<li><strong>BEV视角变化：回避直接做depth，在BEV空间下做检测</strong></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/04/21/2023418-BEVPerception-Survey/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/04/21/2023418-TPAMI2022-Delving-into-the-Devils-of-BEVPerception-A-Review,-Evaluation-and-Recipe/" class="post-title-link" itemprop="url">TPAMI2022 Delving into the Devils of BEVPerception: A Review, Evaluation and Recipe</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-04-21 00:00:00 / Modified: 13:09:03" itemprop="dateCreated datePublished" datetime="2023-04-21T00:00:00+08:00">2023-04-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Delving-into-the-Devils-of-Bird’s-eye-view-Perception-A-Review-Evaluation-and-Recipe"><a href="#Delving-into-the-Devils-of-Bird’s-eye-view-Perception-A-Review-Evaluation-and-Recipe" class="headerlink" title="Delving into the Devils of Bird’s-eye-view Perception: A Review, Evaluation and Recipe"></a>Delving into the Devils of Bird’s-eye-view Perception: A Review, Evaluation and Recipe</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1092,7 +1104,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

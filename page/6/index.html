@@ -164,6 +164,178 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/30/CVPR2022%20CCAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/30/CVPR2022%20CCAM/" class="post-title-link" itemprop="url">CVPR2022 CCAM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-10-30 00:00:00 / Modified: 20:21:44" itemprop="dateCreated datePublished" datetime="2022-10-30T00:00:00+08:00">2022-10-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2022-CCAM"><a href="#CVPR2022-CCAM" class="headerlink" title="CVPR2022 CCAM"></a>CVPR2022 CCAM</h1><p>C^2^AM: Contrastive learning of Class-agnostic Activation Map for Weakly Supervised Object Localization and Semantic Segmentation</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CVI-SZU/CCAM">Github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>observation</p>
+<ul>
+<li>前景对象的语义信息通常与背景不同</li>
+<li>具有相似外观的前景对象或具有相似颜色/纹理的背景在特征空间中具有相似的表示</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221029114900284.png" alt="image-20221029114900284"></p>
+<h3 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h3><p>利用moco或detco在ImageNet-1k上对编码器(如ResNet或VGG)进行预训练，作为编码器的初始化。首先通过编码器获取图像高级特征图$Z_i$，作为解纠缠器(distentangler)的输入，然后使用一个$3\times3$ conv + batch normalization组成的激活头$\varphi(\cdot)$来获得类别无关的激活图$P_i$,  $ P_i$被指定为前景，背景激活图可以表示为$(1-P_i)$。然后利用前景激活图和背景激活图将特征图 $ Z_i$分离为前景和背景的特征表示：</p>
+<p>$\mathbf{v}_{i}^{f}=\mathbf{P}_{i} \otimes \mathbf{Z}_{i}^{\top}, \quad \mathbf{v}_{i}^{b}=\left(1-\mathbf{P}_{i}\right) \otimes \mathbf{Z}_{i}^{\top}$</p>
+<p>$\mathbf{P}_{i}$ and $\mathbf{Z}_{i}$ are flattened, i.e., $\mathbf{P}_{i} \in \mathbb{R}^{1 \times H W}$ and $\mathbf{Z}_{i} \in   \mathbb{R}^{C \times H W}$,</p>
+<p>$\mathbf{v}_{i}^{f} \in \mathbb{R}^{1 \times C}$ and $\mathbf{v}_{i}^{b} \in \mathbb{R}^{1 \times C}$ .  $\otimes$  and  $\top$  indicate the matrix multiplication and transpose, respectively.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/30/CVPR2022%20CCAM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/30/CVPR2022%20CLIMS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/30/CVPR2022%20CLIMS/" class="post-title-link" itemprop="url">CVPR2022 CLIMS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-10-30 00:00:00 / Modified: 20:01:44" itemprop="dateCreated datePublished" datetime="2022-10-30T00:00:00+08:00">2022-10-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2022-CLIMS"><a href="#CVPR2022-CLIMS" class="headerlink" title="CVPR2022 CLIMS"></a>CVPR2022 CLIMS</h1><p>Cross Language Image Matching for Weakly Supervised Semantic Segmentation</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CVI-SZU/CLIMS">github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>CAM通常仅激活判别性对象区域，并且错误地包含许多与对象相关的背景。WSSS模型仅可用一组固定的image-level对象标签进行训练，因此很难抑制由开放集对象（open set objects）组成的不同的背景区域。</p>
+<p>WSSS往往由3个阶段：</p>
+<ul>
+<li>训练并产生CAM</li>
+<li>细化CAM，生成伪标签</li>
+<li>使用伪标签训练一个分割网络</li>
+</ul>
+<p>由于在close-world setting中，和目标密切相关的背景有助于目标对象的分类，比如背景铁轨和目标对象火车，这会导致CAM不必要的激活背景，此外，CAM还会struggles in the underestimation of object contents。这限制了初始CAM的质量。</p>
+<p>CLIM框架的核心思想是引入自然语言监督来激活更完整的对象区域并抑制密切相关的开放背景区域</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210301525009.png" alt="image-20221030152534660"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/30/CVPR2022%20CLIMS/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -850,177 +1022,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/15/AAAI2020%20RRM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/15/AAAI2020%20RRM/" class="post-title-link" itemprop="url">AAAI2020 RRM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-15 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-15T00:00:00+08:00">2022-05-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-18 10:08:01" itemprop="dateModified" datetime="2022-05-18T10:08:01+08:00">2022-05-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach"><a href="#AAAI2020-Reliability-Does-Matter-An-End-to-End-Weakly-Supervised-Semantic-Segmentation-Approach" class="headerlink" title="AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach"></a>AAAI2020 Reliability Does Matter: An End-to-End Weakly Supervised Semantic Segmentation Approach</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>单阶段精度不如两阶段算法，两阶段往往先产生高质量的分割掩码，然后使用伪标注作为全卷积语义分割网络的训练标签进行训练。但两阶段方法为产生高质量伪标注掩码，往往比较复杂。</p>
-<p>本文提出端到端方法Reliable Region Mining (RRM)，包括两个分支，一个生成伪标注，另一个生成语义分割结果。与以往方法中发掘更完整的物体区域不同，RRM选取高置信度的物体、背景区域，然后通过CRF获取更可靠的区域，作为语义分割分支的监督。在有限像素作为监督的情况下，本文提出了一种称为密集能量损失的正则损失，它与逐像素交叉损失配合来优化过程。</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>RRM分为两个平行分支，分类分支和语义分割分支，共享一个backbone，同时更新网络。</p>
-<ul>
-<li>分类分支：生成可靠的语义分割掩码</li>
-<li>语义分割分支：使用联合损失函数，包括交叉熵损失和密集能量损失。交叉熵损失主要考虑标记像素，而密集能量损失则通过充分利用RGB颜色和像素位置来考虑所有像素</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220513105709337.png" alt="image-20220513105709337"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/15/AAAI2020%20RRM/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/" class="post-title-link" itemprop="url">流畅的python</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-13 16:32:15" itemprop="dateModified" datetime="2023-02-13T16:32:15+08:00">2023-02-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
-<p>python中所有集合类型都可以使用len()函数查看集合长度，<strong>使用len(obj)而不是obj.len(),也不是obj.<strong> len </strong> ()</strong>,如果是自定义类的对象，python会自己调用类中实现的<strong> len </strong>方法</p>
-<p>魔法方法/特殊方法/双下方法，使用len()的形式调用</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1090,7 +1091,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

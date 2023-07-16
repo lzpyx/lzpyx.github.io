@@ -20,24 +20,24 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Object Goal Navigation using Goal-Oriented Semantic Explorationobject goal navigation：在未知环境中导航到一个给定物体类别的实例对象位置 假设要求agent在未知环境中导航到“dining table”，在语义理解方面，该任务不仅涉及对象检测，即“dining table”看起来像什么，但也要了解“dining t">
+  <meta name="description" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and IdentificationObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体 Motivation现有的工作主要通过端到端的reinforcement learning或者modular-based meth">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Object Goal Navigation using Goal-Oriented Semantic Exploration">
-<meta property="og:url" content="http://lzpyx.github.io/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/index.html">
+<meta property="og:title" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/16/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="Object Goal Navigation using Goal-Oriented Semantic Explorationobject goal navigation：在未知环境中导航到一个给定物体类别的实例对象位置 假设要求agent在未知环境中导航到“dining table”，在语义理解方面，该任务不仅涉及对象检测，即“dining table”看起来像什么，但也要了解“dining t">
+<meta property="og:description" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and IdentificationObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体 Motivation现有的工作主要通过端到端的reinforcement learning或者modular-based meth">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713155844851.png">
-<meta property="article:published_time" content="2023-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-13T07:59:05.196Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png">
+<meta property="article:published_time" content="2023-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-16T14:24:46.798Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
-<meta property="article:tag" content="Exploration">
-<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="ObjectNav">
+<meta property="article:tag" content="3D">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713155844851.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/16/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
 
 
 <script id="page-configurations">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>Object Goal Navigation using Goal-Oriented Semantic Exploration | Yixuan Pan's Blog</title>
+  <title>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification | Yixuan Pan's Blog</title>
   
 
 
@@ -174,7 +174,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/11/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/16/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -187,7 +187,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Object Goal Navigation using Goal-Oriented Semantic Exploration
+          3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification
         </h1>
 
         <div class="post-meta">
@@ -196,16 +196,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
+              <time title="Created: 2023-07-16 00:00:00 / Modified: 22:24:46" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 15:59:05" itemprop="dateModified" datetime="2023-07-13T15:59:05+08:00">2023-07-13</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -227,13 +221,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration"><a href="#Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration" class="headerlink" title="Object Goal Navigation using Goal-Oriented Semantic Exploration"></a>Object Goal Navigation using Goal-Oriented Semantic Exploration</h1><p>object goal navigation：在未知环境中导航到一个给定物体类别的实例对象位置</p>
-<p>假设要求agent在未知环境中导航到“dining table”，在语义理解方面，该任务不仅涉及对象检测，即“dining table”看起来像什么，但也要<strong>了解“dining table”在哪里更有可能被找到</strong>。</p>
+        <h1 id="3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><a href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification" class="headerlink" title="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification"></a>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</h1><p>ObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现有的工作主要通过端到端的reinforcement learning或者modular-based methods来解决这一问题，其中端到端的RL方法以图像序列作为输入，然后直接输出low-level的导航信息，但是受限于低的采样效率和较差的跨数据集泛化性。</p>
+<p>modular-based methods通常包含：</p>
 <ul>
-<li>long-term episodic memory可以使agent有效探索和跟踪环境</li>
-<li>学习语义先验可以使agent使用episodic memory来决定接下来探索哪个区域，以便在最少的时间内找到目标对象。</li>
+<li>semantic scene mapping module，用于聚合RGBD观察和来自语义分割网络的输出以形成语义场景图(semantic scene map)</li>
+<li>RL-based goal policy module，这一模块将语义场景图(semantic scene map)作为输入，并学习在线更新目标位置</li>
+<li>local path planning module，用于驱动agent到达目标位置</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713155844851.png" alt="image-20230713155844851" style="zoom:50%;" /></p>
+<p>现有的modular-based methods主要构建2D maps，scene graphs或neural fields来作为scene maps，这类构建方式都没有很好的利用环境的3D的空间信息。</p>
+<p>但是3D scene representation会为ObjectNav policy learning带来挑战：</p>
+<ul>
+<li>构建和查询跨楼层场景的细粒度3D表示需要大量的计算成本，这会显著减慢RL的训练</li>
+<li>3D场景表示相对2D来说，带来了更复杂和更高维的观察，导致较低的采样效率并阻碍navigation policy的学习</li>
+</ul>
+<span id="more"></span>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="任务设定"><a href="#任务设定" class="headerlink" title="任务设定"></a>任务设定</h3><p>agent要求在未知环境中寻找特定类别的物体。agent会被随机初始化在某一位置，且agent是没有预先进行环境建图的，另外还会为agent提供一个特定类别的ID。在每个时间步t，agent都会接收无噪声的机载传感器读数（各类传感器的采样值），包括：</p>
+<ul>
+<li>egocentric RGB-D image</li>
+<li>相对于起始状态的3-DoF pose (2D position and 1D orientation)</li>
+</ul>
+<p>预测的动作空间是离散的，包括:</p>
+<ul>
+<li>move_forward</li>
+<li>turn_left</li>
+<li>turn_right</li>
+<li>stop</li>
+</ul>
+<p>给定500步的有限时间预算，agent在到达指定类别的对象的1米之内时终止移动。</p>
+<h3 id="Method-Overview"><a href="#Method-Overview" class="headerlink" title="Method Overview"></a>Method Overview</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png" alt="image-20230707152630478"></p>
+<h3 id="Navigation-Driven-3D-Scene-Construction"><a href="#Navigation-Driven-3D-Scene-Construction" class="headerlink" title="Navigation-Driven 3D Scene Construction"></a>Navigation-Driven 3D Scene Construction</h3><p>在导航的过程中，agent会不断接收新的观测结果，用于持续增量的构建一个细粒度的3D scene representation，将空间信息和语义信息整合到一起。作者扩展了基于点的在线构建算法以在线组织3D点，并进一步增强语义融合和一致性估计。</p>
+<h4 id="3D-Scene-Representation"><a href="#3D-Scene-Representation" class="headerlink" title="3D Scene Representation"></a>3D Scene Representation</h4><p>在时间步$t$时,将3D场景用点云表示</p>
+<p>$P^{(t)}=\left\{\left(P_{l}^{(t)}, P_{s}^{(t)}, P_{c}^{(t)}\right)\right\} \in \mathbb{R}^{N^{(t)} \times(M+4)} $</p>
+<p>其中$N^{(t)}$代表点的个数，对于每个点$i$，$(M+4)$个通道可以拆分为：</p>
+<ul>
+<li>3维的$P^{(t)}_{i,l}$，代表点位置</li>
+<li>$M$维的点语义表示$P^{(t)}_{i,s}$</li>
+<li>1维的逐点空间语义一致性信息$P^{(t)}_{i,c}$</li>
+</ul>
+<h4 id="Online-3D-Point-Fusion"><a href="#Online-3D-Point-Fusion" class="headerlink" title="Online 3D Point Fusion"></a>Online 3D Point Fusion</h4><p>在时间步t给定新的RGB图像$I^{(t)}_c$和深度图像$I_d^{(t)}$，agent可以通过它们的对应姿态将所有深度图像反向投影到3D世界空间中来获得点位置$P^{(t)}_{l}$，然后利用基于点的构造算法组织这些点。</p>
+<blockquote>
+<p>有了位姿（朝向和位置），加上输入的RGB-D图像，就可以还原每个点在3D世界空间中的位置</p>
+</blockquote>
 
     </div>
 
@@ -244,8 +273,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
-              <a href="/tags/Exploration/" rel="tag"># Exploration</a>
-              <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+              <a href="/tags/ObjectNav/" rel="tag"># ObjectNav</a>
+              <a href="/tags/3D/" rel="tag"># 3D</a>
           </div>
 
         
@@ -254,13 +283,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/10/20230710-EmbodiedGPT/" rel="prev" title="EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought">
-      <i class="fa fa-chevron-left"></i> EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought
+    <a href="/2023/07/16/20230714-Diffusion-Models-for-Zero-Shot-Open-Vocabulary-Segmentation/" rel="prev" title="Diffusion Models for Zero-Shot Open-Vocabulary Segmentation">
+      <i class="fa fa-chevron-left"></i> Diffusion Models for Zero-Shot Open-Vocabulary Segmentation
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/" rel="next" title="Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn">
-      Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -319,7 +345,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration"><span class="nav-number">1.</span> <span class="nav-text">Object Goal Navigation using Goal-Oriented Semantic Exploration</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><span class="nav-number">1.</span> <span class="nav-text">3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%AE%BE%E5%AE%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">任务设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Overview"><span class="nav-number">1.2.2.</span> <span class="nav-text">Method Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Navigation-Driven-3D-Scene-Construction"><span class="nav-number">1.2.3.</span> <span class="nav-text">Navigation-Driven 3D Scene Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3D-Scene-Representation"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">3D Scene Representation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Online-3D-Point-Fusion"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Online 3D Point Fusion</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -333,7 +359,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

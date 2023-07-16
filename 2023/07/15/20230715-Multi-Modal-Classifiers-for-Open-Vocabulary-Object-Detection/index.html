@@ -20,24 +20,29 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and IdentificationObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体 Motivation现有的工作主要通过端到端的reinforcement learning或者modular-based meth">
+  <meta name="description" content="MM-OVODMulti-Modal Classifiers for Open-Vocabulary Object Detection Motivation直接用类别名加模板送入pretrained text encoder，然后用text embbeding代替传统检测器中的分类器的方法存在3个弊端：  可能存在语义歧义，且完全依赖预训练的文本编码器对于class name的内部表征，无法区分同">
 <meta property="og:type" content="article">
-<meta property="og:title" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification">
-<meta property="og:url" content="http://lzpyx.github.io/2023/07/06/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/index.html">
+<meta property="og:title" content="Multi-Modal Classifiers for Open-Vocabulary Object Detection">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="3D-Aware Object Goal Navigation via Simultaneous Exploration and IdentificationObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体 Motivation现有的工作主要通过端到端的reinforcement learning或者modular-based meth">
+<meta property="og:description" content="MM-OVODMulti-Modal Classifiers for Open-Vocabulary Object Detection Motivation直接用类别名加模板送入pretrained text encoder，然后用text embbeding代替传统检测器中的分类器的方法存在3个弊端：  可能存在语义歧义，且完全依赖预训练的文本编码器对于class name的内部表征，无法区分同">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png">
-<meta property="article:published_time" content="2023-07-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-13T14:24:44.454Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716103805727.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716104851749.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716115215586.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716135731989.png">
+<meta property="article:published_time" content="2023-07-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-16T05:57:35.614Z">
 <meta property="article:author" content="lzpyx">
-<meta property="article:tag" content="Embodied AI">
-<meta property="article:tag" content="ObjectNav">
-<meta property="article:tag" content="3D">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Open Vocabulary">
+<meta property="article:tag" content="Scene Understanding">
+<meta property="article:tag" content="Object Detection">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716103805727.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/07/06/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/">
 
 
 <script id="page-configurations">
@@ -50,7 +55,7 @@
   };
 </script>
 
-  <title>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification | Yixuan Pan's Blog</title>
+  <title>Multi-Modal Classifiers for Open-Vocabulary Object Detection | Yixuan Pan's Blog</title>
   
 
 
@@ -174,7 +179,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/06/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -187,7 +192,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification
+          Multi-Modal Classifiers for Open-Vocabulary Object Detection
         </h1>
 
         <div class="post-meta">
@@ -197,14 +202,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-07-06 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-06T00:00:00+08:00">2023-07-06</time>
+              <time title="Created: 2023-07-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-15T00:00:00+08:00">2023-07-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 22:24:44" itemprop="dateModified" datetime="2023-07-13T22:24:44+08:00">2023-07-13</time>
+                <time title="Modified: 2023-07-16 13:57:35" itemprop="dateModified" datetime="2023-07-16T13:57:35+08:00">2023-07-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,48 +232,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><a href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification" class="headerlink" title="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification"></a>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</h1><p>ObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现有的工作主要通过端到端的reinforcement learning或者modular-based methods来解决这一问题，其中端到端的RL方法以图像序列作为输入，然后直接输出low-level的导航信息，但是受限于低的采样效率和较差的跨数据集泛化性。</p>
-<p>modular-based methods通常包含：</p>
+        <h1 id="MM-OVOD"><a href="#MM-OVOD" class="headerlink" title="MM-OVOD"></a>MM-OVOD</h1><p>Multi-Modal Classifiers for Open-Vocabulary Object Detection</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>直接用类别名加模板送入pretrained text encoder，然后用text embbeding代替传统检测器中的分类器的方法存在3个弊端：</p>
 <ul>
-<li>semantic scene mapping module，用于聚合RGBD观察和来自语义分割网络的输出以形成语义场景图(semantic scene map)</li>
-<li>RL-based goal policy module，这一模块将语义场景图(semantic scene map)作为输入，并学习在线更新目标位置</li>
-<li>local path planning module，用于驱动agent到达目标位置</li>
+<li>可能存在语义歧义，且完全依赖预训练的文本编码器对于class name的内部表征，无法区分同一词汇表示的多种概念</li>
+<li>有的情况下用户并不知道class name，反而exemplar images更容易获取</li>
+<li>多模态输入时，exemplar images可以作为文本描述的很好的补充（比如复杂的图案，文本难以描述，但图像更直观）</li>
 </ul>
-<p>现有的modular-based methods主要构建2D maps，scene graphs或neural fields来作为scene maps，这类构建方式都没有很好的利用环境的3D的空间信息。</p>
-<p>但是3D scene representation会为ObjectNav policy learning带来挑战：</p>
-<ul>
-<li>构建和查询跨楼层场景的细粒度3D表示需要大量的计算成本，这会显著减慢RL的训练</li>
-<li>3D场景表示相对2D来说，带来了更复杂和更高维的观察，导致较低的采样效率并阻碍navigation policy的学习</li>
-</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>使用Detic作为baseline，centernet2作为检测器</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716103805727.png" alt="image-20230716103805727" style="zoom: 50%;" /></p>
 <span id="more"></span>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="任务设定"><a href="#任务设定" class="headerlink" title="任务设定"></a>任务设定</h3><p>agent要求在未知环境中寻找特定类别的物体。agent会被随机初始化在某一位置，且agent是没有预先进行环境建图的，另外还会为agent提供一个特定类别的ID。在每个时间步t，agent都会接收无噪声的机载传感器读数（各类传感器的采样值），包括：</p>
-<ul>
-<li>egocentric RGB-D image</li>
-<li>相对于起始状态的3-DoF pose (2D position and 1D orientation)</li>
+<h3 id="Text-based-Classifiers-from-Language-Descriptions"><a href="#Text-based-Classifiers-from-Language-Descriptions" class="headerlink" title="Text-based Classifiers from Language Descriptions"></a>Text-based Classifiers from Language Descriptions</h3><ul>
+<li>使用“What does a(n) {class name} look like?”作为prompt,利用GPT3对每个类别生成10个描述</li>
+<li>送进CLIP的文本编码器提取文本特征</li>
+<li>使用10个文本特征的平均特征作为这个类别的text-based classifier</li>
+<li>在训练detector时，对于训练集里的类别，文本特征是提前抽好的，CLIP部分是冻结的</li>
+<li>需要注意，文本端直接使用了平均特征，而没有像图像分支使用一个transformer结构的aggregator对特征进行聚合（实验发现这样做对OVOD的性能并没有提升）</li>
 </ul>
-<p>预测的动作空间是离散的，包括:</p>
-<ul>
-<li>move_forward</li>
-<li>turn_left</li>
-<li>turn_right</li>
-<li>stop</li>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716104851749.png" alt="image-20230716104851749" style="zoom:50%;" /></p>
+<h3 id="Vision-based-Classifiers-from-Image-Exemplars"><a href="#Vision-based-Classifiers-from-Image-Exemplars" class="headerlink" title="Vision-based Classifiers from Image Exemplars"></a>Vision-based Classifiers from Image Exemplars</h3><ul>
+<li>CLIP的视觉编码器用于提取图像特征,训练过程中保持冻结</li>
+<li>使用transformer结构来作为visual aggregator对图像特征进行聚合，将CLS token作为vision-based classifier</li>
+<li>After applying some human effort, our IED(Image Exemplars Dictionary) contains at least 40 image exemplars for 1110 (92% of LVIS classes) and at least 10 image exemplars for all LVIS classes.</li>
+<li>The visual aggregator is trained <strong>offline</strong> i.e. it is <strong>not</strong> updated during detector training<ul>
+<li>使用对比学习对visual aggregator进行离线训练，最小化同类embedding距离，最大化不同类embedding距离</li>
+<li>损失函数采用contrastive InfoNCE loss</li>
+<li>visual aggregator训练期间，对于类别c，在每次迭代时，由冻结CLIP图像编码器对两组不同的K个样本进行采样、增强和编码。这两个集合分别输入到visual aggregator，从类c的可学习[CLS]token输出2个embedding进行对比学习</li>
 </ul>
-<p>给定500步的有限时间预算，agent在到达指定类别的对象的1米之内时终止移动。</p>
-<h3 id="Method-Overview"><a href="#Method-Overview" class="headerlink" title="Method Overview"></a>Method Overview</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230707152630478.png" alt="image-20230707152630478"></p>
-<h3 id="Navigation-Driven-3D-Scene-Construction"><a href="#Navigation-Driven-3D-Scene-Construction" class="headerlink" title="Navigation-Driven 3D Scene Construction"></a>Navigation-Driven 3D Scene Construction</h3><p>在导航的过程中，agent会不断接收新的观测结果，用于持续增量的构建一个细粒度的3D scene representation，将空间信息和语义信息整合到一起。作者扩展了基于点的在线构建算法以在线组织3D点，并进一步增强语义融合和一致性估计。</p>
-<h4 id="3D-Scene-Representation"><a href="#3D-Scene-Representation" class="headerlink" title="3D Scene Representation"></a>3D Scene Representation</h4><p>在时间步$t$时,将3D场景用点云表示</p>
-<p>$P^{(t)}=\left\{\left(P_{l}^{(t)}, P_{s}^{(t)}, P_{c}^{(t)}\right)\right\} \in \mathbb{R}^{N^{(t)} \times(M+4)} $</p>
-<p>其中$N^{(t)}$代表点的个数，对于每个点$i$，$(M+4)$个通道可以拆分为：</p>
-<ul>
-<li>3维的$P^{(t)}_{i,l}$，代表点位置</li>
-<li>$M$维的点语义表示$P^{(t)}_{i,s}$</li>
-<li>1维的逐点空间语义一致性信息$P^{(t)}_{i,c}$</li>
+</li>
+<li>visual aggregator应该很好地泛化，并且不针对特定的下游OVOD词汇表进行训练，因此使用数据集用于图像分类ImageNet-21k-P，其中包含11 K类的11 M图像。</li>
 </ul>
-<h4 id="Online-3D-Point-Fusion"><a href="#Online-3D-Point-Fusion" class="headerlink" title="Online 3D Point Fusion"></a>Online 3D Point Fusion</h4><p>在时间步t给定新的RGB图像$I^{(t)}_c$和深度图像$I_d^{(t)}$，agent可以通过它们的对应姿态将所有深度图像反向投影到3D世界空间中来获得点位置$P^{(t)}_{l}$，然后利用基于点的构造算法组织这些点。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716115215586.png" alt="image-20230716115215586" style="zoom:50%;" /></p>
+<h3 id="Constructing-Classifiers-via-Multi-Modal-Fusion"><a href="#Constructing-Classifiers-via-Multi-Modal-Fusion" class="headerlink" title="Constructing Classifiers via Multi-Modal Fusion"></a>Constructing Classifiers via Multi-Modal Fusion</h3><p>除以模，然后相加</p>
 <blockquote>
-<p>有了位姿（朝向和位置），加上输入的RGB-D图像，就可以还原每个点在3D世界空间中的位置</p>
+<p>we simply compute the vector sum of our l2-normalised text-based and vision-based classifiers</p>
 </blockquote>
+<p>$\mathbf{w}_{\mathrm{MM}}^{c}=\frac{\mathbf{w}_{\mathrm{TEXT}}^{c}}{\left|\mathbf{w}_{\mathrm{TEXT}}^{c}\right|_{2}}+\frac{\mathbf{w}_{\mathrm{IMG}}^{c}}{\left|\mathbf{w}_{\mathrm{IMG}}^{c}\right|_{2}}$</p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><h3 id="Datasets-and-Evaluation-Protocol"><a href="#Datasets-and-Evaluation-Protocol" class="headerlink" title="Datasets and Evaluation Protocol"></a>Datasets and Evaluation Protocol</h3><p>LVIS数据集包含MS-COCO数据集中10万张图像中1203个类的类、边界框和mask标注</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716135731989.png" alt="image-20230716135731989"></p>
 
     </div>
 
@@ -278,9 +279,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
-              <a href="/tags/ObjectNav/" rel="tag"># ObjectNav</a>
-              <a href="/tags/3D/" rel="tag"># 3D</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Open-Vocabulary/" rel="tag"># Open Vocabulary</a>
+              <a href="/tags/Scene-Understanding/" rel="tag"># Scene Understanding</a>
+              <a href="/tags/Object-Detection/" rel="tag"># Object Detection</a>
           </div>
 
         
@@ -289,12 +292,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/" rel="prev" title="Towards Open Vocabulary Learning: A Survey">
-      <i class="fa fa-chevron-left"></i> Towards Open Vocabulary Learning: A Survey
+    <a href="/2023/07/13/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/" rel="prev" title="Object Goal Navigation using Goal-Oriented Semantic Exploration">
+      <i class="fa fa-chevron-left"></i> Object Goal Navigation using Goal-Oriented Semantic Exploration
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/07/06/20230706-OvarNet-Towards-Open-vocabulary-Object-Attribute-Recognition/" rel="next" title="OvarNet: Towards Open-vocabulary Object Attribute Recognition">
-      OvarNet: Towards Open-vocabulary Object Attribute Recognition <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/16/20230714-Diffusion-Models-for-Zero-Shot-Open-Vocabulary-Segmentation/" rel="next" title="Diffusion Models for Zero-Shot Open-Vocabulary Segmentation">
+      Diffusion Models for Zero-Shot Open-Vocabulary Segmentation <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -354,7 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><span class="nav-number">1.</span> <span class="nav-text">3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%AE%BE%E5%AE%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">任务设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Overview"><span class="nav-number">1.2.2.</span> <span class="nav-text">Method Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Navigation-Driven-3D-Scene-Construction"><span class="nav-number">1.2.3.</span> <span class="nav-text">Navigation-Driven 3D Scene Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3D-Scene-Representation"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">3D Scene Representation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Online-3D-Point-Fusion"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Online 3D Point Fusion</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MM-OVOD"><span class="nav-number">1.</span> <span class="nav-text">MM-OVOD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-based-Classifiers-from-Language-Descriptions"><span class="nav-number">1.2.1.</span> <span class="nav-text">Text-based Classifiers from Language Descriptions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vision-based-Classifiers-from-Image-Exemplars"><span class="nav-number">1.2.2.</span> <span class="nav-text">Vision-based Classifiers from Image Exemplars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Constructing-Classifiers-via-Multi-Modal-Fusion"><span class="nav-number">1.2.3.</span> <span class="nav-text">Constructing Classifiers via Multi-Modal Fusion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Datasets-and-Evaluation-Protocol"><span class="nav-number">1.3.1.</span> <span class="nav-text">Datasets and Evaluation Protocol</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -368,7 +371,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
