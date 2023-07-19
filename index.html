@@ -187,10 +187,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-16 00:00:00 / Modified: 22:24:46" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
+              <time title="Created: 2023-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-17 20:41:42" itemprop="dateModified" datetime="2023-07-17T20:41:42+08:00">2023-07-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -213,7 +219,8 @@
 
       
           <h1 id="3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification"><a href="#3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification" class="headerlink" title="3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification"></a>3D-Aware Object Goal Navigation via Simultaneous Exploration and Identification</h1><p>ObjectNav旨在使agent在unseen and unmapped scene下寻找一个特定类别的物体</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现有的工作主要通过端到端的reinforcement learning或者modular-based methods来解决这一问题，其中端到端的RL方法以图像序列作为输入，然后直接输出low-level的导航信息，但是受限于低的采样效率和较差的跨数据集泛化性。</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现有的工作主要通过端到端的reinforcement learning或者modular-based methods来解决这一问题</p>
+<p>端到端的RL方法以图像序列作为输入，然后直接输出low-level的导航信息，但是受限于低的采样效率和较差的跨数据集泛化性。</p>
 <p>modular-based methods通常包含：</p>
 <ul>
 <li>semantic scene mapping module，用于聚合RGBD观察和来自语义分割网络的输出以形成语义场景图(semantic scene map)</li>
@@ -221,7 +228,7 @@
 <li>local path planning module，用于驱动agent到达目标位置</li>
 </ul>
 <p>现有的modular-based methods主要构建2D maps，scene graphs或neural fields来作为scene maps，这类构建方式都没有很好的利用环境的3D的空间信息。</p>
-<p>但是3D scene representation会为ObjectNav policy learning带来挑战：</p>
+<p>使用3D场景表示可以自然的提高ObjectNav在3D场景中的表现，但是3D scene representation会为ObjectNav policy learning带来挑战：</p>
 <ul>
 <li>构建和查询跨楼层场景的细粒度3D表示需要大量的计算成本，这会显著减慢RL的训练</li>
 <li>3D场景表示相对2D来说，带来了更复杂和更高维的观察，导致较低的采样效率并阻碍navigation policy的学习</li>
@@ -471,7 +478,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-14 12:22:40" itemprop="dateModified" datetime="2023-07-14T12:22:40+08:00">2023-07-14</time>
+                <time title="Modified: 2023-07-18 14:39:08" itemprop="dateModified" datetime="2023-07-18T14:39:08+08:00">2023-07-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -730,7 +737,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 22:22:20" itemprop="dateModified" datetime="2023-07-13T22:22:20+08:00">2023-07-13</time>
+                <time title="Modified: 2023-07-18 13:46:59" itemprop="dateModified" datetime="2023-07-18T13:46:59+08:00">2023-07-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
