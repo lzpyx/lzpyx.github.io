@@ -23,12 +23,17 @@
   <meta name="description" content="HomeRobot: Open-Vocabulary Mobile Manipulation Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.  OVMM涉">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HomeRobot: Open-Vocabulary Mobile Manipulation">
-<meta property="og:url" content="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/index.html">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/20/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
 <meta property="og:description" content="HomeRobot: Open-Vocabulary Mobile Manipulation Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.  OVMM涉">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-06-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-01T15:42:20.993Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720140252118.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720142031012.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720150601811.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720153113438.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720151129008.png">
+<meta property="article:published_time" content="2023-07-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-21T03:10:06.359Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -36,8 +41,9 @@
 <meta property="article:tag" content="VLN">
 <meta property="article:tag" content="Embodied AI">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720140252118.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/20/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
 
 
 <script id="page-configurations">
@@ -174,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/01/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/20/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -196,10 +202,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-01 00:00:00 / Modified: 23:42:20" itemprop="dateCreated datePublished" datetime="2023-07-01T00:00:00+08:00">2023-07-01</time>
+              <time title="Created: 2023-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-20T00:00:00+08:00">2023-07-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-21 11:10:06" itemprop="dateModified" datetime="2023-07-21T11:10:06+08:00">2023-07-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -225,6 +237,59 @@
 <p>Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.</p>
 </blockquote>
 <p>OVMM涉及到了感知、语言理解、导航和操作</p>
+<blockquote>
+<p>an agent navigates household environments to grasp novel objects and place them on target receptacles</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720140252118.png" alt="image-20230720140252118"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720142031012.png" alt="image-20230720142031012"></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Open Vocabulary Navigation</p>
+<p>[9] Open-vocabulary queryable scene representations for real world planning. arXiv, 2022.</p>
+<p>[15] Conceptfusion: Open-set multimodal 3d mapping. arXiv, 2023.</p>
+<p>[11] Clip-fields: Weakly supervised semantic fields for robotic memory. arXiv, 2022.</p>
+<p>[12] Usa-net: Unified semantic and affordance representations for robot memory. arXiv, 2023.</p>
+<p>[16] Beyond the nav-graph: Vision and language navigation in continuous environments. In European Conference on Computer<br>Vision (ECCV), 2020.</p>
+<p>“Move (object) from the (start_receptacle) to the (goal_receptacle).”</p>
+<p>机器人初始化在未知环境的home environment中，给定object，起始地和目的地，机器人实现对object的搬运：</p>
+<ul>
+<li>finding the start_receptacle with the object</li>
+<li>picking up the object</li>
+<li>finding the goal_receptacle</li>
+<li>placing the object on the goal_receptacle.</li>
+</ul>
+<p>部分object在训练阶段不可见，所有放置物体的地方在训练阶段都是可见的，</p>
+<h2 id="Simulation-Data"><a href="#Simulation-Data" class="headerlink" title="Simulation Data"></a>Simulation Data</h2><ul>
+<li><p>Habitat Synthetic Scenes Dataset (HSSD)：</p>
+<ul>
+<li><p>200+Scenes，18K objects</p>
+</li>
+<li><p>本文使用HSSD的子集，由60个场景组成，38个用于训练，12用于验证和10用于测试</p>
+</li>
+</ul>
+</li>
+<li><p>总共注释了129个类别的2535个对象，标注了HSSD数据集中出现的21个不同类别的receptacle</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720150601811.png" alt="image-20230720150601811"></p>
+<h2 id="Baseline-Agent-Implementation"><a href="#Baseline-Agent-Implementation" class="headerlink" title="Baseline Agent Implementation"></a>Baseline Agent Implementation</h2><h3 id="OVMMAgent"><a href="#OVMMAgent" class="headerlink" title="OVMMAgent"></a>OVMMAgent</h3><p>将完成OVMM任务需要的技能分解为：</p>
+<ul>
+<li>FindObj/FindRec: 对物体和容器进行定位</li>
+<li>Gaze: 移动到足够接近对象以抓住它，并调整头部方向以获得对象的良好视图。凝视的目的是提高抓取的成功率。</li>
+<li>Grasp: 捡起物体，只提供了high-level的action</li>
+<li>Place: Move to a location in the environment and place the object on top of the goal_receptacle.</li>
+</ul>
+<h3 id="heuristic-baseline"><a href="#heuristic-baseline" class="headerlink" title="heuristic baseline"></a>heuristic baseline</h3><blockquote>
+<p>use a well known motion planning technique [2] and simple rules to execute grasping and manipulation actions</p>
+</blockquote>
+<p>[2] Navigating to objects in the real world. arXiv, 2022.</p>
+<h3 id="reinforcement-learning-baseline"><a href="#reinforcement-learning-baseline" class="headerlink" title="reinforcement learning baseline"></a>reinforcement learning baseline</h3><p>learn exploration and manipulation skills using an off-the-self policy learning algorithm, DDPPO</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720153113438.png" alt="image-20230720153113438"></p>
+<p>失败分析</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720151129008.png" alt="image-20230720151129008"></p>
+<h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h2><ul>
+<li>仿真中没有物理模拟抓取</li>
+<li>We consider full natural language queries out-of-scope</li>
+<li>we do not implement many motion planners in HomeRobot, or task-and-motion-planning with replanning, as would be ideal</li>
+</ul>
 
     </div>
 
@@ -247,12 +312,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/06/21/20230621-Vision-Language-Learning/" rel="prev" title="Vision-Language Learning">
-      <i class="fa fa-chevron-left"></i> Vision-Language Learning
+    <a href="/2023/07/19/20230719-A-Survey-on-Open-Vocabulary-Detection-and-Segmentation-Past,-Present,-and-Future/" rel="prev" title="A Survey on Open-Vocabulary Detection and Segmentation: Past, Present, and Future">
+      <i class="fa fa-chevron-left"></i> A Survey on Open-Vocabulary Detection and Segmentation: Past, Present, and Future
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/07/03/20230702-A-Survey-on-Multimodal-Large-Language-Models/" rel="next" title="A Survey on Multimodal Large Language Models">
-      A Survey on Multimodal Large Language Models <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/22/20230722-Generative-Prompt-Model-for-Weakly-Supervised-Object-Localization/" rel="next" title="Generative Prompt Model for Weakly Supervised Object Localization">
+      Generative Prompt Model for Weakly Supervised Object Localization <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -312,7 +377,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation"><span class="nav-number">1.</span> <span class="nav-text">HomeRobot: Open-Vocabulary Mobile Manipulation</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation"><span class="nav-number">1.</span> <span class="nav-text">HomeRobot: Open-Vocabulary Mobile Manipulation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simulation-Data"><span class="nav-number">1.2.</span> <span class="nav-text">Simulation Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Baseline-Agent-Implementation"><span class="nav-number">1.3.</span> <span class="nav-text">Baseline Agent Implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#OVMMAgent"><span class="nav-number">1.3.1.</span> <span class="nav-text">OVMMAgent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#heuristic-baseline"><span class="nav-number">1.3.2.</span> <span class="nav-text">heuristic baseline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reinforcement-learning-baseline"><span class="nav-number">1.3.3.</span> <span class="nav-text">reinforcement learning baseline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">1.4.</span> <span class="nav-text">Results</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Limitation"><span class="nav-number">1.5.</span> <span class="nav-text">Limitation</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -326,7 +391,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -339,7 +404,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-count">110</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

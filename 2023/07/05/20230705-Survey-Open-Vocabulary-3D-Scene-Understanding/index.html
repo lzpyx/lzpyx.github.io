@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png">
 <meta property="article:published_time" content="2023-07-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-06T09:52:16.614Z">
+<meta property="article:modified_time" content="2023-07-20T03:59:24.027Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-06 17:52:16" itemprop="dateModified" datetime="2023-07-06T17:52:16+08:00">2023-07-06</time>
+                <time title="Modified: 2023-07-20 11:59:24" itemprop="dateModified" datetime="2023-07-20T11:59:24+08:00">2023-07-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -303,7 +303,7 @@
 <li>Zero-shot 3D Object Detection</li>
 </ul>
 <h2 id="PLA"><a href="#PLA" class="headerlink" title="PLA"></a>PLA</h2><p>PLA: Language-Driven Open-Vocabulary 3D Scene Understanding</p>
-<p>PointCLIP,Clip2point这类将3D投影到2D再利用VLMs处理的方法实现object-level open-<br>vocabulary recognition，但对于处理scene-level understanding tasks比如实例分割，这类方法有两个缺点：</p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>PointCLIP,Clip2point这类将3D投影到2D再利用VLMs处理的方法实现object-level open-vocabulary recognition，但对于处理scene-level understanding tasks比如实例分割，这类方法有两个缺点：</p>
 <ul>
 <li>需要多个RGB图像和深度图来表示3D样本，这在训练和推理期间产生大量计算和存储成本</li>
 <li>3D到2D的投影引起了信息的丢失，无法直接从3D获取信息</li>
@@ -397,7 +397,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2022-PointCLIP"><span class="nav-number">1.1.</span> <span class="nav-text">CVPR2022 PointCLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E7%82%B9%E4%BA%91%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">抽取点云特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zero-shot-Classification"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Zero-shot Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-view-Adapter-for-PointCLIP"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Inter-view Adapter for PointCLIP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-knowledge-Ensemble"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Multi-knowledge Ensemble</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiments"><span class="nav-number">1.1.2.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-number">1.1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PointCLIP-V2"><span class="nav-number">1.2.</span> <span class="nav-text">PointCLIP V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realistic-Shape-Projection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Realistic Shape Projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLM-assisted-3D-Prompting"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LLM-assisted 3D Prompting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-world-Understanding"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Open-world Understanding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PLA"><span class="nav-number">1.3.</span> <span class="nav-text">PLA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">Methodology</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2022-PointCLIP"><span class="nav-number">1.1.</span> <span class="nav-text">CVPR2022 PointCLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E7%82%B9%E4%BA%91%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">抽取点云特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zero-shot-Classification"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Zero-shot Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-view-Adapter-for-PointCLIP"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Inter-view Adapter for PointCLIP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-knowledge-Ensemble"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Multi-knowledge Ensemble</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiments"><span class="nav-number">1.1.2.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-number">1.1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PointCLIP-V2"><span class="nav-number">1.2.</span> <span class="nav-text">PointCLIP V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realistic-Shape-Projection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Realistic Shape Projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLM-assisted-3D-Prompting"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LLM-assisted 3D Prompting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-world-Understanding"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Open-world Understanding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PLA"><span class="nav-number">1.3.</span> <span class="nav-text">PLA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">Methodology</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -411,7 +411,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -424,7 +424,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-count">110</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

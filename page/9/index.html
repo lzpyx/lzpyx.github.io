@@ -164,6 +164,271 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/22/CVPR2020%20%E5%85%A8%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E8%B6%85%E5%83%8F%E7%B4%A0%E5%88%86%E5%89%B2SEN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/22/CVPR2020%20%E5%85%A8%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E8%B6%85%E5%83%8F%E7%B4%A0%E5%88%86%E5%89%B2SEN/" class="post-title-link" itemprop="url">ICCV2021 (SEN)Superpixel Segmentation with Fully Convolutional Networks</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-22 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-22T00:00:00+08:00">2022-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-26 21:10:58" itemprop="dateModified" datetime="2022-04-26T21:10:58+08:00">2022-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2020-全卷积网络超像素分割"><a href="#CVPR2020-全卷积网络超像素分割" class="headerlink" title="CVPR2020 全卷积网络超像素分割"></a>CVPR2020 全卷积网络超像素分割</h1><p>Superpixel Segmentation with Fully Convolutional Networks</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fuy34/superpixel_fcn">GitHub</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>超像素通过将感知上相似的像素组合在一起来提供图像数据的紧凑表示。作为一种有效减少后续处理图像基元数量的方法，超像素已被广泛应用于视觉问题。但是只有少数尝试将它们整合到深度神经网络中。一个主要原因是标准卷积操作是在规则网格上定义的，并且在应用于超像素时变得低效。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>修改深度架构以合并超像素的相关文章：</p>
+<ul>
+<li><p>Superpixel convolutional networks using bilateral inceptions. ECCV 2016</p>
+</li>
+<li><p>Supercnn: A superpixelwise convolutional neural network for salient object detection. IJCV 2015.</p>
+</li>
+<li>Weakly supervised semantic segmentation using superpixel pooling network.  AAAI 2017</li>
+<li>Superpixel convolution for segmentation. ICIP 2018</li>
+<li>Superpixel sampling networks. ECCV 2018.</li>
+</ul>
+<p>本文提到的关键思想：将每个超像素和常规图像的网格单元相关联，这是传统超像素算法初始化的常用策略，将超像素分割任务看作找到图像像素和常规网格单元之间的关联分数，并使用全卷积网络直接预测分数。</p>
+<p>本文主要贡献：</p>
+<ul>
+<li><p>提出了一个简单的全卷积网络用于超像素分割</p>
+</li>
+<li><p>提出了一个通用的基于超像素的下采样/上采样框架</p>
+</li>
+<li><p>与下游任务一起训练超像素</p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/22/CVPR2020%20%E5%85%A8%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E8%B6%85%E5%83%8F%E7%B4%A0%E5%88%86%E5%89%B2SEN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/21/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/21/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">环境搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-21 16:47:19 / Modified: 17:02:15" itemprop="dateCreated datePublished" datetime="2022-04-21T16:47:19+08:00">2022-04-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><h2 id="查看-amp-删除已有环境"><a href="#查看-amp-删除已有环境" class="headerlink" title="查看&amp;删除已有环境"></a>查看&amp;删除已有环境</h2><ul>
+<li><p>查看现有的环境conda info —envs</p>
+</li>
+<li><p>删除环境conda remove -n yolov5 —all</p>
+</li>
+</ul>
+<h2 id="使用指定源安装"><a href="#使用指定源安装" class="headerlink" title="使用指定源安装"></a>使用指定源安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install 包名 -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/21/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/" class="post-title-link" itemprop="url">论文复现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-20 22:29:05" itemprop="dateCreated datePublished" datetime="2022-04-20T22:29:05+08:00">2022-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-02-01 11:52:00" itemprop="dateModified" datetime="2023-02-01T11:52:00+08:00">2023-02-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/code/" itemprop="url" rel="index"><span itemprop="name">code</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>论文复现，代码分析，debug调试记录</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/20/%E8%AE%BA%E6%96%87%E5%A4%8D%E7%8E%B0/">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/20/%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E7%89%B9%E5%BE%81%E7%9A%84%E6%97%A0%E7%9B%91%E7%9D%A3%E5%9B%BE%E5%83%8F%E6%A3%80%E7%B4%A2%E7%A0%94%E7%A9%B6%E7%BB%BC%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -480,7 +745,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-27 22:34:07" itemprop="dateModified" datetime="2022-05-27T22:34:07+08:00">2022-05-27</time>
+                <time title="Modified: 2023-07-19 11:25:26" itemprop="dateModified" datetime="2023-07-19T11:25:26+08:00">2023-07-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -778,7 +1043,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -791,7 +1056,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-count">110</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

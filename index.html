@@ -164,6 +164,468 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/" class="post-title-link" itemprop="url">Navigating to Objects in the Real World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-23 00:00:00 / Modified: 17:26:16" itemprop="dateCreated datePublished" datetime="2023-07-23T00:00:00+08:00">2023-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Navigating-to-Objects-in-the-Real-World"><a href="#Navigating-to-Objects-in-the-Real-World" class="headerlink" title="Navigating to Objects in the Real World"></a>Navigating to Objects in the Real World</h1><p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/summary.gif" alt="img" style="zoom: 67%;" /></p>
+<p>任务难点：</p>
+<ul>
+<li>机器人需要具备区分自由空间和障碍物的空间场景理解能力</li>
+<li>检测物体的语义场景理解</li>
+<li>还需要学习语义探索先验。例如，如果一个人想在这个场景中找到厕所，我们大多数人都会选择走廊，因为它最有可能通向厕所。向agent教授这种常识或语义先验是富有挑战的。</li>
+<li>在探索场景寻找所需物体的同时，机器人还需要长期情景记忆来记住已探索和未探索的区域。</li>
+</ul>
+<p>本文关注了真实世界中的寻物导航问题，比较了经典，端到端和模块化学习三种方法</p>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/challenging_problem.png" alt="img"></p>
+<h2 id="Methods-Overview"><a href="#Methods-Overview" class="headerlink" title="Methods Overview"></a>Methods Overview</h2><p>三类方法：</p>
+<ul>
+<li>Classical: 经典方法是使用深度传感器构建几何地图，以启发式方式探索环境，例如frontier exploration(前沿探索)，<strong>探索最近的未探索区域（将最近的未探索区域作为navigation goal，因此与语义目标无关）</strong>，并使用analytical planner在看到目标物体时立即达到探索目标和目标物体。</li>
+<li>End-to-end Learning: 端到端学习方法通过深度神经网络直接根据原始观察来预测动作，该神经网络由图像帧的视觉编码器和随后的记忆循环层组成。</li>
+<li>Modular Learning: 模块化学习方法通过使用深度投影预测的语义分割来构建语义图，使用面向目标的语义策略作为语义图和目标对象的函数来预测探索目标。(模块化学习方法保留了经典方法的框架，replace analytical modules for specific subtasks with learned ones)<ul>
+<li>perception (object detection, mapping, pose estimation, SLAM)</li>
+<li>encoding goals</li>
+<li>global waypoint selection policies</li>
+<li>planning</li>
+<li>local obstacle avoidance policies</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/methods.gif" alt="img" style="zoom: 80%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230723163234913.png" alt="image-20230723163234913" style="zoom:67%;" /></p>
+<h2 id="Classical-and-Modular-Learning-Approaches"><a href="#Classical-and-Modular-Learning-Approaches" class="headerlink" title="Classical and Modular Learning Approaches"></a>Classical and Modular Learning Approaches</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230723170108747.png" alt="image-20230723170108747" style="zoom:50%;" /></p>
+<h3 id="Extending-Classical-Approaches-to-Navigate-to-Objects"><a href="#Extending-Classical-Approaches-to-Navigate-to-Objects" class="headerlink" title="Extending Classical Approaches to Navigate to Objects"></a>Extending Classical Approaches to Navigate to Objects</h3><ul>
+<li><p>将传统的SLAM方法扩展到寻物导航需要进行object detection，keeping objects in memory, and exploring<br>semantically towards objects</p>
+<ul>
+<li>Semantic SLAM methods [19, 20, 21, 22, 23, 24] naturally extend SLAM to detect objects and keep them in memory in a spatial semantic map but offer no solution for efficient semantic exploration.</li>
+<li>在经典的goal-agnostic exploration的许多启发式方法中，作者选择frontier-based exploration [18] (1997的方法)（向最近的未探索区域导航）来代表经典探索方法，因为它在以前的工作中特别有效。</li>
+<li><p>上图表示了经典方法的pipeline，包含了：</p>
+<ul>
+<li>semantic mapping to keep seen objects in memory</li>
+<li>frontier exploration to select high-level goals</li>
+<li>path planning to select low-level actions</li>
+</ul>
+</li>
+<li><p>本文关注的设定是：navigating to a single object starting with zero information about the environment — the setting we evaluate in this paper — we don’t even need to keep objects in memory in a semantic map in the classical approach</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Modular-Learning-to-Navigate-to-Objects"><a href="#Modular-Learning-to-Navigate-to-Objects" class="headerlink" title="Modular Learning to Navigate to Objects"></a>Modular Learning to Navigate to Objects</h3><ul>
+<li>frontier exploration很有效，但是忽略了对象目标，因此是次优的</li>
+<li>利用家中物体布局的统计规律来更有效地探索（猜测目标更有可能在哪）<ul>
+<li>Object goal navigation using goal-oriented semantic exploration[62]作为代表方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="Semantic-Map-Representation"><a href="#Semantic-Map-Representation" class="headerlink" title="Semantic Map Representation"></a>Semantic Map Representation</h3><p>与Object goal navigation using goal-oriented semantic exploration[62]中一致</p>
+<h3 id="Semantic-Mapping-Module"><a href="#Semantic-Mapping-Module" class="headerlink" title="Semantic Mapping Module"></a>Semantic Mapping Module</h3><p>使用Mask-RCNN with ResNet50 backbone pretrained on MS-COCO for object detection and instance segmentation.然后利用深度信息将第一视角的语义分割结果投影到3D点云中去，并将点云转换为3D semantic voxel map，使用agent pose将其从机器人的坐标系变换到语义地图的坐标系，并且最后对高度求和以计算2D语义地图。</p>
+<h3 id="Frontier-Exploration-Policy"><a href="#Frontier-Exploration-Policy" class="headerlink" title="Frontier Exploration Policy"></a>Frontier Exploration Policy</h3><p>frontier exploration: each step, we select the boundary between the explored and unexplored region of the map, i.e., the frontier, and within this boundary select the point closest to the robot in geodesic distance.</p>
+<p>这种探索策略表现出深度优先搜索行为：一旦机器人朝一个方向前进，最近的未探测区域就在它的前面，直到障碍物挡住了路。一旦看到目标对象，即对象目标的语义映射的通道具有非零元素，我们就停止探索并选择所有非零元素作为目标。</p>
+<h3 id="Semantic-Exploration-Policy"><a href="#Semantic-Exploration-Policy" class="headerlink" title="Semantic Exploration Policy"></a>Semantic Exploration Policy</h3><p>根据当前语义图和目标对象来决定goal</p>
+<blockquote>
+<p>This requires learning semantic priors on the relative arrangement of objects and areas in homes.</p>
+</blockquote>
+<h3 id="Planner"><a href="#Planner" class="headerlink" title="Planner"></a>Planner</h3><p>Fast Marching Method [108]    </p>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><p>本文在6个不同场景的6个目标类别上进行实验，对比了三类方法</p>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/empirical_evaluation.gif" alt="img" style="zoom:50%;" /></p>
+<p>经典方法和模块化方法的sim-to-real迁移能力较强，而端到端的方法则有较大gap</p>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/results_quantitative.png" alt="img" style="zoom: 50%;" /></p>
+<p>三种方法的trajectory示意图</p>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/results_qualitative.gif" alt="img" style="zoom:50%;" /></p>
+<p>结论：</p>
+<ul>
+<li><p>Modular Learning is Reliable（90% success rate）</p>
+</li>
+<li><p>Modular Learning Explores more Efficiently than Classical</p>
+<ul>
+<li>经典方法在进行frontier exploration的时候是和语义目标无关的</li>
+<li>与经典方法相比，模块化学习在现实世界中的成功率提高了 10%</li>
+<li>在左侧，面向目标的语义探索策略直接前往卧室，并以 98 步找到床，SPL 为 0.90。在右侧，由于前沿探索与床目标无关，因此该策略绕道厨房和入口走廊，最终以 152 步到达床，SPL 为 0.52。</li>
+</ul>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/modular_vs_classical.gif" alt="img" style="zoom:50%;" /></p>
+</li>
+<li><p>End-to-end Learning Fails to Transfer</p>
+<ul>
+<li>only 23% success rate</li>
+</ul>
+</li>
+</ul>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><ul>
+<li><p>Insight 1: Why does Modular Transfer while End-to-end does not?</p>
+<ul>
+<li><p>模块化学习方法的semantic exploration policy以语义图作为输入，而端到端策略直接对 RGB-D frames进行操作。The semantic map space is invariant between sim and reality, while the image space exhibits a large domain gap.</p>
+<blockquote>
+<p>语义图空间在模拟和现实之间是不变的，而图像空间则表现出很大的域差距。在此示例中，这种差距导致了在现实世界图像上训练的分割模型，以预测厨房中的床误报。</p>
+</blockquote>
+</li>
+<li><p>The semantic map domain invariance(semantic map在sim和real中基本不变)使得模块化学习方法能够很好地从模拟迁移到现实</p>
+</li>
+<li><p>当将现实世界中训练的分割模型转移到simulator时，图像域之间的巨大gap会导致性能大幅下降，反之亦然。如果语义分割从模拟到现实的迁移很差，那么可以合理地预期在模拟图像上训练的端到端语义导航策略很难转移到现实世界中</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/gaps_and_invariances.png" alt="img" style="zoom:50%;" /></p>
+<ul>
+<li><p>Insight 2: Sim vs Real Gap in Error Modes for Modular Learning</p>
+<ul>
+<li><p>模块化方法真实世界成功率更高</p>
+</li>
+<li><p>在sim中有许多错误来自于reconstruction errors，现实中不会出现。Visual reconstruction errors represent 10% out of the total 19% episode failures, and physical reconstruction errors another 5%.</p>
+<blockquote>
+<p>visual (imperfect RGB reconstruction that makes semantic segmentation harder in sim than reality) and physical (noisy navigation meshes that make planning harder in sim than reality)</p>
+</blockquote>
+</li>
+<li><p>现实世界中失败的原因主要来自于depth sensor errors（在sim中假设了完美的深度估计）</p>
+</li>
+</ul>
+<p>作者提出：</p>
+<ul>
+<li>(A) introduce realistic depth noise models for target deployment robots in sim benchmarks</li>
+<li>(B) improve the visual quality of sim 3D scans</li>
+<li>(C) improve the quality of sim navigation meshes</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/error_modes.png" alt="img"></p>
+<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/takeaways.png" alt="img" style="zoom:50%;" /></p>
+<p>需要关注的文献：</p>
+<p>[67-71]</p>
+<p>[87]</p>
+<p>[56,59,89]</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/22/20230722-Generative-Prompt-Model-for-Weakly-Supervised-Object-Localization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/22/20230722-Generative-Prompt-Model-for-Weakly-Supervised-Object-Localization/" class="post-title-link" itemprop="url">Generative Prompt Model for Weakly Supervised Object Localization</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-22 00:00:00 / Modified: 22:41:21" itemprop="dateCreated datePublished" datetime="2023-07-22T00:00:00+08:00">2023-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GenPromp"><a href="#GenPromp" class="headerlink" title="GenPromp"></a>GenPromp</h1><p>Generative Prompt Model for Weakly Supervised Object Localization</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230722222342998.png" alt="image-20230722222342998" style="zoom:50%;" /></p>
+<p>Querying Discriminative Embeddings</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230722222549588.png" alt="image-20230722222549588" style="zoom:50%;" /></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/20/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/20/20230701-HomeRobot-Open-Vocabulary-Mobile-Manipulation/" class="post-title-link" itemprop="url">HomeRobot: Open-Vocabulary Mobile Manipulation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-20T00:00:00+08:00">2023-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-21 11:10:06" itemprop="dateModified" datetime="2023-07-21T11:10:06+08:00">2023-07-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="HomeRobot-Open-Vocabulary-Mobile-Manipulation"><a href="#HomeRobot-Open-Vocabulary-Mobile-Manipulation" class="headerlink" title="HomeRobot: Open-Vocabulary Mobile Manipulation"></a>HomeRobot: Open-Vocabulary Mobile Manipulation</h1><blockquote>
+<p>Open-Vocabulary Mobile Manipulation (OVMM) is the problem of picking any object in any unseen environment, and placing it in a commanded location.</p>
+</blockquote>
+<p>OVMM涉及到了感知、语言理解、导航和操作</p>
+<blockquote>
+<p>an agent navigates household environments to grasp novel objects and place them on target receptacles</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720140252118.png" alt="image-20230720140252118"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720142031012.png" alt="image-20230720142031012"></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Open Vocabulary Navigation</p>
+<p>[9] Open-vocabulary queryable scene representations for real world planning. arXiv, 2022.</p>
+<p>[15] Conceptfusion: Open-set multimodal 3d mapping. arXiv, 2023.</p>
+<p>[11] Clip-fields: Weakly supervised semantic fields for robotic memory. arXiv, 2022.</p>
+<p>[12] Usa-net: Unified semantic and affordance representations for robot memory. arXiv, 2023.</p>
+<p>[16] Beyond the nav-graph: Vision and language navigation in continuous environments. In European Conference on Computer<br>Vision (ECCV), 2020.</p>
+<p>“Move (object) from the (start_receptacle) to the (goal_receptacle).”</p>
+<p>机器人初始化在未知环境的home environment中，给定object，起始地和目的地，机器人实现对object的搬运：</p>
+<ul>
+<li>finding the start_receptacle with the object</li>
+<li>picking up the object</li>
+<li>finding the goal_receptacle</li>
+<li>placing the object on the goal_receptacle.</li>
+</ul>
+<p>部分object在训练阶段不可见，所有放置物体的地方在训练阶段都是可见的，</p>
+<h2 id="Simulation-Data"><a href="#Simulation-Data" class="headerlink" title="Simulation Data"></a>Simulation Data</h2><ul>
+<li><p>Habitat Synthetic Scenes Dataset (HSSD)：</p>
+<ul>
+<li><p>200+Scenes，18K objects</p>
+</li>
+<li><p>本文使用HSSD的子集，由60个场景组成，38个用于训练，12用于验证和10用于测试</p>
+</li>
+</ul>
+</li>
+<li><p>总共注释了129个类别的2535个对象，标注了HSSD数据集中出现的21个不同类别的receptacle</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720150601811.png" alt="image-20230720150601811"></p>
+<h2 id="Baseline-Agent-Implementation"><a href="#Baseline-Agent-Implementation" class="headerlink" title="Baseline Agent Implementation"></a>Baseline Agent Implementation</h2><h3 id="OVMMAgent"><a href="#OVMMAgent" class="headerlink" title="OVMMAgent"></a>OVMMAgent</h3><p>将完成OVMM任务需要的技能分解为：</p>
+<ul>
+<li>FindObj/FindRec: 对物体和容器进行定位</li>
+<li>Gaze: 移动到足够接近对象以抓住它，并调整头部方向以获得对象的良好视图。凝视的目的是提高抓取的成功率。</li>
+<li>Grasp: 捡起物体，只提供了high-level的action</li>
+<li>Place: Move to a location in the environment and place the object on top of the goal_receptacle.</li>
+</ul>
+<h3 id="heuristic-baseline"><a href="#heuristic-baseline" class="headerlink" title="heuristic baseline"></a>heuristic baseline</h3><blockquote>
+<p>use a well known motion planning technique [2] and simple rules to execute grasping and manipulation actions</p>
+</blockquote>
+<p>[2] Navigating to objects in the real world. arXiv, 2022.</p>
+<h3 id="reinforcement-learning-baseline"><a href="#reinforcement-learning-baseline" class="headerlink" title="reinforcement learning baseline"></a>reinforcement learning baseline</h3><p>learn exploration and manipulation skills using an off-the-self policy learning algorithm, DDPPO</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720153113438.png" alt="image-20230720153113438"></p>
+<p>失败分析</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230720151129008.png" alt="image-20230720151129008"></p>
+<h2 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h2><ul>
+<li>仿真中没有物理模拟抓取</li>
+<li>We consider full natural language queries out-of-scope</li>
+<li>we do not implement many motion planners in HomeRobot, or task-and-motion-planning with replanning, as would be ideal</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/19/20230719-A-Survey-on-Open-Vocabulary-Detection-and-Segmentation-Past,-Present,-and-Future/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/19/20230719-A-Survey-on-Open-Vocabulary-Detection-and-Segmentation-Past,-Present,-and-Future/" class="post-title-link" itemprop="url">A Survey on Open-Vocabulary Detection and Segmentation: Past, Present, and Future</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-19 00:00:00 / Modified: 14:38:34" itemprop="dateCreated datePublished" datetime="2023-07-19T00:00:00+08:00">2023-07-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="OV-Survey"><a href="#OV-Survey" class="headerlink" title="OV Survey"></a>OV Survey</h1><p>A Survey on Open-Vocabulary Detection and Segmentation: Past, Present, and Future</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/16/20230706-3D-Aware-Object-Goal-Navigation-via-Simultaneous-Exploration-and-Identification/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -282,10 +744,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-16 00:00:00 / Modified: 16:37:42" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
+              <time title="Created: 2023-07-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-16T00:00:00+08:00">2023-07-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-19 10:46:31" itemprop="dateModified" datetime="2023-07-19T10:46:31+08:00">2023-07-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -313,33 +781,14 @@
 <li>text-conditioned image generative models不仅编码对象的视觉外观，而且还提供上下文先验，如背景，这可以大大提高分割质量。</li>
 </ul>
 <h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716150650409.png" alt="image-20230716150650409" style="zoom:50%;" /></p>
-<h3 id="Support-set-generation"><a href="#Support-set-generation" class="headerlink" title="Support set generation"></a>Support set generation</h3><ul>
-<li>基于prompt “A good photo of a $⟨c_i⟩$”使用stable diffusion生成N张support images</li>
-</ul>
-<h3 id="Class-prototypes"><a href="#Class-prototypes" class="headerlink" title="Class prototypes"></a>Class prototypes</h3><ul>
-<li><p>为每个类别生成positive和negative两类prototypes</p>
-<ul>
-<li>Positive prototypes代表图像中与对应类别相关的区域特征</li>
-<li>Negative prototypes代表background区域特征</li>
-</ul>
-</li>
-<li><p>找与类别$c_i$最相关的区域</p>
-<ul>
-<li>作者的观察：生成图像的布局在很大程度上依赖于扩散模型的交叉注意图，即pixels attend more strongly to words which describe them</li>
-<li>基于这个观察，作者直接对cross-attention map所有层、头和去噪步骤求和，得到N张support images对应的N张attribution maps（代表了类别相关的区域）</li>
-<li>直接对激活图进行阈值分割会导致模糊的分割，因此作者使用CutLER进行无监督实例分割，获得高质量的obejct proposals</li>
-<li>计算每个mask proposal的attribution平均得分，最高的作为前景，最低的作为背景</li>
-<li>然后通过现成的预训练特征提取器获得密集图像特征，并计算前景/背景掩码内的平均特征作为prototype，即<strong>instance-level prototypes</strong>（从每个图像单独计算，且支持集中的每个图像可以被视为类Ci的实例。）</li>
-<li><strong>class-level prototypes</strong>则是通过对instance-level prototypes加权求和得到，根据mask size来设置权值</li>
-<li>通过对foreground and background regions分别进行K-means聚类得到<strong>part-level prototypes</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="Open-vocabulary-segmentation"><a href="#Open-vocabulary-segmentation" class="headerlink" title="Open-vocabulary segmentation"></a>Open-vocabulary segmentation</h3><p>简单地通过每个像素的图像特征与prototype的余弦相似性的来获得，选择在其原型集中具有最高相似度的类</p>
-<h3 id="Category-pre-filtering"><a href="#Category-pre-filtering" class="headerlink" title="Category pre-filtering"></a>Category pre-filtering</h3><h3 id="“Stuff”-filtering"><a href="#“Stuff”-filtering" class="headerlink" title="“Stuff” filtering"></a>“Stuff” filtering</h3><p>使用ChatGPT来筛选“thing” or “stuff”（如sky）</p>
-<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>To generate our support set, we use the Stable Diffusion model v1.5. We set the size of the support set to N = 64, which translates to 4 batches of 16 images samples in parallel on a single A40（48G）.</p>
-<p>We estimate the total compute used for the experiments in this paper at 190 GPU hours</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/16/20230714-Diffusion-Models-for-Zero-Shot-Open-Vocabulary-Segmentation/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -702,354 +1151,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/" class="post-title-link" itemprop="url">Learning to Explore using Active Neural SLAM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-18 13:46:59" itemprop="dateModified" datetime="2023-07-18T13:46:59+08:00">2023-07-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Learning-to-Explore-using-Active-Neural-SLAM"><a href="#Learning-to-Explore-using-Active-Neural-SLAM" class="headerlink" title="Learning to Explore using Active Neural SLAM"></a>Learning to Explore using Active Neural SLAM</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>未知环境中导航的核心问题是探索，即，如何有效地访问尽可能多的环境，最大化覆盖环境范围以给予在未知环境中找到目标的机会，或在有限的时间预算上对环境进行有效的预建图。</p>
-<p>为了在未知环境中进行高效主动探索，agent需要知道：</p>
-<ul>
-<li>where it has been before (<em>i.e.</em> <strong>Mapping</strong>)</li>
-<li>where it is now (<em>i.e.</em> <strong>Pose Estimation</strong>)</li>
-<li>where it needs to go (<em>i.e.</em> <strong>Planning</strong>)</li>
-</ul>
-<p>如何训练自主探索的agents？</p>
-<ul>
-<li>一种方法是使用端到端的深度强化学习，但是使用端到端的方式隐式的学习mapping，pose estimation和planning是昂贵的，且样本效率低下，因此强化学习的方法不适用于large environment中</li>
-</ul>
-<p>本文提出的方法通过learning的方法来学习：</p>
-<ul>
-<li><p>室内环境的结构特点</p>
-</li>
-<li><p>对状态估计误差的鲁棒性；</p>
-</li>
-<li><p>灵活的输入模态</p>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/11/20230711-Learning-to-Explore-using-Active-Neural-SLAM/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/" class="post-title-link" itemprop="url">Meta Omnium: A Benchmark for General-Purpose Learning-to-Learn</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-11 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-11T00:00:00+08:00">2023-07-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 22:22:50" itemprop="dateModified" datetime="2023-07-13T22:22:50+08:00">2023-07-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Meta-Omnium"><a href="#Meta-Omnium" class="headerlink" title="Meta Omnium"></a>Meta Omnium</h1><p>Meta Omnium是一个跨多个视觉任务的数据集，包括识别，关键点定位，语义分割和回归。提供统一框架，用于以一致的方式在广泛的视觉应用中评估meta-learners</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230711162435776.png" alt="image-20230711162435776" style="zoom:33%;" /></p>
-<ul>
-<li>现有的benchmarks仅测试meta-learners在分类或密集预测等任务中学习的能力。Meta Omnium独特地测试了元学习者跨多种任务类型学习的能力。</li>
-<li>涵盖多个视觉领域（从自然图像到医学和工业图像）</li>
-<li>提供了全面评估分布内和分布外泛化的能力</li>
-<li>明确的超参数调整和模型选择协议，以促进元学习算法之间的公平比较</li>
-<li>具有适中的计算成本，使其可用于资源适度的大学和大型机构的研究</li>
-</ul>
-<p>传统的within-task meta-learning benchmarks更多地依赖于共同的表征学习而不是learning-to-learn，Meta Omnium更好地测试了learning-to-learn的能力，因为组成的任务需要更多样化的表征</p>
-<p>baseline具有最小的task-specific decoders，评估learning-to-learn的能力，而不是融入先验</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/11/20230711-Meta-Omnium-A-Benchmark-for-General-Purpose-Learning-to-Learn/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/10/20230710-EmbodiedGPT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/10/20230710-EmbodiedGPT/" class="post-title-link" itemprop="url">EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-10 00:00:00 / Modified: 12:39:13" itemprop="dateCreated datePublished" datetime="2023-07-10T00:00:00+08:00">2023-07-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="EmbodiedGPT"><a href="#EmbodiedGPT" class="headerlink" title="EmbodiedGPT"></a>EmbodiedGPT</h1><p>EmbodiedGPT: Vision-Language Pre-Training via Embodied Chain of Thought</p>
-<p>基于具身思维链的视觉语言预训练</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/635155991">参考</a></p>
-<p>目前的大模型大多数通过以人类对话、视觉caption、视觉问答等任务的数据集进行训练，和机器人有较大的domain gap，输出的内容准确规划和可执行的动作的能力还有很大提升空间。本文提出：</p>
-<ul>
-<li>EgoCOT: a large-scale embodied planning dataset</li>
-<li>高效的通过prefix tuning的方式对LLM在EgoCOT上进行训练</li>
-<li>用于从LLM生成的planning queries中提取与任务相关的特征，以形成高层规划和低层控制之间的闭环</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/10/20230710-GeoVLN-Learning-Geometry-Enhanced-Visual-Representation-with-Slot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/10/20230710-GeoVLN-Learning-Geometry-Enhanced-Visual-Representation-with-Slot/" class="post-title-link" itemprop="url">GeoVLN: Learning Geometry-Enhanced Visual Representation with Slot Attention for Vision-and-Language Navigation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-10T00:00:00+08:00">2023-07-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-12 11:00:19" itemprop="dateModified" datetime="2023-07-12T11:00:19+08:00">2023-07-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GeoVLN"><a href="#GeoVLN" class="headerlink" title="GeoVLN"></a>GeoVLN</h1><p>GeoVLN: Learning Geometry-Enhanced Visual Representation with Slot Attention for Vision-and-Language Navigation</p>
-<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230712094534098.png" alt="image-20230712094534098" style="zoom:50%;" /></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>以往方法的缺陷：</p>
-<ul>
-<li>仅依赖于RGB图像，RGB图像只能提供非常有限的2D视觉线索并且缺乏几何信息</li>
-<li>独立地处理每个candidate view而不考虑局部空间上下文，导致不准确的决策</li>
-<li>自然语言包含高级语义特征，并且指令内的不同短语可以集中于各个方面的视觉信息，例如：纹理，几何。使用原生的注意机制构建跨模态表征会导致次优性能</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1119,7 +1220,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1132,7 +1233,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-count">110</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
