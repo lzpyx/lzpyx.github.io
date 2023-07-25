@@ -164,6 +164,185 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/" class="post-title-link" itemprop="url">3D-LLM: Injecting the 3D World into Large Language Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-25 00:00:00 / Modified: 17:07:47" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="3D-LLM"><a href="#3D-LLM" class="headerlink" title="3D-LLM"></a>3D-LLM</h1><p>3D-LLM: Injecting the 3D World into Large Language Models</p>
+<p>MLLMs如Flamingo，BLIP-2能够对2D image进行理解和推理，但是无法与3D物理世界接地，因此无法利用3D中的丰富信息，如空间关系，物理和交互等。</p>
+<p>通过将场景的3D表示作为输入，使3D-LLM具有2个优势：</p>
+<ul>
+<li>关于整个场景的长期记忆可以存储在整体3D表示中，而不是片段的部分视图观察</li>
+<li>3D属性（如affordances和空间关系）可以从3D表示中推理出来，远超出了基于语言或基于2D图像的LLM的能力范围</li>
+</ul>
+<p>本文的贡献点：</p>
+<ul>
+<li>3D data paired with language description难以获取，本文提出了一个数据生成pipeline来生成大规模的3D data paired with language，最终得到300k的3D-language data（多任务）</li>
+<li>如何提取能和语言特征对齐的3D特征？<ul>
+<li>使用渲染的2D多视图图像的特征构造3D特征</li>
+<li>将3D转换为2D，然后就可以使用现成的VLMs如BLIP-2</li>
+</ul>
+</li>
+<li>如何感知3D空间位置关系<ul>
+<li>3D localization mechanism that bridges the gap between language and spatial locations</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725122839668.png" alt="image-20230725122839668"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/" class="post-title-link" itemprop="url">PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-24 00:00:00 / Modified: 20:59:46" itemprop="dateCreated datePublished" datetime="2023-07-24T00:00:00+08:00">2023-07-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="PROTO-CLIP"><a href="#PROTO-CLIP" class="headerlink" title="PROTO-CLIP"></a>PROTO-CLIP</h1><p>PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>在机器人感知的setting下：</p>
+<ul>
+<li>object model-based方法建立物体的3D模型，并用3D模型来进行物体识别，但真实世界中难以获取大规模的3D模型</li>
+<li>object catagory-based方法识别有限类别的物体，很难对每个类别都收集大量的图像</li>
+<li>ImageNet和Visual Genome这类Internet data和robot manipulation存在domain gap</li>
+</ul>
+<p>因此从少量的图片示例中学习如何识别一个新的物体对于scale up机器人可识别的物体非常重要</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230724184706199.png" alt="image-20230724184706199"></p>
+<p>基于few-shot training images同时adapt图像和文本编码器，在adapt过程中对齐图像原型和文本原型，以提升few-shot classification性能</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -230,6 +409,73 @@
             </div>
           <!--/noindex-->
         
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/23/20230723-%E5%9B%9B%E5%85%83%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/23/20230723-%E5%9B%9B%E5%85%83%E6%95%B0/" class="post-title-link" itemprop="url">四元数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-23 00:00:00 / Modified: 17:37:06" itemprop="dateCreated datePublished" datetime="2023-07-23T00:00:00+08:00">2023-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
       
     </div>
 
@@ -783,269 +1029,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/13/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/13/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/" class="post-title-link" itemprop="url">Object Goal Navigation using Goal-Oriented Semantic Exploration</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-13T00:00:00+08:00">2023-07-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-18 14:39:08" itemprop="dateModified" datetime="2023-07-18T14:39:08+08:00">2023-07-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration"><a href="#Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration" class="headerlink" title="Object Goal Navigation using Goal-Oriented Semantic Exploration"></a>Object Goal Navigation using Goal-Oriented Semantic Exploration</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>object goal navigation：在未知环境中导航到一个给定物体类别的实例对象位置</p>
-<p>假设要求agent在未知环境中导航到“dining table”，在语义理解方面，该任务不仅涉及对象检测，即“dining table”看起来像什么，但也要<strong>了解“dining table”在哪里更有可能被找到</strong>。</p>
-<ul>
-<li>long-term episodic memory可以使agent有效探索和跟踪环境</li>
-<li>学习语义先验可以使agent使用episodic memory来决定接下来探索哪个区域，以便在最少的时间内找到目标对象。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230713155844851.png" alt="image-20230713155844851" style="zoom:50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/13/20230713-Object-Goal-Navigation-using-Goal-Oriented-Semantic-Exploration/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/12/20230712-Slot-Attention/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/12/20230712-Slot-Attention/" class="post-title-link" itemprop="url">Slot Attention</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 22:21:57" itemprop="dateModified" datetime="2023-07-13T22:21:57+08:00">2023-07-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Object-Centric-Learning-with-Slot-Attention"><a href="#Object-Centric-Learning-with-Slot-Attention" class="headerlink" title="Object-Centric Learning with Slot Attention"></a>Object-Centric Learning with Slot Attention</h1><p>和DETR中的decoder非常接近</p>
-<p><a href="https://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">DETR笔记</a></p>
-<p>每个slot可以理解为一个特征向量，本文聚焦于如何从 CNN 的 feature map 中聚类/抽象出 set of slots</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712123723688.png" alt="image-20230712123723688" style="zoom:50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/12/20230712-Slot-Attention/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/12/20230712-Few-Shot-Learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/12/20230712-Few-Shot-Learning/" class="post-title-link" itemprop="url">Few-Shot Learning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-12T00:00:00+08:00">2023-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-13 22:23:08" itemprop="dateModified" datetime="2023-07-13T22:23:08+08:00">2023-07-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Prototypical-Networks-for-Few-shot-Learning"><a href="#Prototypical-Networks-for-Few-shot-Learning" class="headerlink" title="Prototypical Networks for Few-shot Learning"></a>Prototypical Networks for Few-shot Learning</h1><ul>
-<li>对于分类问题，原型网络将其看做在语义空间中寻找每一类的原型中心。</li>
-<li>针对Few-shot的任务定义，原型网络训练时学习如何拟合中心。学习一个度量函数，该度量函数可以通过少量的几个样本找到所属类别在该度量空间的原型中心。</li>
-<li>测试时，用支持集（Support Set）中的样本来计算新的类别的聚类中心，再利用最近邻分类器的思路进行预测。本文主要针对Few-Show／Zero-Shot任务中过拟合的问题进行研究，将原型网络和聚类联系起来，和目前的一些方法进行比较，取得了不错的效果。</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712221559551.png" alt="image-20230712221559551" style="zoom:50%;" /></p>
-<ul>
-<li>$C_k$代表类的原型，是支持集样本embedding的均值向量</li>
-<li>$S_k$代表支持集中每个类的样本</li>
-</ul>
-<p>$\mathbf{c}_{k}=\frac{1}{\left|S_{k}\right|} \sum_{\left(\mathbf{x}_{i}, y_{i}\right) \in S_{k}} f_{\phi}\left(\mathbf{x}_{i}\right)$</p>
-<ul>
-<li>计算query instance和各个类原型间的距离，通过softmax得到分类概率分布</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230712222740817.png" alt="image-20230712222740817" style="zoom:50%;" /></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1111,7 +1098,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">92</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1124,7 +1111,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-count">115</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
