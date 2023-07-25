@@ -20,25 +20,32 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="ECCV2020 DETREnd-to-End Object Detection with Transformers Motivation现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。  proposals: R-CNN系列工作 anchors: Yolo系列工作 n">
+  <meta name="description" content="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as PromptsMotivationVLMs通常通过设计与数据集相关的prompt来zero-shot的适配下游数据集 将CLIP用于一个特定domain时，一种直白的prompt engineering方式是： to classify bird images, one coul">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ECCV2020 DETR">
-<meta property="og:url" content="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/index.html">
+<meta property="og:title" content="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="ECCV2020 DETREnd-to-End Object Detection with Transformers Motivation现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。  proposals: R-CNN系列工作 anchors: Yolo系列工作 n">
+<meta property="og:description" content="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as PromptsMotivationVLMs通常通过设计与数据集相关的prompt来zero-shot的适配下游数据集 将CLIP用于一个特定domain时，一种直白的prompt engineering方式是： to classify bird images, one coul">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202211091714681.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221112133848495.png">
-<meta property="article:published_time" content="2022-11-11T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-11-16T12:35:34.530Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725215455708.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725231159034.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725232306505.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725233046978.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725233059454.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230726001929229.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230726001805274.png">
+<meta property="article:published_time" content="2023-07-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-25T16:20:27.953Z">
 <meta property="article:author" content="lzpyx">
-<meta property="article:tag" content="Transformer">
-<meta property="article:tag" content="OD">
-<meta property="article:tag" content="End-to-end">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Few-Shot Learning">
+<meta property="article:tag" content="Object Recognition">
+<meta property="article:tag" content="Robot Perception">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202211091714681.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725215455708.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/">
 
 
 <script id="page-configurations">
@@ -51,7 +58,7 @@
   };
 </script>
 
-  <title>ECCV2020 DETR | Yixuan Pan's Blog</title>
+  <title>Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts | Yixuan Pan's Blog</title>
   
 
 
@@ -175,7 +182,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/12/ECCV2020%20DETR/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -188,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          ECCV2020 DETR
+          Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts
         </h1>
 
         <div class="post-meta">
@@ -198,14 +205,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-11-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-12T00:00:00+08:00">2022-11-12</time>
+              <time title="Created: 2023-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-11-16 20:35:34" itemprop="dateModified" datetime="2022-11-16T20:35:34+08:00">2022-11-16</time>
+                <time title="Modified: 2023-07-26 00:20:27" itemprop="dateModified" datetime="2023-07-26T00:20:27+08:00">2023-07-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,48 +235,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="ECCV2020-DETR"><a href="#ECCV2020-DETR" class="headerlink" title="ECCV2020 DETR"></a>ECCV2020 DETR</h1><p>End-to-End Object Detection with Transformers</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>现阶段的目标检测器都是使用间接的方式处理集合预测问题,没有直接做集合预测任务，而是定义回归或者分类问题来替代，以间接方式解决集合预测任务。这些方法性能受限于后处理操作，如NMS。</p>
+        <h1 id="Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts"><a href="#Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts" class="headerlink" title="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts"></a>Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>VLMs通常通过设计与数据集相关的prompt来zero-shot的适配下游数据集</p>
+<p>将CLIP用于一个特定domain时，一种直白的prompt engineering方式是：</p>
+<p>to classify bird images, one could construct a prompt ‘a photo of ${classname}$, <strong>a type of bird</strong>’.</p>
+<p>但这样的prompt实际上并非最优方式：</p>
 <ul>
-<li>proposals: R-CNN系列工作</li>
-<li>anchors: Yolo系列工作</li>
-<li>non-anchor based(window centers): CenterNet,FCOS</li>
+<li>不能引入有效的专家知识，无法获取target domain的domain expertise</li>
+<li>high variance：prompt小的变化就会引起性能的较大变化</li>
+<li>判别性的信息仅仅只有$classname$，而仅依赖$classname$无法完成一些类别的zero-shot的识别，比如name中带有green的green heron但是在外形上更接近black bittern而不是green woodpecker</li>
 </ul>
-<p>DETR去掉了需要人工设计的组件，如NMS和先验anchor，因此DETR框架是非常简洁的，使目标检测变得简单。</p>
+<p>因此需要引入visually descriptive textual (VDT) information</p>
+<blockquote>
+<p>we define VDT as a set of sentences that describe the visual features of the class under consideration including shape, size, color, environment, patterns, composition, etc.</p>
+</blockquote>
+<p>对于CUB，数据集中提供了domain expertise，其他数据集没有，因此引入LLM来构建复杂prompt，作者采用GPT-4来构建关于类的视觉描述性文本信息，prompt中特别强调了形状、颜色、结构和组成性等视觉线索。</p>
+<p>对于high variance问题：作者使用Prompt ensembling the VDT sentences reduce CLIP’s performance sensitivity to small changes in the prompt.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725215455708.png" alt="image-20230725215455708"></p>
 <span id="more"></span>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Object-detection-set-prediction-loss"><a href="#Object-detection-set-prediction-loss" class="headerlink" title="Object detection set prediction loss"></a>Object detection set prediction loss</h3><p>DETR提出了一种集合预测损失，该损失强制预测框和GT框之间进行唯一匹配（因此可以不需要NMS，可以一对一出框）</p>
-<p>DETR的输出是一个固定的集合，最后都会输出N=100个框，但是由于一张图像只有几个GT框，计算loss需要知道预测框应该与哪个GT框进行匹配。作者将这一问题转换成了一个最优二分图匹配问题optimal bipartite matching。</p>
-<p>scipy中提供了linear-sum-assignment（匈牙利算法），输入cost matrix，就可以输出最优匹配结果。</p>
-<blockquote>
-<p>cost matrix可以理解为将a,b,c三个工人分配去做x,y,z三个工作，分别的耗时（代价），然后选取一个最优的分配方式，在DETR中，abc是100个预测的框，xyz是GT框，遍历所有的预测框和GT框，然后利用分类损失和定位损失来计算得到cost matrix，然后再利用匈牙利算法获得最优匹配。</p>
-<p>$\hat{\sigma}=\underset{\sigma \in \mathfrak{S}_{N}}{\arg \min } \sum_{i}^{N} \mathcal{L}_{\operatorname{match}}\left(y_{i}, \hat{y}_{\sigma(i)}\right)$</p>
-<p>$\mathcal{L}_{\text {match }}\left(y_{i}, \hat{y}_{\sigma(i)}\right)=-\mathbb{1}_{\left\{c_{i} \neq \varnothing\right\}} \hat{p}_{\sigma(i)}\left(c_{i}\right)+\mathbb{1}_{\left\{c_{i} \neq \varnothing\right\}} \mathcal{L}_{\text {box }}\left(b_{i}, \hat{b}_{\sigma(i)}\right)$</p>
-</blockquote>
-<p>有了最优匹配的结果，意味着计算损失时预测框和GT框是一对一的，而不是多对一的</p>
-<p>$\mathcal{L}_{\text {Hungarian }}(y, \hat{y})=\sum_{i=1}^{N}\left[-\log \hat{p}_{\hat{\sigma}(i)}\left(c_{i}\right)+\mathbb{1}_{\left\{c_{i} \neq \varnothing\right\}} \mathcal{L}_{\mathrm{box}}\left(b_{i}, \hat{b}_{\hat{\sigma}}(i)\right)\right]$</p>
-<p>Bounding box loss中作者采用了L1 loss和iou loss的结合，因为DETR经常出大框，L1 loss会随框的大小变化，框越大，loss越大，不利于优化，因此引入了与框大小无关的iou loss。</p>
-<h3 id="DETR-architecture"><a href="#DETR-architecture" class="headerlink" title="DETR architecture"></a>DETR architecture</h3><p>object queries本质上是learnabel positional embedding，设置为$100\times 256$的向量</p>
-<p>decoder做了cross attention，输入是encoder端得到的$850\times256$的全局特征(850个patch)，以及object queries。最后输出的也是$100\times 256$，得到这一特征后，送入检测头，进行预测类别和边界框xywh。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202211091714681.png" alt="image-20221109171441249"></p>
-<p>object queries的作用类似于anchor，下图是100个object queries中的20个object queries所预测的box prediction的可视化结果，每个点代表的是box的中心坐标，颜色则是对应小（绿色），中（蓝色），大（红色）三种尺寸。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20221112133848495.png" alt="image-20221112133848495"></p>
-<h2 id="Contribution-amp-Weakness"><a href="#Contribution-amp-Weakness" class="headerlink" title="Contribution&amp;Weakness"></a>Contribution&amp;Weakness</h2><p>Contribution：</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>CLIP-A-self Overview</p>
 <ul>
-<li><p>新的目标函数</p>
+<li>self-attention based adapter learns to select and aggregate the most relevant subset of Visually Descriptive Text (VDT) to generate more generalizable classifiers.</li>
+<li>使用GPT-4生成视觉描述文本，K个类别，每个类别对应的N个句子被送进CLIP的text encoder，得到$N\times K$个句子的embedding，然后使用Self-attention从每个类别的N个句子生成对应类别的adapted classifier embedding</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725231159034.png" alt="image-20230725231159034"></p>
+<h3 id="Language-Model-Prompt-Design"><a href="#Language-Model-Prompt-Design" class="headerlink" title="Language Model Prompt Design"></a>Language Model Prompt Design</h3><h4 id="Visual-Descriptive-Sentences"><a href="#Visual-Descriptive-Sentences" class="headerlink" title="Visual Descriptive Sentences"></a>Visual Descriptive Sentences</h4><p>什么类型的信息添加到prompt template会提高zero-shot性能？</p>
+<p>作者在CUB上进行了实验，比较了视觉描述和非视觉描述，结论是只有视觉相关的描述有用，<strong>而且GPT-4产生的视觉描述和GT视觉描述对结果的提升相近</strong></p>
+<ul>
+<li><p>visual descriptions of different body parts of the bird</p>
 </li>
-<li><p>Transformer encoder-decoder结构</p>
+<li><p>non-visual descriptions of bird calls, migration patterns, behavioral patterns, and habitat</p>
 </li>
 </ul>
-<p>weakness：</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725232306505.png" alt="image-20230725232306505" style="zoom:50%;" /></p>
+<h4 id="Prompting-LLMs-for-visually-descriptive-information"><a href="#Prompting-LLMs-for-visually-descriptive-information" class="headerlink" title="Prompting LLMs for visually descriptive information"></a>Prompting LLMs for visually descriptive information</h4><p>CoT prompting：</p>
 <ul>
-<li><p>训练较慢</p>
-</li>
-<li><p>小目标检测效果不佳</p>
-<blockquote>
-<p> Deformable DETR，解决了小目标和训练慢的问题</p>
-</blockquote>
-</li>
+<li>First, we ask GPT-4 to list all the attributes that may be necessary to discriminate between images of the K classes under consideration.</li>
+<li>Second, we ask GPT-4 to provide the values for all these attributes for all the K classes as sentences</li>
 </ul>
+<blockquote>
+<p>使用了GPT-4，但似乎没有使用多模态输入，还是文本对话，如下图所示</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725233046978.png" alt="image-20230725233046978" style="zoom: 67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725233059454.png" alt="image-20230725233059454" style="zoom: 67%;" /></p>
+<h4 id="Simple-few-shot-adapters-for-visual-sentences"><a href="#Simple-few-shot-adapters-for-visual-sentences" class="headerlink" title="Simple few-shot adapters for visual sentences"></a>Simple few-shot adapters for visual sentences</h4><p>使用交叉熵训练的Few-shot adapter有一个基本问题，即很难从该类的仅几个图像中识别出判别性特征，从而导致根据虚假的视觉特征，如环境、共同出现的对象等来识别对象。作者认为引入VDT可以解决这个问题，作者设计了两种adapter来加有效的利用VDT：</p>
+<ul>
+<li>CLIP-A-mlp is a 3-layer MLP that takes the average of sentence embeddings as input.</li>
+<li>CLIP-A-self adapter is a self-attention layer that applies attention over the embeddings of the different sentences for each class and averages the output.</li>
+</ul>
+<p>使用CE loss对adapter进行训练</p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230726001929229.png" alt="image-20230726001929229"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230726001805274.png" alt="image-20230726001805274" style="zoom:50%;" /></p>
 
     </div>
 
@@ -279,9 +294,11 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Transformer/" rel="tag"># Transformer</a>
-              <a href="/tags/OD/" rel="tag"># OD</a>
-              <a href="/tags/End-to-end/" rel="tag"># End-to-end</a>
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Few-Shot-Learning/" rel="tag"># Few-Shot Learning</a>
+              <a href="/tags/Object-Recognition/" rel="tag"># Object Recognition</a>
+              <a href="/tags/Robot-Perception/" rel="tag"># Robot Perception</a>
           </div>
 
         
@@ -290,12 +307,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/11/08/CVPR2020%20MoCo/" rel="prev" title="CVPR2020 MoCo">
-      <i class="fa fa-chevron-left"></i> CVPR2020 MoCo
+    <a href="/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/" rel="prev" title="PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning">
+      <i class="fa fa-chevron-left"></i> PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/01/09/ICML2021%20ViLT/" rel="next" title="ICML2021 ViLT">
-      ICML2021 ViLT <i class="fa fa-chevron-right"></i>
+    <a href="/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/" rel="next" title="3D-LLM: Injecting the 3D World into Large Language Models">
+      3D-LLM: Injecting the 3D World into Large Language Models <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -355,7 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ECCV2020-DETR"><span class="nav-number">1.</span> <span class="nav-text">ECCV2020 DETR</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-detection-set-prediction-loss"><span class="nav-number">1.2.1.</span> <span class="nav-text">Object detection set prediction loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DETR-architecture"><span class="nav-number">1.2.2.</span> <span class="nav-text">DETR architecture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-amp-Weakness"><span class="nav-number">1.3.</span> <span class="nav-text">Contribution&amp;Weakness</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts"><span class="nav-number">1.</span> <span class="nav-text">Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Language-Model-Prompt-Design"><span class="nav-number">1.2.1.</span> <span class="nav-text">Language Model Prompt Design</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Visual-Descriptive-Sentences"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Visual Descriptive Sentences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Prompting-LLMs-for-visually-descriptive-information"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Prompting LLMs for visually descriptive information</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-few-shot-adapters-for-visual-sentences"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Simple few-shot adapters for visual sentences</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.3.</span> <span class="nav-text">Experiment</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

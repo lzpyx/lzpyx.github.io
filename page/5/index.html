@@ -164,6 +164,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/27/2023327-CVPR2023-GLIGEN-Open-Set-Grounded-Text-to-Image-Generation/" class="post-title-link" itemprop="url">CVPR2023 GLIGEN: Open-Set Grounded Text-to-Image Generation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-27T00:00:00+08:00">2023-03-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-03-30 10:11:53" itemprop="dateModified" datetime="2023-03-30T10:11:53+08:00">2023-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2023-GLIGEN"><a href="#CVPR2023-GLIGEN" class="headerlink" title="CVPR2023 GLIGEN"></a>CVPR2023 GLIGEN</h1><p>GLIGEN: Open-Set Grounded Text-to-Image Generation</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230327150803955.png" alt="image-20230327150803955"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>单独使用文本输入来进行图像生成的可控性较差，缺乏精确定位概念或使用参考图像来控制生成过程的能力。扩散生成模型在大规模的图像文本对上进行训练，模型中已经具有大量的概念知识，是否能在现有的预训练扩散模型基础上，赋予新的条件输入模式？</p>
+<p>本文提出的GLIGEN保留文本标题输入的同时，启用了其他模态的输入，在预训练的text-to-image扩散模型基础上，通过不同的条件输入实现了更好的可控性。</p>
+<p>关键难点在于，如何在学习新的grounding信息的同时，不遗忘预训练模型中原有的概念知识。为了保留预训练模型的大量概念知识，GLIGEN中冻结了预训练模型的所有权值，并通过门控机制将grounding信息注入到新的可训练层</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>Large scale text-to-image generation models.<ul>
+<li>仅将标题作为输入，可能难以传达诸如对象的精确位置之类的其他信息</li>
+<li>以往模型通常是close-set的</li>
+<li>对于关键点等条件输入，attention方式难以控制</li>
+</ul>
+</li>
+<li>Image generation from layouts（给定bboxes和物体类别，生成图像，是目标检测的逆任务）<ul>
+<li>通常是close-set的，只能生成有限类别的目标</li>
+<li>ReCo对原有模型进行了微调，可能导致知识遗忘</li>
+</ul>
+</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>image prompt提供更好的style和background参考，也可以作为实体提示</p>
+<p>边界框则提升了定位能力和空间概念 </p>
+<p>可以实现grounded generation和grounded inpainting</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/03/20/A%20Simple%20Framework%20for%20Open%20Vocabulary%20Segmentation%20and%20Detection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -939,75 +1033,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/01/29/ECCV2022%20OpenSeg/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/01/29/ECCV2022%20OpenSeg/" class="post-title-link" itemprop="url">ECCV2022 OpenSeg</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-01-29 00:00:00 / Modified: 09:36:50" itemprop="dateCreated datePublished" datetime="2023-01-29T00:00:00+08:00">2023-01-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ECCV2022-OpenSeg"><a href="#ECCV2022-OpenSeg" class="headerlink" title="ECCV2022 OpenSeg"></a>ECCV2022 OpenSeg</h1><p>Scaling Open-Vocabulary Image Segmentation with Image-Level Labels</p>
-<p>CLIP、ALIGN利用image-level的字幕标签实现开放词汇分类，但无法像素级的分割视觉概念，作者认为这些模型忽略了视觉分组的一个重要步骤，即在学习视觉语义对齐之前将pixels组织成groups。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1077,7 +1102,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

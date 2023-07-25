@@ -164,6 +164,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2018%20AffinityNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/06/CVPR2018%20AffinityNet/" class="post-title-link" itemprop="url">CVPR2018 AffinityNet</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-06 00:00:00 / Modified: 14:13:24" itemprop="dateCreated datePublished" datetime="2022-05-06T00:00:00+08:00">2022-05-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2018-AffinityNet"><a href="#CVPR2018-AffinityNet" class="headerlink" title="CVPR2018 AffinityNet"></a>CVPR2018 AffinityNet</h1><p>Learning Pixel-level Semantic Affinity with Image-level Supervision for Weakly  Supervised Semantic Segmentation</p>
+<p>使用图像级监督学习像素级语义亲和度的弱监督语义分割</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jiwoon-ahn/psa">github</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>分割标签的不足是进行语义分割的主要障碍之一，在弱监督设定下，训练模型可以分割局部判别部分而不是整个对象区域，本文提出将响应传播到属于同一语义实体的附近区域。提出AffinityNet，预测一对相邻图像坐标之间的语义亲和力。然后通过随机游走将语义传播。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>各类型的弱监督</li>
+<li>图像级标签的弱监督：一些方法将判别定位技术给出的分割种子与超像素等额外的线索结合，估计物体形状。</li>
+<li>学习像素级亲和力</li>
+<li>使用合成标签学习</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>整个框架基于三个DNN，第一个网络用于生成CAM，第二个网络用于预测亲和力即AffinityNet，第三个网络是全监督的分割模型，使用合成标签进行训练。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220506111027887.png" alt="image-20220506111027887"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/06/CVPR2018%20AffinityNet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2022%20AFA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -944,97 +1030,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2021%20DAP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2021%20DAP/" class="post-title-link" itemprop="url">CVPR2021 DAP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:38:06" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision"><a href="#CVPR2021-DAP-Detection-Aware-Pre-training-with-Weak-Supervision" class="headerlink" title="CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision"></a>CVPR2021 DAP:Detection-Aware Pre-training with Weak Supervision</h1><p>DAP:Detection-Aware Pre-training with Weak Supervision</p>
-<p><strong>使用WSOL方法来预训练目标检测网络</strong></p>
-<h2 id="传统的分类预训练加微调方式存在的问题"><a href="#传统的分类预训练加微调方式存在的问题" class="headerlink" title="传统的分类预训练加微调方式存在的问题"></a>传统的分类预训练加微调方式存在的问题</h2><p>传统的分类预训练加微调只包含DAP工作流程中的1和4</p>
-<p>分类预训练带来的目标检测经验增益随着预训练数据集的不断增大而递减，且当数据集足够大时，随机初始化也能得到和分类预训练加微调类似的较好结果。</p>
-<p>本文认为预训练和微调任务的不匹配造成了分类预训练的增益递减。不匹配体现在：</p>
-<ol>
-<li>现有的分类预训练通常不知道下游的检测任务。预训练采用单一的全图像分类损失，鼓励平移和尺度不变特征，而检测微调涉及几种不同的分类和回归损失，对目标位置和尺度敏感。</li>
-<li>数据分布不一致。在分类预训练中，检测所需要的定位信息并没有明确提供。</li>
-<li>架构不一致。用于预训练的网络是一个裸骨干网，如ResNet模型，然后是平均池化和线性分类层。相比之下，目标检测器中的网络包含各种附加的架构组件，如区域建议网络(RPN)、特征金字塔网络(FPN)、ROI分类头和边界框回归头等。检测器中这些独特的架构组件没有经过预先训练，而是在检测微调中随机初始化，这可能是次优的。</li>
-</ol>
-<h2 id="DAP工作流程"><a href="#DAP工作流程" class="headerlink" title="DAP工作流程"></a>DAP工作流程</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427193339685.png" alt="image-20220427193339685" style="zoom:67%;" /></p>
-<ol>
-<li>弱监督数据集上进行分类器预训练</li>
-<li>使用WSOL方法生成为标签标注框 </li>
-<li>使用为标签进行检测器预训练</li>
-<li>检测数据集微调训练</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2021%20DAP/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1104,7 +1099,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

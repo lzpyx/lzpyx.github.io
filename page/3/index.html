@@ -164,6 +164,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/" class="post-title-link" itemprop="url">Embodied Task Planning with Large Language Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:09:21" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TaPA"><a href="#TaPA" class="headerlink" title="TaPA"></a>TaPA</h1><p>Embodied Task Planning with Large Language Models</p>
+<p>基于LLMs的具身任务规划</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的action sequences。</p>
+<blockquote>
+<p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
+</blockquote>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
+<p>从周围环境接收信息</p>
+</blockquote>
+<ul>
+<li>[37] A persistent spatial semantic representation for high-level natural language instruction execution</li>
+<li>[38] Piglet: Language grounding through neuro-symbolic interaction in a 3d world</li>
+<li>[39] Grounding language to autonomously-acquired skills via goal generation</li>
+</ul>
+<blockquote>
+<p>prompt engineering</p>
+<p>设计任务指令和相应动作的简单示例来对LLMs进行提示，以产生合理的任务计划，并通过构建具有语义相似性的映射来过滤出可执行计划子集</p>
+</blockquote>
+<ul>
+<li>[40] Language models as zero-shot planners: Extracting actionable knowledge for embodied agents</li>
+</ul>
+<blockquote>
+<p>根据action feedback为复杂任务生成决策</p>
+</blockquote>
+<ul>
+<li>[41] Pre-trained language models for interactive decision-making</li>
+</ul>
+<blockquote>
+<p>SayCan和LLM-Planner都通过提取场景的latent features或物体名称来为LLMs提供视觉信息</p>
+<p>SayCan只能完成在厨房场景下的任务</p>
+<p>LLM-Planner在ALFRED simulator中实现，大部分任务都非常简单，如putting and placing</p>
+</blockquote>
+<ul>
+<li>[14] Do as i can, not as i say: Grounding language in robotic affordances</li>
+<li>[15] Llm-planner: Few-shot grounded planning for embodied agents with large language models</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709171352785.png" alt="image-20230709171352785" style="zoom: 33%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709163836147.png" alt="image-20230709163836147" style="zoom: 50%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/09/20230709-Embodied-Task-Planning-with-Large-Language-Models/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/08/20230707-Vision-and-Language-Navigation-A-Survey-of-Tasks,-Methods,-and-Future-Directions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -968,95 +1080,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/" class="post-title-link" itemprop="url">Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-06-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-13T00:00:00+08:00">2023-06-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-03 21:34:54" itemprop="dateModified" datetime="2023-07-03T21:34:54+08:00">2023-07-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Instance-speciﬁc-ImageNav-task-InstanceImageNav"><a href="#Instance-speciﬁc-ImageNav-task-InstanceImageNav" class="headerlink" title="Instance-speciﬁc ImageNav task (InstanceImageNav)"></a>Instance-speciﬁc ImageNav task (InstanceImageNav)</h1><p>Instance-Speciﬁc Image Goal Navigation: Training Embodied Agents to Find Object Instances</p>
-<p>任务定义：agent被初始化在一个陌生环境，给定图像目标（ImageNav），agent需要导航到图像所描述的地点</p>
-<p>ImageNav任务没有标准化的任务定义，这使得方法的评估和比较变得很困难，且存在2个缺陷：</p>
-<ul>
-<li>图像目标(image-goals)是从随机位置采样的，这可能导致图像所描述的含义是不明确的，引起歧义</li>
-<li>图像目标对应着特定的相机和agent，这使得下游应用受限</li>
-</ul>
-<p>本文提出了实例特定的ImageNav任务来解决这些问题，具体来说，目标图像会聚焦于场景中特定的对象实例，并且使用独立于agent的相机参数拍摄。本文使用Habitat-Matterport 3D数据集（HM3D）中的场景在Habitat Simulator中实例化InstanceImageNav，并发布标准化benchmark</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230613174322542.png" alt="image-20230613174322542" style="zoom:67%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/06/13/2023613-Instance-Speci%EF%AC%81c-Image-Goal-Navigation-Training-Embodied-Agents-to-Find-Object-Instances/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1126,7 +1149,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

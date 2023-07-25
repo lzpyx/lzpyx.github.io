@@ -259,6 +259,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/" class="post-title-link" itemprop="url">Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-26 00:20:27" itemprop="dateModified" datetime="2023-07-26T00:20:27+08:00">2023-07-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts"><a href="#Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts" class="headerlink" title="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts"></a>Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>VLMs通常通过设计与数据集相关的prompt来zero-shot的适配下游数据集</p>
+<p>将CLIP用于一个特定domain时，一种直白的prompt engineering方式是：</p>
+<p>to classify bird images, one could construct a prompt ‘a photo of ${classname}$, <strong>a type of bird</strong>’.</p>
+<p>但这样的prompt实际上并非最优方式：</p>
+<ul>
+<li>不能引入有效的专家知识，无法获取target domain的domain expertise</li>
+<li>high variance：prompt小的变化就会引起性能的较大变化</li>
+<li>判别性的信息仅仅只有$classname$，而仅依赖$classname$无法完成一些类别的zero-shot的识别，比如name中带有green的green heron但是在外形上更接近black bittern而不是green woodpecker</li>
+</ul>
+<p>因此需要引入visually descriptive textual (VDT) information</p>
+<blockquote>
+<p>we define VDT as a set of sentences that describe the visual features of the class under consideration including shape, size, color, environment, patterns, composition, etc.</p>
+</blockquote>
+<p>对于CUB，数据集中提供了domain expertise，其他数据集没有，因此引入LLM来构建复杂prompt，作者采用GPT-4来构建关于类的视觉描述性文本信息，prompt中特别强调了形状、颜色、结构和组成性等视觉线索。</p>
+<p>对于high variance问题：作者使用Prompt ensembling the VDT sentences reduce CLIP’s performance sensitivity to small changes in the prompt.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725215455708.png" alt="image-20230725215455708"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -940,95 +1036,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/" class="post-title-link" itemprop="url">Multi-Modal Classifiers for Open-Vocabulary Object Detection</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-15T00:00:00+08:00">2023-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-16 13:57:35" itemprop="dateModified" datetime="2023-07-16T13:57:35+08:00">2023-07-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="MM-OVOD"><a href="#MM-OVOD" class="headerlink" title="MM-OVOD"></a>MM-OVOD</h1><p>Multi-Modal Classifiers for Open-Vocabulary Object Detection</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>直接用类别名加模板送入pretrained text encoder，然后用text embbeding代替传统检测器中的分类器的方法存在3个弊端：</p>
-<ul>
-<li>可能存在语义歧义，且完全依赖预训练的文本编码器对于class name的内部表征，无法区分同一词汇表示的多种概念</li>
-<li>有的情况下用户并不知道class name，反而exemplar images更容易获取</li>
-<li>多模态输入时，exemplar images可以作为文本描述的很好的补充（比如复杂的图案，文本难以描述，但图像更直观）</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>使用Detic作为baseline，centernet2作为检测器</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230716103805727.png" alt="image-20230716103805727" style="zoom: 50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/15/20230715-Multi-Modal-Classifiers-for-Open-Vocabulary-Object-Detection/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1098,7 +1105,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">93</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
