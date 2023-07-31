@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CLIP-FieldsCLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory project  CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="CLIP-FieldsCLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory project  CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730201035798.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730205438927.png">
+<meta property="article:published_time" content="2023-07-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-31T02:41:06.362Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Exploration">
+<meta property="article:tag" content="HomeRobot">
+<meta property="article:tag" content="Planning">
+<meta property="article:tag" content="Open-vocabulary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-29 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-29T00:00:00+08:00">2023-07-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-31 10:41:06" itemprop="dateModified" datetime="2023-07-31T10:41:06+08:00">2023-07-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CLIP-Fields"><a href="#CLIP-Fields" class="headerlink" title="CLIP-Fields"></a>CLIP-Fields</h1><p>CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</p>
+<p><a target="_blank" rel="noopener" href="https://mahis.life/clip-fields">project</a></p>
+<ul>
+<li>CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization</li>
+<li>使用CLIP, Detic, and Sentence-BERT来提供弱监督来建立semantic neural fields，不需要直接的人工标注监督</li>
+<li>更好的few-shot性能</li>
+<li>使用CLIP-Fields作为scene memory可以使机器人在真实世界实现语义导航 </li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png" alt="image-20230730211119025" style="zoom:67%;" /></p>
+<span id="more"></span>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>[3]Seal: Self-supervised embodied active learning using exploration and 3d consistency.中作者发现web-trained detection model结合空间一致性启发式方法可用于标注3D voxel map，voxel map可以用于将标签从一个图像传播到另一个图像。</p>
+<p>[12]Semantic abstraction: Open-world 3d scene understanding from 2d vision-language models</p>
+<p>Sentence-BERT [23]:</p>
+<ul>
+<li><p>CLIP models are pretrained with image-text pairs, but not with image-image or text-text pairs. As a result, sometimes CLIP embeddings can be ambiguous when comparing similarities between two images or pieces of texts</p>
+</li>
+<li><p>pretrained for semantic-similarity tasks</p>
+</li>
+</ul>
+<p>Instant-NGP [20]</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Problem-Statement"><a href="#Problem-Statement" class="headerlink" title="Problem Statement"></a>Problem Statement</h3><p>CLIP-Fields to provide an interface with a pair of scene-dependent implicit functions $f, h$:$\mathbb{R}^{3} \rightarrow \mathbb{R}^{n}$</p>
+<ul>
+<li>$f(P)$是代表P点semantic features的特征向量，与pre-trained language特征空间对齐</li>
+<li>$h(P)$是代表P点visual features的特征向量，与pre-trained vision-language models特征空间对齐</li>
+</ul>
+<p>For ease of decoding, we constrain the output spaces of $f, h$ to match the embedding space of <strong>pre-trained language</strong> and <strong>vision-language models</strong>, respectively</p>
+<p>“spatial memory” or “geometric database”都指的是f,h这两个函数，联系了场景坐标和场景信息</p>
+<p>如果我们给定一个数据集$\{(P, f(P), h(P) | P ∈ scene\}$，那么场景相关函数$f,h$将很容易构造</p>
+<p>有了函数$f,h$，就很容易实现下游任务：</p>
+<ul>
+<li>Segmentation: $f$</li>
+<li>Object Navigation: $f$ or $h$</li>
+<li>View Localization: $h$</li>
+</ul>
+<h3 id="Dataset-Creation"><a href="#Dataset-Creation" class="headerlink" title="Dataset Creation"></a>Dataset Creation</h3><ul>
+<li><p>对于场景的数据：We assume that we have a series of RGB-D images of a scene alongside odometry information, i.e. the approximate 6D camera poses while capturing the images.</p>
+</li>
+<li><p>作者使用易于获取的设备（如iPhone Pro或iPad）来获取数据集</p>
+</li>
+<li><p>Dataset creation process</p>
+<ul>
+<li><p>（左边分支）利用RGB-D和相机内参外参，将深度图像转换为3D point cloud（每个点的坐标都用世界坐标系表示）</p>
+</li>
+<li><p>右边分支：</p>
+<ul>
+<li><p>使用Detic对RGB图像进行Open-vocabulary object detection，然后得到一系列的对象对应的：language labels，label masks和confidence scores</p>
+</li>
+<li><p>然后将像素的标签和置信度back-project到世界坐标点上，We label each back-projected point in the world with the associated <strong>language label and label confidence score.</strong></p>
+</li>
+<li><p>另外，将<strong>反投影后的世界坐标系点对应的RGB view的CLIP特征</strong>以及<strong>点和相机之间的距离</strong>作为这个点的label</p>
+<blockquote>
+<p>Additionally, we label each back-projected point with the CLIP embedding of the view it was back-projected from as well as the distance between camera and the point in that particular point</p>
+</blockquote>
+</li>
+<li><p>Note that each point can <strong>appear multiple times</strong> in the dataset from different training images</p>
+</li>
+<li><p>到此获得了两组labels，分别来自</p>
+<ul>
+<li>Detic(language labels，label masks和confidence scores),表示为$D_{label}=\{(P,label_P,conf_P)\}$, $label_P,conf_P$分别代表detector-given label and the confidence score to such label for each point</li>
+<li>CLIP(CLIP特征以及点和相机之间的距离), 表示为$D_{image} = \{(P, clip_P, dist_P)\}$, $clip_P$代表$P$点对应的反投影前的图像CLIP特征（？还是对应Detic检测出来的区域CLIP特征？），$dist_P$代表在拍摄当前image时的相机和$P$点的距离</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730201035798.png" alt="image-20230730201035798" style="zoom:50%;" /></p>
+<h3 id="Model-Architecture"><a href="#Model-Architecture" class="headerlink" title="Model Architecture"></a>Model Architecture</h3><p>CLIP-Fields可以划分为两个部分：</p>
+<ul>
+<li>g: $\mathbb{R}^{3} \rightarrow \mathbb{R}^{n}$, 将每个空间位置$(x,y,z)$映射到一个特征向量（Location vector），本文使用Instant-NGP中引入的multi-resolution hash encoding (MHE)方法来参数化表示$g$这一映射，$d=144$<ul>
+<li>MHEs build an implicit representation over coordinates with a feature-pyramid like structure, which can flexibly maintain both local and global information, unlike purely voxel-based encodings which focuses on local structures only. </li>
+<li>We primarily use the MHE over other implicit field representations because we found that they <strong>train significantly faster</strong> in our datasets.</li>
+</ul>
+</li>
+<li>individual heads（即下图中的Objective mapping head）<ul>
+<li>simple two-layer MLPs with ReLU nonlinearities</li>
+<li>map the 144 dimensional outputs of g into higher dimensions which depend on the associated objective</li>
+<li>$head_s$: outputs a vector that matches a natural language description of what is at the point in space</li>
+<li>$head_v$ :outputs a vector that matches the visual appearance</li>
+<li>Optionally, we can include an instance identification head if we have the appropriate labels to train it.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730205438927.png" alt="image-20230730205438927" style="zoom:50%;" /></p>
+<h3 id="Objectives"><a href="#Objectives" class="headerlink" title="Objectives"></a>Objectives</h3><ul>
+<li><p>对于特定的一个场景，使用对比损失对CLIP-Fields进行训练</p>
+</li>
+<li><p>使用<strong>label confidence</strong>对语义预测的对比损失进行加权（对于semantic label，如SentenceBERT 的label embeddings）</p>
+</li>
+<li>使用<strong>从相机到点的距离的负指数</strong>对来自CLIP embedding的visual label产生的对比损失进行加权 </li>
+<li>通过学习的温度值来缩放predicted embeddings和GT embeddings的点积</li>
+</ul>
+<h4 id="Semantic-Label-Embedding"><a href="#Semantic-Label-Embedding" class="headerlink" title="Semantic Label Embedding"></a>Semantic Label Embedding</h4><ul>
+<li>首先使用可以用于比较语义相似性的预训练语言模型将每个标签转换为语义向量，例如CLIP的text encoder或Sentence-BERT<ul>
+<li>本文使用Sentence-BERT for these language features with $n = 768$</li>
+</ul>
+</li>
+<li>semantic label loss：<ul>
+<li>$\mathrm{L}_{\mathcal{L}}(P, f(P))=-\mathrm{c} \log \frac{\exp \left(f(P)^{T} \mathcal{F}\left(\text { label }_{P}\right) / \tau\right)}{\sum_{P^{-}} \exp \left(f(P)^{T} \mathcal{F}\left(\text { label }_{P^{-}}\right) / \tau\right)}$</li>
+<li>$P^-$代表具有与$P$点不同语义标签的点，$f$代表semantic encoding function(就是$head_s \circ g$)，$\mathcal{F}$代表pre-trained semantic language encoder, $c$代表confidence，$\tau$代表温度</li>
+</ul>
+</li>
+</ul>
+<h4 id="Visual-Feature-Embedding"><a href="#Visual-Feature-Embedding" class="headerlink" title="Visual Feature Embedding"></a>Visual Feature Embedding</h4><ul>
+<li><p>将每个点的视觉特征表示为这个点出现在的RGB frame对应的CLIP embedding的加权组合，权值为点到相机的距离</p>
+<blockquote>
+<p>We define the visual context of each point as a composite of the CLIP embedding of each RGB frame this point was included in, weighted by the distance from camera to the point in that frame.</p>
+</blockquote>
+</li>
+<li><p>we limit the image embedding to only encode what is in the associated object’s bounding box. Detic, for example, produces embeddings for region proposals for each detected objects, which we use.</p>
+</li>
+<li><p>In this paper’s experiments, we use the CLIP ViT-B/32 model embeddings, giving the visual features 512 dimensions.</p>
+</li>
+</ul>
+<p>$\mathrm{L}_{\mathrm{C}}(P, h(P))=-e^{-d_{P}} \log \frac{\exp \left(h(P)^{T} \mathrm{C}_{P} / \tau\right)}{\sum_{P^{-}} \exp \left(h(P)^{T} \mathrm{C}_{P^{-}} / \tau\right)}$</p>
+<h4 id="Auxilary-objectives-like-Instance-Identification"><a href="#Auxilary-objectives-like-Instance-Identification" class="headerlink" title="Auxilary objectives like Instance Identification"></a>Auxilary objectives like Instance Identification</h4><ul>
+<li>将点的表征投影到one-hot向量以表示instance</li>
+<li>仅在具有human labeled instance identification data时使用，the projection dimension is number of identified instances, plus one for unidentified instances.</li>
+<li>Instance identification one-hot vectors are trained with a simple <strong>cross-entropy loss</strong></li>
+</ul>
+<h3 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h3><p>正负样本的定义：</p>
+<ul>
+<li>For the label embedding head<ul>
+<li>the positive example is the semantic embedding of the label associated with that point</li>
+<li>negative examples are semantic embeddings of any other labels. </li>
+</ul>
+</li>
+<li>For the visual context embedding head<ul>
+<li>the positive examples are the embeddings of all images and image patches that contain the point under consideration</li>
+<li>the negative examples are embeddings of images that do not contain that point.</li>
+</ul>
+</li>
+</ul>
+<p>对比学习训练</p>
+<ul>
+<li>we also note that a larger batch size helps reduce the variance in the contrastive loss function：<ul>
+<li>We use a batch size of 12, 544 everywhere since that is the maximum batch size we could fit in our VRAM of an NVIDIA Quadro GP100 GPU</li>
+</ul>
+</li>
+</ul>
+<h2 id="Discussion"><a href="#Discussion" class="headerlink" title="Discussion"></a>Discussion</h2><ul>
+<li><p>A new CLIP-Field is trained per scene</p>
+</li>
+<li><p>It remains to be explored whether learned CLIP-Fields could potentially generalize to new scenes, or to changes within a scene</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Exploration/" rel="tag"># Exploration</a>
+              <a href="/tags/HomeRobot/" rel="tag"># HomeRobot</a>
+              <a href="/tags/Planning/" rel="tag"># Planning</a>
+              <a href="/tags/Open-vocabulary/" rel="tag"># Open-vocabulary</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/" rel="prev" title="ConceptFusion: Open-set Multimodal 3D Mapping">
+      <i class="fa fa-chevron-left"></i> ConceptFusion: Open-set Multimodal 3D Mapping
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/" rel="next" title="Visual Language Maps for Robot Navigation">
+      Visual Language Maps for Robot Navigation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CLIP-Fields"><span class="nav-number">1.</span> <span class="nav-text">CLIP-Fields</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-Statement"><span class="nav-number">1.2.1.</span> <span class="nav-text">Problem Statement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dataset-Creation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Dataset Creation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model-Architecture"><span class="nav-number">1.2.3.</span> <span class="nav-text">Model Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objectives"><span class="nav-number">1.2.4.</span> <span class="nav-text">Objectives</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Semantic-Label-Embedding"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Semantic Label Embedding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Visual-Feature-Embedding"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Visual Feature Embedding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Auxilary-objectives-like-Instance-Identification"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Auxilary objectives like Instance Identification</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training"><span class="nav-number">1.2.5.</span> <span class="nav-text">Training</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Discussion"><span class="nav-number">1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">119</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

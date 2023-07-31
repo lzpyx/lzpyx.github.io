@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ICRA2023 VLMapsVisual Language Maps for Robot Navigation MotivationWithout grounding language onto a spatial representation, these systems may struggle to：  recognize correspondences that associate in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Visual Language Maps for Robot Navigation">
+<meta property="og:url" content="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="ICRA2023 VLMapsVisual Language Maps for Robot Navigation MotivationWithout grounding language onto a spatial representation, these systems may struggle to：  recognize correspondences that associate in">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731135534315.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731140453833.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162136579.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162210346.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731170545893.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731171534923.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731173150170.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162620199.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162734800.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162916974.png">
+<meta property="article:published_time" content="2023-07-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-31T10:28:58.746Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="Exploration">
+<meta property="article:tag" content="HomeRobot">
+<meta property="article:tag" content="Planning">
+<meta property="article:tag" content="Open-vocabulary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731135534315.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Visual Language Maps for Robot Navigation | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Visual Language Maps for Robot Navigation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-07-31 00:00:00 / Modified: 18:28:58" itemprop="dateCreated datePublished" datetime="2023-07-31T00:00:00+08:00">2023-07-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ICRA2023-VLMaps"><a href="#ICRA2023-VLMaps" class="headerlink" title="ICRA2023 VLMaps"></a>ICRA2023 VLMaps</h1><p>Visual Language Maps for Robot Navigation</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Without grounding language onto a spatial representation, these systems may struggle to：</p>
+<ul>
+<li>recognize correspondences that associate independent observations of the same object</li>
+<li>localize spatial goals e.g., “in between the sofa and the TV”</li>
+<li>build persistent representations that can be shared across different embodiments, e.g., mobile robots, drones</li>
+</ul>
+<p>两大卖点</p>
+<ul>
+<li><p>对语言和空间的感知理解能力：<strong>Localize spatial goals beyond object-centric ones</strong>, e.g., “in between the TV and sofa” or “to the right of the chair” or “kitchen area” using code-writing LLMs, expanding beyond capabilities of CoW or LM-Nav.</p>
+</li>
+<li><p>多智能体协作,不同的robots对应不同的obstacle maps: can be shared among <strong>multiple robots</strong> with different embodiments to generate new obstacle maps on-the-fly (by using a list of obstacle categories)</p>
+<blockquote>
+<p>Generate new obstacle maps for new embodiments given natural language descriptions of landmark categories that they can or cannot traverse, e.g., “tables” are obstacles for a large mobile robot, but traversable for a drone.</p>
+</blockquote>
+</li>
+</ul>
+<p>both LM-Nav [13] and CoW [12] are limited to navigating to object landmarks and are less capable to understand finer-grained queries, such as “to the left of the chair” and “in between the TV and the sofa”</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731135534315.png" alt="image-20230731135534315"></p>
+<span id="more"></span>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>构建一个spatial visual-language map representation，根据自然语言定位出landmarks(“the sofa”)或spatial references(“between the sofa and the TV”)</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731140453833.png" alt="image-20230731140453833"></p>
+<h3 id="Building-a-Visual-Language-Map"><a href="#Building-a-Visual-Language-Map" class="headerlink" title="Building a Visual-Language Map"></a>Building a Visual-Language Map</h3><blockquote>
+<p>how to build a VLMap?</p>
+</blockquote>
+<p>fuse pretrained visual-language features with a 3D reconstruction</p>
+<p>将VLMaps表示为$\mathcal{M}∈\mathbb{R}^{\bar{H}\times \bar{W} \times C}$，其中$\bar{H}$和$\bar{W}$代表了top-down视角的grid map尺寸，$C$则代表了每个网格单元对应的特征向量维度。</p>
+<ul>
+<li><p>对于每个RGB-D frame，将所有的像素$\mathbf{u}=(u,v)$全部back-project到local depth point cloud（world frame）：</p>
+<ul>
+<li>$\mathbf{P}_k=D(\mathbf{u})K^{-1}\mathbf{\tilde{u}}$</li>
+<li>$\mathbf{P}_W=T_{Wk}P_k$</li>
+<li>其中$\mathbf{\tilde{u}}=(u,v,1)$, $K$代表深度相机的本质矩阵，$D(\mathbf{u})\in \mathbb{R}$是像素$\mathbf{u}$的深度值，$T_{Wk}$代表从world coordinate frame to the k-th camera frame的空间变换，$\mathbf{P}_k \in \mathbb{R}^3$代表3D point的在k-th frame中的位置，$\mathbf{P}_W \in \mathbb{R}^3$是3D point在world coordinate frame中的位置，上述两个式子的作用是将像素投影到3D的世界坐标系。</li>
+</ul>
+</li>
+<li><p>然后将$\mathbf{P}_W$投影到地平面上，获得像素$\mathbf{u}$在grid map中对应的位置</p>
+<ul>
+<li>$p_{\text {map }}^{x}=\left\lfloor\frac{\bar{H}}{2}+\frac{P_{W}^{x}}{s}+0.5\right\rfloor, p_{m a p}^{y}=\left\lfloor\frac{\bar{W}}{2}-\frac{P_{W}^{z}}{s}+0.5\right\rfloor$</li>
+</ul>
+</li>
+<li>在建立grid map后，使用LSeg来对RGB image $\mathcal{I}_k$进行编码,并转换到grip map上:<ul>
+<li>$f(\mathcal{I}):\mathbb{R}^{H\times W\times 3} \rightarrow \mathcal{F}_k \in\mathbb{R}^{H\times W\times C}$</li>
+<li>将image pixel $\mathbf{u}$的特征$\mathbf{q}=\mathcal{F}_k(\mathbf{u}) \in \mathbb{R}^C$投影到对应的grid cell location</li>
+<li>多个3D点都会被投影到同一个grid cell中，作者直接将投影到同一位置的特征进行平均</li>
+<li>the resulting features contain the averaged embeddings from multiple views of the same object</li>
+</ul>
+</li>
+</ul>
+<h3 id="Localizing-Open-Vocabulary-Landmarks"><a href="#Localizing-Open-Vocabulary-Landmarks" class="headerlink" title="Localizing Open-Vocabulary Landmarks"></a>Localizing Open-Vocabulary Landmarks</h3><blockquote>
+<p>how to use these maps to localize open-vocabulary <strong>landmarks</strong>?</p>
+</blockquote>
+<ul>
+<li>将input language list定义为$\mathcal{L}=[\mathbf{l}_0,\mathbf{l}_1,…,\mathbf{l}_M]$<ul>
+<li>其中$\mathbf{l_i}$代表i-th category的文本表示</li>
+<li>$M$代表用户定义的类别数量 </li>
+<li>使用CLIP text encoder将文本类别列表转换为特征向量矩阵$E \in \mathbb{R}^{M\times C}$, 每一行代表一个类别的特征向量</li>
+<li>将grid map $\mathcal{M}∈\mathbb{R}^{\bar{H}\times \bar{W} \times C}$打平变为$Q \in \mathbb{R}^{\bar{H}\bar{W} \times C}$, 每行代表top-down grid map中一个pixel的特征</li>
+<li>然后计算grid map pixel-to-category similarity matrix $S=Q\cdot E^T$，$S \in \mathbb{R}^{\bar{H}\bar{W} \times M}$</li>
+<li>然后argmax操作获得grid map上的语义分割结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="Generating-Open-Vocabulary-Obstacle-Maps"><a href="#Generating-Open-Vocabulary-Obstacle-Maps" class="headerlink" title="Generating Open-Vocabulary Obstacle Maps"></a>Generating Open-Vocabulary Obstacle Maps</h3><blockquote>
+<p>how to build open-vocabulary obstacle maps from a list of obstacle categories for different robot embodiments</p>
+</blockquote>
+<ul>
+<li><p>通过自然语言来对障碍物类别进行描述（定义一个障碍物类型列表），然后在运行时定位障碍物以生成用于碰撞避免和最短路径规划的二进制地图。</p>
+</li>
+<li><p>一个典型的使用场景是多个不同的机器人共享相同环境的VLMap，大型移动的机器人可能需要在桌子（或其他大型家具）周围导航，而无人机可以直接在其上方飞行。通过简单地提供两个不同的障碍物类别列表，可以从VLMap中生成两个不同的障碍物地图供两个机器人分别使用，一个用于大型移动的机器人（包含“桌子”），另一个用于无人机（不包含“桌子”）</p>
+</li>
+<li><p>障碍物地图$\mathcal{O}\in \{0,1\}^{\bar{H}\times \bar{W}}$的获取：</p>
+<ul>
+<li><p>没有障碍物的位置置1，floor和ceiling通过限制高度来去掉</p>
+<p>$\mathcal{O}_{i j}=\left\{\begin{array}{ll}<br>1, &amp; t_{1} \leq P_{W}^{y} \leq t_{2} \text { and } p_{\text {map }}^{x}=i \text { and } p_{\text {map }}^{y}=j \\<br>0, &amp; \text { otherwise }<br>\end{array}\right.$</p>
+</li>
+<li><p>定义障碍物类型列表，并按照定位landmark的方法得到障碍物语义分割图</p>
+</li>
+<li><p>对于不同的机器人选择不同的障碍物子集</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Zero-Shot-Spatial-Goal-Navigation-from-Language"><a href="#Zero-Shot-Spatial-Goal-Navigation-from-Language" class="headerlink" title="Zero-Shot Spatial Goal Navigation from Language"></a>Zero-Shot Spatial Goal Navigation from Language</h3><blockquote>
+<p>how VLMaps can be used together with large language models (LLMs) for zero-shot spatial goal navigation on real robots from natural language commands？</p>
+</blockquote>
+<p>long-horizon (spatial) goal navigation:</p>
+<ul>
+<li><p>使用自然语言给出一组landmark descriptions</p>
+<blockquote>
+<p>move first to the left side of the counter, then<br>move between the sink and the oven, then move back<br>and forth to the sofa and the table twice</p>
+</blockquote>
+</li>
+<li><p>VLMaps可以指示精确的空间目标，例如：“在电视机前的沙发中间”或“椅子东边三米处”</p>
+</li>
+<li>利用LLM的代码编写能力来生成可执行的Python机器人代码，这些代码可以<ul>
+<li>对参数化的导航原子操作进行精确调用</li>
+<li>在需要时执行算术</li>
+<li>生成的代码可以直接在内置Python exec函数的机器人上执行</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>[43] Code as policies: Language model programs for embodied control 2022</p>
+<p>[33] Grounding language with visual affordances over unstructured data 2022</p>
+<p>Codex[44] Evaluating large language models trained on code 2021</p>
+</blockquote>
+<ul>
+<li><p>本文使用code-writing language models来完成mobile robot planning</p>
+<ul>
+<li><p>使用few-shot prompting的方式，提供几个注释和代码配对的例子</p>
+</li>
+<li><p>The robot code can express functions or logic structures (if-then-else statements or for/while loops) and parameterize API calls (e.g., robot.move_to(target_name) or robot.turn(degrees).</p>
+</li>
+<li><p>At test time, the models can subsequently take in new commands and autonomously re-compose API calls to generate new robot code respectively </p>
+</li>
+<li><p>prompt in gray, input task commands in green, and generated outputs are highlighted</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162136579.png" alt="image-20230731162136579" style="zoom: 33%;" /></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162210346.png" alt="image-20230731162210346" style="zoom: 33%;" /></p>
+<ul>
+<li>语言模型可以通过生成的代码调用导航原子操作函数，使用VLMap来定位open-vocabulary landmarks在地图中的位置</li>
+<li>We then navigate to these coordinates <strong>using an off-the-shelf navigation stack</strong> that takes as input the embodiment-specific obstacle map<ul>
+<li>input：目标位置，障碍物地图</li>
+</ul>
+</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><h3 id="Simulation-Setup"><a href="#Simulation-Setup" class="headerlink" title="Simulation Setup"></a>Simulation Setup</h3><ul>
+<li>We use the <strong>Habitat simulator with the Matterport3D dataset</strong> for the evaluation of <strong>multi-object and spatial goal navigation tasks</strong>.</li>
+<li>To evaluate the creation of open-vocabulary multi-embodiment obstacle maps, we adopt the <strong>AI2THOR simulator</strong> due to its <strong>support of multiple agent types</strong>, such as LoCoBot and drone</li>
+<li>navigate in a continuous environment with actions: move forward 0.05 meters, turn left 1 degree, turn right 1 degree and stop.</li>
+<li>为了创建Habitat的map，作者收集了10个不同场景的12096 RGB-D frames和对应的相机位姿</li>
+<li>为了创建AI2THOR的map，作者收集了10个不同房间的1826 RGB-D frames和对应相机位姿</li>
+<li>实验对比的3个baseline<ul>
+<li>LM-Nav</li>
+<li>CLIP on Wheels(CoW)</li>
+<li>CLIP-features-based map(CLIP Map)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Multi-object-goal-navigation"><a href="#Multi-object-goal-navigation" class="headerlink" title="Multi-object goal navigation"></a>Multi-object goal navigation</h3><blockquote>
+<p>quantitatively evaluate VLMaps approach against recent <strong>open-vocabulary navigation baselines</strong> on the standard task of multi-object goal navigation</p>
+</blockquote>
+<ul>
+<li><p>作者收集了91个任务序列来评估object navigation</p>
+</li>
+<li><p>在每个序列中，随机指定机器人在场景中的起始位置，然后从30个对象类别中选择4个作为子目标对象类型。机器人需要按顺序导航到这四个子目标。当robot到达subgoal时，应该调用stop action来指示进度。当停止位置与正确目标的距离在一米以内时，认为成功导航到了一个子目标</p>
+</li>
+<li><p>To evaluatethe long-horizon navigation capabilities of the agents, we compute the success rate (SR) of continuously reaching one to four subgoals in a sequence，SR=所有subgoals成功数/total subgoals number（364=91*4）</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731170545893.png" alt="image-20230731170545893" style="zoom: 50%;" /></p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731171534923.png" alt="image-20230731171534923" style="zoom:50%;" /></p>
+<h3 id="Zero-Shot-Spatial-Goal-Navigation-from-Language-1"><a href="#Zero-Shot-Spatial-Goal-Navigation-from-Language-1" class="headerlink" title="Zero-Shot Spatial Goal Navigation from Language"></a>Zero-Shot Spatial Goal Navigation from Language</h3><blockquote>
+<p>investigate whether our method can better navigate to spatial goals specified by language commands versus alternative approaches</p>
+</blockquote>
+<ul>
+<li><p>benchmark由7个场景中的21个trajectories组成, 并手动指定相应的语言指令进行评估, 每个轨迹包含四个不同的空间位置作为子目标。子目标的示例如“east of the table”、“in between the chair and the sofa”或“move forward 3 meters”。也有指令要求机器人重新调整自己，找附近的物体，如“with the counter on your right”。</p>
+</li>
+<li><p>对于所有基于地图的方法，包括CoW，CLIP Map，ground truth semantic map和VLMaps，应用LLM代码生成技术来实现导航</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731173150170.png" alt="image-20230731173150170" style="zoom:50%;" /></p>
+</li>
+</ul>
+<h3 id="Cross-Embodiment-Navigation"><a href="#Cross-Embodiment-Navigation" class="headerlink" title="Cross-Embodiment Navigation"></a>Cross-Embodiment Navigation</h3><blockquote>
+<p>study whether VLMaps with their capacity to specify open-vocabulary obstacle maps can provide utility in improving the navigation efficiency of different robots with different embodiments</p>
+</blockquote>
+<ul>
+<li>AI2THOR simulator</li>
+<li>LoCoBot and drone</li>
+<li>Success Rate (SR) and the Success rate weighted by the (normalized inverse) Path Length (SPL)</li>
+</ul>
+<h3 id="Real-Robot-Experiments"><a href="#Real-Robot-Experiments" class="headerlink" title="Real Robot Experiments"></a>Real Robot Experiments</h3><blockquote>
+<p>to demonstrate on real robots that VLMaps can enable zero-shot spatial goal navigation given unseen language instructions</p>
+</blockquote>
+<h2 id="Detail"><a href="#Detail" class="headerlink" title="Detail"></a>Detail</h2><ul>
+<li>导航的原子操作</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162620199.png" alt="image-20230731162620199" style="zoom:50%;" /></p>
+<ul>
+<li><p>完整的prompt</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162734800.png" alt="image-20230731162734800" style="zoom:50%;" /></p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731162916974.png" alt="image-20230731162916974" style="zoom:50%;" /></p>
+<h2 id="Discussion-and-Limitation"><a href="#Discussion-and-Limitation" class="headerlink" title="Discussion and Limitation"></a>Discussion and Limitation</h2><ul>
+<li>仍然对3D重建噪声和odometry drift（里程计漂移）敏感</li>
+<li>无法解决当相似物体聚集在一起时产生的对象歧义</li>
+<li>动态物体</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/Exploration/" rel="tag"># Exploration</a>
+              <a href="/tags/HomeRobot/" rel="tag"># HomeRobot</a>
+              <a href="/tags/Planning/" rel="tag"># Planning</a>
+              <a href="/tags/Open-vocabulary/" rel="tag"># Open-vocabulary</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/" rel="prev" title="CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory">
+      <i class="fa fa-chevron-left"></i> CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICRA2023-VLMaps"><span class="nav-number">1.</span> <span class="nav-text">ICRA2023 VLMaps</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Building-a-Visual-Language-Map"><span class="nav-number">1.2.1.</span> <span class="nav-text">Building a Visual-Language Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Localizing-Open-Vocabulary-Landmarks"><span class="nav-number">1.2.2.</span> <span class="nav-text">Localizing Open-Vocabulary Landmarks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generating-Open-Vocabulary-Obstacle-Maps"><span class="nav-number">1.2.3.</span> <span class="nav-text">Generating Open-Vocabulary Obstacle Maps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zero-Shot-Spatial-Goal-Navigation-from-Language"><span class="nav-number">1.2.4.</span> <span class="nav-text">Zero-Shot Spatial Goal Navigation from Language</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.3.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Simulation-Setup"><span class="nav-number">1.3.1.</span> <span class="nav-text">Simulation Setup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-object-goal-navigation"><span class="nav-number">1.3.2.</span> <span class="nav-text">Multi-object goal navigation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Zero-Shot-Spatial-Goal-Navigation-from-Language-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">Zero-Shot Spatial Goal Navigation from Language</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cross-Embodiment-Navigation"><span class="nav-number">1.3.4.</span> <span class="nav-text">Cross-Embodiment Navigation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Real-Robot-Experiments"><span class="nav-number">1.3.5.</span> <span class="nav-text">Real Robot Experiments</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Detail"><span class="nav-number">1.4.</span> <span class="nav-text">Detail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Discussion-and-Limitation"><span class="nav-number">1.5.</span> <span class="nav-text">Discussion and Limitation</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">119</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
