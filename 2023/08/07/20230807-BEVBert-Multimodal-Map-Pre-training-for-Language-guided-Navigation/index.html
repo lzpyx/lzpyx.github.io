@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="BEVBertBEVBert: Multimodal Map Pre-training for Language-guided Navigation MotivationMost existing pre-training methods employ discrete panoramas to learn visual-textual associations. This requires th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BEVBert: Multimodal Map Pre-training for Language-guided Navigation">
+<meta property="og:url" content="http://lzpyx.github.io/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="BEVBertBEVBert: Multimodal Map Pre-training for Language-guided Navigation MotivationMost existing pre-training methods employ discrete panoramas to learn visual-textual associations. This requires th">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807163419112.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807190409906.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807192641928.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807203034218.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235136261.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235201126.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235522588.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808000203444.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808000340433.png">
+<meta property="article:published_time" content="2023-08-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-07T16:06:30.082Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="VLN">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="HomeRobot">
+<meta property="article:tag" content="Planning">
+<meta property="article:tag" content="Open-vocabulary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807163419112.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>BEVBert: Multimodal Map Pre-training for Language-guided Navigation | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BEVBert: Multimodal Map Pre-training for Language-guided Navigation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-08 00:06:30" itemprop="dateModified" datetime="2023-08-08T00:06:30+08:00">2023-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="BEVBert"><a href="#BEVBert" class="headerlink" title="BEVBert"></a>BEVBert</h1><p>BEVBert: Multimodal Map Pre-training for Language-guided Navigation</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Most existing pre-training methods employ discrete panoramas to learn visual-textual associations. This requires the model to implicitly correlate incomplete, duplicate observations within the panoramas, which may impair an agent’s spatial understanding.</p>
+<p>如下图所示，单个视图中不完整的观察和跨视图的重复观察可能会使agent感到困惑, discrete panoramas require implicit spatial modeling and may hamper the learning of generic language-environment correspondence</p>
+<blockquote>
+<p>it is difficult to infer “the second bedroom opposite to the bookcase” because there are duplicate images of “bedroom” and “bookcase” across different views, and therefore it is hard to tell they are images for the same object or multiple instances.</p>
+</blockquote>
+<p>一个潜在的解决方案是将这些观测值投影到一个统一的地图中，该地图明确地聚合不完整的观测值并删除重复的观测值, 这种方案与预训练的结合尚属空白，本文对此进行了首次探索</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807163419112.png" alt="image-20230807163419112" style="zoom:50%;" /></p>
+<p>Metric map代表</p>
+<p>[16] Object goal navigation using goal-oriented semantic exploration</p>
+<blockquote>
+<p>缺点：存储和计算inefficiencies</p>
+<p>The metric map uses dense grid features to precisely describe the environment but has <strong>inefficiencies of scale</strong>, As a result, using a large map to capture the long-horizon navigation dependency can cause prohibitive computation, especially for the computation-intensive pre-training</p>
+</blockquote>
+<p>Topo map代表</p>
+<p>[17] Neural topological slam for visual navigation</p>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>the topo map can efficiently capture dependency by keeping track of visited locations as a graph structure</li>
+<li>It also allows the agent to make efficient long-term goal plans, such as backtracking to a previous location</li>
+</ul>
+<p>缺点：压缩的特征表示缺少了局部的细粒度信息</p>
+<ul>
+<li>However, each node in the graph is typically represented by <strong>condensed feature vectors</strong>, which lack fine-grained information for local spatial reasoning</li>
+</ul>
+</blockquote>
+<p>本文没有采用large global metric map，而是提出了一种混合方法，结合metric map和topo map。</p>
+<ul>
+<li><p>local metric map for short-term spatial reasoning </p>
+</li>
+<li><p>conducting overall long-term action plans on a global topo map</p>
+</li>
+</ul>
+<span id="more"></span>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>[15] Weakly-supervised multi-granularity map learning for vision-and-language navigation</p>
+<p><strong>Visual Representation in Vision-Language Pre-training</strong></p>
+<ul>
+<li><p>Image-based methods [51]提取图像的整体特征，但忽略了细节，因此在fine-grained language grounding上存在缺陷</p>
+</li>
+<li><p>Object-based methods [5, 52] represent an image with dozens of objects identified by external detectors. The challenge is that<br><strong>objects can be redundant and limited in predefined categories</strong>.</p>
+</li>
+<li>Grid-based methods [55,56] directly use image grid features for pre-training, thus enabling multi-grained vision-language alignments</li>
+</ul>
+<p>Most VLN pre-training are image-based [11, 12, 14], which rely on discrete panoramas. We introduce grid-based methods into VLN through metric maps, where the model can learn via multi-grained room layouts.</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807190409906.png" alt="image-20230807190409906"></p>
+<h3 id="Problem-Definition"><a href="#Problem-Definition" class="headerlink" title="Problem Definition"></a>Problem Definition</h3><p>agent跟随指令穿过预定义的graph到达目标位置，每个时间步t都会得到离散的全景图(多个视角RGB images $\mathbf{V}_t$和depth images $\mathbf{D}_t$)及对应的位姿$\mathbf{P}_t$，</p>
+<p>输入的观察表示为$\mathbf{O}_t=\{\mathbf{V}_t, \mathbf{D}_t, \mathbf{P}_t\}$</p>
+<p>输出的动作实际上是从simulator提供的candidate set中选择一个可导航节点</p>
+<p>$\mathbf{G}^*$代表predefined graph</p>
+<h3 id="Topo-Metric-Mapping"><a href="#Topo-Metric-Mapping" class="headerlink" title="Topo-Metric Mapping"></a>Topo-Metric Mapping</h3><h4 id="Image-Processing"><a href="#Image-Processing" class="headerlink" title="Image Processing"></a>Image Processing</h4><p>使用预训练的vit对RGB输入$\mathbf{V}_t$进行特征提取，得到特征向量$\mathbf{V}_t^p$和downsized grid features $\mathbf{V}_t^g$，对应的深度图像$\mathbf{D}_t$也被downsize到与downsized grid features一样的尺寸，得到$\mathbf{D}_t^{\prime}$</p>
+<h4 id="Topo-Mapping"><a href="#Topo-Mapping" class="headerlink" title="Topo Mapping"></a>Topo Mapping</h4><p>设agent走过的路径为$\Gamma^{\prime}$, 时间步为t,  graph-based topo map $\mathbf{G}_t=\{\mathbf{N}_t,\mathbf{E}_t\}$保存路径$\Gamma^{\prime}$上观察到的所有节点</p>
+<p>‘ghost’ denotes navigable nodes observed along the path $\Gamma^{\prime}$ but have not been explored</p>
+<p>$\mathbf{E}_t$存储了两个相邻节点间的欧氏距离</p>
+<ul>
+<li>将图像特征向量$\mathbf{V}_*^p$投影到节点上，作为visual representations<ul>
+<li>$\mathbf{V}_t^p$被送入pano encoder(两层的transformer)来获取contextual view embeddings$\mathbf{\hat{V}}_t^p$</li>
+<li>对于已经访问过的节点(visited nodes &amp; current nodes)，全景图是可以获取的，因此这些节点的特征则用全景视图的特征的平均来表示</li>
+<li>Ghost Node可以被部分的观察到，因此其特征可以由观察到这一节点的视图的embedding之和来表示</li>
+</ul>
+</li>
+</ul>
+<p>$\mathbf{G}_t$包含了所有已观察到的节点，在此基础上可以获得一个用于long-term planning的全局动作空间$\mathcal{A}^G$</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807192641928.png" alt="image-20230807192641928" style="zoom:50%;" /></p>
+<h4 id="Metric-Mapping"><a href="#Metric-Mapping" class="headerlink" title="Metric Mapping"></a>Metric Mapping</h4><p>我们将grid-based metric map $\mathbf{M}_t \in \mathcal{R}^{U\times V\times D}$定义为一个egocentric map，其中每个单元格包含一个D-sized latent feature representing a small region of the surrounding layouts,使用nearby visited nodes对当前节点的观察的特征投影到ground plane，并进行平均池化</p>
+<p>在$\mathbf{M}_t$基础上可以获得一个用于short-term reasoning的局部动作空间$\mathcal{A}^M$</p>
+<h3 id="Pre-training-Model"><a href="#Pre-training-Model" class="headerlink" title="Pre-training Model"></a>Pre-training Model</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807203034218.png" alt="image-20230807203034218" style="zoom:50%;" /></p>
+<h3 id="Pre-training-Tasks"><a href="#Pre-training-Tasks" class="headerlink" title="Pre-training Tasks"></a>Pre-training Tasks</h3><ul>
+<li>Masked Language Modeling (MLM)</li>
+<li>Hybrid Single Action Prediction (HSAP): 结合$\mathcal{A}^M$和$\mathcal{A}^G$进行预测</li>
+<li>Masked Semantic Imagination (MSI)：there are some unobserved areas on the metric map $\mathbf{M}_t$, which brings uncertainty for decision-making.因此提出MSI，通过对指令的推理和部分观察到的区域来帮助agent想象未观察到的区域<ul>
+<li>擦除一部分metric maps</li>
+<li>每个格子内可能有多个类别，因此建模为多标签分类问题，使用二元交叉熵损失进行优化(定义了40个语义类别，obtain these labels from Matterport3D dataset)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>R2R, R2R-CE, and RxR focus on fine-grained instruction following, whereas R2R-CE is a variant of R2R in continuous environments and RxR provides more detailed path descriptions (e.g., objects and their relations). REVERIE is a goal-oriented task using coarse-grained instructions, such as “Go to the entryway and clean the coffee table”.</p>
+<p>Navigation Metrics</p>
+<ul>
+<li>Trajectory Length (TL): average pathlength in meters; </li>
+<li>Navigation Error (NE): average distance in meters between the final and target location; </li>
+<li>Success Rate(SR): the ratio of paths with NE less than 3 meters; </li>
+<li>Oracle SR (OSR): SR given oracle stop policy; </li>
+<li>SR penalized by Path Length (SPL); </li>
+<li>Normalize Dynamic Time Wrapping (NDTW): the fidelity between the predicted and annotated paths and NDTW penalized by SR (SDTW).</li>
+</ul>
+<p>Object Grounding Metrics to evaluate the capacity of object grounding</p>
+<ul>
+<li><p>Remote Grounding Success (RGS) </p>
+</li>
+<li><p>RGSPL (RGS penalized by Path Length) </p>
+</li>
+</ul>
+<p>All metrics are the higher the better, except for TL and NE.</p>
+<h3 id="4-1-Implementation-Details"><a href="#4-1-Implementation-Details" class="headerlink" title="4.1. Implementation Details"></a>4.1. Implementation Details</h3><ul>
+<li>set the metric map scale as 21 × 21, and each cell represents a square region with a side length of 0.5m (the entire map is thus 10.5m× 10.5m).</li>
+<li>Training: 4 NVIDIA Tesla A100 GPUs (∼10 hours)</li>
+<li>Finetuning: 4 NVIDIA Tesla A100 GPUs (∼20 hours)</li>
+</ul>
+<h3 id="4-2-Comparison-with-State-of-the-Art"><a href="#4-2-Comparison-with-State-of-the-Art" class="headerlink" title="4.2 Comparison with State-of-the-Art"></a>4.2 Comparison with State-of-the-Art</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235136261.png" alt="image-20230807235136261" style="zoom:67%;" /></p>
+<p>[50] Etpnav: Evolving topological planning for vision-language navigation in continuous environments</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235201126.png" alt="image-20230807235201126" style="zoom: 67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807235522588.png" alt="image-20230807235522588" style="zoom:67%;" /></p>
+<p>测试空间推理能力的定量实验</p>
+<p>from R2R and RxR val unseen splits, we first extract the relevant instructions which contain either spatial tokens (e.g. “left of”, “rightmost”) or numerical tokens (e.g. “second”, “fourth”). An agent’s reasoning capability can be inferred from how well it follows these instructions</p>
+<p>As the number of special tokens in each instruction increases, the performance of all models shows downward trends. This indicates spatial reasoning is a bottleneck of existing methods</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808000203444.png" alt="image-20230808000203444" style="zoom:67%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808000340433.png" alt="image-20230808000340433" style="zoom:67%;" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/VLN/" rel="tag"># VLN</a>
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/HomeRobot/" rel="tag"># HomeRobot</a>
+              <a href="/tags/Planning/" rel="tag"># Planning</a>
+              <a href="/tags/Open-vocabulary/" rel="tag"># Open-vocabulary</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/07/20230807-Think-Global,-Act-Local-Dual-scale-Graph-Transformer-for-Vision-and-Language-Navigation/" rel="prev" title="Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation">
+      <i class="fa fa-chevron-left"></i> Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/" rel="next" title="Scaling Data Generation in Vision-and-Language Navigation">
+      Scaling Data Generation in Vision-and-Language Navigation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BEVBert"><span class="nav-number">1.</span> <span class="nav-text">BEVBert</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem-Definition"><span class="nav-number">1.3.1.</span> <span class="nav-text">Problem Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topo-Metric-Mapping"><span class="nav-number">1.3.2.</span> <span class="nav-text">Topo-Metric Mapping</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Image-Processing"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Image Processing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Topo-Mapping"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Topo Mapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Metric-Mapping"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">Metric Mapping</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pre-training-Model"><span class="nav-number">1.3.3.</span> <span class="nav-text">Pre-training Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pre-training-Tasks"><span class="nav-number">1.3.4.</span> <span class="nav-text">Pre-training Tasks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">1.4.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-Implementation-Details"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1. Implementation Details</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Comparison-with-State-of-the-Art"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2 Comparison with State-of-the-Art</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">121</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

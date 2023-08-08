@@ -20,25 +20,32 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="USA-NetUSA-Net: Unified Semantic and Affordance Representations for Robot Memory “take this can to the kitchen”, 机器人想要完成这样一个指令，需要两方面信息：  semantic information：需要知道厨房的位置 affordance information：进行轨迹规划，避免">
+  <meta name="description" content="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。   MethodologyOverview">
 <meta property="og:type" content="article">
-<meta property="og:title" content="USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory">
-<meta property="og:url" content="http://lzpyx.github.io/2023/07/29/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/index.html">
+<meta property="og:title" content="Prior Exploration">
+<meta property="og:url" content="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="USA-NetUSA-Net: Unified Semantic and Affordance Representations for Robot Memory “take this can to the kitchen”, 机器人想要完成这样一个指令，需要两方面信息：  semantic information：需要知道厨房的位置 affordance information：进行轨迹规划，避免">
+<meta property="og:description" content="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。   MethodologyOverview">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-07-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-29T08:53:48.702Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135141881.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808144244501.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808151952306.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152527018.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152603062.png">
+<meta property="article:published_time" content="2023-08-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-08T07:26:10.760Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="VLN">
 <meta property="article:tag" content="Embodied AI">
-<meta property="article:tag" content="Exploration">
 <meta property="article:tag" content="HomeRobot">
 <meta property="article:tag" content="Planning">
-<meta property="article:tag" content="Open-vocabulary">
+<meta property="article:tag" content="Prior Exploration">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/07/29/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
 
 
 <script id="page-configurations">
@@ -51,7 +58,7 @@
   };
 </script>
 
-  <title>USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory | Yixuan Pan's Blog</title>
+  <title>Prior Exploration | Yixuan Pan's Blog</title>
   
 
 
@@ -175,7 +182,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -188,7 +195,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory
+          Prior Exploration
         </h1>
 
         <div class="post-meta">
@@ -199,7 +206,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-07-29 00:00:00 / Modified: 16:53:48" itemprop="dateCreated datePublished" datetime="2023-07-29T00:00:00+08:00">2023-07-29</time>
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 15:26:10" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -222,13 +229,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="USA-Net"><a href="#USA-Net" class="headerlink" title="USA-Net"></a>USA-Net</h1><p>USA-Net: Unified Semantic and Affordance Representations for Robot Memory</p>
-<p>“take this can to the kitchen”, 机器人想要完成这样一个指令，需要两方面信息：</p>
+        <h1 id="CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation"><a href="#CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation" class="headerlink" title="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation"></a>CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation</h1><p>允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png" alt="image-20230808135101288" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135141881.png" alt="image-20230808135141881" style="zoom:50%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><ul>
+<li><p>从探索阶段开始，agent构建环境的拓扑图，然后agent使用对环境的这种拓扑理解以及指令文本和当前观察来执行 VLN 任务。</p>
+</li>
+<li><p>为了执行 VLN 任务，作者从机器人社区中汲取灵感并使用模块化方法（modular approach）。具体来说，我们将本方法分为planning和control。</p>
 <ul>
-<li>semantic information：需要知道厨房的位置</li>
-<li>affordance information：进行轨迹规划，避免和场景中的其他物体碰撞</li>
+<li>在planning阶段，采取任何行动步骤之前，agent首先基于环境和导航指令生成一个<strong>可解释的</strong>global navigation plan。</li>
+<li>The robot then tries to follow the navigation plan using a repeating cycle of localization and control until it reaches the destination。</li>
+<li>使用分层控制器首先预测waypoint subgoals</li>
+<li>然后将waypoints转换为低级动作，例如 FORWARD(0.25m) 或 ROTATE(15°)</li>
 </ul>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>[25] isdf: Real-time neural signed distance fields for robot perception</p>
+</li>
+</ul>
+<h3 id="Topological-Map-Representation"><a href="#Topological-Map-Representation" class="headerlink" title="Topological Map Representation"></a>Topological Map Representation</h3><p>Before planning can take place, the agent must first construct a topological representation of the environment. </p>
+<p>对于VLN任务，一个理想的地图应该</p>
+<ul>
+<li>覆盖大部分可穿越区域</li>
+<li>节点和边缘中包含丰富的信息，用于实现localization和planning</li>
+</ul>
+<ul>
+<li>由执行计划时高概率可达的连接节点组成</li>
+</ul>
+<p>作者将环境表示为一个图，其中每个节点都是一个观察值，每条边表示两个节点之间的连通性（或可达性）。当agent探索环境时，它会在其当前位置放置一个节点并将该节点连接到前一个节点。</p>
+<p>在之前的工作[36, 42]中，控制器(agent)最终可能会将多个节点放置在同一位置。例如，如果来自同一位置的两个观测值相距 180 度，它们看起来会非常不同。这可能会导致密集的拓扑图并加剧定位、规划和控制的困难，<strong>因为每个节点只包含有关每个位置的部分信息</strong>。为了减少冗余和缓解这些问题，作者将节点表示为以一致的<strong>固定全局方向定向的 360 度全景图</strong></p>
+<p>作者在每个环境中运行多个预定义的探索轨迹。每个探索轨迹的图都被 Meng[36]提出的可达性估计器稀疏化，然后合并成一个可用于定位和规划的图形。</p>
+<blockquote>
+<p>[36] Scaling local control to large-scale topological navigation.</p>
+</blockquote>
+<p>将粗略的几何信息附加到地图中的每个有向边。为此，引入了8个方向和3个距离（0-2m，2-5m，&gt;5m）的量化极坐标系。此类信息对于解决歧义（例如对称环境）很有用，并且可以促进语言/空间推理。由于映射不是主要关注点，在地图构建过程中使用地面实况里程计来计算边缘类别。然而，在导航测试期间，这个假设被放宽了，改为使用神经网络进行定位。</p>
+<h4 id="Exploration-Trajectories"><a href="#Exploration-Trajectories" class="headerlink" title="Exploration Trajectories"></a>Exploration Trajectories</h4><p>探索环境：</p>
+<p>[8] Learning to explore using active neural slam.</p>
+<p>[11] Learning exploration policies for navigation.</p>
+<p>在本工作中，通过在ground truth metric maps的traversable areas采样一系列waypoints的方式来生成exploration trajectories，然后agent按照轨迹进行导航。</p>
+<p>在探索过程期间，代理保持跟踪其在每个时间步处的观察以及其位置和取向的里程计传感器读数，使得agent知道任何两个观察之间的相对位置。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808144244501.png" alt="image-20230808144244501"></p>
+<h4 id="Map-Construction"><a href="#Map-Construction" class="headerlink" title="Map Construction"></a>Map Construction</h4><p>使用reachability estimator将探索轨迹稀疏化为拓扑图</p>
+<blockquote>
+<p>[36] Scaling local control to large-scale topological navigation.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808151952306.png" alt="image-20230808151952306"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152527018.png" alt="image-20230808152527018"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152603062.png" alt="image-20230808152603062" style="zoom:50%;" /></p>
 
     </div>
 
@@ -239,11 +283,11 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/VLN/" rel="tag"># VLN</a>
               <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
-              <a href="/tags/Exploration/" rel="tag"># Exploration</a>
               <a href="/tags/HomeRobot/" rel="tag"># HomeRobot</a>
               <a href="/tags/Planning/" rel="tag"># Planning</a>
-              <a href="/tags/Open-vocabulary/" rel="tag"># Open-vocabulary</a>
+              <a href="/tags/Prior-Exploration/" rel="tag"># Prior Exploration</a>
           </div>
 
         
@@ -252,13 +296,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/28/20230728-Open-vocabulary-Queryable-Scene-Representations-for-Real-World-Planning/" rel="prev" title="Open-vocabulary Queryable Scene Representations for Real World Planning">
-      <i class="fa fa-chevron-left"></i> Open-vocabulary Queryable Scene Representations for Real World Planning
+    <a href="/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/" rel="prev" title="USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory">
+      <i class="fa fa-chevron-left"></i> USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/" rel="next" title="ConceptFusion: Open-set Multimodal 3D Mapping">
-      ConceptFusion: Open-set Multimodal 3D Mapping <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -317,7 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#USA-Net"><span class="nav-number">1.</span> <span class="nav-text">USA-Net</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation"><span class="nav-number">1.</span> <span class="nav-text">CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview"><span class="nav-number">1.1.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topological-Map-Representation"><span class="nav-number">1.1.2.</span> <span class="nav-text">Topological Map Representation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Exploration-Trajectories"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Exploration Trajectories</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Map-Construction"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Map Construction</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -331,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">102</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -344,7 +385,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">119</span>
+        <span class="site-state-item-count">121</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

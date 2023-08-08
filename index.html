@@ -164,6 +164,475 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/20230808-Prior-Exploration/" class="post-title-link" itemprop="url">Prior Exploration</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 15:26:10" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation"><a href="#CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation" class="headerlink" title="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation"></a>CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation</h1><p>允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png" alt="image-20230808135101288" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135141881.png" alt="image-20230808135141881" style="zoom:50%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><ul>
+<li><p>从探索阶段开始，agent构建环境的拓扑图，然后agent使用对环境的这种拓扑理解以及指令文本和当前观察来执行 VLN 任务。</p>
+</li>
+<li><p>为了执行 VLN 任务，作者从机器人社区中汲取灵感并使用模块化方法（modular approach）。具体来说，我们将本方法分为planning和control。</p>
+<ul>
+<li>在planning阶段，采取任何行动步骤之前，agent首先基于环境和导航指令生成一个<strong>可解释的</strong>global navigation plan。</li>
+<li>The robot then tries to follow the navigation plan using a repeating cycle of localization and control until it reaches the destination。</li>
+<li>使用分层控制器首先预测waypoint subgoals</li>
+<li>然后将waypoints转换为低级动作，例如 FORWARD(0.25m) 或 ROTATE(15°)</li>
+</ul>
+</li>
+</ul>
+<h3 id="Topological-Map-Representation"><a href="#Topological-Map-Representation" class="headerlink" title="Topological Map Representation"></a>Topological Map Representation</h3><p>Before planning can take place, the agent must first construct a topological representation of the environment. </p>
+<p>对于VLN任务，一个理想的地图应该</p>
+<ul>
+<li>覆盖大部分可穿越区域</li>
+<li>节点和边缘中包含丰富的信息，用于实现localization和planning</li>
+</ul>
+<ul>
+<li>由执行计划时高概率可达的连接节点组成</li>
+</ul>
+<p>作者将环境表示为一个图，其中每个节点都是一个观察值，每条边表示两个节点之间的连通性（或可达性）。当agent探索环境时，它会在其当前位置放置一个节点并将该节点连接到前一个节点。</p>
+<p>在之前的工作[36, 42]中，控制器(agent)最终可能会将多个节点放置在同一位置。例如，如果来自同一位置的两个观测值相距 180 度，它们看起来会非常不同。这可能会导致密集的拓扑图并加剧定位、规划和控制的困难，<strong>因为每个节点只包含有关每个位置的部分信息</strong>。为了减少冗余和缓解这些问题，作者将节点表示为以一致的<strong>固定全局方向定向的 360 度全景图</strong></p>
+<p>作者在每个环境中运行多个预定义的探索轨迹。每个探索轨迹的图都被 Meng[36]提出的可达性估计器稀疏化，然后合并成一个可用于定位和规划的图形。</p>
+<blockquote>
+<p>[36] Scaling local control to large-scale topological navigation.</p>
+</blockquote>
+<p>将粗略的几何信息附加到地图中的每个有向边。为此，引入了8个方向和3个距离（0-2m，2-5m，&gt;5m）的量化极坐标系。此类信息对于解决歧义（例如对称环境）很有用，并且可以促进语言/空间推理。由于映射不是主要关注点，在地图构建过程中使用地面实况里程计来计算边缘类别。然而，在导航测试期间，这个假设被放宽了，改为使用神经网络进行定位。</p>
+<h4 id="Exploration-Trajectories"><a href="#Exploration-Trajectories" class="headerlink" title="Exploration Trajectories"></a>Exploration Trajectories</h4><p>探索环境：</p>
+<p>[8] Learning to explore using active neural slam.</p>
+<p>[11] Learning exploration policies for navigation.</p>
+<p>在本工作中，通过在ground truth metric maps的traversable areas采样一系列waypoints的方式来生成exploration trajectories，然后agent按照轨迹进行导航。</p>
+<p>在探索过程期间，代理保持跟踪其在每个时间步处的观察以及其位置和取向的里程计传感器读数，使得agent知道任何两个观察之间的相对位置。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808144244501.png" alt="image-20230808144244501"></p>
+<h4 id="Map-Construction"><a href="#Map-Construction" class="headerlink" title="Map Construction"></a>Map Construction</h4><p>使用reachability estimator将探索轨迹稀疏化为拓扑图</p>
+<blockquote>
+<p>[36] Scaling local control to large-scale topological navigation.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808151952306.png" alt="image-20230808151952306"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152527018.png" alt="image-20230808152527018"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152603062.png" alt="image-20230808152603062" style="zoom:50%;" /></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/" class="post-title-link" itemprop="url">USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-07 00:00:00 / Modified: 14:48:47" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="USA-Net"><a href="#USA-Net" class="headerlink" title="USA-Net"></a>USA-Net</h1><p>USA-Net: Unified Semantic and Affordance Representations for Robot Memory</p>
+<blockquote>
+<p>the ﬁrst end-to-end <strong>differentiable planner</strong> optimizes for <strong>both semantics and affordance</strong> in a single implicit map</p>
+</blockquote>
+<p>“take this can to the kitchen”, 机器人想要完成这样一个指令，需要两方面信息：</p>
+<ul>
+<li>semantic information：需要知道厨房的位置</li>
+<li>affordance information：进行轨迹规划，避免和场景中的其他物体碰撞</li>
+</ul>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
+<li><p>Semantic information can then be used to ﬁnd the location of objects for planning, 但没有考虑应该采取什么样的轨迹才能在不与障碍物相撞的情况下到达目标</p>
+</li>
+<li><p>in the case of a learned representation, we instead see a softer distribution of potential goals, where there may be tradeoff between trajectory planning and goal selection</p>
+<blockquote>
+<p>基于学习到的表征来推断目标位置往往不能获得确切位置，而是一些潜在可能的目标位置，最佳语义位置可能被障碍物阻挡或以其他方式不可达，因此需要权衡可达性和目标选择</p>
+</blockquote>
+</li>
+<li><p>course-grained discrete motion planners, such as occupancy grids which use large cell sizes to conserve memory，可能无法捕获细粒度语义信息，诸如场景的小细节。</p>
+<blockquote>
+<p>要执行命令“从冰箱里拿一杯苏打水”，机器人必须能够在环境中的粗粒度障碍物周围导航，而且还能与相对细粒度的苏打水罐进行交互。</p>
+</blockquote>
+</li>
+</ul>
+<p>How can we use RGB and depth data to capture a representation which can be used for both semantic goal navigation and motion planning?</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/" class="post-title-link" itemprop="url">Scaling Data Generation in Vision-and-Language Navigation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-07 00:00:00 / Modified: 15:52:46" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ScaleVLN"><a href="#ScaleVLN" class="headerlink" title="ScaleVLN"></a>ScaleVLN</h1><p>Scaling Data Generation in Vision-and-Language Navigation</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807150345976.png" alt="image-20230807150345976" style="zoom:50%;" /></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Pre-exploration</p>
+<p>[26] Counterfactual vision-and-language navigation via adversarial path sampler. In European Conference on Computer Vision, pages 71–86. Springer, 2020. 2</p>
+<p>[72] Learning to navigate unseen environments: Back translation with environmental dropout</p>
+<p>[90] Vision-language navigation with self-supervised auxiliary reasoning tasks.</p>
+<p>VLN cotinuous environments(R2R-CE)</p>
+<p>[5] 1st place solutions for rxr-habitat vision-and-language navigation competition (cvpr 2022)</p>
+<p>[30] Bridging the gap between learning in discrete and continuous environments for vision-and-language navigation</p>
+<p>[40] Simple and effective synthesis of indoor 3d scenes. arXiv preprint arXiv:2204.02960, 2022. 2</p>
+<h2 id="Scaling-Data-for-Learning-VLN"><a href="#Scaling-Data-for-Learning-VLN" class="headerlink" title="Scaling Data for Learning VLN"></a>Scaling Data for Learning VLN</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/" class="post-title-link" itemprop="url">BEVBert: Multimodal Map Pre-training for Language-guided Navigation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-07 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-08 00:06:30" itemprop="dateModified" datetime="2023-08-08T00:06:30+08:00">2023-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BEVBert"><a href="#BEVBert" class="headerlink" title="BEVBert"></a>BEVBert</h1><p>BEVBert: Multimodal Map Pre-training for Language-guided Navigation</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Most existing pre-training methods employ discrete panoramas to learn visual-textual associations. This requires the model to implicitly correlate incomplete, duplicate observations within the panoramas, which may impair an agent’s spatial understanding.</p>
+<p>如下图所示，单个视图中不完整的观察和跨视图的重复观察可能会使agent感到困惑, discrete panoramas require implicit spatial modeling and may hamper the learning of generic language-environment correspondence</p>
+<blockquote>
+<p>it is difficult to infer “the second bedroom opposite to the bookcase” because there are duplicate images of “bedroom” and “bookcase” across different views, and therefore it is hard to tell they are images for the same object or multiple instances.</p>
+</blockquote>
+<p>一个潜在的解决方案是将这些观测值投影到一个统一的地图中，该地图明确地聚合不完整的观测值并删除重复的观测值, 这种方案与预训练的结合尚属空白，本文对此进行了首次探索</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807163419112.png" alt="image-20230807163419112" style="zoom:50%;" /></p>
+<p>Metric map代表</p>
+<p>[16] Object goal navigation using goal-oriented semantic exploration</p>
+<blockquote>
+<p>缺点：存储和计算inefficiencies</p>
+<p>The metric map uses dense grid features to precisely describe the environment but has <strong>inefficiencies of scale</strong>, As a result, using a large map to capture the long-horizon navigation dependency can cause prohibitive computation, especially for the computation-intensive pre-training</p>
+</blockquote>
+<p>Topo map代表</p>
+<p>[17] Neural topological slam for visual navigation</p>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>the topo map can efficiently capture dependency by keeping track of visited locations as a graph structure</li>
+<li>It also allows the agent to make efficient long-term goal plans, such as backtracking to a previous location</li>
+</ul>
+<p>缺点：压缩的特征表示缺少了局部的细粒度信息</p>
+<ul>
+<li>However, each node in the graph is typically represented by <strong>condensed feature vectors</strong>, which lack fine-grained information for local spatial reasoning</li>
+</ul>
+</blockquote>
+<p>本文没有采用large global metric map，而是提出了一种混合方法，结合metric map和topo map。</p>
+<ul>
+<li><p>local metric map for short-term spatial reasoning </p>
+</li>
+<li><p>conducting overall long-term action plans on a global topo map</p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/07/20230807-BEVBert-Multimodal-Map-Pre-training-for-Language-guided-Navigation/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-Think-Global,-Act-Local-Dual-scale-Graph-Transformer-for-Vision-and-Language-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/07/20230807-Think-Global,-Act-Local-Dual-scale-Graph-Transformer-for-Vision-and-Language-Navigation/" class="post-title-link" itemprop="url">Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-07 00:00:00 / Modified: 15:59:51" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="DUET"><a href="#DUET" class="headerlink" title="DUET"></a>DUET</h1><p>Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807155945171.png" alt="image-20230807155945171"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -438,80 +907,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/" class="post-title-link" itemprop="url">USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-29 00:00:00 / Modified: 16:53:48" itemprop="dateCreated datePublished" datetime="2023-07-29T00:00:00+08:00">2023-07-29</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="USA-Net"><a href="#USA-Net" class="headerlink" title="USA-Net"></a>USA-Net</h1><p>USA-Net: Unified Semantic and Affordance Representations for Robot Memory</p>
-<p>“take this can to the kitchen”, 机器人想要完成这样一个指令，需要两方面信息：</p>
-<ul>
-<li>semantic information：需要知道厨房的位置</li>
-<li>affordance information：进行轨迹规划，避免和场景中的其他物体碰撞</li>
-</ul>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>[25] isdf: Real-time neural signed distance fields for robot perception</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/28/20230728-Open-vocabulary-Queryable-Scene-Representations-for-Real-World-Planning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -686,341 +1081,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/" class="post-title-link" itemprop="url">Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-26 00:20:27" itemprop="dateModified" datetime="2023-07-26T00:20:27+08:00">2023-07-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts"><a href="#Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts" class="headerlink" title="Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts"></a>Enhancing CLIP with GPT-4: Harnessing Visual Descriptions as Prompts</h1><h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>VLMs通常通过设计与数据集相关的prompt来zero-shot的适配下游数据集</p>
-<p>将CLIP用于一个特定domain时，一种直白的prompt engineering方式是：</p>
-<p>to classify bird images, one could construct a prompt ‘a photo of ${classname}$, <strong>a type of bird</strong>’.</p>
-<p>但这样的prompt实际上并非最优方式：</p>
-<ul>
-<li>不能引入有效的专家知识，无法获取target domain的domain expertise</li>
-<li>high variance：prompt小的变化就会引起性能的较大变化</li>
-<li>判别性的信息仅仅只有$classname$，而仅依赖$classname$无法完成一些类别的zero-shot的识别，比如name中带有green的green heron但是在外形上更接近black bittern而不是green woodpecker</li>
-</ul>
-<p>因此需要引入visually descriptive textual (VDT) information</p>
-<blockquote>
-<p>we define VDT as a set of sentences that describe the visual features of the class under consideration including shape, size, color, environment, patterns, composition, etc.</p>
-</blockquote>
-<p>对于CUB，数据集中提供了domain expertise，其他数据集没有，因此引入LLM来构建复杂prompt，作者采用GPT-4来构建关于类的视觉描述性文本信息，prompt中特别强调了形状、颜色、结构和组成性等视觉线索。</p>
-<p>对于high variance问题：作者使用Prompt ensembling the VDT sentences reduce CLIP’s performance sensitivity to small changes in the prompt.</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725215455708.png" alt="image-20230725215455708"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/25/20230725-Enhancing-CLIP-with-GPT-4-Harnessing-Visual-Descriptions-as-Prompts/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/" class="post-title-link" itemprop="url">PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-24 00:00:00 / Modified: 20:59:46" itemprop="dateCreated datePublished" datetime="2023-07-24T00:00:00+08:00">2023-07-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="PROTO-CLIP"><a href="#PROTO-CLIP" class="headerlink" title="PROTO-CLIP"></a>PROTO-CLIP</h1><p>PROTO-CLIP: Vision-Language Prototypical Network for Few-Shot Learning</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>在机器人感知的setting下：</p>
-<ul>
-<li>object model-based方法建立物体的3D模型，并用3D模型来进行物体识别，但真实世界中难以获取大规模的3D模型</li>
-<li>object catagory-based方法识别有限类别的物体，很难对每个类别都收集大量的图像</li>
-<li>ImageNet和Visual Genome这类Internet data和robot manipulation存在domain gap</li>
-</ul>
-<p>因此从少量的图片示例中学习如何识别一个新的物体对于scale up机器人可识别的物体非常重要</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230724184706199.png" alt="image-20230724184706199"></p>
-<p>基于few-shot training images同时adapt图像和文本编码器，在adapt过程中对齐图像原型和文本原型，以提升few-shot classification性能</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/24/20230724-PROTO-CLIP-Vision-Language-Prototypical-Network-for-Few-Shot-Learning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/" class="post-title-link" itemprop="url">Navigating to Objects in the Real World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-23 00:00:00 / Modified: 17:27:19" itemprop="dateCreated datePublished" datetime="2023-07-23T00:00:00+08:00">2023-07-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Navigating-to-Objects-in-the-Real-World"><a href="#Navigating-to-Objects-in-the-Real-World" class="headerlink" title="Navigating to Objects in the Real World"></a>Navigating to Objects in the Real World</h1><p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/summary.gif" alt="img" style="zoom: 67%;" /></p>
-<p>任务难点：</p>
-<ul>
-<li>机器人需要具备区分自由空间和障碍物的空间场景理解能力</li>
-<li>检测物体的语义场景理解</li>
-<li>还需要学习语义探索先验。例如，如果一个人想在这个场景中找到厕所，我们大多数人都会选择走廊，因为它最有可能通向厕所。向agent教授这种常识或语义先验是富有挑战的。</li>
-<li>在探索场景寻找所需物体的同时，机器人还需要长期情景记忆来记住已探索和未探索的区域。</li>
-</ul>
-<p>本文关注了真实世界中的寻物导航问题，比较了经典，端到端和模块化学习三种方法</p>
-<p><img src="https://theophilegervet.github.io/assets/real-world-object-navigation/challenging_problem.png" alt="img"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/23/20230723-Navigating-to-Objects-in-the-Real-World/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/23/20230723-%E5%9B%9B%E5%85%83%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/23/20230723-%E5%9B%9B%E5%85%83%E6%95%B0/" class="post-title-link" itemprop="url">四元数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-23 00:00:00 / Modified: 17:37:06" itemprop="dateCreated datePublished" datetime="2023-07-23T00:00:00+08:00">2023-07-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1086,7 +1150,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">102</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1099,7 +1163,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">119</span>
+        <span class="site-state-item-count">121</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
