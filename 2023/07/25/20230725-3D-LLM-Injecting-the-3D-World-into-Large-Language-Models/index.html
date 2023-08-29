@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/teaser_3d.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725170515014.png">
 <meta property="article:published_time" content="2023-07-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-25T09:07:47.414Z">
+<meta property="article:modified_time" content="2023-08-24T08:48:56.454Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
 <meta property="article:tag" content="LLM">
@@ -201,10 +201,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-25 00:00:00 / Modified: 17:07:47" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
+              <time title="Created: 2023-07-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-24 16:48:56" itemprop="dateModified" datetime="2023-08-24T16:48:56+08:00">2023-08-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -324,7 +330,7 @@
 </blockquote>
 <h5 id="3D-Localization-Mechanism"><a href="#3D-Localization-Mechanism" class="headerlink" title="3D Localization Mechanism"></a>3D Localization Mechanism</h5><p>将xyz三个维度的sin/cos位置编码concat到3D features中，每个位置编码维度为$D_v/3$</p>
 <p>region to be grounded可以表示为AABB形式边界框的离散tokens序列</p>
-<p>边界框的连续角坐标被均匀离散为体素整数，作为lcation tokens $<x_{min},y_{min},z_{min},x_{max},y_{max},z_{max}>$。</p>
+<p>边界框的连续角坐标被均匀离散为体素整数，作为location tokens $<x_{min},y_{min},z_{min},x_{max},y_{max},z_{max}>$。</p>
 <blockquote>
 <p>After adding these additional location tokens, we unfreeze the weights for these tokens in the input and output<br>embeddings of language models.   ?</p>
 </blockquote>
@@ -436,7 +442,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -449,7 +455,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">121</span>
+        <span class="site-state-item-count">126</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

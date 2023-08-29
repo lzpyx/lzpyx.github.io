@@ -164,6 +164,359 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/" class="post-title-link" itemprop="url">Survey: Open Vocabulary 3D Scene Understanding</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-28 00:00:00 / Modified: 16:45:16" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Open-Vocabulary-3D-Scene-Understanding"><a href="#Open-Vocabulary-3D-Scene-Understanding" class="headerlink" title="Open Vocabulary 3D Scene Understanding"></a>Open Vocabulary 3D Scene Understanding</h1><h2 id="CVPR2022-PointCLIP"><a href="#CVPR2022-PointCLIP" class="headerlink" title="CVPR2022 PointCLIP"></a>CVPR2022 PointCLIP</h2><p>PointCLIP: Point Cloud Understanding by CLIP</p>
+<p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
+<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
+<h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/" class="post-title-link" itemprop="url">Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-28 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-29 10:53:00" itemprop="dateModified" datetime="2023-08-29T10:53:00+08:00">2023-08-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Semantic-Abstraction"><a href="#Semantic-Abstraction" class="headerlink" title="Semantic Abstraction"></a>Semantic Abstraction</h1><p>Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models</p>
+<p>基于open-set vocabulary and out-of-domain visual input对3D环境进行感知和推理是机器人在3D世界中进行操作的关键技术，Semantic Abstraction (SemAbs), a framework that equips 2D Vision-Language Models (VLMs) with new 3D spatial capabilities, while maintaining their zero-shot robustness.</p>
+<blockquote>
+<p>赋予2D VLMs 3D空间能力的同时保留2D VLMs的zero-shot robustness</p>
+</blockquote>
+<ul>
+<li>completing partially observed objects</li>
+<li>localizing hidden objects from language descriptions</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828184909949.png" alt="image-20230828184909949"></p>
+<ul>
+<li>novel vocabulary (i.e., object attributes, synonyms of object nouns)</li>
+<li>visual properties (e.g. lighting, textures)</li>
+<li>domains (e.g. sim v.s. real)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828185932397.png" alt="image-20230828185932397"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/27/20230827-BuboGPT-Enabling-Visual-Grounding-in-Multi-Modal-LLMs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/27/20230827-BuboGPT-Enabling-Visual-Grounding-in-Multi-Modal-LLMs/" class="post-title-link" itemprop="url">BuboGPT: Enabling Visual Grounding in Multi-Modal LLMs</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-27 00:00:00 / Modified: 23:36:37" itemprop="dateCreated datePublished" datetime="2023-08-27T00:00:00+08:00">2023-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BuboGPT"><a href="#BuboGPT" class="headerlink" title="BuboGPT"></a>BuboGPT</h1><p>BuboGPT: Enabling Visual Grounding in Multi-Modal LLMs</p>
+<p>以往MLLMs对于图像给出的是粗粒度的描述和理解，而没有深入研究视觉对象和其它给定模态之间的细粒度关系。BuboGPT在MLLMs中引入visual grounding的能力</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230827171533211.png" alt="image-20230827171533211"></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Visual-Grounding-Pipeline"><a href="#Visual-Grounding-Pipeline" class="headerlink" title="Visual Grounding Pipeline"></a>Visual Grounding Pipeline</h3><ul>
+<li>tagging module (Recognize Anything Model (RAM))</li>
+<li>grounding module (Grounding DINO + Segment Anything Model (SAM))</li>
+<li>entity-matching module (使用GPT实现，prompt)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230827172913922.png" alt="image-20230827172913922"></p>
+<p>entity-matching module中使用的prompts</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># few-shot examples</span></span><br><span class="line">self.examples = [</span><br><span class="line">(</span><br><span class="line"><span class="string">&quot;&lt;List&gt;[&#x27;dog&#x27;, &#x27;sheepdog&#x27;, &#x27;grass&#x27;, &#x27;chase sheepdog&#x27;, &#x27;field&#x27;, &#x27;field park&#x27;, &#x27;grassy&#x27;, &#x27;corgi&#x27;, &#x27;brown dog&#x27;, &#x27;brown&#x27;, &#x27;park&#x27;]&lt;/List&gt;&quot;</span></span><br><span class="line"><span class="string">&quot;&lt;Text&gt;A brown dog running in the grassy field&lt;/Text&gt;&quot;</span>,</span><br><span class="line"><span class="string">&#x27;brown dog - brown dog\n&#x27;</span></span><br><span class="line"><span class="string">&#x27;grassy field - field&#x27;</span></span><br><span class="line">),</span><br><span class="line">(</span><br><span class="line"><span class="string">&quot;&lt;List&gt;[&#x27;man&#x27;, &#x27;ride&#x27;, &#x27;bicycle&#x27;, &#x27;red&#x27;, &#x27;passenger train&#x27;, &#x27;track&#x27;]&lt;/List&gt;&quot;</span></span><br><span class="line"><span class="string">&quot;&lt;Text&gt;A man riding a bicycle next to a red passenger train on the tracks.&lt;/Text&gt;&quot;</span>,</span><br><span class="line"><span class="string">&quot;man - man\n&quot;</span></span><br><span class="line"><span class="string">&quot;bicycle - bicycle\n&quot;</span></span><br><span class="line"><span class="string">&quot;red passenger train - passenger train\n&quot;</span></span><br><span class="line"><span class="string">&quot;tracks - track&quot;</span></span><br><span class="line">)]</span><br><span class="line"><span class="comment"># prompt for GPT</span></span><br><span class="line">self.system_prompt = <span class="string">&quot;You are a helpful assistant. Now I will give you a list of entities and give you a &quot;</span> \</span><br><span class="line"><span class="string">&quot;paragraph or sentence. &quot;</span> \</span><br><span class="line"><span class="string">&quot;you need to first extract the entity given in the text and then&quot;</span> \</span><br><span class="line"><span class="string">&quot;find the corresponding entity having similar or identical meanings in the given list. &quot;</span> \</span><br><span class="line"><span class="string">&quot;Find all the pairs.&quot;</span> \</span><br><span class="line"><span class="string">&quot;Are you clear? let us think step by step. &quot;</span> \</span><br><span class="line"><span class="string">&quot;The extracted entities must come from the given text and the corresponding entity must &quot;</span> \</span><br><span class="line"><span class="string">&quot;come from the given list. &quot;</span> \</span><br><span class="line"><span class="string">&quot;If multiple entities can be linked to the same span of text or vice versa, &quot;</span> \</span><br><span class="line"><span class="string">&quot;just keep one and do not merge them.&quot;</span> \</span><br><span class="line"><span class="string">&quot;Here is an example: &lt;List&gt;[&#x27;dog&#x27;, &#x27;sheepdog&#x27;, &#x27;grass&#x27;, &#x27;chase sheepdog&#x27;, &#x27;field&#x27;, &quot;</span> \</span><br><span class="line"><span class="string">&quot;&#x27;field park&#x27;, &#x27;grassy&#x27;, &#x27;corgi&#x27;, &#x27;brown dog&#x27;, &#x27;brown&#x27;, &#x27;park&#x27;]&lt;/List&gt; &quot;</span> \</span><br><span class="line"><span class="string">&quot;&lt;Text&gt;A brown dog running in the grassy field&lt;/Text&gt;&quot;</span> \</span><br><span class="line"><span class="string">&quot;The answer is: brown dog — brown dog \n grassy field — field&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Multi-Modal-LLM-Training"><a href="#Multi-Modal-LLM-Training" class="headerlink" title="Multi-Modal LLM Training"></a>Multi-Modal LLM Training</h3><ul>
+<li>aligns with the LLM with a Q-former for each modality<ul>
+<li>visual encoder - BLIP2</li>
+<li>audio encoder - ImageBind</li>
+<li>LLM - Vicuna</li>
+</ul>
+</li>
+<li><p>use a linear projection layer to connect the modality Q-Former with the LLM</p>
+</li>
+<li><p>two-stage training scheme</p>
+<ul>
+<li>The modality encoders and Vicuna model with be fixed throughout the training procedure</li>
+<li><p>Stage 1: Single-modal Pre-training</p>
+<ul>
+<li>与MiniGPT-4类似，第一阶段的作用是使linear projection layer的输出与LLM的词嵌入空间对齐</li>
+<li>基于大量的modality-text paired data对modality Q-Former and linear projection layer进行训练</li>
+<li>For visual perception, we only train the projection layer for image captioning with <strong>the Q-Former from BLIP2 fixed</strong></li>
+<li>For audio understanding, we jointly train the Q-Former and the projection layer for audio captioning</li>
+</ul>
+</li>
+<li><p>Stage 2: Multi-Modal Instruct Tuning</p>
+<ul>
+<li>为了使模型适应输入模态的任意组合，作者设计了一个通用prompt</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230827225824529.png" alt="image-20230827225824529"></p>
+<h3 id="Instruction-Tuning-Datasets"><a href="#Instruction-Tuning-Datasets" class="headerlink" title="Instruction-Tuning Datasets"></a>Instruction-Tuning Datasets</h3><ul>
+<li>Image-Text Dataset</li>
+</ul>
+<p>We employ two previously published datasets for visual instruct tuning. The first one is released by MiniGPT-4, which contains 3,439 high-quality text-image pairs. The second one provided by LLaVA [6] is curated from 158K samples based on the COCO dataset, including three types of instructions, i.e., converstaions (58K), detailed description (23K) and complex reasnoning (77K)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/10/20230810-Review-of-Large-Vision-Models-and-Visual-Prompt-Engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/10/20230810-Review-of-Large-Vision-Models-and-Visual-Prompt-Engineering/" class="post-title-link" itemprop="url">Review of Large Vision Models and Visual Prompt Engineering</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-10 00:00:00 / Modified: 22:54:46" itemprop="dateCreated datePublished" datetime="2023-08-10T00:00:00+08:00">2023-08-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Review-of-Large-Vision-Models-and-Visual-Prompt-Engineering"><a href="#Review-of-Large-Vision-Models-and-Visual-Prompt-Engineering" class="headerlink" title="Review of Large Vision Models and Visual Prompt Engineering"></a>Review of Large Vision Models and Visual Prompt Engineering</h1><p>将大型视觉模型应用于特定任务需要一种有效的方法来指导模型的学习和推理过程。这就是视觉提示工程发挥作用的地方。它是一种方法，涉及设计和优化视觉提示，以引导大型模型生成所需的输出。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -189,7 +542,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2023-08-08 00:00:00 / Modified: 15:26:10" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 16:39:59" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -227,36 +580,172 @@
 </ul>
 </li>
 </ul>
-<h3 id="Topological-Map-Representation"><a href="#Topological-Map-Representation" class="headerlink" title="Topological Map Representation"></a>Topological Map Representation</h3><p>Before planning can take place, the agent must first construct a topological representation of the environment. </p>
-<p>对于VLN任务，一个理想的地图应该</p>
-<ul>
-<li>覆盖大部分可穿越区域</li>
-<li>节点和边缘中包含丰富的信息，用于实现localization和planning</li>
-</ul>
-<ul>
-<li>由执行计划时高概率可达的连接节点组成</li>
-</ul>
-<p>作者将环境表示为一个图，其中每个节点都是一个观察值，每条边表示两个节点之间的连通性（或可达性）。当agent探索环境时，它会在其当前位置放置一个节点并将该节点连接到前一个节点。</p>
-<p>在之前的工作[36, 42]中，控制器(agent)最终可能会将多个节点放置在同一位置。例如，如果来自同一位置的两个观测值相距 180 度，它们看起来会非常不同。这可能会导致密集的拓扑图并加剧定位、规划和控制的困难，<strong>因为每个节点只包含有关每个位置的部分信息</strong>。为了减少冗余和缓解这些问题，作者将节点表示为以一致的<strong>固定全局方向定向的 360 度全景图</strong></p>
-<p>作者在每个环境中运行多个预定义的探索轨迹。每个探索轨迹的图都被 Meng[36]提出的可达性估计器稀疏化，然后合并成一个可用于定位和规划的图形。</p>
-<blockquote>
-<p>[36] Scaling local control to large-scale topological navigation.</p>
-</blockquote>
-<p>将粗略的几何信息附加到地图中的每个有向边。为此，引入了8个方向和3个距离（0-2m，2-5m，&gt;5m）的量化极坐标系。此类信息对于解决歧义（例如对称环境）很有用，并且可以促进语言/空间推理。由于映射不是主要关注点，在地图构建过程中使用地面实况里程计来计算边缘类别。然而，在导航测试期间，这个假设被放宽了，改为使用神经网络进行定位。</p>
-<h4 id="Exploration-Trajectories"><a href="#Exploration-Trajectories" class="headerlink" title="Exploration Trajectories"></a>Exploration Trajectories</h4><p>探索环境：</p>
-<p>[8] Learning to explore using active neural slam.</p>
-<p>[11] Learning exploration policies for navigation.</p>
-<p>在本工作中，通过在ground truth metric maps的traversable areas采样一系列waypoints的方式来生成exploration trajectories，然后agent按照轨迹进行导航。</p>
-<p>在探索过程期间，代理保持跟踪其在每个时间步处的观察以及其位置和取向的里程计传感器读数，使得agent知道任何两个观察之间的相对位置。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808144244501.png" alt="image-20230808144244501"></p>
-<h4 id="Map-Construction"><a href="#Map-Construction" class="headerlink" title="Map Construction"></a>Map Construction</h4><p>使用reachability estimator将探索轨迹稀疏化为拓扑图</p>
-<blockquote>
-<p>[36] Scaling local control to large-scale topological navigation.</p>
-</blockquote>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808151952306.png" alt="image-20230808151952306"></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152527018.png" alt="image-20230808152527018"></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808152603062.png" alt="image-20230808152603062" style="zoom:50%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/20230808-Prior-Exploration/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/" class="post-title-link" itemprop="url">CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-09 22:48:53" itemprop="dateModified" datetime="2023-08-09T22:48:53+08:00">2023-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CLIP-on-Wheels-CoW"><a href="#CLIP-on-Wheels-CoW" class="headerlink" title="CLIP on Wheels (CoW)"></a>CLIP on Wheels (CoW)</h1><p>CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation</p>
+<p>For robots to be generally useful, they must be able to ﬁnd arbitrary objects described by people (i.e., be <strong>language-driven</strong>) even without expensive navigation training on in-domain data (i.e., perform <strong>zero-shot</strong> inference).</p>
+<p>language-driven zero-shot object navigation (L-ZSON)</p>
+<p>PASTURE benchmark considers ﬁnding uncommon objects, objects described by spatial and appearance attributes, and hidden objects described relative to visible objects</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808192142973.png" alt="image-20230808192142973" style="zoom:50%;" /></p>
+<ul>
+<li>A collection of baseline algorithms, CLIP on Wheels (CoW), which adapt open-vocabulary models to the task of L-ZSON.</li>
+<li>A new benchmark, PASTURE, to evaluate CoW and future methods on L-ZSON, We consider the ability to ﬁnd:<ul>
+<li>uncommon objects (e.g., “tie-dye surfboard”)</li>
+<li>objects by their spatial and appearance attributes in the presence of distractor objects (e.g., “green apple” vs. “red<br>apple”)</li>
+<li>objects that cannot be visually observed(e.g., “mug under the bed”).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Zero-shot object navigation (ZSON)</p>
+<blockquote>
+<p>agents are evaluated on object categories that they are not explicitly trained on</p>
+<p>Both algorithms necessitate navigation training for millions of steps and train separate models for each simulation domain.</p>
+</blockquote>
+<p>[44] Zson: Zero-shot object-goal navigation using multimodal goal embeddings</p>
+<p>[37] Simple but effective: Clip embeddings for embodied ai</p>
+<h2 id="CLIP-on-Wheels-CoW-Baselines"><a href="#CLIP-on-Wheels-CoW-Baselines" class="headerlink" title="CLIP on Wheels (CoW) Baselines"></a>CLIP on Wheels (CoW) Baselines</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809212239190.png" alt="image-20230809212239190" style="zoom: 67%;" /></p>
+<h3 id="Depth-based-Mapping"><a href="#Depth-based-Mapping" class="headerlink" title="Depth-based Mapping"></a>Depth-based Mapping</h3><p>0.125m分辨率的地图</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809213210939.png" alt="image-20230809213210939"></p>
+<h3 id="Exploration"><a href="#Exploration" class="headerlink" title="Exploration"></a>Exploration</h3><ul>
+<li>Frontier based exploration (FBE)<ul>
+<li>move to the frontier between free and unknown space to discover new regions. Once the navigator reaches a frontier, it moves greedily to the next closest frontier.</li>
+</ul>
+</li>
+<li>Learnable exploration</li>
+</ul>
+<h3 id="Object-Localization"><a href="#Object-Localization" class="headerlink" title="Object Localization"></a>Object Localization</h3><ul>
+<li>CLIP with k referring expressions</li>
+<li>CLIP with k image patches</li>
+<li>CLIP with gradient relevance</li>
+<li>MDETR segmentation</li>
+<li>OWL-ViT detection</li>
+<li>Post-processing</li>
+<li>Target driven planning</li>
+</ul>
+<h3 id="The-PASTURE-Benchmark"><a href="#The-PASTURE-Benchmark" class="headerlink" title="The PASTURE Benchmark"></a>The PASTURE Benchmark</h3><p>PASTURE builds on ROBOTHOR validation scenes</p>
+<p>PASTURE evaluates <strong>seven core L-ZSON capabilities</strong>：</p>
+<ul>
+<li><p>Uncommon objects.</p>
+<blockquote>
+<p>Traditional benchmarks (e.g.,ROBOTHOR and HABITAT MP3D)主要在常见类别上进行评估，但家用环境中物体是非常多样的，因此作者添加了<strong>12 new objects to each room</strong>. </p>
+<p>We use names shown in Fig. 4 as instance labels, which are minimal descriptions to identify each object. Some identifiers refer to text in images (e.g., “whiteboard saying CVPR”) or to appearance attributes (e.g., “wooden toy airplane”). Other objects are less common in North America, like “mat´e”, which is a popular Argentinian drink.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809222604449.png" alt="image-20230809222604449" style="zoom: 80%;" /></p>
+</li>
+<li><p>Appearance descriptions.</p>
+<blockquote>
+<p>对visual attributes的感知能力</p>
+<p>“{size}, {color}, {material} {object}”. For example: “small, red apple”, “orange basketball”, “small, black, metallic alarm clock”.</p>
+</blockquote>
+</li>
+<li><p>Spatial descriptions.</p>
+<blockquote>
+<p>对spatial information的感知能力</p>
+<p>“{object} on top of {x}, near {y}, {z}, …”. For example, “house plant on a dresser near a spray bottle”. To determine [on top of] relations, we use THOR metadata and to determine [nearness] we use a distance threshold between pairs of objects.</p>
+</blockquote>
+</li>
+<li><p>Appearance descriptions with distractors.</p>
+<blockquote>
+<p>有干扰物出现的情况</p>
+<p>For example, for the task of finding a “red apple”, we have both a red apple and a green apple in the room.</p>
+</blockquote>
+</li>
+<li><p>Spatial descriptions with distractors.</p>
+<blockquote>
+<p>有干扰物出现</p>
+</blockquote>
+</li>
+<li><p>Hidden object descriptions.</p>
+<blockquote>
+<p>An ideal object navigator should find objects, even when they are hidden. </p>
+<p>“{object} under/in {x}”. For example, “basketball in the dresser drawers” or “vase under the sofa”. We sample large objects (e.g., beds, sofas, dressers) in each scene to determine [under/in] relations. Additionally we remove visible instances of {object} from the room.</p>
+</blockquote>
+</li>
+<li><p>Hidden object descriptions with distractors.</p>
+<blockquote>
+<p>Consider finding a “mug under the bed”. A distractor mug will also appear in the scene making the task more challenging.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2>
       
     </div>
 
@@ -629,458 +1118,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/" class="post-title-link" itemprop="url">Visual Language Maps for Robot Navigation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-31 00:00:00 / Modified: 18:28:58" itemprop="dateCreated datePublished" datetime="2023-07-31T00:00:00+08:00">2023-07-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICRA2023-VLMaps"><a href="#ICRA2023-VLMaps" class="headerlink" title="ICRA2023 VLMaps"></a>ICRA2023 VLMaps</h1><p>Visual Language Maps for Robot Navigation</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Without grounding language onto a spatial representation, these systems may struggle to：</p>
-<ul>
-<li>recognize correspondences that associate independent observations of the same object</li>
-<li>localize spatial goals e.g., “in between the sofa and the TV”</li>
-<li>build persistent representations that can be shared across different embodiments, e.g., mobile robots, drones</li>
-</ul>
-<p>两大卖点</p>
-<ul>
-<li><p>对语言和空间的感知理解能力：<strong>Localize spatial goals beyond object-centric ones</strong>, e.g., “in between the TV and sofa” or “to the right of the chair” or “kitchen area” using code-writing LLMs, expanding beyond capabilities of CoW or LM-Nav.</p>
-</li>
-<li><p>多智能体协作,不同的robots对应不同的obstacle maps: can be shared among <strong>multiple robots</strong> with different embodiments to generate new obstacle maps on-the-fly (by using a list of obstacle categories)</p>
-<blockquote>
-<p>Generate new obstacle maps for new embodiments given natural language descriptions of landmark categories that they can or cannot traverse, e.g., “tables” are obstacles for a large mobile robot, but traversable for a drone.</p>
-</blockquote>
-</li>
-</ul>
-<p>both LM-Nav [13] and CoW [12] are limited to navigating to object landmarks and are less capable to understand finer-grained queries, such as “to the left of the chair” and “in between the TV and the sofa”</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731135534315.png" alt="image-20230731135534315"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/" class="post-title-link" itemprop="url">CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-29 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-29T00:00:00+08:00">2023-07-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-31 10:41:06" itemprop="dateModified" datetime="2023-07-31T10:41:06+08:00">2023-07-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CLIP-Fields"><a href="#CLIP-Fields" class="headerlink" title="CLIP-Fields"></a>CLIP-Fields</h1><p>CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</p>
-<p><a target="_blank" rel="noopener" href="https://mahis.life/clip-fields">project</a></p>
-<ul>
-<li>CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization</li>
-<li>使用CLIP, Detic, and Sentence-BERT来提供弱监督来建立semantic neural fields，不需要直接的人工标注监督</li>
-<li>更好的few-shot性能</li>
-<li>使用CLIP-Fields作为scene memory可以使机器人在真实世界实现语义导航 </li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png" alt="image-20230730211119025" style="zoom:67%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/" class="post-title-link" itemprop="url">ConceptFusion: Open-set Multimodal 3D Mapping</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-29 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-29T00:00:00+08:00">2023-07-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-31 10:38:27" itemprop="dateModified" datetime="2023-07-31T10:38:27+08:00">2023-07-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ConceptFusion"><a href="#ConceptFusion" class="headerlink" title="ConceptFusion"></a>ConceptFusion</h1><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230729091938067.png" alt="image-20230729091938067"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>建立环境的3D map是许多机器人任务的核心，大部分方法建图时都受限于：</p>
-<ul>
-<li>Closed-set setting，仅能处理训练时预定好的类别</li>
-<li><p>只能由class name或text prompt进行查询（单模态）</p>
-<p>ConceptFusion的三个贡献：</p>
-</li>
-<li><p>open-set multimodal 3D mapping that constructs map representations queryable by text, image, audio, and click queries in a zero-shot manner</p>
-</li>
-<li>A novel mechanism to compute pixel-aligned (local) features from foundation models that can only generate image-level (global) feature vectors</li>
-<li>A new RGB-D dataset, UnCoCo, to evaluate open-set multimodal 3D mapping. UnCoCo comprises 78 common household/office objects tagged with more than 500K queries across modalities</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/28/20230728-Open-vocabulary-Queryable-Scene-Representations-for-Real-World-Planning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/28/20230728-Open-vocabulary-Queryable-Scene-Representations-for-Real-World-Planning/" class="post-title-link" itemprop="url">Open-vocabulary Queryable Scene Representations for Real World Planning</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-28 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-28T00:00:00+08:00">2023-07-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-29 00:27:36" itemprop="dateModified" datetime="2023-07-29T00:27:36+08:00">2023-07-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Natural-Language-Map-NLMap"><a href="#Natural-Language-Map-NLMap" class="headerlink" title="Natural-Language Map (NLMap)"></a>Natural-Language Map (NLMap)</h1><p>Open-vocabulary Queryable Scene Representations for Real World Planning</p>
-<p>用于LLM的上下文场景表示，最大的特点就是Open-vocabulary Queryable，更适合的LLMs-based planner</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230728234329057.png" alt="image-20230728234329057"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/28/20230728-Open-vocabulary-Queryable-Scene-Representations-for-Real-World-Planning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/" class="post-title-link" itemprop="url">3D-LLM: Injecting the 3D World into Large Language Models</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-07-25 00:00:00 / Modified: 17:07:47" itemprop="dateCreated datePublished" datetime="2023-07-25T00:00:00+08:00">2023-07-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="3D-LLM"><a href="#3D-LLM" class="headerlink" title="3D-LLM"></a>3D-LLM</h1><p>3D-LLM: Injecting the 3D World into Large Language Models</p>
-<p>MLLMs如Flamingo，BLIP-2能够对2D image进行理解和推理，但是无法与3D物理世界接地，因此无法利用3D中的丰富信息，如空间关系，物理和交互等。</p>
-<p>通过将场景的3D表示作为输入，使3D-LLM具有2个优势：</p>
-<ul>
-<li>关于整个场景的长期记忆可以存储在整体3D表示中，而不是片段的部分视图观察</li>
-<li>3D属性（如affordances和空间关系）可以从3D表示中推理出来，远超出了基于语言或基于2D图像的LLM的能力范围</li>
-</ul>
-<p>本文的贡献点：</p>
-<ul>
-<li>3D data paired with language description难以获取，本文提出了一个数据生成pipeline来生成大规模的3D data paired with language，最终得到300k的3D-language data（多任务）</li>
-<li>如何提取能和语言特征对齐的3D特征？<ul>
-<li>使用渲染的2D多视图图像的特征构造3D特征</li>
-<li>将3D转换为2D，然后就可以使用现成的VLMs如BLIP-2</li>
-</ul>
-</li>
-<li>如何感知3D空间位置关系<ul>
-<li>3D localization mechanism that bridges the gap between language and spatial locations</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230725122839668.png" alt="image-20230725122839668"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/25/20230725-3D-LLM-Injecting-the-3D-World-into-Large-Language-Models/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1150,7 +1187,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1163,7 +1200,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">121</span>
+        <span class="site-state-item-count">126</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

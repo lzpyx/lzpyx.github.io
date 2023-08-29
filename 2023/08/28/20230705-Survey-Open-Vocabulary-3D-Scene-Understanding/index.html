@@ -23,7 +23,7 @@
   <meta name="description" content="Open Vocabulary 3D Scene UnderstandingCVPR2022 PointCLIPPointCLIP: Point Cloud Understanding by CLIP 第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning Methodology 抽取点云特征使用投影的方式，将3D的点云投影到几">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Survey: Open Vocabulary 3D Scene Understanding">
-<meta property="og:url" content="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/index.html">
+<meta property="og:url" content="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
 <meta property="og:description" content="Open Vocabulary 3D Scene UnderstandingCVPR2022 PointCLIPPointCLIP: Point Cloud Understanding by CLIP 第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning Methodology 抽取点云特征使用投影的方式，将3D的点云投影到几">
 <meta property="og:locale" content="en_US">
@@ -35,8 +35,14 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706102254944.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705224145464.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230706115205359.png">
-<meta property="article:published_time" content="2023-07-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-20T03:59:24.027Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824104621613.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824120238338.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824121126219.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824141244850.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828161840324.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828161419359.png">
+<meta property="article:published_time" content="2023-08-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-28T08:45:16.202Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Multimodal">
 <meta property="article:tag" content="Vision-Language">
@@ -48,7 +54,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
 
 
 <script id="page-configurations">
@@ -185,7 +191,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/05/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,16 +213,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2023-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-05T00:00:00+08:00">2023-07-05</time>
+              <time title="Created: 2023-08-28 00:00:00 / Modified: 16:45:16" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-20 11:59:24" itemprop="dateModified" datetime="2023-07-20T11:59:24+08:00">2023-07-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -303,12 +303,81 @@
 <li>Zero-shot 3D Object Detection</li>
 </ul>
 <h2 id="PLA"><a href="#PLA" class="headerlink" title="PLA"></a>PLA</h2><p>PLA: Language-Driven Open-Vocabulary 3D Scene Understanding</p>
-<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>PointCLIP,Clip2point这类将3D投影到2D再利用VLMs处理的方法实现object-level open-vocabulary recognition，但对于处理scene-level understanding tasks比如实例分割，这类方法有两个缺点：</p>
+<p>3D scene understanding is a fundamental perception component in real-world applications such as robot manipulation, virtual reality and human-machine interaction</p>
+<p>Open-vocabulary scene understanding aims to localize and recognize unseen categories beyond the annotated label space.</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824104621613.png" alt="image-20230824104621613" style="zoom:50%;" /></p>
+<h3 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h3><p>PointCLIP, Clip2point这类将3D投影到2D再利用VLMs处理的方法实现object-level open-vocabulary recognition，但对于处理scene-level understanding tasks比如实例分割，这类方法有两个缺点：</p>
 <ul>
 <li>需要多个RGB图像和深度图来表示3D样本，这在训练和推理期间产生大量计算和存储成本</li>
 <li>3D到2D的投影引起了信息的丢失，无法直接从3D获取信息</li>
 </ul>
-<h3 id="Methodology-2"><a href="#Methodology-2" class="headerlink" title="Methodology"></a>Methodology</h3>
+<p>core idea</p>
+<p>exploit pre-trained <strong>VL foundation models</strong> to <strong>caption</strong> easily-obtained image data aligned with 3D data (i.e. the point set in the corresponding frustum to produce the image). Note that these <strong>images can be acquired through neural rendering or from the 3D data collection pipeline</strong>.</p>
+<p>在获得3D-language association后，如何使得3D network能够从pseudo captions中学习language-aware embeddings，关键的挑战来自3D场景级数据中复杂的对象组成，这使得难以将对象与标题中的相应单词联系起来，这和包含单个居中对象的以对象为中心的图像数据非常不同。</p>
+<p>Fortunately, the captioned multi-view images from a 3D scene are related by <strong>3D geometry</strong>, which can be leveraged to build hierarchical <strong>point-caption pairs, including scene-, view- and entity-level captions</strong>.</p>
+<h3 id="Methodology-2"><a href="#Methodology-2" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824120238338.png" alt="image-20230824120238338"></p>
+<h4 id="Text-Embedded-Semantic-Classifier"><a href="#Text-Embedded-Semantic-Classifier" class="headerlink" title="Text-Embedded Semantic Classifier"></a>Text-Embedded Semantic Classifier</h4><p>输入点云$p$经过backbone $\mathbf{F_{3D}}$得到特征$\mathbf{f}^p$</p>
+<p>adapter $\mathbf{F}_{\theta}$对$\mathbf{f}^p$ 进行映射得到point embedding $\mathbf{f}^v$，然后与类别特征$\mathbf{f}^l$计算余弦相似度进行点云分类</p>
+<h4 id="Semantic-Calibration-with-Binary-Head"><a href="#Semantic-Calibration-with-Binary-Head" class="headerlink" title="Semantic Calibration with Binary Head"></a>Semantic Calibration with Binary Head</h4><p>仅使用上述部分来得到的模型常常会将novel类分到base类中，因为训练阶段都是识别base类，不可避免地对base类别产生过度自信的预测，而不管它们的正确性如何</p>
+<p>因此作者提出了binary calibration module来利用点属于base类或novel类的概率来校正语义得分。具体来说，在训练阶段作者使用binary head $\mathbf{F}_b$来区分annotated(即base类) points和unannotated(即novel类) points，使用BCELoss优化</p>
+<p>$\mathbf{s}^{b}=\mathrm{F}_{\mathrm{b}}\left(\mathbf{f}^{p}\right), \quad \mathcal{L}_{b i}=\operatorname{BCELoss}\left(\mathbf{s}^{b}, \mathbf{y}^{b}\right)$</p>
+<p>在推理阶段则使用预测的二元概率$\mathbf{s}^b$（点属于base类的概率和属于novel类的概率）</p>
+<p>$\mathbf{s}=\mathbf{s}_{B} \cdot\left(1-\mathbf{s}^{b}\right)+\mathbf{s}_{N} \cdot \mathbf{s}^{b}$</p>
+<h4 id="Image-Bridged-Point-Language-Association"><a href="#Image-Bridged-Point-Language-Association" class="headerlink" title="Image-Bridged Point-Language Association"></a>Image-Bridged Point-Language Association</h4><p>core idea is to use multi-view images of a 3D scene as a bridge to access knowledge encoded in VL foundation models</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824121126219.png" alt="image-20230824121126219"></p>
+<h5 id="Caption-Multi-View-Images"><a href="#Caption-Multi-View-Images" class="headerlink" title="Caption Multi-View Images"></a>Caption Multi-View Images</h5><p>虽然2D VL models没有在3D场景上训练，但是其产生的captions中包含的实体对象类别已经覆盖了ScanNet中的所有语义类类别，另外captions中还提供了对房间类型，语义类别，颜色纹理属性，空间关系</p>
+<h5 id="Associate-Point-Cloud-with-Language"><a href="#Associate-Point-Cloud-with-Language" class="headerlink" title="Associate Point Cloud with Language"></a>Associate Point Cloud with Language</h5><p>在获得了image-caption pairs后，下一步是将point和language联系起来</p>
+<ul>
+<li>Scene-Level Point-Caption Association<ul>
+<li>使用text summarizer将场景的所有2D image captions总结成一个场景描述</li>
+</ul>
+</li>
+<li>View-Level Point-Caption Association<ul>
+<li>点反投影到3D空间中</li>
+</ul>
+</li>
+<li>Entity-Level Point-Caption Association<ul>
+<li>将view-level captions中每条caption间实体的交集和并集抽取出来作为entity-level caption，对应的点云也取交集并集（并非采用2D目标检测的方式）</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230824141244850.png" alt="image-20230824141244850" style="zoom:50%;" /></p>
+<h4 id="Contrastive-Point-Language-Training"><a href="#Contrastive-Point-Language-Training" class="headerlink" title="Contrastive Point-Language Training"></a>Contrastive Point-Language Training</h4><h4 id="Open-vocabulary-instance-head"><a href="#Open-vocabulary-instance-head" class="headerlink" title="Open-vocabulary instance head"></a>Open-vocabulary instance head</h4><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828161840324.png" alt="image-20230828161840324"></p>
+<h3 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h3><h4 id="Datasets-and-Perception-Tasks"><a href="#Datasets-and-Perception-Tasks" class="headerlink" title="Datasets and Perception Tasks"></a>Datasets and Perception Tasks</h4><ul>
+<li><p>ScanNet 20类</p>
+<ul>
+<li>otherfurniture</li>
+<li>剩余19类 base/novel 划分<ul>
+<li>i.e. B15/N4, B12/N7 and B10/N9, where B15/N4 indicates 15 base and 4 novel categories</li>
+<li>As for instance segmentation, We also follow SoftGroup [38] to exclude two background classes(i.e. wall and floor) and thus obtain B13/N4, B10/N7, and B8/N9 partitions for instance segmentation on ScanNet</li>
+</ul>
+</li>
+<li>1,613 scenes (1,201 scenes for training, 312 scenes for validation and 100 for testing)</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828161419359.png" alt="image-20230828161419359"></p>
+</li>
+<li><p>S3DIS 13类</p>
+</li>
+</ul>
+<h4 id="Architectures-and-Baseline-Methods"><a href="#Architectures-and-Baseline-Methods" class="headerlink" title="Architectures and Baseline Methods."></a>Architectures and Baseline Methods.</h4><ul>
+<li>3D encoder - sparse convolutional UNet [13, 6]<ul>
+<li>3d semantic segmentation with submanifold sparse convolutional networks</li>
+</ul>
+</li>
+<li>text encoder - CLIP</li>
+<li>VL adapter - two fully-connected layers + batch normalization + ReLU</li>
+<li>binary head - UNet decoder</li>
+<li>instance head - SoftGroup</li>
+</ul>
+<h3 id="Limitation"><a href="#Limitation" class="headerlink" title="Limitation"></a>Limitation</h3><ul>
+<li>the calibration problem that the model tends to produce over-confident predictions on base classes,<br>which lies in both semantic and instance segmentation tasks<ul>
+<li>For semantic segmentation, though the binary head is developed to calibrate semantic scores for in-domain open-vocabulary scene understanding, <strong>it fails to rectify predictions for out-of-domain transfer tasks.</strong></li>
+<li>Trained on the dataset-specific base/novel partition, the binary head is hard to generalize to other datasets with data distribution shifts, which encourages us to design more transferable score calibration modules in the future</li>
+<li>As for the instance segmentation task, though we largely address the localization problem for novel classes through fine-grained point-caption pairs, the calibration problem also exists in the proposal grouping process, where objects of novel classes cannot group well and probably obtain incomplete instance masks.</li>
+</ul>
+</li>
+</ul>
+
     </div>
 
     
@@ -332,13 +401,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/07/04/20230704-MetaFormer--A-Uni%EF%AC%81ed-Meta-Framework-for-Fine-Grained-Recognition/" rel="prev" title="MetaFormer : A Uniﬁed Meta Framework for Fine-Grained Recognition">
-      <i class="fa fa-chevron-left"></i> MetaFormer : A Uniﬁed Meta Framework for Fine-Grained Recognition
+    <a href="/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/" rel="prev" title="Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models">
+      <i class="fa fa-chevron-left"></i> Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/" rel="next" title="Towards Open Vocabulary Learning: A Survey">
-      Towards Open Vocabulary Learning: A Survey <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -397,7 +463,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2022-PointCLIP"><span class="nav-number">1.1.</span> <span class="nav-text">CVPR2022 PointCLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E7%82%B9%E4%BA%91%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">抽取点云特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zero-shot-Classification"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Zero-shot Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-view-Adapter-for-PointCLIP"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Inter-view Adapter for PointCLIP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-knowledge-Ensemble"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Multi-knowledge Ensemble</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiments"><span class="nav-number">1.1.2.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-number">1.1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PointCLIP-V2"><span class="nav-number">1.2.</span> <span class="nav-text">PointCLIP V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realistic-Shape-Projection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Realistic Shape Projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLM-assisted-3D-Prompting"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LLM-assisted 3D Prompting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-world-Understanding"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Open-world Understanding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PLA"><span class="nav-number">1.3.</span> <span class="nav-text">PLA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">Methodology</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-Vocabulary-3D-Scene-Understanding"><span class="nav-number">1.</span> <span class="nav-text">Open Vocabulary 3D Scene Understanding</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CVPR2022-PointCLIP"><span class="nav-number">1.1.</span> <span class="nav-text">CVPR2022 PointCLIP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology"><span class="nav-number">1.1.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E5%8F%96%E7%82%B9%E4%BA%91%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">抽取点云特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zero-shot-Classification"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Zero-shot Classification</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inter-view-Adapter-for-PointCLIP"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Inter-view Adapter for PointCLIP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-knowledge-Ensemble"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Multi-knowledge Ensemble</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiments"><span class="nav-number">1.1.2.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Datasets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Discussion"><span class="nav-number">1.1.3.</span> <span class="nav-text">Discussion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PointCLIP-V2"><span class="nav-number">1.2.</span> <span class="nav-text">PointCLIP V2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Realistic-Shape-Projection"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Realistic Shape Projection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LLM-assisted-3D-Prompting"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LLM-assisted 3D Prompting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-world-Understanding"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Open-world Understanding</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PLA"><span class="nav-number">1.3.</span> <span class="nav-text">PLA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Methodology-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Text-Embedded-Semantic-Classifier"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Text-Embedded Semantic Classifier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Semantic-Calibration-with-Binary-Head"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Semantic Calibration with Binary Head</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Image-Bridged-Point-Language-Association"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">Image-Bridged Point-Language Association</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Caption-Multi-View-Images"><span class="nav-number">1.3.2.3.1.</span> <span class="nav-text">Caption Multi-View Images</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Associate-Point-Cloud-with-Language"><span class="nav-number">1.3.2.3.2.</span> <span class="nav-text">Associate Point Cloud with Language</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Contrastive-Point-Language-Training"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">Contrastive Point-Language Training</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Open-vocabulary-instance-head"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">Open-vocabulary instance head</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Experiment"><span class="nav-number">1.3.3.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets-and-Perception-Tasks"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Datasets and Perception Tasks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Architectures-and-Baseline-Methods"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Architectures and Baseline Methods.</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Limitation"><span class="nav-number">1.3.4.</span> <span class="nav-text">Limitation</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -411,7 +477,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -424,7 +490,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">121</span>
+        <span class="site-state-item-count">126</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

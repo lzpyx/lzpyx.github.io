@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CLIP on Wheels (CoW)CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation For robots to be generally useful, they must be able to ﬁnd arbitrary objects described by">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation">
+<meta property="og:url" content="http://lzpyx.github.io/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="CLIP on Wheels (CoW)CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation For robots to be generally useful, they must be able to ﬁnd arbitrary objects described by">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808192142973.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809212239190.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809213210939.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809222604449.png">
+<meta property="article:published_time" content="2023-08-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-09T14:48:53.144Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="VLN">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="HomeRobot">
+<meta property="article:tag" content="Planning">
+<meta property="article:tag" content="Object Navigation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808192142973.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-09 22:48:53" itemprop="dateModified" datetime="2023-08-09T22:48:53+08:00">2023-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="CLIP-on-Wheels-CoW"><a href="#CLIP-on-Wheels-CoW" class="headerlink" title="CLIP on Wheels (CoW)"></a>CLIP on Wheels (CoW)</h1><p>CoWs on PASTURE: Baselines and Benchmarks for Language-Driven Zero-Shot Object Navigation</p>
+<p>For robots to be generally useful, they must be able to ﬁnd arbitrary objects described by people (i.e., be <strong>language-driven</strong>) even without expensive navigation training on in-domain data (i.e., perform <strong>zero-shot</strong> inference).</p>
+<p>language-driven zero-shot object navigation (L-ZSON)</p>
+<p>PASTURE benchmark considers ﬁnding uncommon objects, objects described by spatial and appearance attributes, and hidden objects described relative to visible objects</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808192142973.png" alt="image-20230808192142973" style="zoom:50%;" /></p>
+<ul>
+<li>A collection of baseline algorithms, CLIP on Wheels (CoW), which adapt open-vocabulary models to the task of L-ZSON.</li>
+<li>A new benchmark, PASTURE, to evaluate CoW and future methods on L-ZSON, We consider the ability to ﬁnd:<ul>
+<li>uncommon objects (e.g., “tie-dye surfboard”)</li>
+<li>objects by their spatial and appearance attributes in the presence of distractor objects (e.g., “green apple” vs. “red<br>apple”)</li>
+<li>objects that cannot be visually observed(e.g., “mug under the bed”).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Zero-shot object navigation (ZSON)</p>
+<blockquote>
+<p>agents are evaluated on object categories that they are not explicitly trained on</p>
+<p>Both algorithms necessitate navigation training for millions of steps and train separate models for each simulation domain.</p>
+</blockquote>
+<p>[44] Zson: Zero-shot object-goal navigation using multimodal goal embeddings</p>
+<p>[37] Simple but effective: Clip embeddings for embodied ai</p>
+<h2 id="CLIP-on-Wheels-CoW-Baselines"><a href="#CLIP-on-Wheels-CoW-Baselines" class="headerlink" title="CLIP on Wheels (CoW) Baselines"></a>CLIP on Wheels (CoW) Baselines</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809212239190.png" alt="image-20230809212239190" style="zoom: 67%;" /></p>
+<h3 id="Depth-based-Mapping"><a href="#Depth-based-Mapping" class="headerlink" title="Depth-based Mapping"></a>Depth-based Mapping</h3><p>0.125m分辨率的地图</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809213210939.png" alt="image-20230809213210939"></p>
+<h3 id="Exploration"><a href="#Exploration" class="headerlink" title="Exploration"></a>Exploration</h3><ul>
+<li>Frontier based exploration (FBE)<ul>
+<li>move to the frontier between free and unknown space to discover new regions. Once the navigator reaches a frontier, it moves greedily to the next closest frontier.</li>
+</ul>
+</li>
+<li>Learnable exploration</li>
+</ul>
+<h3 id="Object-Localization"><a href="#Object-Localization" class="headerlink" title="Object Localization"></a>Object Localization</h3><ul>
+<li>CLIP with k referring expressions</li>
+<li>CLIP with k image patches</li>
+<li>CLIP with gradient relevance</li>
+<li>MDETR segmentation</li>
+<li>OWL-ViT detection</li>
+<li>Post-processing</li>
+<li>Target driven planning</li>
+</ul>
+<h3 id="The-PASTURE-Benchmark"><a href="#The-PASTURE-Benchmark" class="headerlink" title="The PASTURE Benchmark"></a>The PASTURE Benchmark</h3><p>PASTURE builds on ROBOTHOR validation scenes</p>
+<p>PASTURE evaluates <strong>seven core L-ZSON capabilities</strong>：</p>
+<ul>
+<li><p>Uncommon objects.</p>
+<blockquote>
+<p>Traditional benchmarks (e.g.,ROBOTHOR and HABITAT MP3D)主要在常见类别上进行评估，但家用环境中物体是非常多样的，因此作者添加了<strong>12 new objects to each room</strong>. </p>
+<p>We use names shown in Fig. 4 as instance labels, which are minimal descriptions to identify each object. Some identifiers refer to text in images (e.g., “whiteboard saying CVPR”) or to appearance attributes (e.g., “wooden toy airplane”). Other objects are less common in North America, like “mat´e”, which is a popular Argentinian drink.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230809222604449.png" alt="image-20230809222604449" style="zoom: 80%;" /></p>
+</li>
+<li><p>Appearance descriptions.</p>
+<blockquote>
+<p>对visual attributes的感知能力</p>
+<p>“{size}, {color}, {material} {object}”. For example: “small, red apple”, “orange basketball”, “small, black, metallic alarm clock”.</p>
+</blockquote>
+</li>
+<li><p>Spatial descriptions.</p>
+<blockquote>
+<p>对spatial information的感知能力</p>
+<p>“{object} on top of {x}, near {y}, {z}, …”. For example, “house plant on a dresser near a spray bottle”. To determine [on top of] relations, we use THOR metadata and to determine [nearness] we use a distance threshold between pairs of objects.</p>
+</blockquote>
+</li>
+<li><p>Appearance descriptions with distractors.</p>
+<blockquote>
+<p>有干扰物出现的情况</p>
+<p>For example, for the task of finding a “red apple”, we have both a red apple and a green apple in the room.</p>
+</blockquote>
+</li>
+<li><p>Spatial descriptions with distractors.</p>
+<blockquote>
+<p>有干扰物出现</p>
+</blockquote>
+</li>
+<li><p>Hidden object descriptions.</p>
+<blockquote>
+<p>An ideal object navigator should find objects, even when they are hidden. </p>
+<p>“{object} under/in {x}”. For example, “basketball in the dresser drawers” or “vase under the sofa”. We sample large objects (e.g., beds, sofas, dressers) in each scene to determine [under/in] relations. Additionally we remove visible instances of {object} from the room.</p>
+</blockquote>
+</li>
+<li><p>Hidden object descriptions with distractors.</p>
+<blockquote>
+<p>Consider finding a “mug under the bed”. A distractor mug will also appear in the scene making the task more challenging.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/VLN/" rel="tag"># VLN</a>
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/HomeRobot/" rel="tag"># HomeRobot</a>
+              <a href="/tags/Planning/" rel="tag"># Planning</a>
+              <a href="/tags/Object-Navigation/" rel="tag"># Object Navigation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/" rel="prev" title="USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory">
+      <i class="fa fa-chevron-left"></i> USA-Net: Uniﬁed Semantic and Affordance Representations for Robot Memory
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/08/20230808-Prior-Exploration/" rel="next" title="Prior Exploration">
+      Prior Exploration <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CLIP-on-Wheels-CoW"><span class="nav-number">1.</span> <span class="nav-text">CLIP on Wheels (CoW)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.1.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CLIP-on-Wheels-CoW-Baselines"><span class="nav-number">1.2.</span> <span class="nav-text">CLIP on Wheels (CoW) Baselines</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Depth-based-Mapping"><span class="nav-number">1.2.1.</span> <span class="nav-text">Depth-based Mapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Exploration"><span class="nav-number">1.2.2.</span> <span class="nav-text">Exploration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-Localization"><span class="nav-number">1.2.3.</span> <span class="nav-text">Object Localization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-PASTURE-Benchmark"><span class="nav-number">1.2.4.</span> <span class="nav-text">The PASTURE Benchmark</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
