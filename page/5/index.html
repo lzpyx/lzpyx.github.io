@@ -164,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/10/20230710-ETPNav-Evolving-Topological-Planning-for-Vision-Language-Navigation-in-Continuous-Environments/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/10/20230710-GeoVLN-Learning-Geometry-Enhanced-Visual-Representation-with-Slot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -178,7 +178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/10/20230710-ETPNav-Evolving-Topological-Planning-for-Vision-Language-Navigation-in-Continuous-Environments/" class="post-title-link" itemprop="url">ETPNav: Evolving Topological Planning for Vision-Language Navigation in Continuous Environments</a>
+            <a href="/2023/07/10/20230710-GeoVLN-Learning-Geometry-Enhanced-Visual-Representation-with-Slot/" class="post-title-link" itemprop="url">GeoVLN: Learning Geometry-Enhanced Visual Representation with Slot Attention for Vision-and-Language Navigation</a>
         </h2>
 
         <div class="post-meta">
@@ -187,10 +187,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-10 00:00:00 / Modified: 21:36:04" itemprop="dateCreated datePublished" datetime="2023-07-10T00:00:00+08:00">2023-07-10</time>
+              <time title="Created: 2023-07-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-10T00:00:00+08:00">2023-07-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-12 11:00:19" itemprop="dateModified" datetime="2023-07-12T11:00:19+08:00">2023-07-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -212,11 +218,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="ETPNav"><a href="#ETPNav" class="headerlink" title="ETPNav"></a>ETPNav</h1><p>ETPNav: Evolving Topological Planning for Vision-Language Navigation in Continuous Environments</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/MarSaKi/ETPNav">github</a></p>
+          <h1 id="GeoVLN"><a href="#GeoVLN" class="headerlink" title="GeoVLN"></a>GeoVLN</h1><p>GeoVLN: Learning Geometry-Enhanced Visual Representation with Slot Attention for Vision-and-Language Navigation</p>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230712094534098.png" alt="image-20230712094534098" style="zoom:50%;" /></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>以往方法的缺陷：</p>
 <ul>
-<li>the capability to abstract environments and generate long-range navigation plans</li>
-<li>the ability of obstacle-avoiding control in continuous environments</li>
+<li>仅依赖于RGB图像，RGB图像只能提供非常有限的2D视觉线索并且缺乏几何信息</li>
+<li>独立地处理每个candidate view而不考虑局部空间上下文，导致不准确的决策</li>
+<li>自然语言包含高级语义特征，并且指令内的不同短语可以集中于各个方面的视觉信息，例如：纹理，几何。使用原生的注意机制构建跨模态表征会导致次优性能</li>
 </ul>
 
       

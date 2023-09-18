@@ -343,95 +343,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/08/20230808-Prior-Exploration/" class="post-title-link" itemprop="url">Prior Exploration</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-08-08 00:00:00 / Modified: 16:39:59" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation"><a href="#CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation" class="headerlink" title="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation"></a>CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation</h1><p>允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png" alt="image-20230808135101288" style="zoom:50%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135141881.png" alt="image-20230808135141881" style="zoom:50%;" /></p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><ul>
-<li><p>从探索阶段开始，agent构建环境的拓扑图，然后agent使用对环境的这种拓扑理解以及指令文本和当前观察来执行 VLN 任务。</p>
-</li>
-<li><p>为了执行 VLN 任务，作者从机器人社区中汲取灵感并使用模块化方法（modular approach）。具体来说，我们将本方法分为planning和control。</p>
-<ul>
-<li>在planning阶段，采取任何行动步骤之前，agent首先基于环境和导航指令生成一个<strong>可解释的</strong>global navigation plan。</li>
-<li>The robot then tries to follow the navigation plan using a repeating cycle of localization and control until it reaches the destination。</li>
-<li>使用分层控制器首先预测waypoint subgoals</li>
-<li>然后将waypoints转换为低级动作，例如 FORWARD(0.25m) 或 ROTATE(15°)</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/08/20230808-Prior-Exploration/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-CoWs-on-PASTURE-Baselines-and-Benchmarks-for-Language-Driven-Zero-Shot-Object-Navigation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -590,6 +501,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/08/20230808-Prior-Exploration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/20230808-Prior-Exploration/" class="post-title-link" itemprop="url">Prior Exploration</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 16:39:59" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation"><a href="#CVPR2021-Topological-Planning-with-Transformers-for-Vision-and-Language-Navigation" class="headerlink" title="CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation"></a>CVPR2021 Topological Planning with Transformers for Vision-and-Language Navigation</h1><p>允许目标（agent）在执行 VLN 任务之前使用探索轨迹（图 2）探索环境。 这模仿了更接近现实世界的设置，在这些设置中，agent必须自己建立对室内环境的理解，而不是被交给预定义的地图。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135101288.png" alt="image-20230808135101288" style="zoom:50%;" /></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230808135141881.png" alt="image-20230808135141881" style="zoom:50%;" /></p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><ul>
+<li><p>从探索阶段开始，agent构建环境的拓扑图，然后agent使用对环境的这种拓扑理解以及指令文本和当前观察来执行 VLN 任务。</p>
+</li>
+<li><p>为了执行 VLN 任务，作者从机器人社区中汲取灵感并使用模块化方法（modular approach）。具体来说，我们将本方法分为planning和control。</p>
+<ul>
+<li>在planning阶段，采取任何行动步骤之前，agent首先基于环境和导航指令生成一个<strong>可解释的</strong>global navigation plan。</li>
+<li>The robot then tries to follow the navigation plan using a repeating cycle of localization and control until it reaches the destination。</li>
+<li>使用分层控制器首先预测waypoint subgoals</li>
+<li>然后将waypoints转换为低级动作，例如 FORWARD(0.25m) 或 ROTATE(15°)</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/20230808-Prior-Exploration/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230729-USA-Net-Uni%EF%AC%81ed-Semantic-and-Affordance-Representations-for-Robot-Memory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -670,83 +670,6 @@
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/" class="post-title-link" itemprop="url">Scaling Data Generation in Vision-and-Language Navigation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-08-07 00:00:00 / Modified: 15:52:46" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ScaleVLN"><a href="#ScaleVLN" class="headerlink" title="ScaleVLN"></a>ScaleVLN</h1><p>Scaling Data Generation in Vision-and-Language Navigation</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807150345976.png" alt="image-20230807150345976" style="zoom:50%;" /></p>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Pre-exploration</p>
-<p>[26] Counterfactual vision-and-language navigation via adversarial path sampler. In European Conference on Computer Vision, pages 71–86. Springer, 2020. 2</p>
-<p>[72] Learning to navigate unseen environments: Back translation with environmental dropout</p>
-<p>[90] Vision-language navigation with self-supervised auxiliary reasoning tasks.</p>
-<p>VLN cotinuous environments(R2R-CE)</p>
-<p>[5] 1st place solutions for rxr-habitat vision-and-language navigation competition (cvpr 2022)</p>
-<p>[30] Bridging the gap between learning in discrete and continuous environments for vision-and-language navigation</p>
-<p>[40] Simple and effective synthesis of indoor 3d scenes. arXiv preprint arXiv:2204.02960, 2022. 2</p>
-<h2 id="Scaling-Data-for-Learning-VLN"><a href="#Scaling-Data-for-Learning-VLN" class="headerlink" title="Scaling Data for Learning VLN"></a>Scaling Data for Learning VLN</h2>
       
     </div>
 
@@ -861,6 +784,83 @@
             </div>
           <!--/noindex-->
         
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/07/20230807-Scaling-Data-Generation-in-Vision-and-Language-Navigation/" class="post-title-link" itemprop="url">Scaling Data Generation in Vision-and-Language Navigation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-07 00:00:00 / Modified: 15:52:46" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ScaleVLN"><a href="#ScaleVLN" class="headerlink" title="ScaleVLN"></a>ScaleVLN</h1><p>Scaling Data Generation in Vision-and-Language Navigation</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807150345976.png" alt="image-20230807150345976" style="zoom:50%;" /></p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><p>Pre-exploration</p>
+<p>[26] Counterfactual vision-and-language navigation via adversarial path sampler. In European Conference on Computer Vision, pages 71–86. Springer, 2020. 2</p>
+<p>[72] Learning to navigate unseen environments: Back translation with environmental dropout</p>
+<p>[90] Vision-language navigation with self-supervised auxiliary reasoning tasks.</p>
+<p>VLN cotinuous environments(R2R-CE)</p>
+<p>[5] 1st place solutions for rxr-habitat vision-and-language navigation competition (cvpr 2022)</p>
+<p>[30] Bridging the gap between learning in discrete and continuous environments for vision-and-language navigation</p>
+<p>[40] Simple and effective synthesis of indoor 3d scenes. arXiv preprint arXiv:2204.02960, 2022. 2</p>
+<h2 id="Scaling-Data-for-Learning-VLN"><a href="#Scaling-Data-for-Learning-VLN" class="headerlink" title="Scaling Data for Learning VLN"></a>Scaling Data for Learning VLN</h2>
       
     </div>
 
@@ -1047,7 +1047,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1061,7 +1061,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/" class="post-title-link" itemprop="url">CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</a>
+            <a href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/" class="post-title-link" itemprop="url">ConceptFusion: Open-set Multimodal 3D Mapping</a>
         </h2>
 
         <div class="post-meta">
@@ -1078,7 +1078,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-31 10:41:06" itemprop="dateModified" datetime="2023-07-31T10:41:06+08:00">2023-07-31</time>
+                <time title="Modified: 2023-07-31 10:38:27" itemprop="dateModified" datetime="2023-07-31T10:38:27+08:00">2023-07-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1101,18 +1101,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="CLIP-Fields"><a href="#CLIP-Fields" class="headerlink" title="CLIP-Fields"></a>CLIP-Fields</h1><p>CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</p>
-<p><a target="_blank" rel="noopener" href="https://mahis.life/clip-fields">project</a></p>
+          <h1 id="ConceptFusion"><a href="#ConceptFusion" class="headerlink" title="ConceptFusion"></a>ConceptFusion</h1><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230729091938067.png" alt="image-20230729091938067"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>建立环境的3D map是许多机器人任务的核心，大部分方法建图时都受限于：</p>
 <ul>
-<li>CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization</li>
-<li>使用CLIP, Detic, and Sentence-BERT来提供弱监督来建立semantic neural fields，不需要直接的人工标注监督</li>
-<li>更好的few-shot性能</li>
-<li>使用CLIP-Fields作为scene memory可以使机器人在真实世界实现语义导航 </li>
+<li>Closed-set setting，仅能处理训练时预定好的类别</li>
+<li><p>只能由class name或text prompt进行查询（单模态）</p>
+<p>ConceptFusion的三个贡献：</p>
+</li>
+<li><p>open-set multimodal 3D mapping that constructs map representations queryable by text, image, audio, and click queries in a zero-shot manner</p>
+</li>
+<li>A novel mechanism to compute pixel-aligned (local) features from foundation models that can only generate image-level (global) feature vectors</li>
+<li>A new RGB-D dataset, UnCoCo, to evaluate open-set multimodal 3D mapping. UnCoCo comprises 78 common household/office objects tagged with more than 500K queries across modalities</li>
 </ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png" alt="image-20230730211119025" style="zoom:67%;" /></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/#more" rel="contents">
+              <a class="btn" href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

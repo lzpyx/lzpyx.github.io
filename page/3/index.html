@@ -164,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -178,7 +178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/" class="post-title-link" itemprop="url">ConceptFusion: Open-set Multimodal 3D Mapping</a>
+            <a href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/" class="post-title-link" itemprop="url">CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</a>
         </h2>
 
         <div class="post-meta">
@@ -195,7 +195,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-07-31 10:38:27" itemprop="dateModified" datetime="2023-07-31T10:38:27+08:00">2023-07-31</time>
+                <time title="Modified: 2023-07-31 10:41:06" itemprop="dateModified" datetime="2023-07-31T10:41:06+08:00">2023-07-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,21 +218,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="ConceptFusion"><a href="#ConceptFusion" class="headerlink" title="ConceptFusion"></a>ConceptFusion</h1><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230729091938067.png" alt="image-20230729091938067"></p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>建立环境的3D map是许多机器人任务的核心，大部分方法建图时都受限于：</p>
+          <h1 id="CLIP-Fields"><a href="#CLIP-Fields" class="headerlink" title="CLIP-Fields"></a>CLIP-Fields</h1><p>CLIP-Fields: Weakly Supervised Semantic Fields for Robotic Memory</p>
+<p><a target="_blank" rel="noopener" href="https://mahis.life/clip-fields">project</a></p>
 <ul>
-<li>Closed-set setting，仅能处理训练时预定好的类别</li>
-<li><p>只能由class name或text prompt进行查询（单模态）</p>
-<p>ConceptFusion的三个贡献：</p>
-</li>
-<li><p>open-set multimodal 3D mapping that constructs map representations queryable by text, image, audio, and click queries in a zero-shot manner</p>
-</li>
-<li>A novel mechanism to compute pixel-aligned (local) features from foundation models that can only generate image-level (global) feature vectors</li>
-<li>A new RGB-D dataset, UnCoCo, to evaluate open-set multimodal 3D mapping. UnCoCo comprises 78 common household/office objects tagged with more than 500K queries across modalities</li>
+<li>CLIP-Fields提出了隐式的场景表示，可以用于segmentation, instance identification, semantic search over space, and view localization</li>
+<li>使用CLIP, Detic, and Sentence-BERT来提供弱监督来建立semantic neural fields，不需要直接的人工标注监督</li>
+<li>更好的few-shot性能</li>
+<li>使用CLIP-Fields作为scene memory可以使机器人在真实世界实现语义导航 </li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230730211119025.png" alt="image-20230730211119025" style="zoom:67%;" /></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/07/29/20230729-ConceptFusion-Open-set-Multimodal-3D-Mapping/#more" rel="contents">
+              <a class="btn" href="/2023/07/29/20230729-CLIP-Fields-Weakly-Supervised-Semantic-Fields-for-Robotic-Memory/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -800,10 +797,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-22 00:00:00 / Modified: 22:41:21" itemprop="dateCreated datePublished" datetime="2023-07-22T00:00:00+08:00">2023-07-22</time>
+              <time title="Created: 2023-07-22 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-22T00:00:00+08:00">2023-07-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-24 11:33:43" itemprop="dateModified" datetime="2023-07-24T11:33:43+08:00">2023-07-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
