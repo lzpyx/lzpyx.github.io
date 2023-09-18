@@ -36,7 +36,7 @@
 <meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230709215214049.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709220028012.png">
 <meta property="article:published_time" content="2023-07-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-09T14:09:21.616Z">
+<meta property="article:modified_time" content="2023-08-30T11:13:47.461Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Embodied AI">
 <meta property="article:tag" content="Large Language Models">
@@ -204,10 +204,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-07-09 00:00:00 / Modified: 22:09:21" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
+              <time title="Created: 2023-07-09 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-09T00:00:00+08:00">2023-07-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-30 19:13:47" itemprop="dateModified" datetime="2023-08-30T19:13:47+08:00">2023-08-30</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -231,10 +237,17 @@
       
         <h1 id="TaPA"><a href="#TaPA" class="headerlink" title="TaPA"></a>TaPA</h1><p>Embodied Task Planning with Large Language Models</p>
 <p>基于LLMs的具身任务规划</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但LLMs无法感知周围环境，缺乏真实世界的信息，常常会产生无法执行的action sequences。</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>受限于数据样本和多样的下游应用，直接在不同的应用环境训练同一个agent是不现实的。LLMs可以在复杂任务的plan generation中为agent提供丰富的语义知识，但<strong>LLMs无法感知周围环境，缺乏真实世界的信息</strong>，常常会产生无法执行的action sequences。</p>
 <blockquote>
 <p>本文中关注的“不可执行的action”主要指LLMs给出的action提及了不存在的物体，比如人类指令是”Give me some wine”，GPT-3.5产生的action steps为”pouring wine from the bottle to the glass”，但实际的场景中可能并没有”glass”，只有”mug”, 实际上可以执行的指令是”pouring wine from the bottle to the mug”</p>
 </blockquote>
+<ul>
+<li>construct a multimodal dataset containing <strong>triplets of indoor scenes, instructions and action plans</strong><ul>
+<li>designed prompts+the list of existing objects in the scene输入到GPT3.5，得到instructions和对应的action plans</li>
+</ul>
+</li>
+<li>The generated data is leveraged for grounded plan tuning of pre-trained LLMs</li>
+</ul>
 <h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><blockquote>
 <p>从周围环境接收信息</p>
 </blockquote>
@@ -280,6 +293,11 @@
 <p>在生成指令时使用了对应场景所有实例的ground truth label</p>
 </blockquote>
 <p>以下是prompt示例</p>
+<ul>
+<li>the definition of embodied task planning</li>
+<li>the requirements</li>
+<li>several examples of generated instructions and corresponding action plans</li>
+</ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230709183606222.png" alt="image-20230709183606222" style="zoom:67%;" /></p>
 <p>实际进行规划时，agent只能获取视觉场景中的所有可交互物体，并没有GT object list。因此作者构建了一个多模态数据集，用三元组表示一组数据(visual scenes, instructions, the corresponding plans), 在task planner的训练阶段，直接使用gt object list来避免不准确的视觉感知对训练带来的影响，在task planner的推理阶段，则使用open-vocabulary object detector来预测场景中存在的object list作为task planner的输入。</p>
 <ul>
@@ -436,7 +454,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -449,7 +467,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

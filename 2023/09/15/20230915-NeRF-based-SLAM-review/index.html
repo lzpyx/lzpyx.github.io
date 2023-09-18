@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="IntroductionNeRF  NeRF (Neural  Radiance Fields: Representing Secenes as Neural Radiance Fields for View Synthesis)，把场景表达为神经辐射场的形式，来做新视角合成。它本质上是两个简单的全连接的MLP，用来拟合空间位置和视角方向，到该点体密度和RGB值的映射。具体过程如图所示。第一个网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NeRF-based SLAM: review">
+<meta property="og:url" content="http://lzpyx.github.io/2023/09/15/20230915-NeRF-based-SLAM-review/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="IntroductionNeRF  NeRF (Neural  Radiance Fields: Representing Secenes as Neural Radiance Fields for View Synthesis)，把场景表达为神经辐射场的形式，来做新视角合成。它本质上是两个简单的全连接的MLP，用来拟合空间位置和视角方向，到该点体密度和RGB值的映射。具体过程如图所示。第一个网络">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915102835546.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915103344731.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915103751971.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915110026477.png">
+<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230915111210600.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915111302808.png">
+<meta property="article:published_time" content="2023-09-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-18T09:48:44.059Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Embodied AI">
+<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="3D Scene Understanding">
+<meta property="article:tag" content="3D Reconsturction">
+<meta property="article:tag" content="NeRF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915102835546.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/09/15/20230915-NeRF-based-SLAM-review/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>NeRF-based SLAM: review | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/15/20230915-NeRF-based-SLAM-review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NeRF-based SLAM: review
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-15 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-15T00:00:00+08:00">2023-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-18 17:48:44" itemprop="dateModified" datetime="2023-09-18T17:48:44+08:00">2023-09-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><h2 id="NeRF"><a href="#NeRF" class="headerlink" title="NeRF"></a>NeRF</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915102835546.png" alt="image-20230915102835546" style="zoom: 50%;" /></p>
+<ul>
+<li>NeRF (Neural  Radiance Fields: Representing Secenes as Neural Radiance Fields for View Synthesis)，把场景表达为神经辐射场的形式，来做新视角合成。它本质上是两个简单的全连接的MLP，用来<strong>拟合空间位置和视角方向，到该点体密度和RGB值的映射</strong>。具体过程如图所示。第一个网络$f_\sigma$输入空间位置$x$，输出这一空间位置的体密度$\sigma$，同时还输出一个特征向量$e$。用第二个网络$f_c$估计RGB值，这个RGB值是和视角相关的，因为材质、光照、反射等等条件的影响，同一个位置的颜色会根据观察角度的不同而变化。把视角$d$和体密度网络$f_\sigma$输出的特征向量$e$一起输入网络$f_c$，得到RGB。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915103344731.png" alt="image-20230915103344731"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915103751971.png" alt="image-20230915103751971" style="zoom: 33%;" /></p>
+<ul>
+<li><p>体渲染（volume rendering）: 在渲染一张图像的时候，从相机光心生成采样射线，射线上取采样点，使用MLP计算体密度σ和RGB，用一个可微的渲染公式把所有采样值求和获得一个像素值。像素值和ground truth求loss，优化MLP的参数。</p>
+</li>
+<li><p>体渲染公式：模拟光线在真实世界中的传播。体密度类似于不透明度，实际上不透明度是公式第二行的alpha。对于传统的点云或者TSDF类似的表达是存在遮挡现象的，也就是我们知道一个像素或者一个空间点的RGB值，但不知道沿着视线方向这个点背后的情况，所以模型或者地图往往会有空洞，没法做新视角合成。而NeRF能够通过预测不透明度或者说体密度获得整条射线上所有采样点的情况，并且进行训练优化，让那些被遮挡的地方也能学到正确的体密度和RGB值，从而完成新视角合成。</p>
+</li>
+<li><p>NeRF的优缺点：</p>
+<ul>
+<li>优点是<strong>连续的场景表达</strong>，照片级的新视角合成，可编辑。因为我们<strong>输入网络的位置xyz可以不受分辨率限制，可以是任意值</strong>，就看NeRF学的细不细致了，所以是连续的场景表达。为了学到高频的细节NeRF还对位置和方向进行正弦编码，让<strong>比较靠近的位置之间有着差别很大的编码</strong>。</li>
+<li>NeRF的缺点包括训练数据需求大，模型无法泛化，地图难以扩展，训练慢，渲染慢。对于一个物体的模型往往需要上百张图片训练一两天的时间，渲染一张图片也得几十秒，而且换个模型就得重新训练，因为最终获得的模型其实是MLP里面的参数，换个场景就得换个MLP。也正因为是一个MLP，所以很难去扩展地图。MLP的拟合能力终究有限，给它一系列的场景图片去训练，它往往更倾向于记住后续到来的数据，这也被称作遗忘问题。</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+<h2 id="SLAM"><a href="#SLAM" class="headerlink" title="SLAM"></a>SLAM</h2><p>simultaneous localization and mapping，同步定位与建图</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915110026477.png" alt="image-20230915110026477" style="zoom:67%;" /></p>
+<ul>
+<li>追踪 tracking（前端）：从输入的图片或者深度数据中估计相机位姿，进而计算相机运动，从中抽取关键帧</li>
+<li>建图 mapping（后端）：从关键帧里构建地图，一般是根据特征点构建点云地图</li>
+<li>优化 optimization：局部或者全局的相机位姿和地图优化</li>
+<li>回环 loop closing：传感器的值或者位姿计算会在长时间的运行过程中产生漂移，回环模块检测到相机运行到了之前经过的地方的时候，会对这个漂移误差进行矫正</li>
+<li>定位 location：当前端tracking追丢了的时候能保证重新获知相机位姿</li>
+</ul>
+<h2 id="NeRF与SLAM的结合"><a href="#NeRF与SLAM的结合" class="headerlink" title="NeRF与SLAM的结合"></a>NeRF与SLAM的结合</h2><p>NeRF对SLAM带来的改进最直观的，是后端的建图部分。</p>
+<p>NeRF地图的优势在于：</p>
+<ul>
+<li>能够填补地图的空洞，NeRF通过射线采样和体密度，能让地图学到被遮挡的点后面的东西，从而实现空洞填补、新视角合成</li>
+<li>新视角合成可以用来预测相机运动。比如，相机在运动过程中捕获了一帧图像，现在需要根据这帧图像去计算相机位姿，可以先用各种运动模型，比如说恒速模型，估计一个粗糙位姿，根据这个位姿用NeRF渲染出一张图来，图里面包含了之前没见过但是在新的这一帧里有的内容，然后把渲染图和真实图求一个Loss，来同时优化相机位姿和局部地图。事实上这个就是iMAP和Nice-SLAM的相机追踪原理。</li>
+<li>除此之外，NeRF还有场景编辑功能，这对于VR、AR应用来说是很友好的，这也是NeRF的落地方向之一。NeRF based SLAM可以不用先建立点云，再生成mesh，再贴图等等步骤，直接一步到位，端到端地生成AR或者VR直接可用的地图。</li>
+</ul>
+<blockquote>
+<p>填补空洞(iMAP)</p>
+</blockquote>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230915111210600.png" alt="image-20230915111210600" style="zoom: 33%;" /></p>
+<blockquote>
+<p>NeRF-SLAM</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230915111302808.png" alt="image-20230915111302808"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Embodied-AI/" rel="tag"># Embodied AI</a>
+              <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+              <a href="/tags/3D-Scene-Understanding/" rel="tag"># 3D Scene Understanding</a>
+              <a href="/tags/3D-Reconsturction/" rel="tag"># 3D Reconsturction</a>
+              <a href="/tags/NeRF/" rel="tag"># NeRF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/14/20230914-Towards%20Label-free%20Scene%20Understanding%20by%20Vision/" rel="prev" title="Towards Label-free Scene Understanding by Vision Foundation Models">
+      <i class="fa fa-chevron-left"></i> Towards Label-free Scene Understanding by Vision Foundation Models
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/09/17/20230917-%E4%B8%89%E7%BB%B4%E5%9C%BA%E6%99%AF%E7%82%B9%E4%BA%91%E7%90%86%E8%A7%A3%E4%B8%8E%E9%87%8D%E5%BB%BA/" rel="next" title="三维场景点云理解与重建">
+      三维场景点云理解与重建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NeRF"><span class="nav-number">1.1.</span> <span class="nav-text">NeRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SLAM"><span class="nav-number">1.2.</span> <span class="nav-text">SLAM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NeRF%E4%B8%8ESLAM%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">NeRF与SLAM的结合</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

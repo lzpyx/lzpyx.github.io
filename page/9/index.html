@@ -164,6 +164,696 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/" class="post-title-link" itemprop="url">R-CNN系列目标检测算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-25 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-25T00:00:00+08:00">2022-10-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-11-12 10:02:58" itemprop="dateModified" datetime="2022-11-12T10:02:58+08:00">2022-11-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2014-R-CNN"><a href="#CVPR2014-R-CNN" class="headerlink" title="CVPR2014 R-CNN"></a>CVPR2014 R-CNN</h1><p>Rich feature hierarchies for accurate object detection and semantic segmentation</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210081555543.png" alt="image-20221008155509842" style="zoom: 50%;" /></p>
+<p>首先模型输入为一张图片，然后在图片上提出了约2000个region proposal</p>
+<blockquote>
+<p>在提取region proposal时，R-CNN采用了selective search。selective search的核心是一个SVM，首先将图像分割为若干块，然后利用SVM将属于同一对象的块合并在一起。</p>
+</blockquote>
+<p>然后通过卷积神经网络逐个提取region proposal的特征,对于每一个region proposal都会得到一个4096维的特征向量</p>
+<blockquote>
+<p>R-CNN直接使用了AlexNet，在ImageNet上进行分类训练</p>
+</blockquote>
+<p>然后这些被提取的特征通过支持向量机(SVM)进行分类(每个类别一个SVM)，得到物体的类别，并通过一个bounding box regression调整目标包围框的大小。</p>
+<blockquote>
+<p>实际包含两个子步骤，一是对特征向量进行<strong>分类</strong>（需要根据特征训练分类器）；二是通过<strong>边界回归</strong>（bounding-box regression) 得到精确的目标区域，受 DPM 的启发，作者训练了一个线性的回归模型，这个模型能够针对候选区域的 pool5 数据预测一个新的 box 位置。</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/" class="post-title-link" itemprop="url">TPAMI2022 WSSS/WSIS综述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-10-08T00:00:00+08:00">2022-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-10-16 09:16:25" itemprop="dateModified" datetime="2022-10-16T09:16:25+08:00">2022-10-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TPAMI2022-WSSS-WSIS综述"><a href="#TPAMI2022-WSSS-WSIS综述" class="headerlink" title="TPAMI2022 WSSS/WSIS综述"></a>TPAMI2022 WSSS/WSIS综述</h1><p>A Survey on Label-efﬁcient Deep Segmentation: Bridging the Gap between Weak Supervision and Dense Prediction</p>
+<p>语义分割 semantic segmentation</p>
+<p>实例分割 instance segmentation </p>
+<p>全景分割 panoptic segmentation</p>
+<p><strong>bridging the gap between weak supervision and dense prediction</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/08/TPAMI2022%20WSSS-WSIS%E7%BB%BC%E8%BF%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/09/19/CVPR2017%20OICR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/19/CVPR2017%20OICR/" class="post-title-link" itemprop="url">CVPR2017 OICR</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-19 00:00:00 / Modified: 13:45:57" itemprop="dateCreated datePublished" datetime="2022-09-19T00:00:00+08:00">2022-09-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2017-OICR"><a href="#CVPR2017-OICR" class="headerlink" title="CVPR2017 OICR"></a>CVPR2017 OICR</h1><p>Multiple Instance Detection Network with Online Instance Classifier Refinement</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>WSDDN存在的问题：</p>
+<p>最终图像分类分数是proposals分数的加权和。深度网络即使只“看到”对象的一部分也可以正确分类图像，因此排名靠前的proposals可能无法满足标准的对象检测要求（ground truth 和预测框之间的 IoU&gt;0.5）</p>
+<ul>
+<li>对于类内差别大的物体（如人、猫等），proposal得分高的往往是仅包含数据集中图片中物体相对变化较小的部分（如脸部），往往只是对象的一个局部区域，所以检测器更倾向于聚焦在物体的局部区域</li>
+<li>如果同个类别有多个物体，其中一个物体特别显著，就会导致这个物体的proposal得分相对其他的同类别物体的proposal得分造成碾压，这样就会丢失其他物体。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209161447654.png" style="zoom: 67%;" /></p>
+<p>Motivation：目标检测器可能仅捕获到了对象的一部分，但与检测到的部分高度空间重叠的proposals可能会覆盖整个对象，或者至少包含对象的较大部分。</p>
+<blockquote>
+<p> Our motivation is that, though some detectors only capture objects partially, proposals having high spatial overlaps with detected parts may cover the whole object, or at least contain larger portion of the object.</p>
+</blockquote>
+<p>作者提到需要解决的两个问题：</p>
+<ul>
+<li>如何初始化实例标签</li>
+<li>如何有效地训练instance classifier实例分类器</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209161543167.png" alt="image-20220916154316891"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/19/CVPR2017%20OICR/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/09/15/CVPR2016%20WSDDN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/15/CVPR2016%20WSDDN/" class="post-title-link" itemprop="url">CVPR2016 WSDDN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-09-15 00:00:00 / Modified: 15:38:42" itemprop="dateCreated datePublished" datetime="2022-09-15T00:00:00+08:00">2022-09-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2016-WSDDN"><a href="#CVPR2016-WSDDN" class="headerlink" title="CVPR2016 WSDDN"></a>CVPR2016 WSDDN</h1><p>Weakly Supervised Deep Detection Networks</p>
+<h2 id="Background-amp-Motivation"><a href="#Background-amp-Motivation" class="headerlink" title="Background&amp;Motivation"></a>Background&amp;Motivation</h2><p>MIL交替执行对象外观学习和区域选取</p>
+<p>MIL 策略导致非凸优化问题：在实践中，求解器往往会陷入局部最优解，因此解的质量很大程度上取决于初始化。</p>
+<p>WSDDN提出了一个端到端的WSOD方法，同时执行区域选择和分类，将CNN与MIL结合</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202209132101056.png" alt="image-20220913210126800"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/15/CVPR2016%20WSDDN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/06/08/Splashtop%20Wired%20XDisplay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/08/Splashtop%20Wired%20XDisplay/" class="post-title-link" itemprop="url">环境搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-06-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-06-08T00:00:00+08:00">2022-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-12-08 11:56:17" itemprop="dateModified" datetime="2022-12-08T11:56:17+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ipad作为扩展屏</p>
+<p>记得下载itunes在windows上</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52906701/article/details/123000463">Splashtop Wired XDisplay只能复制不能扩展</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/21/BMVC2021%20LOST/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/21/BMVC2021%20LOST/" class="post-title-link" itemprop="url">BMVC2021 LOST</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-21 00:00:00 / Modified: 22:08:52" itemprop="dateCreated datePublished" datetime="2022-05-21T00:00:00+08:00">2022-05-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BMVC2021-LOST"><a href="#BMVC2021-LOST" class="headerlink" title="BMVC2021 LOST"></a>BMVC2021 LOST</h1><p><a target="_blank" rel="noopener" href="https://github.com/valeoai/LOST">github</a></p>
+<p>LOST在无监督单目标发现（左），多目标发现（中），目标检测（右）中的应用，在目标检测应用中，LOST发现的对象将被聚类到类别中，然后使用据类标签来训练经典的对象检测器</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220521111109107.png" alt="image-20220521111109107"></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>通常使用区域建议作为输入，无监督对象发现利用来自整个图像集合的信息并探索图像间相似性以无监督方式定位对象</p>
+<p>Our localization method stays at the level of a single image, rather than exploring inter-image similarity, which makes it linear w.r.t. the number of images and thus highly scalable.</p>
+<p>我们的定位方法停留在单个图像的级别，而不是探索图像间的相似性，这使其成为线性 w.r.t。图像的数量，因此具有高度可扩展性。依赖于自监督transformer的强大功能，并且只考虑图像内的相似性，本方法可以用很少的计算在单个图像中定位对象。</p>
+<p>主要工作：</p>
+<ul>
+<li>利用自监督预训练transformer提取特征，使用图像中补丁的相关性提出一种对于一张图片的单目标定位方法，这一方法关于数据集大小具有线性复杂度。</li>
+<li>利用它来训练与类无关和类感知的无监督对象检测器，能够准确地定位每个图像的多个对象，并且在类感知的情况下，将它们分组到语义一致的类中</li>
+<li>在无监督对象发现方面以显着优势超越了最先进的技术</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/21/BMVC2021%20LOST/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/19/TPAMI2021%20A2GNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/19/TPAMI2021%20A2GNN/" class="post-title-link" itemprop="url">TPAMI2021 A2GNN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-19T00:00:00+08:00">2022-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-20 21:00:21" itemprop="dateModified" datetime="2022-05-20T21:00:21+08:00">2022-05-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TPAMI2021-Affinity-Attention-Graph-Neural-Network"><a href="#TPAMI2021-Affinity-Attention-Graph-Neural-Network" class="headerlink" title="TPAMI2021 Affinity Attention Graph Neural Network"></a>TPAMI2021 Affinity Attention Graph Neural Network</h1><p>Affinity Attention Graph Neural Network for Weakly Supervised Semantic  Segmentation 亲和力与图卷积神经网络的结合</p>
+<p>将弱监督转换为semi-supervised（部分点是有标注的）</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>图神经网络GNN可以可以直接在不同节点之间建立长距离关系（边），聚合多个连接节点的信息，从而抑制标签噪声的负面影响，在标签有限的半监督任务中GNN也表现良好。</p>
+<p>GraphNet的缺点：</p>
+<ul>
+<li>GraphNet通过阈值构建了一个未加权的邻接图（邻接矩阵A）作为输入，会丢失一些信息，这样的图不能准确地提供足够的信息，因为它平等地对待所有边，边权重为 0 或  1，尽管实际上并非所有连接的节点都期望相同的亲和力。(邻接图中所有的边都是0或1，并不能很好的体现亲和力)</li>
+<li>GraphNet仅使用初始的标签节点进行训练，这使得当输入的初始节点特征不准确时，会导致不正确的特征聚合，只使用交叉熵损失，不能减轻不正确的节点、边和标签的影响。</li>
+</ul>
+<p>作者设计了一个 Affinity Attention Graph Neural Network (A2GNN) 来解决上述问题。具体来说，作者提出了一种新的亲和力CNN来将图像转换为加权图，而不是使用传统方法来构建未加权图。加权图比未加权图更合适，因为它可以为不同的节点对提供不同的亲和力。之前的方法如GraphNet只考虑局部连接的节点，构建了一个基于超像素的未加权图，而本文同时考虑了局部和长距离边，构建的加权图将一个像素视为一个节点。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518201510961.png" alt="image-20220518201510961"></p>
+<p>特点：</p>
+<ul>
+<li>soft edge</li>
+<li>pixel as node</li>
+<li>local and long distance</li>
+</ul>
+<p>为了产生准确的伪标签，作者设计了一个新的 GNN 层，其中应用了注意力机制和边缘权重，以确保准确的传播。因此，具有弱/无边缘连接或低注意力的成对节点之间的特征聚合可以显着下降，从而相应地消除不正确的传播。随着训练的进行，节点注意力会动态变化。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/19/TPAMI2021%20A2GNN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/18/MM2018%20Graphnet/" class="post-title-link" itemprop="url">MM2018 Graphnet</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-05-18 00:00:00 / Modified: 20:00:49" itemprop="dateCreated datePublished" datetime="2022-05-18T00:00:00+08:00">2022-05-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MM2018-Graphnet"><a href="#MM2018-Graphnet" class="headerlink" title="MM2018 Graphnet"></a>MM2018 Graphnet</h1><p>Graphnet: Learning image pseudo annotations for weakly-supervised semantic segmentation</p>
+<p>通过考虑图像 CNN 特征和图像空间分区之间的双重约束来构建图像上的图。这样的图不仅结合了图像低级局部相关线索和高级语义内容，而且表征了原始图像的自然结构化表示。GraphNet 将类别信息从标记像素传播到未标记像素。</p>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li>WSSS</li>
+<li>GCN</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518171553332.png" alt="image-20220518171553332"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/18/MM2018%20Graphnet/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/15/AAAI2020%20RRM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -331,708 +1021,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">深度学习常用操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-18 13:20:35" itemprop="dateModified" datetime="2023-06-18T13:20:35+08:00">2023-06-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="深度学习常用操作"><a href="#深度学习常用操作" class="headerlink" title="深度学习常用操作"></a>深度学习常用操作</h1><h1 id="tools"><a href="#tools" class="headerlink" title="tools"></a>tools</h1><h2 id="with-open"><a href="#with-open" class="headerlink" title="with open"></a>with open</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;filename.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">   content = f.read(f)  <span class="comment">#文件的读操作</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">   f.write(<span class="string">&#x27;hello world&#x27;</span>)  <span class="comment">#文件的写操作</span></span><br><span class="line">r:	 <span class="comment"># 以只读方式打开文件。文件的指针将会放在文件的开头。这是**默认模式**。</span></span><br><span class="line">rb:  <span class="comment"># 以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。</span></span><br><span class="line">r+:  <span class="comment"># 打开一个文件用于读写。文件指针将会放在文件的开头。</span></span><br><span class="line">rb+: <span class="comment"># 以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</span></span><br><span class="line">w:	 <span class="comment"># 打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">wb:	 <span class="comment"># 以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">w+:	 <span class="comment"># 打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">wb+: <span class="comment"># 以二进制格式打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</span></span><br><span class="line">a:	 <span class="comment"># 打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</span></span><br><span class="line">ab:	 <span class="comment"># 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</span></span><br><span class="line">a+:	 <span class="comment"># 打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</span></span><br><span class="line">ab+: <span class="comment"># 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</span></span><br></pre></td></tr></table></figure>
-<h2 id="计时"><a href="#计时" class="headerlink" title="计时"></a>计时</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41204464/article/details/89257205">python 实现计时器（不同实现方式）</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">time_start = time.time() <span class="comment">#开始计时</span></span><br><span class="line"><span class="comment">#要执行的代码，或函数</span></span><br><span class="line">time_end = time.time()    <span class="comment">#结束计时</span></span><br><span class="line">time_c= time_end - time_start   <span class="comment">#运行所花时间</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;time cost&#x27;</span>, time_c, <span class="string">&#x27;s&#x27;</span>)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/12/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2018%20AffinityNet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/06/CVPR2018%20AffinityNet/" class="post-title-link" itemprop="url">CVPR2018 AffinityNet</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-06 00:00:00 / Modified: 14:13:24" itemprop="dateCreated datePublished" datetime="2022-05-06T00:00:00+08:00">2022-05-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2018-AffinityNet"><a href="#CVPR2018-AffinityNet" class="headerlink" title="CVPR2018 AffinityNet"></a>CVPR2018 AffinityNet</h1><p>Learning Pixel-level Semantic Affinity with Image-level Supervision for Weakly  Supervised Semantic Segmentation</p>
-<p>使用图像级监督学习像素级语义亲和度的弱监督语义分割</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/jiwoon-ahn/psa">github</a></p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>分割标签的不足是进行语义分割的主要障碍之一，在弱监督设定下，训练模型可以分割局部判别部分而不是整个对象区域，本文提出将响应传播到属于同一语义实体的附近区域。提出AffinityNet，预测一对相邻图像坐标之间的语义亲和力。然后通过随机游走将语义传播。</p>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>各类型的弱监督</li>
-<li>图像级标签的弱监督：一些方法将判别定位技术给出的分割种子与超像素等额外的线索结合，估计物体形状。</li>
-<li>学习像素级亲和力</li>
-<li>使用合成标签学习</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>整个框架基于三个DNN，第一个网络用于生成CAM，第二个网络用于预测亲和力即AffinityNet，第三个网络是全监督的分割模型，使用合成标签进行训练。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220506111027887.png" alt="image-20220506111027887"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/06/CVPR2018%20AffinityNet/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/06/CVPR2022%20AFA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/06/CVPR2022%20AFA/" class="post-title-link" itemprop="url">CVPR2022 Learning Affinity from Attention: End-to-End Weakly-Supervised Semantic Segmentation with Transformers</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-06T00:00:00+08:00">2022-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-09-13 15:26:39" itemprop="dateModified" datetime="2022-09-13T15:26:39+08:00">2022-09-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2022-从注意力中学习亲和力"><a href="#CVPR2022-从注意力中学习亲和力" class="headerlink" title="CVPR2022 从注意力中学习亲和力"></a>CVPR2022 从注意力中学习亲和力</h1><p>Learning Affinity from Attention: End-to-End Weakly-Supervised Semantic Segmentation with Transformers</p>
-<p>(从注意力中学习亲和力：使用 Transformers 的端到端弱监督语义分割)<br><a target="_blank" rel="noopener" href="https://github.com/rulixiang/afa">github</a></p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>WSSS目前的方法主要基于卷积神经网络，无法正确探索全局信息，因此通常会导致对象区域不完整。在本文中，为了解决上述问题引入了Transformer，它自然地整合了全局信息，为端到端的 WSSS 生成更完整的初始伪标签。受Transformers中的self-attention和语义亲和力之间的内在一致性的启发，作者提出了Affinity from  Attention (AFA)模块来从Transformers中的多头自注意力(MHSA)中学习语义亲和力。然后利用学习到的亲和力来细化初始伪标签以进行分割。此外，为了有效地导出可靠的亲和标签来监督  AFA 并确保伪标签的局部一致性local consistency，作者设计了一个像素自适应细化模块，该模块结合了低级图像外观信息来细化伪标签。</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>WSSS方法通常采用多阶段框架，也就是先训练一个分类模型，然后生成类激活图CAM作为伪标签。细化后，伪标签被用来训练一个独立的语义分割网络作为最终模型。</p>
-<p>多阶段训练流程复杂缓慢，不够高效。现有的一些端到端的解决方案基本是基于CNN的，CNN对全局特征的获取能力较差。</p>
-<p>首先使用Transformer生成CAM作为初始伪标签，以避免CNN的内在缺陷，由于  MHSA 中的语义亲和性很粗糙，作者提出Affinity from Attention (AFA) 模块，旨在导出可靠的伪亲和力标签来监督从Transformer中的 MHSA 学习的语义亲和性。然后使用学习到的亲和力通过随机游走传播来修改初始伪标签，这可以扩散对象区域并抑制错误激活的区域。为了使AFA 导出高度可信的伪亲和标签并确保传播的伪标签的局部一致性，我们进一步提出了一个像素自适应细化模块 (PAR)。PAR 有效地整合了局部像素的 RGB 和位置信息以细化伪标签，从而更好地与低级图像外观对齐。</p>
-<ul>
-<li>端到端WSSS</li>
-<li>AFA, Affinity from Attention </li>
-<li>PAR, 像素自适应细化模块</li>
-</ul>
-<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>WSSS<ul>
-<li>Multi-stage</li>
-<li>End-to-End</li>
-</ul>
-</li>
-<li>Transformer in Vision<ul>
-<li>第一个用于WSOL的方法 TS-CAM</li>
-</ul>
-</li>
-</ul>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>使用 Transformer 主干作为编码器来提取特征图。初始伪标签是用CAM生成的，然后用提出的 PAR 进行细化。在 AFA 模块中，我们从  Transformer 块中的 MHSA 导出语义亲和性。 AFA 使用源自精炼标签的伪亲和标签进行监督。接下来利用学习到的亲和力通过随机游走传播来修改伪标签。传播的标签最终用PAR作为分割分支的伪标签进行细化。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220506165237627.png" alt="image-20220506165237627"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/06/CVPR2022%20AFA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/" class="post-title-link" itemprop="url">CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-05-05 00:00:00 / Modified: 11:34:55" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2018-Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss"><a href="#CVPR2018-Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss" class="headerlink" title="CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss"></a>CVPR2018 Learning Superpixels with Segmentation-Aware Affinity Loss</h1><p>利用亲和力学习超像素 PAN SEAL</p>
-<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>超像素分割算法主要基于手工设计的特征，通常无法保留较弱的对象边界，本文利用深度神经网络从图像中提取超像素，提出了用于超像素分割的分割感知亲和学习方法。具体来说，提出了一种新的loss，将分割误差考虑在内进行亲和力学习。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220505105546794.png" alt="image-20220505105546794"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/05/CVPR2018%20Learning-Superpixels-with-Segmentation-Aware-Affinity-Loss/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">机器学习基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-03-07 23:39:13" itemprop="dateModified" datetime="2023-03-07T23:39:13+08:00">2023-03-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="贝叶斯公式"><a href="#贝叶斯公式" class="headerlink" title="贝叶斯公式"></a>贝叶斯公式</h1><p>$\mathrm{P}(\mathrm{A} \mid \mathrm{B})=\frac{\mathrm{P}(\mathrm{B} \mid \mathrm{A}) \mathrm{P}(\mathrm{A})}{\mathrm{P}(\mathrm{B})}$</p>
-<p>B按全概率公式展开</p>
-<p>$\mathrm{P}(\mathrm{A} \mid \mathrm{B})=\frac{\mathrm{P}(\mathrm{B} \mid \mathrm{A}) \mathrm{P}(\mathrm{A})}{\mathrm{P}(\mathrm{B} \mid \mathrm{A}) \mathrm{P}(\mathrm{A})+\mathrm{P}(\mathrm{B} \mid \bar{\mathrm{A}}) \mathrm{P}(\bar{\mathrm{A}})}$</p>
-<p>$\bar{\mathrm{A}}$代表非A</p>
-<h1 id="极大似然估计MLE"><a href="#极大似然估计MLE" class="headerlink" title="极大似然估计MLE"></a>极大似然估计MLE</h1><p>Maximum likelihood estimation</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26614750">https://zhuanlan.zhihu.com/p/26614750</a></p>
-<h1 id="最大后验概率估计MAP"><a href="#最大后验概率估计MAP" class="headerlink" title="最大后验概率估计MAP"></a>最大后验概率估计MAP</h1><p>Maximum a posteriori estimation</p>
-<h1 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h1><h2 id="特征归一化-Normalization"><a href="#特征归一化-Normalization" class="headerlink" title="特征归一化 Normalization"></a>特征归一化 Normalization</h2><p>目的是消除量纲影响，使不同指标之间具有可比性。</p>
-<p>常用方法：</p>
-<ul>
-<li>线性函数归一化Min-Max Scaling,将数据映射到0-1之间: $X_{norm} = \frac{X-X_{min}}{X_{max}-X_{min}}$</li>
-<li>零均值归一化 Z-Score Normalization,将原始数据映射到均值为0，标准差为1的分布上：$Z = \frac{x-\mu}{\sigma}$</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/05/OpenCV/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/05/OpenCV/" class="post-title-link" itemprop="url">OpenCV</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-05T00:00:00+08:00">2022-05-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-06-04 12:15:35" itemprop="dateModified" datetime="2022-06-04T12:15:35+08:00">2022-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>OpenCV常用操作</p>
-<h1 id="OpenCV"><a href="#OpenCV" class="headerlink" title="OpenCV"></a>OpenCV</h1><p>cv的输入数据类型不能是tensor，需要转换为ndarray</p>
-<h2 id="cv2-resize"><a href="#cv2-resize" class="headerlink" title="cv2.resize()"></a>cv2.resize()</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/jningwei/article/details/78822026">参考</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 变为14*14*1的ndarray, 因为cv.resize不能处理tensor</span></span><br><span class="line">cam_map_ = cam_map_.detach().cpu().numpy().transpose(<span class="number">1</span>, <span class="number">2</span>, <span class="number">0</span>)  </span><br><span class="line"><span class="comment"># Resize and Normalize CAM</span></span><br><span class="line">cam_map_ = resize_cam(cam_map_, size=(crop_size, crop_size))</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">resize_cam</span>(<span class="params">cam, size=(<span class="params"><span class="number">224</span>, <span class="number">224</span></span>)</span>):</span><br><span class="line">    <span class="comment"># resize，使用默认的双线性插值</span></span><br><span class="line">    cam = cv2.resize(cam, (size[<span class="number">0</span>], size[<span class="number">1</span>]))</span><br><span class="line">    <span class="comment"># Normalize</span></span><br><span class="line">    cam_min, cam_max = cam.<span class="built_in">min</span>(), cam.<span class="built_in">max</span>()</span><br><span class="line">    cam = (cam - cam_min) / (cam_max - cam_min)</span><br><span class="line">    <span class="keyword">return</span> cam</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/05/OpenCV/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2018%20ACoL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2018%20ACoL/" class="post-title-link" itemprop="url">CVPR2018 ACoL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:41" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2018-ACoL"><a href="#CVPR2018-ACoL" class="headerlink" title="CVPR2018 ACoL"></a>CVPR2018 ACoL</h1><p>Adversarial Complementary Learning for Weakly Supervised Object Localization</p>
-<p>对抗性互补学习弱监督目标定位</p>
-<h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2><p>使用两个分类器</p>
-<p>分类器 A 利用判别性区域（马的头部和后腿）进行识别。通过擦除特征图中的此类判别区域，作为分类器 B的输入，分类器B被引导使用新的和互补对象区域（马的前腿）的特征进行分类。最后，通过融合来自两个分支的目标定位图获得最终的目标区域。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427190631533.png" alt="image-20220427190631533" style="zoom: 50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2018%20ACoL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2020%20EIL%20%E5%AF%B9%E6%8A%97%E6%93%A6%E9%99%A4%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">CVPR2020 EIL 对抗擦除集成学习</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:52" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2020-EIL-对抗擦除集成学习"><a href="#CVPR2020-EIL-对抗擦除集成学习" class="headerlink" title="CVPR2020 EIL 对抗擦除集成学习"></a>CVPR2020 EIL 对抗擦除集成学习</h1><p>Erasing Integrated Learning : A Simple yet Effective Approach for Weakly Supervised Object Localization</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于分类网络的WSOL方法通常会突出显示最具辨别力的部分，而不是对象的整个范围。然而，试图探索对象的整体范围反而会降低图像分类的性能。</p>
-<p><strong>CAM</strong>定位得到的往往是对应类别最具判别性的部分，对抗擦除技术用于缓解这一问题</p>
-<p><strong>ADL</strong>随机擦除前向传播中最具辨别力的区域，节省了相当多的计算和参数开销。但ADL 仍然受到信息区域随机丢失引起的分类退化的限制。当 ADL 插入网络时，它随机选择擦除最具辨别力的区域或突出显示特征图中的信息区域。但是随机擦除会以某种方式丢弃重要信息，从而导致分类性能下降。</p>
-<p><strong>ACoL</strong> 在顶部应用两个并行分类器来训练网络，一个直接从共享骨干网输入未擦除的特征图并生成擦除掩码，而另一个通过此掩码输入擦除的特征图。</p>
-<p><strong>SeeNet</strong> 针对对象和背景线索引入了两种自擦除策略，可以防止注意力转移到背景区域，从而更准确地挖掘对象。</p>
-<p><strong>HaS</strong>随机隐藏给定图像的补丁，以迫使网络寻找对象的更多相关部分，这也可以被认为是一种数据增强方式。</p>
-<p><strong>DANet</strong> 借助对对象类别层次结构的更强监督，利用跨类别语义差异和空间差异来学习互补和有区别的视觉模式。</p>
-<p><strong>soft proposal network</strong></p>
-<p><strong>SPG</strong></p>
-<h2 id="EIL方法概述"><a href="#EIL方法概述" class="headerlink" title="EIL方法概述"></a>EIL方法概述</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427191709783.png" alt="image-20220427191709783" style="zoom: 67%;" /></p>
-<p>首先按照ADL中的掩码生成方法，利用channel wise avgpooling得到自注意力图，经过阈值筛选后得到Drop mask。然后使用Drop mask对原特征图进行擦除，将擦除后的和未擦除的特征图一起送入下一个卷积块，可以视作创建了擦除和未擦除两个数据流，网络参数权重共享，对擦除数据和未擦除数据分别产生两个分类损失，通过未擦除的损失，网络可以学习通过最具辨别力的类特定区域对对象进行分类。擦除的损失促使网络将注意力集中在判别力较低的部分以探索互补对象区域。在测试阶段EIL模块是不起作用的，直接使用普通模型得到注意力图。</p>
-<p>消融实验证明了两个流产生的梯度不会冲突或相互抵消</p>
-<h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><h3 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h3><ul>
-<li>CUB-200-2011</li>
-<li>ILSVRC 2016</li>
-</ul>
-<h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><ul>
-<li><p>Top-1 classification accuracy</p>
-</li>
-<li><p>Top-1 localization accuracy</p>
-</li>
-<li><p>localization accuracy with known ground-truth class (GT Loc)</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1098,7 +1090,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1111,7 +1103,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
