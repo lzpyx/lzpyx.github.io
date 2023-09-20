@@ -20,22 +20,25 @@
     var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="LERF: Language Embedded Radiance Fields">
+  <meta name="description" content="LERF: Language Embedded Radiance Fields Motivation人类使用自然语言描述一个特定的3D位置通常会从以下角度出发：  visual appearance semantics abstract associations actionable affordances  NeRF是一个colorful desity field，但是没有语义信息，基于NeRF">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LERF: Language Embedded Radiance Fields">
 <meta property="og:url" content="http://lzpyx.github.io/2023/09/18/20230918-LERF-Language-Embedded-Radiance-Fields/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
-<meta property="og:description" content="LERF: Language Embedded Radiance Fields">
+<meta property="og:description" content="LERF: Language Embedded Radiance Fields Motivation人类使用自然语言描述一个特定的3D位置通常会从以下角度出发：  visual appearance semantics abstract associations actionable affordances  NeRF是一个colorful desity field，但是没有语义信息，基于NeRF">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230918205505583.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918205505583.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918212151625.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919145744736.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919154101542.png">
 <meta property="article:published_time" content="2023-09-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-18T13:14:50.449Z">
+<meta property="article:modified_time" content="2023-09-19T08:48:01.614Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="Open Vocabulary">
 <meta property="article:tag" content="3D Scene Understanding">
 <meta property="article:tag" content="NeRF">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/lzpyx/AppData/Roaming/Typora/typora-user-images/image-20230918205505583.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918205505583.png">
 
 <link rel="canonical" href="http://lzpyx.github.io/2023/09/18/20230918-LERF-Language-Embedded-Radiance-Fields/">
 
@@ -196,10 +199,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-09-18 00:00:00 / Modified: 21:14:50" itemprop="dateCreated datePublished" datetime="2023-09-18T00:00:00+08:00">2023-09-18</time>
+              <time title="Created: 2023-09-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-18T00:00:00+08:00">2023-09-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-19 16:48:01" itemprop="dateModified" datetime="2023-09-19T16:48:01+08:00">2023-09-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -221,8 +230,111 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="LERF-Language-Embedded-Radiance-Fields"><a href="#LERF-Language-Embedded-Radiance-Fields" class="headerlink" title="LERF: Language Embedded Radiance Fields"></a>LERF: Language Embedded Radiance Fields</h1><p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230918205505583.png" alt="image-20230918205505583"></p>
-
+        <h1 id="LERF-Language-Embedded-Radiance-Fields"><a href="#LERF-Language-Embedded-Radiance-Fields" class="headerlink" title="LERF: Language Embedded Radiance Fields"></a>LERF: Language Embedded Radiance Fields</h1><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918205505583.png" alt="image-20230918205505583"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>人类使用自然语言描述一个特定的3D位置通常会从以下角度出发：</p>
+<ul>
+<li>visual appearance</li>
+<li>semantics</li>
+<li>abstract associations</li>
+<li>actionable affordances</li>
+</ul>
+<p>NeRF是一个colorful desity field，但是没有语义信息，基于NeRF建立3D场景交互界面受到限制</p>
+<p>LERF在NeRF基础上加了一个language field，输入位置和尺寸，输出CLIP特征。在训练时，使用从training views的image crops中获得的多尺度CLIP特征来训练language field。</p>
+<blockquote>
+<p>这使得CLIP编码器捕获不同尺度的图像上下文，从而将相同的3D位置与不同尺度的不同language embeddings（例如，不同的语言嵌入）相关联。如“器皿”与“木勺”）</p>
+</blockquote>
+<p>LERF构建的3D表示language field是视角无关的，可以用不同的文本提示查询，而无需每次重建底层表示，将多个视点融合到单个共享场景表示中，而不是按图像操作。</p>
+<span id="more"></span>
+<h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
+<li><p>Distilling 2D Features into NeRF</p>
+<ul>
+<li>Semantic NeRF [39] </li>
+<li>Panoptic Lifting [33]</li>
+<li>Distilled Feature Fields[20]</li>
+<li>Neural Feature Fusion Fields [37]</li>
+</ul>
+</li>
+<li><p>3D Language Grounding</p>
+<ul>
+<li>3D vqa [15,2,6]</li>
+<li>incorporating language with shape information can improve object recognition via text [11, 36]</li>
+<li>VL-Maps,OpenScene采用了微调的OV dense feature</li>
+<li>CLIP-Fields,NLMaps-SayCan特征更稀疏，因为是基于检测到的物体</li>
+<li>ConceptFusion 使用了Mask2Former</li>
+</ul>
+<p>LERF没有使用任何region或者mask proposals</p>
+</li>
+</ul>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918212151625.png" alt="image-20230918212151625"></p>
+<h3 id="LERF-Volumetric-Rendering"><a href="#LERF-Volumetric-Rendering" class="headerlink" title="LERF Volumetric Rendering"></a>LERF Volumetric Rendering</h3><p>NeRF：输入位置$\vec{x}$和视角方向$\vec{d}$，输出颜色$\vec{c}$和密度$\sigma$</p>
+<p>在NeRF基础上，添加图2中的红色箭头分支，获得language embedding $F_{lang}(\vec{x},s) \in \mathbb{R}^d$，这一分支的输入是位置$\vec{x}$和尺度$s$，输出是一个$d$维的language embedding</p>
+<ul>
+<li>这个输出是视角无关的（也就是输入没有视角方向$\vec{d}$），因为同一位置的语义应该是视角不变的。这使得多个视图可以对同一个field做出贡献，将多视图的embeddings平均。</li>
+<li><p>尺度$s$表示以$\vec{x}$为中心的立方体的世界坐标中的边长，并且类似于Mip-NeRF通过集成位置编码合并不同尺度。</p>
+</li>
+<li><p>color和density的渲染和NeRF一致</p>
+</li>
+<li><p>To render language embeddings into an image, we adopt a similar technique as prior work[20, 39] to render language embeddings along a ray $\vec{r}(t)=\vec{o_t}+t\vec{d}$. </p>
+</li>
+<li><p>LERF是基于volumes而不是基于points的，需要为ray上每个位置都设置一个尺度参数：</p>
+<p>$s(t)=s_{img}*f_{xy}/t$，其中$s_{img}$是一个固定的像平面初始化尺度，$f_{xy}$代表焦距, $t$代表采样点到ray origin的距离，几何上看，这表示了沿射线方向的一个视锥</p>
+<blockquote>
+<p>原文是We achieve this by fixing an initial scale in the image plane simg and define s(t) to increase proportionally with focal length and sample distance from the ray origin</p>
+<p>但分析公式应该是距离射线原点越远，尺度越小？</p>
+</blockquote>
+</li>
+<li><p>Rendering weights计算</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919145744736.png" alt="image-20230919145744736" style="zoom: 50%;" /></p>
+<h3 id="Multi-Scale-Supervision"><a href="#Multi-Scale-Supervision" class="headerlink" title="Multi-Scale Supervision"></a>Multi-Scale Supervision</h3><ul>
+<li><p>在训练阶段重复计算CLIP特征是昂贵的，因此作者的做法是：</p>
+<blockquote>
+<p>we pre-compute an image pyramid over multiple image crop scales and store the CLIP embeddings of each crop (Fig 2, right). This pyramid has n layerssampled between smin and smax, with each crop arranged in a grid with 50% overlap between crops</p>
+</blockquote>
+</li>
+<li><p>在训练时, randomly sample ray origins uniformly throughout input views, and uniformly randomly select $s_{img} \in  (s_{min}, s_{max})$ for each.（在输入视图中均匀地随机采样光线原点，并为每个视图均匀随机地选择尺寸）</p>
+</li>
+<li><p>Since these samples don’t necessarily fall in the center of a crop in this image pyramid, we perform <strong>trilinear interpolation</strong> between the embeddings from the 4 nearest crops for the scale above and below to produce the final ground truth embedding$\phi^{gt}_{lang}$</p>
+</li>
+<li><p>然后最大化rendered embedding和gt embedding的余弦相似度</p>
+</li>
+</ul>
+<h3 id="DINO-Regularization"><a href="#DINO-Regularization" class="headerlink" title="DINO Regularization"></a>DINO Regularization</h3><p>问题：relevancy maps can sometimes be patchy and contain outliers in regions with few views or little foreground-background separation</p>
+<p>为了缓解这一问题，作者额外训练了一个field $F_{dino}(\vec{x})$, 输出每个位置对应的DINO feature，使用MSE loss</p>
+<p>DINO在推理期间显式使用，并且仅在训练期间充当额外的<strong>正则化器</strong>，因为CLIP和DINO输出头共享架构骨干。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919154101542.png" alt="image-20230919154101542" style="zoom: 50%;" /></p>
+<h3 id="Field-Architecture"><a href="#Field-Architecture" class="headerlink" title="Field Architecture"></a>Field Architecture</h3><ul>
+<li>NeRF和language field的部分是分开的，反向传播不会互相影响</li>
+<li>multi-resolution hashgrid</li>
+<li>Nerfacto from Nerfstudio as backbone</li>
+</ul>
+<h3 id="Querying-LERF"><a href="#Querying-LERF" class="headerlink" title="Querying LERF"></a>Querying LERF</h3><ol>
+<li>obtaining a relevancy score for a rendered embedding</li>
+<li>automatically selecting a scale s given the prompt</li>
+</ol>
+<ul>
+<li><p>Relevancy Score</p>
+<ul>
+<li>rendered language embedding $\phi_{lang}$，text query $\phi_{quer}$，canonical phrases $\phi^i_{canon}$</li>
+<li>All renderings use the same canonical phrases: “object”, “things”, “stuff”, and “texture”</li>
+<li><p>$\min _{i} \frac{\exp \left(\phi_{\text {lang }} \cdot \phi_{\text {quer }}\right)}{\left.\exp \left(\phi_{\text {lang }} \cdot \phi_{\text {canon }}\right)+\exp \left(\phi_{\text {lang }} \cdot \phi_{\text {quer }}\right)\right)}$</p>
+</li>
+<li><p>Intuitively, this score represents how much closer the rendered embedding is towards the query embedding compared to the canonical embeddings</p>
+</li>
+</ul>
+</li>
+<li><p>Scale Selection</p>
+<ul>
+<li>generate relevancy maps across a range of scales 0 to 2 meters with 30 increments, and <strong>select the scale that yields the highest relevancy score</strong></li>
+</ul>
+</li>
+<li>Visibility Filtering<ul>
+<li>部分区域并没有足够多的视图进行观察，因此可能会产生noisy embeddings，因此：during querying we discard samples that were observed by fewer than five training views (approximately 5% of the views in our datasets).</li>
+</ul>
+</li>
+</ul>
+<h3 id="Implementation-Details"><a href="#Implementation-Details" class="headerlink" title="Implementation Details"></a>Implementation Details</h3>
     </div>
 
     
@@ -307,7 +419,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LERF-Language-Embedded-Radiance-Fields"><span class="nav-number">1.</span> <span class="nav-text">LERF: Language Embedded Radiance Fields</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LERF-Language-Embedded-Radiance-Fields"><span class="nav-number">1.</span> <span class="nav-text">LERF: Language Embedded Radiance Fields</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work"><span class="nav-number">1.2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.3.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LERF-Volumetric-Rendering"><span class="nav-number">1.3.1.</span> <span class="nav-text">LERF Volumetric Rendering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Scale-Supervision"><span class="nav-number">1.3.2.</span> <span class="nav-text">Multi-Scale Supervision</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DINO-Regularization"><span class="nav-number">1.3.3.</span> <span class="nav-text">DINO Regularization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Field-Architecture"><span class="nav-number">1.3.4.</span> <span class="nav-text">Field Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Querying-LERF"><span class="nav-number">1.3.5.</span> <span class="nav-text">Querying LERF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implementation-Details"><span class="nav-number">1.3.6.</span> <span class="nav-text">Implementation Details</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -321,7 +433,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

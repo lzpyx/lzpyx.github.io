@@ -164,6 +164,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/20/20230920-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%83%8C%E6%99%AF%E4%B8%8B%E7%9A%84%E5%9B%BE%E5%83%8F%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E7%BB%BC%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/20/20230920-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%83%8C%E6%99%AF%E4%B8%8B%E7%9A%84%E5%9B%BE%E5%83%8F%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E7%BB%BC%E8%BF%B0/" class="post-title-link" itemprop="url">深度学习背景下的图像三维重建技术进展综述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-20 00:00:00 / Modified: 17:40:06" itemprop="dateCreated datePublished" datetime="2023-09-20T00:00:00+08:00">2023-09-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>三维模型的表示形式有3种：体素模型、网格模型和点云模型。体素是三维空间中的正方体，相当于三维空间中的像素；网格是由多个三角形组成的多面体结构，可以表示复杂物体的表面形状；点云是坐标系中的点的集合，包含了三维坐标、颜色和分类值等信息</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920163138281.png" alt="image-20230920163138281"></p>
+<h1 id="单幅图像三维重建"><a href="#单幅图像三维重建" class="headerlink" title="单幅图像三维重建"></a>单幅图像三维重建</h1><ul>
+<li><p>基于体素的单幅图像三维重建</p>
+<ul>
+<li>在基于体素的三维重建网络中，处理体素的方式与处理图像中的像素的方式类似，二维卷积能够较简单地转变为三维卷积。基于体素模型的三维重建网络的解码器通常由三维卷积构成，利用三维体素模型进行训练，但<strong>重建体素模型通常需要较大的内存，所需内存和计算要求与体素模型的分辨率大小成立方比例，因此重建的体素模型分辨率较低，基于体素模型的方法无法重建物体的细节部位</strong></li>
+</ul>
+</li>
+<li><p>基于点云的单幅图像三维重建</p>
+<ul>
+<li>点云是利用三维坐标、颜色等信息表示物体表面的点的集合，为三维重建网络提供了更好的表示形式</li>
+<li>基于点云的方法重建的形状更加平滑，相较于体素模型运算所占用的内存更少</li>
+<li>由于点云的无序性，二维卷积无法直接应用在基于点云的三维重建方法的解码器中，基于点云的三维重建方法通常使用全连接层组成MLP解码点云信息，<strong>计算量随点云增多而增大，为减少计算量，通常侧重于重建表面的点，由于点云的离散性，重建的点云模型表面不完整，分辨率较低</strong></li>
+</ul>
+</li>
+<li><p>基于网格的单幅图像三维重建</p>
+<ul>
+<li><p>基于多阶段网络的单幅图像三维重建</p>
+<ul>
+<li><p>相比于体素模型和点云模型，网格模型能够更加完整地表示物体表面形状，一些方法利用深度估<br>计、点云重建等多个阶段构建深度学习网络重建网格形式的三维模型</p>
+</li>
+<li><p>深度图和表面法向表示物体部分视角的立体结构，深度估计和表面法向估计可作为网格重建的中间步骤。深度图的像素表示物体到相机所在平面的距离，表面法向表示物体表面的点的切线方向</p>
+<p>基于深度和表面法向的网格模型重建对不可见部位的重建效果较差</p>
+</li>
+</ul>
+</li>
+<li><p>基于模板的单幅图像三维重建</p>
+<ul>
+<li>由于网格模型的顶点相互连接，将网格的顶点作为图结构进行处理，使用图卷积神经网络处理网格模型的顶点，从而对初始的网格模型进行变形优化，重建更加精细的网格形式的三维模型,如Pixel2Mesh</li>
+<li>基于模板的单幅图像三维重建通过变形初始网格模型或回归参数化模型的方式对三维模型进行重建，通常只能重建特定顶点数量的网格模型，对三维模型细节部位的重建效果较差</li>
+</ul>
+</li>
+<li><p>基于隐式函数的单幅图像三维重建</p>
+<ul>
+<li>为减少训练期间的内存并进一步提高重建效果，一些研究者提出可表示三维形状的隐式函数，通过学习重建目标的隐式函数来重建网格形式的三维模型。常用的隐式函数有符号距离函数、空间占有率和点标签。</li>
+<li>基于隐式函数的三维重建方法使用隐式函数表示物体形状，可重建具有完整表面和细节信息的三维模型。</li>
+</ul>
+</li>
+<li><p>基于可微渲染的单幅图像三维重建</p>
+<ul>
+<li>大多数单幅图像三维重建的方法重建单一颜色的网格，一些方法通过可微渲染估计对三维模型进行纹理映射，重建具有颜色纹理的网格模型</li>
+<li>通过可微渲染将初步重建的三维模型渲染为二维图像并与输入图像构建二维图像损失，通过估计形状、照明和纹理来重建具有颜色纹理的网格模型</li>
+<li>基于可微渲染的单幅图像三维重建使用仅包含图像的数据集进行训练，降低了数据集的获取难度，可重建三维模型的颜色纹理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="多幅图像三维重建"><a href="#多幅图像三维重建" class="headerlink" title="多幅图像三维重建"></a>多幅图像三维重建</h1><ul>
+<li>基于体素的多幅图像三维重建<ul>
+<li>基于体素的多幅图像三维重建网络结构与单幅图像三维重建网络类似，也是编码器—解码器结构，将编码器输出的多幅图像特征进行融合，并根据图像特征对体素模型进行细化调整，实现多幅图像三维重建</li>
+</ul>
+</li>
+<li>基于网格的多幅图像三维重建<ul>
+<li>基于网格的多幅图像三维重建的输入通常为已知相机参数的多幅图像，通过结合多视图中每幅图像对应的相机参数，能够获取图像之间的对应关系，从而提高重建三维模型的效果，如Pixel2Mesh++</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920173641810.png" alt="image-20230920173641810"></p>
+<h1 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h1><p>Shapenet数据集和ModelNet数据集中的图像为三维模型渲染合成，不同视角渲染的多视角图像可用于多幅图像三维重建</p>
+<ul>
+<li>Shapenet收集了大量三维模型并对三维模型添加相应的对齐、部位分割和尺寸等注释。ShapeNet 数据集包含55个类别的51 300个三维模型。大多数三维重建方法使用由13个类别的44 000个模型组成的ShapeNet数据集的子集，数据集中的二维图像由三维模型渲染合成。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920173807459.png" alt="image-20230920173807459"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/18/20230918-3D-Open-vocabulary-Segmentation-with-Foundation-Models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -279,10 +410,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-09-18 00:00:00 / Modified: 21:14:50" itemprop="dateCreated datePublished" datetime="2023-09-18T00:00:00+08:00">2023-09-18</time>
+              <time title="Created: 2023-09-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-18T00:00:00+08:00">2023-09-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-19 16:48:01" itemprop="dateModified" datetime="2023-09-19T16:48:01+08:00">2023-09-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -304,8 +441,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="LERF-Language-Embedded-Radiance-Fields"><a href="#LERF-Language-Embedded-Radiance-Fields" class="headerlink" title="LERF: Language Embedded Radiance Fields"></a>LERF: Language Embedded Radiance Fields</h1><p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20230918205505583.png" alt="image-20230918205505583"></p>
-
+          <h1 id="LERF-Language-Embedded-Radiance-Fields"><a href="#LERF-Language-Embedded-Radiance-Fields" class="headerlink" title="LERF: Language Embedded Radiance Fields"></a>LERF: Language Embedded Radiance Fields</h1><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230918205505583.png" alt="image-20230918205505583"></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>人类使用自然语言描述一个特定的3D位置通常会从以下角度出发：</p>
+<ul>
+<li>visual appearance</li>
+<li>semantics</li>
+<li>abstract associations</li>
+<li>actionable affordances</li>
+</ul>
+<p>NeRF是一个colorful desity field，但是没有语义信息，基于NeRF建立3D场景交互界面受到限制</p>
+<p>LERF在NeRF基础上加了一个language field，输入位置和尺寸，输出CLIP特征。在训练时，使用从training views的image crops中获得的多尺度CLIP特征来训练language field。</p>
+<blockquote>
+<p>这使得CLIP编码器捕获不同尺度的图像上下文，从而将相同的3D位置与不同尺度的不同language embeddings（例如，不同的语言嵌入）相关联。如“器皿”与“木勺”）</p>
+</blockquote>
+<p>LERF构建的3D表示language field是视角无关的，可以用不同的文本提示查询，而无需每次重建底层表示，将多个视点融合到单个共享场景表示中，而不是按图像操作。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/18/20230918-LERF-Language-Embedded-Radiance-Fields/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -692,102 +849,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230908-Pixel2Mesh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/08/20230908-Pixel2Mesh/" class="post-title-link" itemprop="url">Pixel2Mesh</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-08T00:00:00+08:00">2023-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-18 17:47:56" itemprop="dateModified" datetime="2023-09-18T17:47:56+08:00">2023-09-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Pixel2Mesh"><a href="#Pixel2Mesh" class="headerlink" title="Pixel2Mesh"></a>Pixel2Mesh</h1><p>Pixel2Mesh: Generating 3D Mesh Models from Single RGB Images</p>
-<ul>
-<li>Volume和点云缺乏物体表面的细节信息</li>
-<li>Mesh模型用途更广泛，轻量，且细节丰富</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png" alt="image-20230911225427573"></p>
-<ul>
-<li>输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh)</li>
-<li>全卷积提取图像特征（图中上半部分）</li>
-<li>通过Perceptual Feature Pooling来引入图像特征来引导调整图卷积网络中的节点状态</li>
-<li>图卷积来表示三维mesh，并对三维mesh不断进行形变，提升角点数量，coarse-to-fine得到最终的输出（图中下半部分）<ul>
-<li>graph uppooling实现图节点数量上采样，获得更加精细的mesh</li>
-<li>将3D Mesh中的顶点和边定义为图的节点和边</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/09/08/20230908-Pixel2Mesh/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230910-%E6%97%8B%E8%BD%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -856,6 +917,102 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/09/08/20230910-%E6%97%8B%E8%BD%AC/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/08/20230919-Pixel2Mesh/" class="post-title-link" itemprop="url">Pixel2Mesh</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-08T00:00:00+08:00">2023-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-20 16:12:45" itemprop="dateModified" datetime="2023-09-20T16:12:45+08:00">2023-09-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Pixel2Mesh"><a href="#Pixel2Mesh" class="headerlink" title="Pixel2Mesh"></a>Pixel2Mesh</h1><p>Pixel2Mesh: Generating 3D Mesh Models from Single RGB Images</p>
+<ul>
+<li>Volume和点云缺乏物体表面的细节信息</li>
+<li>Mesh模型用途更广泛，轻量，且细节丰富</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png" alt="image-20230911225427573"></p>
+<ul>
+<li>输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh)</li>
+<li>全卷积提取图像特征（图中上半部分）</li>
+<li>通过Perceptual Feature Pooling来引入图像特征来引导调整图卷积网络中的节点状态</li>
+<li>图卷积来表示三维mesh，并对三维mesh不断进行形变，提升角点数量，coarse-to-fine得到最终的输出（图中下半部分）<ul>
+<li>graph uppooling实现图节点数量上采样，获得更加精细的mesh</li>
+<li>将3D Mesh中的顶点和边定义为图的节点和边</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/08/20230919-Pixel2Mesh/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -953,102 +1110,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/" class="post-title-link" itemprop="url">Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-08-28 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-29 10:53:00" itemprop="dateModified" datetime="2023-08-29T10:53:00+08:00">2023-08-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Semantic-Abstraction"><a href="#Semantic-Abstraction" class="headerlink" title="Semantic Abstraction"></a>Semantic Abstraction</h1><p>Semantic Abstraction: Open-World 3D Scene Understanding from 2D Vision-Language Models</p>
-<p>基于open-set vocabulary and out-of-domain visual input对3D环境进行感知和推理是机器人在3D世界中进行操作的关键技术，Semantic Abstraction (SemAbs), a framework that equips 2D Vision-Language Models (VLMs) with new 3D spatial capabilities, while maintaining their zero-shot robustness.</p>
-<blockquote>
-<p>赋予2D VLMs 3D空间能力的同时保留2D VLMs的zero-shot robustness</p>
-</blockquote>
-<ul>
-<li>completing partially observed objects</li>
-<li>localizing hidden objects from language descriptions</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828184909949.png" alt="image-20230828184909949"></p>
-<ul>
-<li>novel vocabulary (i.e., object attributes, synonyms of object nouns)</li>
-<li>visual properties (e.g. lighting, textures)</li>
-<li>domains (e.g. sim v.s. real)</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230828185932397.png" alt="image-20230828185932397"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1118,7 +1179,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

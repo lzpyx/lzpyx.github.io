@@ -164,6 +164,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/19/ICCV2021%20TS-CAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/19/ICCV2021%20TS-CAM/" class="post-title-link" itemprop="url">ICCV2021 TS-CAM</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-19T00:00:00+08:00">2022-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-27 16:18:09" itemprop="dateModified" datetime="2022-05-27T16:18:09+08:00">2022-05-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ICCV2021-TS-CAM"><a href="#ICCV2021-TS-CAM" class="headerlink" title="ICCV2021 TS-CAM"></a>ICCV2021 TS-CAM</h1><p>TS-CAM: Token Semantic Coupled Attention Map for Weakly Supervised Object Localization</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/vasgaowei/TS-CAM">github</a></p>
+<h2 id="Motivation-amp-background"><a href="#Motivation-amp-background" class="headerlink" title="Motivation&amp;background"></a>Motivation&amp;background</h2><p>作者认为部分激活是由 CNN 的内在特性引起的，其中卷积操作会产生局部感受野，并且难以捕捉像素之间的远程特征依赖关系。所以提出利用self-attention机制的长程建模能力来避免局部激活问题。TS-CAM首先将一张图像分割成一系列用于spatial embedding的patch token，它们将产生long-range的视觉关联性的attention map去避免局部激活现象。然后TS-CAM为每个patch tokens重新分配与种类有关的语义种类，使它们能够了解对象类别，TS-CAM最终将patch token与语义不可知的attention map耦合，以实现语义感知定位。</p>
+<p>vision transformer应用于WSOL还存在的问题：</p>
+<ul>
+<li>patch embeddings实际上破坏了输入图像的空间拓扑结构，这阻碍了目标定位激活图的生成</li>
+<li>vision transformer的注意力图与语义无关（无法区分对象类）并且不适合语义感知定位semantic-aware localization</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/19/ICCV2021%20TS-CAM/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/17/ICLR2021%20Vision%20Transformer(ViT)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -575,7 +663,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

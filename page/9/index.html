@@ -164,6 +164,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/30/CVPR2022%20CLIMS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/30/CVPR2022%20CLIMS/" class="post-title-link" itemprop="url">CVPR2022 CLIMS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-10-30 00:00:00 / Modified: 20:01:44" itemprop="dateCreated datePublished" datetime="2022-10-30T00:00:00+08:00">2022-10-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CVPR2022-CLIMS"><a href="#CVPR2022-CLIMS" class="headerlink" title="CVPR2022 CLIMS"></a>CVPR2022 CLIMS</h1><p>Cross Language Image Matching for Weakly Supervised Semantic Segmentation</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/CVI-SZU/CLIMS">github</a></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>CAM通常仅激活判别性对象区域，并且错误地包含许多与对象相关的背景。WSSS模型仅可用一组固定的image-level对象标签进行训练，因此很难抑制由开放集对象（open set objects）组成的不同的背景区域。</p>
+<p>WSSS往往由3个阶段：</p>
+<ul>
+<li>训练并产生CAM</li>
+<li>细化CAM，生成伪标签</li>
+<li>使用伪标签训练一个分割网络</li>
+</ul>
+<p>由于在close-world setting中，和目标密切相关的背景有助于目标对象的分类，比如背景铁轨和目标对象火车，这会导致CAM不必要的激活背景，此外，CAM还会struggles in the underestimation of object contents。这限制了初始CAM的质量。</p>
+<p>CLIM框架的核心思想是引入自然语言监督来激活更完整的对象区域并抑制密切相关的开放背景区域</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/202210301525009.png" alt="image-20221030152534660"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/30/CVPR2022%20CLIMS/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/10/25/R-CNN%E7%B3%BB%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -938,89 +1024,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/" class="post-title-link" itemprop="url">流畅的python</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-12 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-12T00:00:00+08:00">2022-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-02-13 16:32:15" itemprop="dateModified" datetime="2023-02-13T16:32:15+08:00">2023-02-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">基础知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="流畅的python"><a href="#流畅的python" class="headerlink" title="流畅的python"></a>流畅的python</h1><h1 id="第1章-Python数据模型"><a href="#第1章-Python数据模型" class="headerlink" title="第1章 Python数据模型"></a>第1章 Python数据模型</h1><h2 id="如何使用特殊方法"><a href="#如何使用特殊方法" class="headerlink" title="如何使用特殊方法"></a>如何使用特殊方法</h2><p><strong> len </strong> 和 <strong> getitem </strong></p>
-<p>python中所有集合类型都可以使用len()函数查看集合长度，<strong>使用len(obj)而不是obj.len(),也不是obj.<strong> len </strong> ()</strong>,如果是自定义类的对象，python会自己调用类中实现的<strong> len </strong>方法</p>
-<p>魔法方法/特殊方法/双下方法，使用len()的形式调用</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/12/%E6%B5%81%E7%95%85%E7%9A%84python/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1090,7 +1093,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

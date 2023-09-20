@@ -23,22 +23,28 @@
   <meta name="description" content="Pixel2MeshPixel2Mesh: Generating 3D Mesh Models from Single RGB Images  Volume和点云缺乏物体表面的细节信息 Mesh模型用途更广泛，轻量，且细节丰富    输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh) 全卷积提取图像特征（图中上半部分） 通过Percep">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pixel2Mesh">
-<meta property="og:url" content="http://lzpyx.github.io/2023/09/08/20230908-Pixel2Mesh/index.html">
+<meta property="og:url" content="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/index.html">
 <meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
 <meta property="og:description" content="Pixel2MeshPixel2Mesh: Generating 3D Mesh Models from Single RGB Images  Volume和点云缺乏物体表面的细节信息 Mesh模型用途更广泛，轻量，且细节丰富    输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh) 全卷积提取图像特征（图中上半部分） 通过Percep">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911231034707.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919194235334.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919222039292.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911233534441.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920102241254.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920113252731.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920115043424.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920121720716.png">
 <meta property="article:published_time" content="2023-09-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-18T09:47:56.658Z">
+<meta property="article:modified_time" content="2023-09-20T08:12:45.911Z">
 <meta property="article:author" content="lzpyx">
 <meta property="article:tag" content="3D shape generation">
 <meta property="article:tag" content="Mesh reconstruction">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png">
 
-<link rel="canonical" href="http://lzpyx.github.io/2023/09/08/20230908-Pixel2Mesh/">
+<link rel="canonical" href="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/">
 
 
 <script id="page-configurations">
@@ -175,7 +181,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230908-Pixel2Mesh/">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -205,7 +211,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-18 17:47:56" itemprop="dateModified" datetime="2023-09-18T17:47:56+08:00">2023-09-18</time>
+                <time title="Modified: 2023-09-20 16:12:45" itemprop="dateModified" datetime="2023-09-20T16:12:45+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,10 +266,17 @@
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6c4bac018f79">Ref_1</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/424054352">Ref_2</a></p>
 <h1 id="Pixel2Mesh-1"><a href="#Pixel2Mesh-1" class="headerlink" title="Pixel2Mesh++"></a>Pixel2Mesh++</h1><p>从几张已知相机位置的多视角彩色图片生成三角网格模型（3D Mesh）</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>单视图生成3D形状受限于有限的观察视角，被遮挡区域中会产生粗糙的几何形状。传统多视图几何方法从视图之间的对应关系中准确地推断出3D形状，已经有很好的定义，并且不易受到泛化问题的影响。不过传统方法在多视角图片数量非常有限的情况下难以显式解出形状，但多视角的形状信息则可能直接由神经网络隐式编码和学习。</p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911233534441.png" alt="image-20230911233534441"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919194235334.png" alt="image-20230919194235334" style="zoom:50%;" /></p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>单视图生成3D形状受限于有限的观察视角，被遮挡区域中会产生粗糙的几何形状,并且在推广到非训练域数据的情况下进行测试时效果不佳，例如跨语义类别。传统多视图几何方法从视图之间的对应关系中准确地推断出3D形状，已经有很好的定义，并且不易受到泛化问题的影响。不过传统方法在多视角图片数量非常有限的情况下(比如小于5张)难以显式解出形状，但多视角的形状信息则可能直接由神经网络隐式编码和学习。</p>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p>输入物体的多视角彩色图像（已知或未知相机位姿），输出世界坐标系3D mesh</p>
 <ul>
-<li>先使用Pixel2Mesh生成粗略的形状，然后使用Multi-View Deformation Network (MDN)进行细化</li>
+<li>3D shape prediction</li>
+<li>camera pose estimation</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230919222039292.png" alt="image-20230919222039292"></p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911233534441.png" alt="image-20230911233534441"></p>
+<ul>
+<li>先使用Pixel2Mesh / DISN生成粗略的形状，然后使用Multi-View Deformation Network (MDN)进行细化</li>
 </ul>
 <p>Multi-View Deformation Network (MDN)，本质是一个GCN，但不同于其他基于GCN的模型，MDN中的图除了直接表示3D Mesh的顶点，还有顶点位置与形变假设（Deformation Hypothesis）组成的局部GCN</p>
 <ul>
@@ -271,7 +284,26 @@
 <li>使用Cross-View Perceptual Feature Pooling来从多张图片中汇集跨视角的特征信息</li>
 <li>由Deformation Reasoning模块学习从特征中推断出最佳的变形位置</li>
 </ul>
-<h3 id="Deformation-Hypothesis-Sampling"><a href="#Deformation-Hypothesis-Sampling" class="headerlink" title="Deformation Hypothesis Sampling"></a>Deformation Hypothesis Sampling</h3>
+<h3 id="Deformation-Hypothesis-Sampling"><a href="#Deformation-Hypothesis-Sampling" class="headerlink" title="Deformation Hypothesis Sampling"></a>Deformation Hypothesis Sampling</h3><p>为每个顶点选择形变的假设位置等价于在顶点周围的3D空间中采样点，作者从Level-1 Icosahedron上采样42个点，并在 Icosahedron表面和Mesh的顶点之间构建局部个GCN结构（43个nodes，120+42=162条edges），用以预测Mesh顶点的形变</p>
+<blockquote>
+<p>To uniformly explore the nearby area, we sample from a level-1 icosahedron centered on the vertex with a scale of 0.02, which results in 42 hypothesis positions.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920102241254.png" alt="image-20230920102241254" style="zoom:67%;" /></p>
+<h3 id="Cross-ViewPerceptual-Feature-Pooling"><a href="#Cross-ViewPerceptual-Feature-Pooling" class="headerlink" title="Cross-ViewPerceptual Feature Pooling"></a>Cross-ViewPerceptual Feature Pooling</h3><p>如何有效从多视角（Multi-view）图像中获取信息是多视图形状生成的关键。受Pixel2Mesh启发，本文也使用VGG16的结构来提取perceptual feature。由于假设已知相机内参和外参，每个顶点和形变假设都能在所有的图像平面利用虚拟相机投影得到2D坐标。与Pixel2Mesh不同，本文使用更靠前的卷积层，以拥有更大的特征图空间尺寸和更局部的特征信息。</p>
+<p>在汇集多个图像的特征时，concatenation往往是一种无损的aggregate方式，但这样将导致网络结构与输入图片数量相关。在多视角形状分类任务中使用的统计特征（statistics feature）能解决这一问题。本文通过将任意数量图片的统计量信息（mean, max, std）进行拼接，得到与视角数量无关的跨视角特征。基于统计的图像特征与3D坐标拼接在一起作为后续用于推理形变位置的特征信息。</p>
+<blockquote>
+<p>In total, we compute for each vertex and hypothesis a 339 dimension feature vector</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920113252731.png" alt="image-20230920113252731" style="zoom: 80%;" /></p>
+<h3 id="Deformation-Reasoning"><a href="#Deformation-Reasoning" class="headerlink" title="Deformation Reasoning"></a>Deformation Reasoning</h3><p>为每个顶点推理最优的形变位置是Pixel2Mesh++能够进一步提升形状质量的关键。值得注意的是选择最优的假设需要不可导的argmax操作，因此本文还提出了可导的寻找理想形变假设位置的soft-argmax模块。</p>
+<p>具体来说，跨视角的特征$P$通过GCN（scoring network，由6个graph residual convolution layers组成），为每个假设预测权重$c_i$ ，权重再通过softmax层来归一化为选择的概率$s_i$其中$\Sigma^{43}_{i=1}{s_i}=1 $ ，顶点的位置被更新为这些假设坐标$h_i$的加权和$v=\Sigma^{43}_{i=1}s_i*h_i$, 其中$h_i$是每个变形假设的位置，包括顶点原本的位置。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920115043424.png" alt="image-20230920115043424"></p>
+<h3 id="Differentiable-Renderer"><a href="#Differentiable-Renderer" class="headerlink" title="Differentiable Renderer"></a>Differentiable Renderer</h3><p>We use common mesh rasterizer renderer pipeline [59], [73] as an optional component.</p>
+<p>当可以从输入对象获得图像的轮廓时，可以通过可微分渲染器将预测形状的轮廓与多视图输入轮廓图像进行匹配来进一步优化对象的3D形状。</p>
+<h3 id="Camera-Pose-Estimation-Network"><a href="#Camera-Pose-Estimation-Network" class="headerlink" title="Camera Pose Estimation Network"></a>Camera Pose Estimation Network</h3><p>当相机位姿未知时，需要从给定的图像中预测对应的相机外参</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230920121720716.png" alt="image-20230920121720716" style="zoom:80%;" /></p>
+<h2 id="Experiment"><a href="#Experiment" class="headerlink" title="Experiment"></a>Experiment</h2><p>该数据集使用ShapeNet [74]的子集创建，该子集包含来自13个类别的50 k个3D CAD模型。每个模型是从24个随机选择的摄像机视点渲染的，并给出了摄像机的内在和外在参数。</p>
+
     </div>
 
     
@@ -290,12 +322,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/09/08/20230910-%E6%97%8B%E8%BD%AC/" rel="prev" title="旋转">
-      <i class="fa fa-chevron-left"></i> 旋转
+    <a href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/" rel="prev" title="Survey: Open Vocabulary 3D Scene Understanding">
+      <i class="fa fa-chevron-left"></i> Survey: Open Vocabulary 3D Scene Understanding
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/09/14/20230914-Towards%20Label-free%20Scene%20Understanding%20by%20Vision/" rel="next" title="Towards Label-free Scene Understanding by Vision Foundation Models">
-      Towards Label-free Scene Understanding by Vision Foundation Models <i class="fa fa-chevron-right"></i>
+    <a href="/2023/09/08/20230910-%E6%97%8B%E8%BD%AC/" rel="next" title="旋转">
+      旋转 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -355,7 +387,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pixel2Mesh"><span class="nav-number">1.</span> <span class="nav-text">Pixel2Mesh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pixel2Mesh-1"><span class="nav-number">2.</span> <span class="nav-text">Pixel2Mesh++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">2.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Deformation-Hypothesis-Sampling"><span class="nav-number">2.2.1.</span> <span class="nav-text">Deformation Hypothesis Sampling</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pixel2Mesh"><span class="nav-number">1.</span> <span class="nav-text">Pixel2Mesh</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Pixel2Mesh-1"><span class="nav-number">2.</span> <span class="nav-text">Pixel2Mesh++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">2.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Deformation-Hypothesis-Sampling"><span class="nav-number">2.2.1.</span> <span class="nav-text">Deformation Hypothesis Sampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cross-ViewPerceptual-Feature-Pooling"><span class="nav-number">2.2.2.</span> <span class="nav-text">Cross-ViewPerceptual Feature Pooling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deformation-Reasoning"><span class="nav-number">2.2.3.</span> <span class="nav-text">Deformation Reasoning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Differentiable-Renderer"><span class="nav-number">2.2.4.</span> <span class="nav-text">Differentiable Renderer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Camera-Pose-Estimation-Network"><span class="nav-number">2.2.5.</span> <span class="nav-text">Camera Pose Estimation Network</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment"><span class="nav-number">2.3.</span> <span class="nav-text">Experiment</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -369,7 +401,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
