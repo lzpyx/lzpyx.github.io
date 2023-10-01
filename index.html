@@ -164,6 +164,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/10/01/20231001-(CaFo)Prompt,-Generate,-then-Cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/10/01/20231001-(CaFo)Prompt,-Generate,-then-Cache/" class="post-title-link" itemprop="url">(CaFo)Prompt, Generate, then Cache: Cascade of Foundation Models makes Strong Few-shot Learners</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-10-01 00:00:00 / Modified: 19:37:25" itemprop="dateCreated datePublished" datetime="2023-10-01T00:00:00+08:00">2023-10-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="CaFo"><a href="#CaFo" class="headerlink" title="CaFo"></a>CaFo</h1><p>Prompt, Generate, then Cache: Cascade of Foundation Models makes Strong Few-shot Learners</p>
+<ul>
+<li>利用GPT-3基于人工设计的模板产生文本输入，用于提示CLIP</li>
+<li>通过DALL-E生成合成图像，据特定领域的文本为不同类别生成额外的训练图像，以扩展少量训练数据</li>
+<li>引入可学习的缓存模型，自适应地混合来自CLIP和DINO的预测</li>
+</ul>
+<p><img src="C:\Users\lzpyx\AppData\Roaming\Typora\typora-user-images\image-20231001184509576.png" alt="image-20231001184509576" style="zoom:50%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/01/20231001-(CaFo)Prompt,-Generate,-then-Cache/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/" class="post-title-link" itemprop="url">Detect Every Thing with Few Examples</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-26 00:00:00 / Modified: 22:33:14" itemprop="dateCreated datePublished" datetime="2023-09-26T00:00:00+08:00">2023-09-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Detect-Every-Thing-with-Few-Examples"><a href="#Detect-Every-Thing-with-Few-Examples" class="headerlink" title="Detect Every Thing with Few Examples"></a>Detect Every Thing with Few Examples</h1><p>使用vision-only的DINOv2作为backbone从少量图像样本中学习新类别</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>开放词汇表对象检测通过用其类别名称的language embedding来表示每个类而取得了显著的成功，但作者认为使用语言作为类别的表示存在局限性：</p>
+<ul>
+<li>某些对象很难仅用语言准确描述，或缺乏简洁的名称</li>
+<li>视觉概念和语言之间的联系是不断发展的，而不是静止的，而Open Vocabulary模型只能链接在语料库中先前连接的对象和名称</li>
+<li>当图像注释可用时，基于语言的分类不会利用图像注释</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150349068.png" alt="image-20230926150349068" style="zoom: 67%;" /></p>
+<blockquote>
+<p>Few-shot object detection，部分方法需要在新类别上微调，限制了应用，且few-shot方法的效果不如open-vocabulary效果</p>
+</blockquote>
+<p>作者对于open-set,open-vocabulary,few-shot的概念理解</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150848054.png" alt="image-20230926150848054" style="zoom:67%;" /></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/20/20230920-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%83%8C%E6%99%AF%E4%B8%8B%E7%9A%84%E5%9B%BE%E5%83%8F%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E7%BB%BC%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -896,180 +1064,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/08/20230919-Pixel2Mesh/" class="post-title-link" itemprop="url">Pixel2Mesh</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-08T00:00:00+08:00">2023-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-20 16:12:45" itemprop="dateModified" datetime="2023-09-20T16:12:45+08:00">2023-09-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Pixel2Mesh"><a href="#Pixel2Mesh" class="headerlink" title="Pixel2Mesh"></a>Pixel2Mesh</h1><p>Pixel2Mesh: Generating 3D Mesh Models from Single RGB Images</p>
-<ul>
-<li>Volume和点云缺乏物体表面的细节信息</li>
-<li>Mesh模型用途更广泛，轻量，且细节丰富</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png" alt="image-20230911225427573"></p>
-<ul>
-<li>输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh)</li>
-<li>全卷积提取图像特征（图中上半部分）</li>
-<li>通过Perceptual Feature Pooling来引入图像特征来引导调整图卷积网络中的节点状态</li>
-<li>图卷积来表示三维mesh，并对三维mesh不断进行形变，提升角点数量，coarse-to-fine得到最终的输出（图中下半部分）<ul>
-<li>graph uppooling实现图节点数量上采样，获得更加精细的mesh</li>
-<li>将3D Mesh中的顶点和边定义为图的节点和边</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/09/08/20230919-Pixel2Mesh/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/" class="post-title-link" itemprop="url">Survey: Open Vocabulary 3D Scene Understanding</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-08-28 00:00:00 / Modified: 16:45:16" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Open-Vocabulary-3D-Scene-Understanding"><a href="#Open-Vocabulary-3D-Scene-Understanding" class="headerlink" title="Open Vocabulary 3D Scene Understanding"></a>Open Vocabulary 3D Scene Understanding</h1><h2 id="CVPR2022-PointCLIP"><a href="#CVPR2022-PointCLIP" class="headerlink" title="CVPR2022 PointCLIP"></a>CVPR2022 PointCLIP</h2><p>PointCLIP: Point Cloud Understanding by CLIP</p>
-<p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
-<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
-<h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1139,7 +1133,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"lzpyx.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Detect Every Thing with Few Examples使用vision-only的DINOv2作为backbone从少量图像样本中学习新类别 Motivation开放词汇表对象检测通过用其类别名称的language embedding来表示每个类而取得了显著的成功，但作者认为使用语言作为类别的表示存在局限性：  某些对象很难仅用语言准确描述，或缺乏简洁的名称 视觉概念和语言之间的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Detect Every Thing with Few Examples">
+<meta property="og:url" content="http://lzpyx.github.io/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/index.html">
+<meta property="og:site_name" content="Yixuan Pan&#39;s Blog">
+<meta property="og:description" content="Detect Every Thing with Few Examples使用vision-only的DINOv2作为backbone从少量图像样本中学习新类别 Motivation开放词汇表对象检测通过用其类别名称的language embedding来表示每个类而取得了显著的成功，但作者认为使用语言作为类别的表示存在局限性：  某些对象很难仅用语言准确描述，或缺乏简洁的名称 视觉概念和语言之间的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150349068.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150848054.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926151932388.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926162046788.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926184958271.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926215141156.png">
+<meta property="article:published_time" content="2023-09-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-26T14:33:14.429Z">
+<meta property="article:author" content="lzpyx">
+<meta property="article:tag" content="Multimodal">
+<meta property="article:tag" content="Vision-Language">
+<meta property="article:tag" content="Few-Shot Learning">
+<meta property="article:tag" content="Object Recognition">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150349068.png">
+
+<link rel="canonical" href="http://lzpyx.github.io/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Detect Every Thing with Few Examples | Yixuan Pan's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yixuan Pan's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/26/20230926-Detect-Every-Thing-with-Few-Examples/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Detect Every Thing with Few Examples
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-26 00:00:00 / Modified: 22:33:14" itemprop="dateCreated datePublished" datetime="2023-09-26T00:00:00+08:00">2023-09-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Detect-Every-Thing-with-Few-Examples"><a href="#Detect-Every-Thing-with-Few-Examples" class="headerlink" title="Detect Every Thing with Few Examples"></a>Detect Every Thing with Few Examples</h1><p>使用vision-only的DINOv2作为backbone从少量图像样本中学习新类别</p>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>开放词汇表对象检测通过用其类别名称的language embedding来表示每个类而取得了显著的成功，但作者认为使用语言作为类别的表示存在局限性：</p>
+<ul>
+<li>某些对象很难仅用语言准确描述，或缺乏简洁的名称</li>
+<li>视觉概念和语言之间的联系是不断发展的，而不是静止的，而Open Vocabulary模型只能链接在语料库中先前连接的对象和名称</li>
+<li>当图像注释可用时，基于语言的分类不会利用图像注释</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150349068.png" alt="image-20230926150349068" style="zoom: 67%;" /></p>
+<blockquote>
+<p>Few-shot object detection，部分方法需要在新类别上微调，限制了应用，且few-shot方法的效果不如open-vocabulary效果</p>
+</blockquote>
+<p>作者对于open-set,open-vocabulary,few-shot的概念理解</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926150848054.png" alt="image-20230926150848054" style="zoom:67%;" /></p>
+<span id="more"></span>
+<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926151932388.png" alt="image-20230926151932388" style="zoom: 67%;" /></p>
+<p>Major Challenge：</p>
+<p>a network trained with base classes would inevitably fixate on patterns that are only present among a few base classes, which does not align with the objective of detecting arbitrary classes</p>
+<blockquote>
+<p>learn not only backbone features, but also maps of similarities between the features and a set of prototypes</p>
+</blockquote>
+<h3 id="Classification-with-an-Unknown-Number-of-Classes"><a href="#Classification-with-an-Unknown-Number-of-Classes" class="headerlink" title="Classification with an Unknown Number of Classes"></a>Classification with an Unknown Number of Classes</h3><p>对于不确定的类别数量：</p>
+<ul>
+<li>FSOD中的常见策略是将最后一层全连接层进行微调</li>
+<li>OVD则是利用类别名对应的text embedding vectors替代最后一层全连接层</li>
+<li>本文中则是transform the multi-classification of $C$ classes into $C$ one-vs-rest binary classification tasks</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926162046788.png" alt="image-20230926162046788" style="zoom:67%;" /></p>
+<p>采用两阶段目标检测框架，使用离线的RPNs来生成region proposal，并从DINOv2中获取region proposal对应区域特征</p>
+<p><strong>Classification architecture:</strong></p>
+<ul>
+<li>$\overline{\mathbf{f}}=\frac{\sum_{i, j=1}^{H, W} \mathbf{f}_{i j}}{H W} \in \mathbb{R}^{D}$代表proposal的平均特征(avg pooling)</li>
+<li>Class Preselection返回top-K个最可能的类别(使用点乘计算当前proposal平均特征和class prototypes的相似度，然后排序取top-K),用$C_K$代表</li>
+</ul>
+<p><strong>Prototype projection：</strong></p>
+<ul>
+<li>$\mathbf{f}\in\mathbb{R}^{H\times W\times D}$代表图像的特征，$D$是特征维度</li>
+<li>$\mathbf{p}\in \mathbb{R}^{(C+B)\times D}$代表prototypes，其中$C$代表类别数，$B$代表类别无关的背景prototypes数量</li>
+<li>Similarity map $s\in\mathbb{R}^{H\times W\times (C+B)}$使用下式计算：<ul>
+<li>$\mathbf{s}_{i j c}=\sum_{d=1}^{D} \mathbf{f}_{i j d} \mathbf{p}_{c d}, \text { where }(i, j, c) \in[H] \times[W] \times[C+B]$</li>
+<li>其中$[C+B]$代表$\{1,…,C+B\}$</li>
+</ul>
+</li>
+</ul>
+<p><strong>Class Rearrange：</strong></p>
+<ul>
+<li>对于每一个$c_k\in C_K$将Similarity map $\mathbf{s}\in\mathbb{R}^{H\times W\times (C+B)}$ rearrange为class-specific map $\mathbf{s}_{c_k}\in\mathbb{R}^{H\times W\times (1+T+B)}$</li>
+<li>图中的$[C]/c_k$代表$\{1,…,c_k-1,c_k+1,…,C\}$</li>
+<li>$\mathbf{s}_{c_k}$的维度中，1代表类别$c_k$, $T$是$C$中除了类别$c_k$外所有类的Similarity map上采样后的维度，$B$则代表背景prototypes的数量，因此$\mathbf{s}_{c_{k}}=\operatorname{concat}\left(\mathbf{s}\left[:,:, c_{k}\right], F_{\text {rearrange }}\left(\mathbf{s}_{[C] / c_{k}}\right), \mathbf{s}[:,: C: C+B]\right)$</li>
+<li>$F_{\text {rearrange }}(\mathbf{x})=\left\{\begin{array}{ll}<br>\operatorname{upsample}(\operatorname{sort}(\mathbf{x}), T) &amp; \text { if } T \geq C-1 \\<br>\operatorname{sort}(\mathbf{x})[:,:,: T] &amp; \text { otherwise }<br>\end{array}\right.$ ,首先按照将$\mathbf{s}_{[C] / c_{k}}$的channel dimension对$[C]/c_k$进行排序，然后保留top $T$ classes，如果$T$超过了$C-1$则将similarity上采样到$T$。这一步将不确定的类别数量对应的不确定size特征维度$H\times W\times (C-1)$变为了固定size $H\times W\times T$</li>
+<li>其中concat, upsample, sort（降序排列）都是在channel dimension进行的</li>
+<li>最后class-specific similarity map $\mathbf{s}_{c_k}$被送进binary classification network并返回$c_k$类别的class score</li>
+</ul>
+<blockquote>
+<p>Our method only predicts class scores for $C_K$ and sets the others to 0. As shown in Sec. 4.2, our method surpasses SoTA even when K = 3 on both COCO (80 classes) and LVIS (1203 classes), <strong>eliminating the need for costly per-class inference</strong>.</p>
+<p>由于只需要计算Top-K个类别, 因此避免了对每个类都进行推理</p>
+</blockquote>
+<h3 id="Localization-with-Region-Propagation"><a href="#Localization-with-Region-Propagation" class="headerlink" title="Localization with Region Propagation"></a>Localization with Region Propagation</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926184958271.png" alt="image-20230926184958271" style="zoom:67%;" /></p>
+<ul>
+<li><p>propagation procedure is implemented through <strong>binary segmentation</strong>,作者将groundtruth bboxex转换为heatmaps来训练这个分割网络</p>
+</li>
+<li><p>学习一个从heatmap到box相对坐标 $(c_{w}^{\text {rel }}, c_{h}^{\text {rel }},w^{\text {rel }}, h^{\text {rel }})\in [0,1]^4$的变换, 这个box相对坐标是相对expanded proposal的</p>
+<blockquote>
+<p>Inspired by unsupervised keypoint estimation, particularly the works of IMM (Jakab et al., 2018) and Transporter (Kulkarni et al., 2019), we devise a spatial integral layer to project the propagated heatmap to box.</p>
+</blockquote>
+</li>
+<li><p>变换：用$\mathbf{g}\in \mathbb{R}^{H\times W}$代表logits of the propagated heatmap, 相对坐标box可以用下式来估计</p>
+<p>$\begin{array}{l}<br>\left(c_{w}^{\text {rel }}, c_{h}^{\text {rel }}\right)=\sum_{i, j=1}^{H, W}\left(\frac{i}{H}, \frac{j}{W}\right) * \operatorname{softmax}(\mathbf{g})_{i j} \\<br>\left.\left(w^{\text {rel }}, h^{\text {rel }}\right)=\left(\sum_{i=1}^{H} \sum_{j=1}^{W} \frac{\sigma(\mathbf{g})}{W}\right)_{(i) j} \theta^{\mathbf{w}}, \sum_{j=1}^{W} \sum_{i=1}^{H} \frac{\sigma(\mathbf{g})_{i(j)}}{H} \theta^{\mathbf{h}}{ }_{j}\right) \\<br>\end{array}$</p>
+</li>
+<li><p>将相对坐标转换为绝对坐标,$(c_{w}^{\text {exp }}, c_{h}^{\text {exp }},w^{\text {exp }}, h^{\text {exp }})$</p>
+<p>$\begin{array}{l}<br>\left(w^{\text {out }}, h^{\text {out }}\right)=\left(w^{\text {exp }} w^{\text {rel }}, h^{\text {exp }} h^{\text {rel }}\right) \\<br>\left(c_{w}^{\text {out }}, c_{h}^{\text {out }}\right)=\left(c_{w}^{\text {exp }}-0.5 w^{\text {exp }}, c_{h}^{\text {exp }}-0.5 h^{\text {exp }}\right)+\left(c_{w}^{\text {rel }} w^{\text {exp }}, c_{h}^{\text {rel }} h^{\text {exp }}\right)<br>\end{array}$</p>
+</li>
+<li><p>针对$C_K$中的每个类别都会生成对应的class-specific boxes</p>
+</li>
+</ul>
+<h3 id="Building-Prototypes"><a href="#Building-Prototypes" class="headerlink" title="Building Prototypes"></a>Building Prototypes</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230926215141156.png" alt="image-20230926215141156" style="zoom: 50%;" /></p>
+<ul>
+<li>For each object instance, its prototype is computed as the mean ViT feature from corresponding regions defined by either a segmentation mask or bounding box</li>
+<li>class-representing prototypes are obtained by averaging the cluster centroids of instance-level prototypes for each class</li>
+<li>backgrounds typically share similar visual attributes, such as uniform motion, smooth texture, static color tone, etc<ul>
+<li>Because of the lack of visual diversity yet the importance of background semantics, we use masks for a fixed list of background classes, e.g., sky, wall, road, and apply a similar prototype-building procedure</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Multimodal/" rel="tag"># Multimodal</a>
+              <a href="/tags/Vision-Language/" rel="tag"># Vision-Language</a>
+              <a href="/tags/Few-Shot-Learning/" rel="tag"># Few-Shot Learning</a>
+              <a href="/tags/Object-Recognition/" rel="tag"># Object Recognition</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/20/20230920-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%83%8C%E6%99%AF%E4%B8%8B%E7%9A%84%E5%9B%BE%E5%83%8F%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E6%8A%80%E6%9C%AF%E8%BF%9B%E5%B1%95%E7%BB%BC%E8%BF%B0/" rel="prev" title="深度学习背景下的图像三维重建技术进展综述">
+      <i class="fa fa-chevron-left"></i> 深度学习背景下的图像三维重建技术进展综述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/01/20231001-(CaFo)Prompt,-Generate,-then-Cache/" rel="next" title="(CaFo)Prompt, Generate, then Cache: Cascade of Foundation Models makes Strong Few-shot Learners">
+      (CaFo)Prompt, Generate, then Cache: Cascade of Foundation Models makes Strong Few-shot Learners <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Detect-Every-Thing-with-Few-Examples"><span class="nav-number">1.</span> <span class="nav-text">Detect Every Thing with Few Examples</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">1.2.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Classification-with-an-Unknown-Number-of-Classes"><span class="nav-number">1.2.1.</span> <span class="nav-text">Classification with an Unknown Number of Classes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Localization-with-Region-Propagation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Localization with Region Propagation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Building-Prototypes"><span class="nav-number">1.2.3.</span> <span class="nav-text">Building Prototypes</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">lzpyx</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lzpyx</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

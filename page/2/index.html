@@ -164,6 +164,180 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/09/08/20230919-Pixel2Mesh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/08/20230919-Pixel2Mesh/" class="post-title-link" itemprop="url">Pixel2Mesh</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-08T00:00:00+08:00">2023-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-20 16:12:45" itemprop="dateModified" datetime="2023-09-20T16:12:45+08:00">2023-09-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Pixel2Mesh"><a href="#Pixel2Mesh" class="headerlink" title="Pixel2Mesh"></a>Pixel2Mesh</h1><p>Pixel2Mesh: Generating 3D Mesh Models from Single RGB Images</p>
+<ul>
+<li>Volume和点云缺乏物体表面的细节信息</li>
+<li>Mesh模型用途更广泛，轻量，且细节丰富</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230911225427573.png" alt="image-20230911225427573"></p>
+<ul>
+<li>输入单张RGB图像(Input Image)，并初始化一个椭球体作为初始三维形状(Ellipsoid Mesh)</li>
+<li>全卷积提取图像特征（图中上半部分）</li>
+<li>通过Perceptual Feature Pooling来引入图像特征来引导调整图卷积网络中的节点状态</li>
+<li>图卷积来表示三维mesh，并对三维mesh不断进行形变，提升角点数量，coarse-to-fine得到最终的输出（图中下半部分）<ul>
+<li>graph uppooling实现图节点数量上采样，获得更加精细的mesh</li>
+<li>将3D Mesh中的顶点和边定义为图的节点和边</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/08/20230919-Pixel2Mesh/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/" class="post-title-link" itemprop="url">Survey: Open Vocabulary 3D Scene Understanding</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-28 00:00:00 / Modified: 16:45:16" itemprop="dateCreated datePublished" datetime="2023-08-28T00:00:00+08:00">2023-08-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Open-Vocabulary-3D-Scene-Understanding"><a href="#Open-Vocabulary-3D-Scene-Understanding" class="headerlink" title="Open Vocabulary 3D Scene Understanding"></a>Open Vocabulary 3D Scene Understanding</h1><h2 id="CVPR2022-PointCLIP"><a href="#CVPR2022-PointCLIP" class="headerlink" title="CVPR2022 PointCLIP"></a>CVPR2022 PointCLIP</h2><p>PointCLIP: Point Cloud Understanding by CLIP</p>
+<p>第一篇将CLIP用于3D点云的工作，实现了点云分类的zero-shot learning和few-shot learning</p>
+<h3 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h3><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230705203106639.png" alt="image-20230705203106639"></p>
+<h4 id="抽取点云特征"><a href="#抽取点云特征" class="headerlink" title="抽取点云特征"></a>抽取点云特征</h4><p>使用投影的方式，将3D的点云投影到几个预定义的平面（6个正交的视角），变为2D图像，具体来说，投影到bottom view就是将坐标为$(x,y,z)$的点投影到图像平面上的$([x/z],[y/z])$,投影得到的图像是缩小的图，近大远小。没有使用卷积将1通道转换为3通道，而是直接将深度$z$作为像素值，并复制到每个通道，得到3通道图像。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/28/20230705-Survey-Open-Vocabulary-3D-Scene-Understanding/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/28/20230828-Semantic-Abstraction-Open-World-3D-Scene-Understanding-from-2D-Vision-Language-Models/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -971,174 +1145,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/08/07/20230807-Think-Global,-Act-Local-Dual-scale-Graph-Transformer-for-Vision-and-Language-Navigation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/07/20230807-Think-Global,-Act-Local-Dual-scale-Graph-Transformer-for-Vision-and-Language-Navigation/" class="post-title-link" itemprop="url">Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-08-07 00:00:00 / Modified: 15:59:51" itemprop="dateCreated datePublished" datetime="2023-08-07T00:00:00+08:00">2023-08-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="DUET"><a href="#DUET" class="headerlink" title="DUET"></a>DUET</h1><p>Think Global, Act Local: Dual-scale Graph Transformer for Vision-and-Language Navigation</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230807155945171.png" alt="image-20230807155945171"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/" class="post-title-link" itemprop="url">Visual Language Maps for Robot Navigation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-31T00:00:00+08:00">2023-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-08-10 15:43:48" itemprop="dateModified" datetime="2023-08-10T15:43:48+08:00">2023-08-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ICRA2023-VLMaps"><a href="#ICRA2023-VLMaps" class="headerlink" title="ICRA2023 VLMaps"></a>ICRA2023 VLMaps</h1><p>Visual Language Maps for Robot Navigation</p>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Without grounding language onto a spatial representation, these systems may struggle to：</p>
-<ul>
-<li>recognize correspondences that associate independent observations of the same object</li>
-<li>localize spatial goals e.g., “in between the sofa and the TV”</li>
-<li>build persistent representations that can be shared across different embodiments, e.g., mobile robots, drones</li>
-</ul>
-<p>两大卖点</p>
-<ul>
-<li><p>对语言和空间的感知理解能力：<strong>Localize spatial goals beyond object-centric ones</strong>, e.g., “in between the TV and sofa” or “to the right of the chair” or “kitchen area” using code-writing LLMs, expanding beyond capabilities of CoW or LM-Nav.</p>
-</li>
-<li><p>多智能体协作,不同的robots对应不同的obstacle maps: can be shared among <strong>multiple robots</strong> with different embodiments to generate new obstacle maps on-the-fly (by using a list of obstacle categories)</p>
-<blockquote>
-<p>Generate new obstacle maps for new embodiments given natural language descriptions of landmark categories that they can or cannot traverse, e.g., “tables” are obstacles for a large mobile robot, but traversable for a drone.</p>
-</blockquote>
-</li>
-</ul>
-<p>both LM-Nav [13] and CoW [12] are limited to navigating to object landmarks and are less capable to understand finer-grained queries, such as “to the left of the chair” and “in between the TV and the sofa”</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230731135534315.png" alt="image-20230731135534315"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/31/20230731-Visual-Language-Maps-for-Robot-Navigation/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1208,7 +1214,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">115</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
