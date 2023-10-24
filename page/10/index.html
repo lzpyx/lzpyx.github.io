@@ -164,6 +164,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/19/TPAMI2021%20A2GNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/19/TPAMI2021%20A2GNN/" class="post-title-link" itemprop="url">TPAMI2021 A2GNN</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-19T00:00:00+08:00">2022-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-05-20 21:00:21" itemprop="dateModified" datetime="2022-05-20T21:00:21+08:00">2022-05-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="TPAMI2021-Affinity-Attention-Graph-Neural-Network"><a href="#TPAMI2021-Affinity-Attention-Graph-Neural-Network" class="headerlink" title="TPAMI2021 Affinity Attention Graph Neural Network"></a>TPAMI2021 Affinity Attention Graph Neural Network</h1><p>Affinity Attention Graph Neural Network for Weakly Supervised Semantic  Segmentation 亲和力与图卷积神经网络的结合</p>
+<p>将弱监督转换为semi-supervised（部分点是有标注的）</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>图神经网络GNN可以可以直接在不同节点之间建立长距离关系（边），聚合多个连接节点的信息，从而抑制标签噪声的负面影响，在标签有限的半监督任务中GNN也表现良好。</p>
+<p>GraphNet的缺点：</p>
+<ul>
+<li>GraphNet通过阈值构建了一个未加权的邻接图（邻接矩阵A）作为输入，会丢失一些信息，这样的图不能准确地提供足够的信息，因为它平等地对待所有边，边权重为 0 或  1，尽管实际上并非所有连接的节点都期望相同的亲和力。(邻接图中所有的边都是0或1，并不能很好的体现亲和力)</li>
+<li>GraphNet仅使用初始的标签节点进行训练，这使得当输入的初始节点特征不准确时，会导致不正确的特征聚合，只使用交叉熵损失，不能减轻不正确的节点、边和标签的影响。</li>
+</ul>
+<p>作者设计了一个 Affinity Attention Graph Neural Network (A2GNN) 来解决上述问题。具体来说，作者提出了一种新的亲和力CNN来将图像转换为加权图，而不是使用传统方法来构建未加权图。加权图比未加权图更合适，因为它可以为不同的节点对提供不同的亲和力。之前的方法如GraphNet只考虑局部连接的节点，构建了一个基于超像素的未加权图，而本文同时考虑了局部和长距离边，构建的加权图将一个像素视为一个节点。</p>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518201510961.png" alt="image-20220518201510961"></p>
+<p>特点：</p>
+<ul>
+<li>soft edge</li>
+<li>pixel as node</li>
+<li>local and long distance</li>
+</ul>
+<p>为了产生准确的伪标签，作者设计了一个新的 GNN 层，其中应用了注意力机制和边缘权重，以确保准确的传播。因此，具有弱/无边缘连接或低注意力的成对节点之间的特征聚合可以显着下降，从而相应地消除不正确的传播。随着训练的进行，节点注意力会动态变化。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/19/TPAMI2021%20A2GNN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/18/MM2018%20Graphnet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -939,85 +1036,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/04/27/CVPR2018%20ACoL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/27/CVPR2018%20ACoL/" class="post-title-link" itemprop="url">CVPR2018 ACoL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-27 00:00:00 / Modified: 19:21:41" itemprop="dateCreated datePublished" datetime="2022-04-27T00:00:00+08:00">2022-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="CVPR2018-ACoL"><a href="#CVPR2018-ACoL" class="headerlink" title="CVPR2018 ACoL"></a>CVPR2018 ACoL</h1><p>Adversarial Complementary Learning for Weakly Supervised Object Localization</p>
-<p>对抗性互补学习弱监督目标定位</p>
-<h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2><p>使用两个分类器</p>
-<p>分类器 A 利用判别性区域（马的头部和后腿）进行识别。通过擦除特征图中的此类判别区域，作为分类器 B的输入，分类器B被引导使用新的和互补对象区域（马的前腿）的特征进行分类。最后，通过融合来自两个分支的目标定位图获得最终的目标区域。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220427190631533.png" alt="image-20220427190631533" style="zoom: 50%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/27/CVPR2018%20ACoL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1087,7 +1105,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

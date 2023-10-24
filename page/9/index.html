@@ -164,6 +164,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/Few-Shot-Learning-survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/11/08/Few-Shot-Learning-survey/" class="post-title-link" itemprop="url">Few-Shot Learning Survey</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-11-08 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-08T00:00:00+08:00">2022-11-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-12 22:08:56" itemprop="dateModified" datetime="2023-07-12T22:08:56+08:00">2023-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Few-Shot-Learning"><a href="#Few-Shot-Learning" class="headerlink" title="Few-Shot Learning"></a>Few-Shot Learning</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vQ4y1R7dr/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6b9647d913a8c6fe2bcca29a012bb721">参考shusenwang 讲解</a></p>
+<p>support set不足以训练神经网络，只是在做预测的时候提供一些额外信息。使用大的数据集来训练一个模型，训练目的是让模型知道事物的异同</p>
+<p>小样本学习也是一种meta learning，learning to learn</p>
+<p>与监督学习的区别：</p>
+<p>传统的监督学习的测试样本来自于已知类别，few-shot learning的测试样本来自未知的类别</p>
+<p>k-way n-shot：</p>
+<ul>
+<li>k-way：support set有k个类别</li>
+<li>n-shot：每个类别有n个样本，one-shot就是只有一张图片</li>
+</ul>
+<p>与比赛不同，few shot learning中，设定query是属于surrport set的，而比赛中是需要判断是不是已知类的<br>siamese网络的训练：</p>
+<ol>
+<li>使用正负对进行训练，正对（同一类别）的两个样本的相似度标记为1，负对为0.将样本对输入到同一个网络，提取特征，对特征求差值，得到的特征向量表示两个图片得到的特征向量的区别，然后再送进全连接层，得到一个标量，加上sigmoid进行归一化，得到一个表示similarity的预测值，使用预测值sim和标签（正对为1，负对为0）做crossentropy</li>
+<li>使用triplet loss，训练时每次选取3个样本，一个anchor，一个positive，一个negative，让anchor和positive在特征空间的距离更近，anchor和negative在特征空间的距离更远</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/11/08/Few-Shot-Learning-survey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/11/08/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E4%B8%B2%E7%83%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,103 +1025,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2022/05/19/TPAMI2021%20A2GNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/05/19/TPAMI2021%20A2GNN/" class="post-title-link" itemprop="url">TPAMI2021 A2GNN</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-05-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-19T00:00:00+08:00">2022-05-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-05-20 21:00:21" itemprop="dateModified" datetime="2022-05-20T21:00:21+08:00">2022-05-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="TPAMI2021-Affinity-Attention-Graph-Neural-Network"><a href="#TPAMI2021-Affinity-Attention-Graph-Neural-Network" class="headerlink" title="TPAMI2021 Affinity Attention Graph Neural Network"></a>TPAMI2021 Affinity Attention Graph Neural Network</h1><p>Affinity Attention Graph Neural Network for Weakly Supervised Semantic  Segmentation 亲和力与图卷积神经网络的结合</p>
-<p>将弱监督转换为semi-supervised（部分点是有标注的）</p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>图神经网络GNN可以可以直接在不同节点之间建立长距离关系（边），聚合多个连接节点的信息，从而抑制标签噪声的负面影响，在标签有限的半监督任务中GNN也表现良好。</p>
-<p>GraphNet的缺点：</p>
-<ul>
-<li>GraphNet通过阈值构建了一个未加权的邻接图（邻接矩阵A）作为输入，会丢失一些信息，这样的图不能准确地提供足够的信息，因为它平等地对待所有边，边权重为 0 或  1，尽管实际上并非所有连接的节点都期望相同的亲和力。(邻接图中所有的边都是0或1，并不能很好的体现亲和力)</li>
-<li>GraphNet仅使用初始的标签节点进行训练，这使得当输入的初始节点特征不准确时，会导致不正确的特征聚合，只使用交叉熵损失，不能减轻不正确的节点、边和标签的影响。</li>
-</ul>
-<p>作者设计了一个 Affinity Attention Graph Neural Network (A2GNN) 来解决上述问题。具体来说，作者提出了一种新的亲和力CNN来将图像转换为加权图，而不是使用传统方法来构建未加权图。加权图比未加权图更合适，因为它可以为不同的节点对提供不同的亲和力。之前的方法如GraphNet只考虑局部连接的节点，构建了一个基于超像素的未加权图，而本文同时考虑了局部和长距离边，构建的加权图将一个像素视为一个节点。</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/img/image-20220518201510961.png" alt="image-20220518201510961"></p>
-<p>特点：</p>
-<ul>
-<li>soft edge</li>
-<li>pixel as node</li>
-<li>local and long distance</li>
-</ul>
-<p>为了产生准确的伪标签，作者设计了一个新的 GNN 层，其中应用了注意力机制和边缘权重，以确保准确的传播。因此，具有弱/无边缘连接或低注意力的成对节点之间的特征聚合可以显着下降，从而相应地消除不正确的传播。随着训练的进行，节点注意力会动态变化。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/19/TPAMI2021%20A2GNN/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1096,7 +1094,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

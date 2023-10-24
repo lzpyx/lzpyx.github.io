@@ -164,6 +164,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="lzpyx">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yixuan Pan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/" class="post-title-link" itemprop="url">Towards Open Vocabulary Learning: A Survey</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-07-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-07-05T00:00:00+08:00">2023-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-07-06 12:34:13" itemprop="dateModified" datetime="2023-07-06T12:34:13+08:00">2023-07-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Towards-Open-Vocabulary-Learning-A-Survey"><a href="#Towards-Open-Vocabulary-Learning-A-Survey" class="headerlink" title="Towards Open Vocabulary Learning: A Survey"></a>Towards Open Vocabulary Learning: A Survey</h1><h2 id="Motivation-amp-Background"><a href="#Motivation-amp-Background" class="headerlink" title="Motivation&amp;Background"></a>Motivation&amp;Background</h2><p>Zero-Shot Learning(ZSL)缺少对不可见对象的示例，且在训练期间会将不可见类对象视作背景对象，因此，在推理过程中，模型仅基于其预定义的词嵌入来识别新类别，从而限制了对视觉信息和那些看不见的类别的关系的挖掘。</p>
+<p>ZSL和open vocabulary之间的关键区别在于，open vocabulary可以使用视觉相关的语言词汇比如image captions来作为辅助的监督，使用语言来作为辅助的弱监督的motivations包括：</p>
+<ul>
+<li>相比于box和mask annotation，language data易于获取，标注成本低</li>
+<li>language data提供了更大的词汇量，因此可以更容易地拓展，具有更强地泛化性</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230704104939297.png" alt="image-20230704104939297" style="zoom: 50%;" /></p>
+<ul>
+<li>Open-Set/Open World/OOD：只需要识别出unknown objects，而不需要将它们分到不同的具体类</li>
+<li>Zero-Shot Learning：模型严格在base类上进行训练，novel类在训练时是不可见的，且模型需要为novel类预测具体类别</li>
+<li>Open Vocabulary Learning</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/05/20230703-Towards-Open-Vocabulary-Learning-A-Survey/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/07/04/20230704-MetaFormer--A-Uni%EF%AC%81ed-Meta-Framework-for-Fine-Grained-Recognition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -940,124 +1032,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://lzpyx.github.io/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="lzpyx">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yixuan Pan's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/" class="post-title-link" itemprop="url">Recovering 3D Human Mesh from Monocular Images: A Survey</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-05-30 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-30T00:00:00+08:00">2023-05-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-06-04 18:54:41" itemprop="dateModified" datetime="2023-06-04T18:54:41+08:00">2023-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper/" itemprop="url" rel="index"><span itemprop="name">paper</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Monocular-3D-Human-Mesh-Recovery"><a href="#Monocular-3D-Human-Mesh-Recovery" class="headerlink" title="Monocular 3D Human Mesh Recovery"></a>Monocular 3D Human Mesh Recovery</h1><p>(a.k.a. <strong>3D human pose and shape estimation</strong>) in the deep learning era</p>
-<p>主要考虑RGB图片和单目RGB视频（统称为monocular images）作为输入</p>
-<h2 id="存在问题"><a href="#存在问题" class="headerlink" title="存在问题"></a>存在问题</h2><ul>
-<li>将2D观察提升到3D空间存在固有的模糊性</li>
-<li>多变的人体运动结构</li>
-<li>与环境复杂的交互</li>
-</ul>
-<p>两种范式：</p>
-<ul>
-<li>基于优化：以迭代方式显式地将身体模型拟合到2D观察结果，各种数据项和正则化项被探索作为优化目标。</li>
-<li>基于回归：利用神经网络强大的非线性映射能力，直接从原始图像像素预测模型参数。</li>
-</ul>
-<h2 id="Human-Modeling"><a href="#Human-Modeling" class="headerlink" title="Human Modeling"></a>Human Modeling</h2><ul>
-<li><p>基于骨架:无法获得人体的表面</p>
-</li>
-<li><p>基于几何图元(geometric primitives，包括平面矩形，圆柱等)：人体模型是手工制作的，不符合实际</p>
-</li>
-<li><p>statistical modeling：为了将密集点云和三角网格从3D扫描转换为水密的（watertight）和可动画（animatable）的3D人体网格，采取三个主要的预处理步骤：</p>
-<ul>
-<li><p>template mesh registration: fit a template mesh to the 3D point cloud to deal with holes that the triangulated<br>mesh contains</p>
-<blockquote>
-<p>模板网格配准</p>
-</blockquote>
-</li>
-<li><p>skeleton fitting: determine the number of joints and the location and axis orientations of rotations for each joint</p>
-<blockquote>
-<p>骨架匹配：确定关节的数量以及每个关节的旋转位置和轴方向</p>
-</blockquote>
-</li>
-<li><p>skinning: bind every vertex in the surface to the skeleton for animation</p>
-<blockquote>
-<p>蒙皮：将曲面中的每个顶点绑定到骨骼以进行动画</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20230530204208351.png" alt="image-20230530204208351" style="zoom:67%;" /></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/05/30/2023530-Recovering-3D-Human-Mesh-from-Monocular-Images-A-Survey/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1127,7 +1101,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
