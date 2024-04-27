@@ -187,10 +187,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-10-08 00:00:00 / Modified: 12:25:47" itemprop="dateCreated datePublished" datetime="2023-10-08T00:00:00+08:00">2023-10-08</time>
+              <time title="Created: 2023-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-08T00:00:00+08:00">2023-10-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-04-27 15:51:21" itemprop="dateModified" datetime="2024-04-27T15:51:21+08:00">2024-04-27</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -222,7 +228,7 @@
 </ul>
 <p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008111603939.png" alt="image-20231008111603939"></p>
 <h2 id="Related-Work"><a href="#Related-Work" class="headerlink" title="Related Work"></a>Related Work</h2><ul>
-<li>Image Goal Navigation(ImageNav)存在ambiguous image goals (e.g., captures of nondescript walls) and is detached from potential user applications</li>
+<li>Image Goal Navigation(ImageNav) exits ambiguous image goals (e.g., captures of nondescript walls) and is detached from potential user applications</li>
 <li>instance-based ImageNav task(InstanceImageNav)<ul>
 <li>goal images depict an object instance</li>
 <li>goal images are independent of agent embodiment</li>
@@ -236,69 +242,14 @@
 </ul>
 </li>
 </ul>
-<h2 id="InstanceImageNav-Task-Setup"><a href="#InstanceImageNav-Task-Setup" class="headerlink" title="InstanceImageNav Task Setup"></a>InstanceImageNav Task Setup</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008113706804.png" alt="image-20231008113706804" style="zoom:50%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008113746728.png" alt="image-20231008113746728" style="zoom:50%;" /></p>
-<h2 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h2><ul>
-<li><p>Exploration</p>
-<ul>
-<li><p>Efficiently visiting locations in the environment that may afford this view, i.e., maximizing coverage of the observable space, can lead to a successful navigation</p>
-</li>
-<li><p>frontier-based exploration</p>
-<blockquote>
-<p>operates on a top-down 2D map tracking occupancy, free-space, and frontiers, where frontiers delineate the boundary between explored and unexplored regions, FBE greedily selects the nearest frontier in the map to navigate to</p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li><p>Goal Instance Re-Identification</p>
-<ul>
-<li>SuperPoint提取关键点</li>
-<li>SuperGlue关键点特征匹配</li>
-</ul>
-</li>
-<li><p>Goal Localization</p>
-<ul>
-<li>输出目标相对于agent当前pose的位置</li>
-<li>当观察到目标时(特征点匹配后高于检测阈值)，则使用Detic进行instance segmentation，然后选取包含图像中心点的mask作为对象mask，把mask内的关键点进行反投影获得目标位置</li>
-<li>The point cloud of goal points is coalesced along the height dimension and voxelized into a 2D map channel. This channel is then concatenated with the map constructed during exploration and treated as a navigation target</li>
-</ul>
-</li>
-<li><p>Local Navigation</p>
-<ul>
-<li>fast marching method<ul>
-<li>given a partial occupancy map and a set of goal points, plan a path in the agent’s action space $\mathcal{A}$ that conveys the agent to the nearest reachable point.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><ul>
-<li>The object instances depicted by the goal images have a category belonging to one of the following: {chair, couch, plant, bed, toilet, television }</li>
-</ul>
-<h2 id="Failure-Analysis"><a href="#Failure-Analysis" class="headerlink" title="Failure Analysis"></a>Failure Analysis</h2><p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008120146714.png" alt="image-20231008120146714" style="zoom:50%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008120100694.png" alt="image-20231008120100694" style="zoom:50%;" /></p>
-<ul>
-<li><p>cause of failure(For a random subset of 100 failed episodes)</p>
-<ul>
-<li><p>Instance Re-ID: False Negative</p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008120329590.png" alt="image-20231008120329590" style="zoom:50%;" /></p>
-</li>
-<li><p>Instance Re-ID: False Positive</p>
-<ul>
-<li>Incorrect detections often come from visual features correctly matched to the goal image background</li>
-<li>This failure mode could be mitigated with additional background vs. foreground reasoning</li>
-</ul>
-</li>
-<li><p>Exploration Error: 在有限时间内没有看到目标物体</p>
-</li>
-<li><p>Localization Error: 投影点不属于目标物体，可能是关键点匹配错误，或者mask错误</p>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008115916798.png" alt="image-20231008115916798" style="zoom:50%;" /></p>
-<p><img src="https://raw.githubusercontent.com/lzpyx/typora-image/main/image-20231008122330985.png" alt="image-20231008122330985"></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/08/20231008-Navigating-to-Objects-Speci%EF%AC%81ed-by-Images/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -435,7 +386,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-10-18 20:31:36" itemprop="dateModified" datetime="2023-10-18T20:31:36+08:00">2023-10-18</time>
+                <time title="Modified: 2023-10-31 16:01:07" itemprop="dateModified" datetime="2023-10-31T16:01:07+08:00">2023-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1247,7 +1198,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
