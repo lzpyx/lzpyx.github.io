@@ -38,9 +38,9 @@ Yuqian Fu*, Yu Wang*, **Yixuan Pan***, Lian Huai, Xingyu Qiu, Tong Liu, Yanwei F
 European Conference on Computer Vision (ECCV 2024), co-first author
 
 <!-- [**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
 </div>
-</div> -->
+</div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">ECCV 2024</div><img src='images/rop.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
@@ -51,6 +51,9 @@ Yao Yao, **Yixuan Pan**, Wenjun Shi, Dongchen Zhu, Lei Wang, Jiamao Li
 
 European Conference on Computer Vision (ECCV 2024), second author
 
+</div>
+</div>
+
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">TCSVT</div><img src='images/tcsvt.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
@@ -59,6 +62,9 @@ European Conference on Computer Vision (ECCV 2024), second author
 Xin Lu, **Yixuan Pan**, Yichao Cao, Xin Zhou, and Xiaobo Lu
 
 IEEE Transactions on Circuits and Systems for Video Technology (TCSVT), second author
+
+</div>
+</div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023</div><img src='images/LCAR.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
@@ -69,7 +75,8 @@ IEEE Transactions on Circuits and Systems for Video Technology (TCSVT), second a
 
 Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2023, **oral**), first author 
 
-
+</div>
+</div>
 
 <!-- - [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020** -->
 
