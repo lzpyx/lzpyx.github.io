@@ -66,7 +66,7 @@ IEEE Transactions on Circuits and Systems for Video Technology (TCSVT), second a
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023</div><img src='images/LCAR.png' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023 Oral</div><img src='images/LCAR.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [Coarse2Fine: Local Consistency Aware Re-prediction for Weakly Supervised Object Localization](https://ojs.aaai.org/index.php/AAAI/article/view/25292)
@@ -82,14 +82,56 @@ Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2023, **oral
 
 # 🔧 Projects
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023</div><img src='projects/Simulation of electromagnetic bending gun/gun.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Electronic Design</div><img src='projects/Simulation of electromagnetic bending gun/gun.gif' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-Simulation of electromagnetic bending gun
+[Simulation of electromagnetic bending gun]()
 
 Automatic mark finding by camera and precise targeting
 
 **National First Prize** of National Student Electronic Design Competition (Top 1.8%, total 17,313 teams)
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Electronic Design</div><img src='projects/Indoor positioning and tracking of robots/indoor.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Indoor positioning and tracking of robots]()
+
+High-precision indoor positioning and tracking based on UWB
+
+Authorized Patent: An EKF-based multi-sensor fusion greenhouse patrol robot tracking method, first author
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Electronic Design</div><img src='projects/Auto-following robot/car.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Auto-following robot]()
+
+UWB-based following robot
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Electronic Design</div><img src='projects/Greenhouse inspection robot cluster/greenhouse.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Greenhouse inspection robot cluster]()
+
+The inspection vehicle will record the diseased plants according to the camera information, and send it to the spraying vehicle, which will automatically arrive at the recorded location.
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Electronic Design</div><img src='projects/Acousto-optic positioning hexapod disaster relief/light.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Acousto-optic positioning hexapod disaster relief]()
+
+The hexapod robot turns in the direction of the sound source after hearing the target sound, and tracks the light source after recognizing the target light source.
 
 </div>
 </div>
