@@ -34,14 +34,44 @@ Currently, I'm a PhD student at the University of Hong Kong (HKU), supervised by
 [Cross-Domain Few-Shot Object Detection via Enhanced Open-Set Object Detector](https://arxiv.org/abs/2402.03094)
 
 Yuqian Fu*, Yu Wang*, **Yixuan Pan***, Lian Huai, Xingyu Qiu, Tong Liu, Yanwei Fu, Luc Van Gool, Xingqun Jiang
-European Conference on Computer Vision (ECCV2024), co-first author
 
-[**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
+European Conference on Computer Vision (ECCV 2024), co-first author
+
+<!-- [**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
 - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
 </div>
-</div>
+</div> -->
 
-- [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020**
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ECCV 2024</div><img src='images/rop.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Rotated Orthographic Projection for Self-Supervised 3D Human Pose Estimation](https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/08803.pdf)
+
+Yao Yao, **Yixuan Pan**, Wenjun Shi, Dongchen Zhu, Lei Wang, Jiamao Li
+
+European Conference on Computer Vision (ECCV 2024), second author
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">TCSVT</div><img src='images/tcsvt.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Variational Feature Imitation Conditioned on Visual Descriptions for Few-shot Fine-grained Recognition](https://ieeexplore.ieee.org/document/10750049)
+
+Xin Lu, **Yixuan Pan**, Yichao Cao, Xin Zhou, and Xiaobo Lu
+
+IEEE Transactions on Circuits and Systems for Video Technology (TCSVT), second author
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023</div><img src='images/LCAR.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Coarse2Fine: Local Consistency Aware Re-prediction for Weakly Supervised Object Localization](https://ojs.aaai.org/index.php/AAAI/article/view/25292)
+
+**Yixuan Pan**, Yao Yao, Yichao Cao, Chongjin Chen, Xiaobo Lu
+
+Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2023, **oral**), first author 
+
+
+
+<!-- - [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020** -->
 
 # 🎖 Honors and Awards
 - *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
