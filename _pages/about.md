@@ -146,9 +146,9 @@ The hexapod robot turns in the direction of the sound source after hearing the t
 - Artificial Intelligence and Robotics Innovation Competition - National Grand Prize
 
 # 📖 Educations
-- *PhD in Embodied AI*, University of Hong Kong. 
-- *M.S in Electronic Information (School of Automation)*, Southeast University. 
-- *B.S in Electronic Information Engineering*, Jiangsu University, Rank 1/111.
+- *PhD in Embodied AI, University of Hong Kong.*
+- *M.S in Electronic Information (School of Automation), Southeast University.*
+- *B.S in Electronic Information Engineering, Jiangsu University, Rank 1/111.*
 
 <!-- # 💬 Invited Talks
 - *2021.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
