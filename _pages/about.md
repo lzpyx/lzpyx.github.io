@@ -136,17 +136,23 @@ The hexapod robot turns in the direction of the sound source after hearing the t
 </div>
 </div>
 
-# 🎖 Honors and Awards
-- *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+# 🎖 Selected Honors and Awards
+- National Scholarship (国家奖学金)
+- Provincial-Level Merit Student of Jiangsu Province (江苏省三好学生)
+- Outstanding Graduates of Jiangsu Province (江苏省优秀毕业生)
+- Principal Scholarship (校长奖学金)
+- National Student Electronic Design Competition - National First Prize(Top 1.8%, total 17,313 teams)
+- "Huawei Cup" The 18th China Post-Graduate Mathematical Contest - National Second Prize
+- Artificial Intelligence and Robotics Innovation Competition - National Grand Prize
 
 # 📖 Educations
-- *2019.06 - 2022.04 (now)*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2015.09 - 2019.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- *PhD in Embodied AI*, University of Hong Kong. 
+- *M.S in Electronic Information (School of Automation)*, Southeast University. 
+- *B.S in Electronic Information Engineering*, Jiangsu University, Rank 1/111.
 
-# 💬 Invited Talks
+<!-- # 💬 Invited Talks
 - *2021.06*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.03*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  \| [\[video\]](https://github.com/)
+- *2021.03*, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  \| [\[video\]](https://github.com/) -->
 
-# 💻 Internships
-- *2019.05 - 2020.02*, [Lorem](https://github.com/), China.
+<!-- # 💻 Internships
+- *2019.05 - 2020.02*, [Lorem](https://github.com/), China. -->
