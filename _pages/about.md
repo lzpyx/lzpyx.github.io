@@ -80,6 +80,20 @@ Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2023, **oral
 
 <!-- - [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020** -->
 
+# 🔧 Projects
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2023</div><img src='projects/Simulation of electromagnetic bending gun/gun.gif' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+Simulation of electromagnetic bending gun
+
+Automatic mark finding by camera and precise targeting
+
+**National First Prize** of National Student Electronic Design Competition (Top 1.8%, total 17,313 teams)
+
+</div>
+</div>
+
 # 🎖 Honors and Awards
 - *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
 - *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
