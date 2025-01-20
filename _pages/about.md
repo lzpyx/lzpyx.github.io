@@ -33,7 +33,7 @@ Currently, I'm a PhD student at the University of Hong Kong (HKU), supervised by
 
 [Cross-Domain Few-Shot Object Detection via Enhanced Open-Set Object Detector](https://arxiv.org/abs/2402.03094)
 
-Yuqian Fu*, Yu Wang*, **Yixuan Pan***, Lian Huai, Xingyu Qiu, Tong Liu, Yanwei Fu, Luc Van Gool, Xingqun Jiang
+Yuqian Fu\*, Yu Wang\*, **Yixuan Pan***, Lian Huai, Xingyu Qiu, Tong Liu, Yanwei Fu, Luc Van Gool, Xingqun Jiang
 
 European Conference on Computer Vision (ECCV 2024), co-first author
 
