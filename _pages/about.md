@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Currently, I'm a PhD student at the University of Hong Kong (HKU), supervised by [Prof. Hongyang Li](https://lihongyang.info/) and co-supervised by [Prof. Ping Luo](http://luoping.me/). My research interests include Humanoid Whole-body Control, 3D Scene Understanding, Human Pose Estimation and Weakly Supervised/Few-shot/Open Vocabulary Object Localization, Detection and Segmentation.
+Currently, I'm a PhD student at the University of Hong Kong (HKU), advised by [Prof. Hongyang Li](https://lihongyang.info/) and [Prof. Ping Luo](http://luoping.me/). My research interests include Humanoid Whole-body Control, Human Pose Estimation and Human-Object Interaction.
 
 <!-- My research interest includes neural machine translation and computer vision. I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
