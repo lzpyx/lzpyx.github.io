@@ -18,6 +18,7 @@ redirect_from:
 <span class='anchor' id='about-me'></span>
 
 Currently, I'm a PhD student at the University of Hong Kong (HKU), advised by [Prof. Hongyang Li](https://lihongyang.info/) and [Prof. Ping Luo](http://luoping.me/). My research interests include Humanoid Whole-body Control, Human Pose Estimation and Human-Object Interaction.
+
 Towards general-purpose robots — by unifying perception, control, and manipulation through scalable learning.
 
 
