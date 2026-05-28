@@ -31,6 +31,17 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 # 📝 Publications 
 
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/smash_teaser.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[SMASH: Mastering Scalable Whole-Body Skills for Humanoid Ping-Pong with Egocentric Vision](https://mmlab.hk/Smash/)
+
+Junli Ren\*, Yinghui Li\*, Kai Zhang\*, Penglin Fu\*, Haoran Jiang, **Yixuan Pan**, Guangjun Zeng, Tao Huang, Weizhong Guo, Peng Lu, Tianyu Li, Jingbo Wang, Li Chen, Hongyang Li, Ping Luo
+
+[**Project Page**](https://mmlab.hk/Smash/) / [**arXiv**](https://arxiv.org/abs/2604.01158)
+
+</div>
+</div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICRA2026</div><img src='images/AMS.jpg' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
@@ -41,9 +52,10 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 IEEE International Conference on Robotics and Automation (ICRA 2026), first author
 
-[**Project Page**](https://opendrivelab.com/AMS/)
+[**Project Page**](https://opendrivelab.com/AMS/) / [**GitHub**](https://github.com/OpenDriveLab/AMS) / [**arXiv**](https://arxiv.org/abs/2511.17373)
 
 </div>
+
 </div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">ECCV 2024</div><img src='images/CD-ViTO.png' alt="sym" width="100%"></div></div>
