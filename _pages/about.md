@@ -57,7 +57,7 @@ Junli Ren\*, Yinghui Li\*, Kai Zhang\*, Penglin Fu\*, Haoran Jiang, **Yixuan Pan
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICRA2026</div><img src='images/AMS.jpg' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ICRA 2026</div><img src='images/AMS.jpg' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [Agility Meets Stability: Versatile Humanoid Control with Heterogeneous Data](https://opendrivelab.com/AMS/)
