@@ -31,7 +31,7 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 # 📝 Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='https://z-taylcr7.github.io/assets/image/robonaldo-teaser.gif' alt="RoboNaldo teaser" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/robonaldo-teaser.gif' alt="RoboNaldo teaser" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [RoboNaldo: Accurate, Stable and Powerful Humanoid Soccer Shooting via Motion-Guided Curriculum Reinforcement Learning](https://opendrivelab.com/RoboNaldo/)
