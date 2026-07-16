@@ -31,7 +31,21 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 # 📝 Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/smash_teaser.png' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='https://z-taylcr7.github.io/assets/image/robonaldo-teaser.gif' alt="RoboNaldo teaser" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[RoboNaldo: Accurate, Stable and Powerful Humanoid Soccer Shooting via Motion-Guided Curriculum Reinforcement Learning](https://opendrivelab.com/RoboNaldo/)
+
+Yichao Zhong\*, Yidan Lu\*, Yuhang Lu, Tianyang Tang, Haoguang Mai, **Yixuan Pan**, Tianyu Li, Li Chen, Jingbo Wang, Zhongyu Li\*, Peng Lu\*, Hongyang Li\*
+
+ArXiv Preprint
+
+[**Project Page**](https://opendrivelab.com/RoboNaldo/) / [**arXiv**](https://arxiv.org/abs/2606.11092)
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">TRO 2026</div><img src='images/smash_teaser.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [SMASH: Mastering Scalable Whole-Body Skills for Humanoid Ping-Pong with Egocentric Vision](https://mmlab.hk/Smash/)
