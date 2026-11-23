@@ -35,7 +35,7 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 # 📝 Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><video src="images/anchor1-teaser.mp4" poster="images/anchor1-poster.jpg" autoplay muted loop playsinline preload="metadata" width="100%" aria-label="Anchor 1 tracing characters on a real robot"></video></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><video src="images/anchor1-teaser.mp4" autoplay muted loop playsinline preload="auto" width="100%" aria-label="Anchor 1 tracing characters on a real robot"></video></div></div>
 <div class='paper-box-text' markdown="1">
 
 [Anchor 1: Precise and Stable Humanoid Control for Whole-Body Manipulation](https://www.archon.tech/research/anchor1)
@@ -49,7 +49,7 @@ arXiv preprint, first author
 </div>
 </div>
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/pingpongduo-teaser.jpg' alt="PingpongDuo teaser" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><video src="images/pingpongduo-teaser.mp4" autoplay muted loop playsinline preload="auto" width="100%" aria-label="PingpongDuo humanoid table tennis doubles"></video></div></div>
 <div class='paper-box-text' markdown="1">
 
 [PingpongDuo: Agile Humanoid Table Tennis Doubles with Safe Team Coordination](https://www.archon.tech/research/PingpongDuo)
