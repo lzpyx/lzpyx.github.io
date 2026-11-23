@@ -26,19 +26,51 @@ Towards general-purpose robots — by unifying perception, control, and manipula
 
 
 # 🔥 News
+- *2026.10*: &nbsp;🎉🎉 Anchor 1 is released on arXiv.
+- *2026.10*: &nbsp;🎉🎉 PingpongDuo is released on arXiv.
+- *2026.09*: &nbsp;🎉🎉 RoboNaldo is accepted by CoRL 2026 as an oral.
+- *2026.07*: &nbsp;🎉🎉 SMASH is accepted by TRO 2026.
 - *2026.02*: &nbsp;🎉🎉 AMS is accepted by ICRA 2026. 
 <!-- - *2022.02*: &nbsp;🎉🎉 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet.  -->
 
 # 📝 Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/robonaldo-teaser.gif' alt="RoboNaldo teaser" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><video src="images/anchor1-teaser.mp4" poster="images/anchor1-poster.jpg" autoplay muted loop playsinline preload="metadata" width="100%" aria-label="Anchor 1 tracing characters on a real robot"></video></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Anchor 1: Precise and Stable Humanoid Control for Whole-Body Manipulation](https://www.archon.tech/research/anchor1)
+
+**Yixuan Pan**†, Caojun Wang†, Penglin Fu†, Guangjun Zeng†, Ziyan Li†, Modi Shi, Jialong Zeng, Yu Zhang, Checheng Yu, Haoran Jiang, Li Chen\*, Tianyu Li, Yu Qiao, Hongyang Li
+
+arXiv preprint, first author
+
+[**Project Page**](https://www.archon.tech/research/anchor1) / [**arXiv**](https://arxiv.org/abs/2611.00193)
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">ArXiv 2026</div><img src='images/pingpongduo-teaser.jpg' alt="PingpongDuo teaser" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[PingpongDuo: Agile Humanoid Table Tennis Doubles with Safe Team Coordination](https://www.archon.tech/research/PingpongDuo)
+
+Haoran Jiang, Yichao Zhong, Kai Zhang, Cheng Liu, **Yixuan Pan**, Zhenjie Yang, Jingbo Wang, Tianyu Li, Li Chen
+
+ArXiv Preprint
+
+[**Project Page**](https://www.archon.tech/research/PingpongDuo) / [**arXiv**](https://arxiv.org/abs/2610.20579)
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">CoRL 2026 Oral</div><img src='images/robonaldo-teaser.gif' alt="RoboNaldo teaser" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [RoboNaldo: Accurate, Stable and Powerful Humanoid Soccer Shooting via Motion-Guided Curriculum Reinforcement Learning](https://opendrivelab.com/RoboNaldo/)
 
 Yichao Zhong\*, Yidan Lu\*, Yuhang Lu, Tianyang Tang, Haoguang Mai, **Yixuan Pan**, Tianyu Li, Li Chen, Jingbo Wang, Zhongyu Li\*, Peng Lu\*, Hongyang Li\*
 
-ArXiv Preprint
+Conference on Robot Learning (CoRL 2026, **oral**)
 
 [**Project Page**](https://opendrivelab.com/RoboNaldo/) / [**arXiv**](https://arxiv.org/abs/2606.11092)
 
