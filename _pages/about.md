@@ -17,9 +17,9 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Currently, I'm a PhD student at the University of Hong Kong (HKU), advised by [Prof. Hongyang Li](https://lihongyang.info/) and [Prof. Ping Luo](http://luoping.me/). My research interests include Humanoid Whole-body Control, Human Pose Estimation and Human-Object Interaction.
+I'm pursuing a PhD at the University of Hong Kong (HKU) as a member of [OpenDriveLab](https://opendrivelab.com/) and [MMLab](https://mmlab.hk/), under the supervision of Prof. [Hongyang Li](https://lihongyang.info/) and Prof. [Ping Luo](http://luoping.me/).
 
-Towards general-purpose robots — by unifying perception, control, and manipulation through scalable learning.
+My research interest: Towards Whole-body Intelligence for general-purpose robots — by unifying perception, control, and manipulation through scalable robot learning.
 
 
 <!-- My research interest includes neural machine translation and computer vision. I have published more than 100 papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
